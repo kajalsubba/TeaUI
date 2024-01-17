@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row justify-content-center align-items-center vh-100">
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="form-container">
+          <div class="logo-container text-center">
+            Company Name/Logo
+          </div>
+          <div class="line"></div>
+          <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+            <div class="form-group position-relative my-2">
+              <label for="username">Username</label>
+              <input formControlName="userName" placeholder="Enter your username" name="username" id="username" type="text">
+              <div *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched" class="text-danger">
+                Username is required.
+              </div>
+            </div>
+  
+            <div class="form-group position-relative my-2">
+              <label for="password">Password</label>
+              <input formControlName="password" name="password" placeholder="Enter your password" id="password" type="password">
+              <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
+                Password is required.
+              </div>
+            </div>
+  
+            <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
+          </form>
+  
+          <a class="forgot-password-link text-center link" href="#">Forgot Password</a>
+  
+          <p class="signup-link text-center mt-3">
+            Version 1.0.0
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

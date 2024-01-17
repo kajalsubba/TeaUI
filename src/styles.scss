@@ -1,0 +1,132 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import 'src/styles/toastr.css';
+
+:root {
+  --bg-color: #ffffff;
+  --primary-color: #302696;
+  --secondary-color: #f1efff;
+
+  --box-shadow: 3px 3px 6px var(--primary-color), -3px -3px 6px var(--bg-color);
+  --box-shadow-inset: inset 2px 2px 5px var(--primary-color), inset -3px -3px 7px var(--bg-color);
+  --soft-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+}
+
+html,
+body {
+  height: 100%;
+  background-color: var(--bg-color) !important;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+// table style 
+
+table{
+  thead{
+    tr{
+      background-color: var(--primary-color) !important;
+      color: #fff !important;
+      height: 40px !important;
+      th{
+        text-align: center !important;
+      }
+    }
+  }
+  tbody{
+    tr{
+      height: 40px !important;
+      &:nth-child(odd){
+        background-color: var(--secondary-color);
+      }
+      td{
+        text-align: center !important;
+      }
+    }
+  }
+}
+
+.mat-sort-header-container{
+  justify-content: center !important;
+}
+
+.mat-sort-header-arrow {
+  color: #fff !important;
+}
+
+.mat-mdc-paginator-page-size-select {
+  margin: 0 4px;
+  width: 70px !important;
+}
+
+.mat-mdc-paginator-container{
+  min-height: 45px !important;
+  box-shadow: var(--soft-box-shadow);
+}
+
+// Table Style END 
+
+// button style 
+
+.btn-color{
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  border-radius: 0 !important;
+  box-shadow: var(--soft-box-shadow);
+}
+
+// Form and Validation style
+
+input[type="text"].form-control{
+  border-radius: 0;
+  &:focus{
+    border: 1px solid var(--primary-color) !important;
+    box-shadow: var(--soft-box-shadow) !important;
+  }
+
+  &::placeholder{
+    font-size: 0.9rem !important;
+    opacity: 0.6;
+  }
+}
+
+.validation-message{
+    position: absolute;
+    bottom: -55%;
+    font-size: 0.7rem;
+    text-shadow: var(--soft-box-shadow);
+}
+
+
+// /Model Styles
+
+.model-title{
+  background-color: var(--primary-color);
+  text-transform: uppercase;
+  span{
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+  i{
+    color: #fff;
+    font-size: 1.5rem;
+  }
+}
+
+.mat-mdc-dialog-actions{
+  box-shadow: var(--soft-box-shadow);
+}
+
+.edit-delete-button{
+  padding: 0px 10px;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 1rem;
+}

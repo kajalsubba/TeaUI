@@ -1,0 +1,36 @@
+.table-container{
+    height: calc(100vh - 200px);
+    overflow: auto;
+    box-shadow: var(--soft-box-shadow);
+}
+
+.title{
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    span{
+        border-bottom: 2px solid var(--primary-color);
+        text-shadow: 1px 2px 3px;
+    }
+}
+
+.top-container{
+    display: flex;
+    .search-field{
+        flex: 1;
+        position: relative;
+        i{
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            text-shadow: var(--soft-box-shadow);
+        }
+    }
+}
+
+th.mat-sort-header-sorted {
+    color: white;
+  }
