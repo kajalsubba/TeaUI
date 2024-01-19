@@ -2,6 +2,9 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AddEditGradeComponent } from '../../models/add-edit-grade/add-edit-grade.component';
+import { MatDialog } from '@angular/material/dialog';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-grade',
@@ -15,6 +18,15 @@ export class GradeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+/**
+ *
+ */
+constructor(
+  private dialog:MatDialog,
+  private helper:HelperService) {
+
+  
+}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -25,6 +37,23 @@ export class GradeComponent implements OnInit, AfterViewInit {
       
   }
 
+
+  addGrade(){
+    const dialogRef = this.dialog.open(AddEditGradeComponent, {
+      width: "30%",
+      data:{
+        title:"Add Category",
+        buttonName:"Save"
+      },
+      disableClose:true
+    });
+
+    dialogRef.afterClosed().subscribe((result:any)=>{
+      if(result){
+       // this.getCategoryList();
+      }
+    })
+  }
 }
 
 export interface PeriodicElement {
