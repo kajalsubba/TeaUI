@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CategoryService } from '../../services/category.service';
-import { IGetCategory } from '../../interfaces/iget-category';
+import { IGetCategory } from '../../interfaces/ICategory';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditCategoryComponent } from '../../models/add-edit-category/add-edit-category.component';
 import { Subscription } from 'rxjs';

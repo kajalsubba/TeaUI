@@ -2,9 +2,9 @@ import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoryService } from '../../services/category.service';
-import { ISaveCategory } from '../../interfaces/isave-category';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { ToastrService } from 'ngx-toastr';
+import { ISaveCategory } from '../../interfaces/ICategory';
 
 @Component({
   selector: 'app-add-edit-category',

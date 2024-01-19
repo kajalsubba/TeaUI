@@ -3,15 +3,15 @@
 @import 'src/styles/toastr.css';
 
 :root {
-  --bg-color: #ffffff;
-  --primary-color: #302696;
-  --secondary-color: #f1efff;
+  --bg-color: #f4f4f4; /* Cream color for background */
+  --primary-color: #333;
+  --secondary-color: #e0e0e0; /* Lighter shade for neumorphic effect */
 
-  --box-shadow: 3px 3px 6px var(--primary-color), -3px -3px 6px var(--bg-color);
-  --box-shadow-inset: inset 2px 2px 5px var(--primary-color), inset -3px -3px 7px var(--bg-color);
-  --soft-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-
+  --box-shadow: 5px 5px 10px var(--secondary-color), -5px -5px 10px var(--bg-color);
+  --box-shadow-inset: inset 3px 3px 8px var(--secondary-color), inset -5px -5px 10px var(--bg-color);
+  --soft-box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
+
 
 html,
 body {
@@ -84,7 +84,7 @@ table{
 
 // Form and Validation style
 
-input[type="text"].form-control{
+input[type="text"],input[type="email"],input[type="number"].form-control{
   border-radius: 0;
   &:focus{
     border: 1px solid var(--primary-color) !important;
@@ -96,6 +96,29 @@ input[type="text"].form-control{
     opacity: 0.6;
   }
 }
+
+.fromSelect {
+  border-radius: 0 !important;
+  border: 1px solid lightgray !important;
+  box-shadow: none !important; 
+  padding: 7px 7px 7px 0px;
+
+  &:focus {
+    border: 1px solid var(--primary-color) !important;
+    box-shadow: var(--soft-box-shadow) !important;
+  }
+
+  &::placeholder {
+    font-size: 0.9rem !important;
+    opacity: 0.6;
+  }
+}
+
+.fromSelect .mat-select-value {
+  font-size: 0.9rem !important; /* Adjust font size */
+  color: var(--primary-color) !important; /* Adjust text color */
+}
+
 
 .validation-message{
     position: absolute;

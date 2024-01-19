@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IGetCategory } from '../interfaces/iget-category';
-import { ISaveCategory } from '../interfaces/isave-category';
+import { IGetCategory, ISaveCategory } from '../interfaces/ICategory';
 
 @Injectable({
   providedIn: 'root'

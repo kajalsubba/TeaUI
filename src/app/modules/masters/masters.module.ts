@@ -20,6 +20,9 @@ import { AddEditFactoryAccountComponent } from './models/add-edit-factory-accoun
 import { AddEditGradeComponent } from './models/add-edit-grade/add-edit-grade.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSortModule,
     MatButtonModule,
     MatDialogModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   providers:[ApiService]
 })
