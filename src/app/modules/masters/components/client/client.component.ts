@@ -89,7 +89,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
 
   editItem(element: any): void {
     const dialogRef = this.dialog.open(AddEditClientComponent, {
-      width: "30%",
+      width: "70%",
       data:{
         title:"Update Client",
         buttonName:"Update",

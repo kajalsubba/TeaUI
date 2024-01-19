@@ -62,7 +62,7 @@
                                           {{item.CategoryName}}
                                         </mat-option>
                                       </mat-select>
-                                    <span *ngIf="clientForm.get('CategoryId')?.hasError('required') && clientForm.get('CategoryId')?.touched" class="text-danger validation-message">
+                                    <span *ngIf="clientForm.get('CategoryId')?.hasError('required') && clientForm.get('CategoryId')?.touched" class="text-danger d-block validation-message">
                                         Category is required.
                                     </span>
                                 </div>
@@ -105,11 +105,23 @@
                                         placeholder="Enter Email"
                                         formControlName="EmailId"
                                     >
-                                    <span *ngIf="clientForm.get('EmailId')?.hasError('required') && clientForm.get('EmailId')?.touched" class="text-danger validation-message">
+                                    <div *ngIf="clientForm.get('EmailId')?.hasError('required') && clientForm.get('EmailId')?.touched" class="text-danger validation-message">
                                         Enter a valid email address.
-                                    </span>
+                                    </div>
+                                    <div *ngIf="clientForm.get('EmailId')?.hasError('pattern') && clientForm.get('EmailId')?.touched" class="text-danger validation-message">
+                                        Invalid email format.
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="form-group row mb-3">
+                                <label for="isActive" class="col-lg-5 col-form-label">IsActive <span class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-slide-toggle formControlName="isActive">{{clientForm.value.isActive ? "Active" : "InActive"}}</mat-slide-toggle>
+                                </div>
+                            </div>
+                            
+                            
                         </div>
                     </div>
                 </form>

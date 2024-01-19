@@ -38,6 +38,15 @@
   text-shadow: var(--soft-box-shadow);
 }
 
+.company-name{
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-shadow: var(--soft-box-shadow);
+  -webkit-text-stroke: 1px #000;
+  text-shadow: 0px 4px 4px #282828;
+}
+
 .user-profile {
   display: flex;
   flex-direction: row-reverse;

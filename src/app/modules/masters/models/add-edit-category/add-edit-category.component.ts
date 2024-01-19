@@ -41,6 +41,7 @@ export class AddEditCategoryComponent implements OnInit, AfterViewInit {
 
   onSubmit(){
     if(this.categoryForm.invalid){
+      this.categoryForm.markAllAsTouched();
       return;
     }else{
       let bodyData:ISaveCategory = {
