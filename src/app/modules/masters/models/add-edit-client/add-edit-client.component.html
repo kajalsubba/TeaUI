@@ -1,1 +1,112 @@
-<p>add-edit-client works!</p>
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.title}}</span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="ClientForm">
+                    <div class="form-group row my-2">
+                      <label for="category" class="col-lg-3 col-form-label">First Name <span class="text-danger">*</span></label>
+                      <div class="col-lg-3 position-relative">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="ClientFirstName"
+                          placeholder="Enter First Name"
+                          formControlName="ClientFirstName"
+                        >
+                      </div>
+
+                      <label for="category" class="col-lg-3 col-form-label">Middle Name <span class="text-danger"></span></label>
+                      <div class="col-lg-3 position-relative">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="ClientMiddleName"
+                          placeholder="Enter Middle Name"
+                          formControlName="ClientMiddleName"
+                        >
+                      </div>
+                    </div>
+
+                    <div class="form-group row my-2">
+                        <label for="category" class="col-lg-3 col-form-label">Last Name <span class="text-danger">*</span></label>
+                        <div class="col-lg-3 position-relative">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="ClientLastName"
+                            placeholder="Enter Last Name"
+                            formControlName="ClientLastName"
+                          >
+                        </div>
+                       <label for="category" class="col-lg-3 col-form-label">Address <span class="text-danger"></span></label>
+                        <div class="col-lg-3 position-relative">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="ClientAddress"
+                            placeholder="Enter address Name"
+                            formControlName="ClientAddress"
+                          >
+                        </div>
+                      </div>
+
+                      <div class="form-group row my-2">
+                        <label for="category" class="col-lg-3 col-form-label">Contact No <span class="text-danger">*</span></label>
+                        <div class="col-lg-3 position-relative">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="ContactNo"
+                            placeholder="Enter Category Name"
+                            formControlName="ContactNo"
+                          >
+                        </div>
+                       <label for="category" class="col-lg-3 col-form-label">Email <span class="text-danger"></span></label>
+                        <div class="col-lg-3 position-relative">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="EmailId"
+                            placeholder="Enter EmailId Name"
+                            formControlName="EmailId"
+                          >
+                        </div>
+                      </div>
+                      <div class="form-group row my-2">
+                        <label for="category" class="col-lg-3 col-form-label">Category <span class="text-danger">*</span></label>
+                        <div class="col-lg-3 position-relative">
+                            <mat-form-field>
+                              
+                                <mat-select [disableOptionCentering]="true"
+                              
+                                formControlName="CategoryID" >
+                                <mat-option *ngFor="let Category of CategoryList" [value]="Category.CategoryId">
+                                    {{Category.CategoryName}}
+                                </mat-option>
+                            </mat-select>
+                              </mat-form-field>
+                        </div>
+                       <!-- <label for="category" class="col-lg-3 col-form-label">Address <span class="text-danger">*</span></label>
+                        <div class="col-lg-3 position-relative">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="category"
+                            placeholder="Enter Category Name"
+                            formControlName="categoryName"
+                          >
+                        </div> -->
+                      </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button>
+  <button (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>Add</button>
+</mat-dialog-actions>

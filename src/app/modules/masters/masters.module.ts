@@ -20,6 +20,7 @@ import { AddEditFactoryAccountComponent } from './models/add-edit-factory-accoun
 import { AddEditGradeComponent } from './models/add-edit-grade/add-edit-grade.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
+    MatSelectModule,
     MastersRoutingModule,
     ReactiveFormsModule,
     FormsModule,

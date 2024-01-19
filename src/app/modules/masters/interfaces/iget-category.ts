@@ -1,3 +1,3 @@
 export interface IGetCategory {
-    TenantId:number;
+    TenantId:any;
 }
