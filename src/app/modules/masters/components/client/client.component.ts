@@ -15,6 +15,7 @@ import { AddEditClientComponent } from '../../models/add-edit-client/add-edit-cl
   styleUrls: ['./client.component.scss']
 })
 export class ClientComponent implements OnInit, AfterViewInit {
+  private subscriptions: Subscription[] = [];
 
   displayedColumns: string[] = ['ClientId', 'ClientFirstName', 'ClientMiddleName', 'ClientLastName', 'ClientAddress', 'ContactNo','EmailId','actions'];
   dataSource = new MatTableDataSource<any>();
@@ -28,10 +29,10 @@ export class ClientComponent implements OnInit, AfterViewInit {
     { columnDef: 'EmailId', header: 'Email ID' }
   ];
 
+
+  loginDetails: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  private subscriptions: Subscription[] = [];
-  loginDetails: any;
 
   constructor(
     private clientService:ClientService,

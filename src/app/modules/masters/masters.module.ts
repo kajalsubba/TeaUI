@@ -40,6 +40,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   ],
   imports: [
     CommonModule,
+    MatSelectModule,
     MastersRoutingModule,
     ReactiveFormsModule,
     FormsModule,

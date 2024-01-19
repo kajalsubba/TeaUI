@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
-    console.log(this.loginForm);
+    //console.log(this.loginForm);
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -40,10 +40,13 @@ export class LoginComponent implements OnInit {
         Password: this.loginForm.value.password,
       };
       const login = this.loginService.login(loginBody).subscribe((res: any) => {
-        console.log(res);
-        if(res){
+          if(res.length>0){
           this.helper.setItem('loginDetails', res[0]);
           this.router.navigateByUrl('home')
+        }
+        else
+        {
+          alert('Login is failed')
         }
       });
     }

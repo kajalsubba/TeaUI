@@ -10,12 +10,12 @@ export class CategoryService {
 
   constructor(private apiService: ApiService) { }
 
-  getCategory(categoryBody:IGetCategory): Observable<any> {
-    return this.apiService.post('Master/GetCategory', categoryBody);
+  getCategory(Body:IGetCategory): Observable<any> {
+    return this.apiService.post('Master/GetCategory', Body);
   }
 
-  saveCategory(categoryBody:ISaveCategory): Observable<any> {
-    return this.apiService.post('Master/SaveCategory', categoryBody);
+  saveCategory(Body:ISaveCategory): Observable<any> {
+    return this.apiService.post('Master/SaveCategory', Body);
   }
 
 }

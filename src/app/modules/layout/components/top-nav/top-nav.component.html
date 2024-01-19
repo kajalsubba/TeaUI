@@ -3,14 +3,14 @@
     <i (click)="toggleSideNav()" *ngIf="switchSideNav" class="fa-solid openCloseIcon fa-xmark"></i> -->
     <div class="top-navbar">
         <div class="logo"></div>
-        <div class="company-name">Your Company Name</div>
+        <div class="company-name">{{loginDetails.ComapnyName }}</div>
         <div class="user-profile rounded">
             <div class="profile-image">
                 <i class="fa-solid fa-2x fa-user"></i>
             </div>
             <div class="user-name mx-3">
                 <span class="name">{{loginDetails.UserFirstName | uppercase }}</span>
-                <span class="user-id">{{loginDetails.UserId}}</span>
+                <span class="user-id">{{loginDetails.RoleDescription}}</span>
             </div>
             <div class="dropdown">
                 <ul class="text-center">
