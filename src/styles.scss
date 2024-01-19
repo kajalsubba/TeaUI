@@ -3,7 +3,7 @@
 @import 'src/styles/toastr.css';
 
 :root {
-  --bg-color: #f4f4f4; /* Cream color for background */
+  --bg-color: #fff; /* Cream color for background */
   --primary-color: #333;
   --secondary-color: #e0e0e0; /* Lighter shade for neumorphic effect */
 
@@ -86,6 +86,7 @@ table{
 
 input[type="text"],input[type="email"],input[type="number"].form-control{
   border-radius: 0;
+  box-shadow: var(--box-shadow-inset);
   &:focus{
     border: 1px solid var(--primary-color) !important;
     box-shadow: var(--soft-box-shadow) !important;
@@ -100,7 +101,7 @@ input[type="text"],input[type="email"],input[type="number"].form-control{
 .fromSelect {
   border-radius: 0 !important;
   border: 1px solid lightgray !important;
-  box-shadow: none !important; 
+  box-shadow: var(--box-shadow-inset) !important; 
   padding: 7px 7px 7px 0px;
 
   &:focus {

@@ -86,6 +86,7 @@ export class AddEditClientComponent implements OnInit {
   onSubmit(){
     if(this.clientForm.invalid){
       this.clientForm.markAllAsTouched();
+      return;
     }
     if(this.dialogData.buttonName == "Save"){
       let data:ISaveClient = {
