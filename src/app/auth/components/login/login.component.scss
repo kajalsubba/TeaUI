@@ -12,8 +12,8 @@
   box-sizing: border-box;
   border-radius: 12px;
   position: relative;
+  height: 80vh;
   z-index: 999;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Soft box shadow */
 }
 
 .form-container button:active {
@@ -23,14 +23,14 @@
 .form-container .logo-container {
   text-align: center;
     font-size: 1.6rem;
-    color: var(--primary-color);
+    color: #3aa602;
     text-transform: uppercase;
     font-weight: 700;
     letter-spacing: 3px;
     align-items: center;
-    text-shadow: var(--soft-box-shadow);
-    -webkit-text-stroke: 1px #282828;
-    text-shadow: 0px 4px 4px #282828;
+    // text-shadow: var(--soft-box-shadow);
+    // -webkit-text-stroke: 1px #282828;
+    // text-shadow: 0px 4px 4px #282828;
 }
 
 .form-container .form {
@@ -53,12 +53,11 @@
 .form-container .form-group input[type="password"] {
   width: 100%;
   padding: 10px;
-  border-radius: 0px;
+  border-radius: 5px;
   font-family: 'Arial', sans-serif;
-  border: 1px solid var(--primary-color);
+  border: 1px solid #3aa602;
   background-color: var(--bg-color);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Soft box shadow */
 }
 
 .form-container .form-group input::placeholder {
@@ -77,7 +76,7 @@
   justify-content: center;
   align-items: center;
   font-family: 'Arial', sans-serif;
-  background-color: var(--primary-color);
+  background-color: #3aa602;
   color: #fff;
   border: none;
   font-weight: 600;
@@ -85,14 +84,12 @@
   padding: 10px;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 0px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Soft box shadow */
+  border-radius: 5px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-container .form-submit-btn:hover {
   // background-color: var(--secondary-color);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Soft box shadow on hover */
   i{
     transform: translateX(10px);
     transition: .3s ease-in-out;
@@ -114,12 +111,45 @@
   transform: translateY(-50%);
 }
 
-.background-image{
+.image-container {
+  height: 90vh; /* Optional: Set a maximum height for the image container */
+}
+
+.image-container img {
+  object-fit: cover; /* Maintain the aspect ratio while covering the container */
+  width: 100%; /* Take up 100% of the container's width */
+  height: 100%; /* Take up 100% of the container's height */
+  border-radius: 15px;
+}
+
+@media (max-width:48em){
+  .image-container{
+    height: 30vh;
+  }
+}
+
+.forgot-password-link{
+  text-decoration: none !important;
+}
+
+.signup-link{
+  color: #33333360;
+  font-size: 0.9rem;
+}
+
+.copy-right{
   position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 2; 
+  bottom: 0;
+  font-size: 0.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #33333360;
+}
+
+.welcome-message{
+  text-align: center;
+  font-size: 1.5rem;
+  color: #333;
+  letter-spacing: 3px;
+  font-weight: 500;
 }

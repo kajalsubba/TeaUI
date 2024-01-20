@@ -3,9 +3,9 @@
 @import 'src/styles/toastr.css';
 
 :root {
-  --bg-color: #fff; /* Cream color for background */
-  --primary-color: #333;
-  --secondary-color: #e0e0e0; /* Lighter shade for neumorphic effect */
+  --bg-color: white; /* Cream color for background */
+  --primary-color: #018353;
+  --secondary-color: #effaf6; /* Lighter shade for neumorphic effect */
 
   --box-shadow: 5px 5px 10px var(--secondary-color), -5px -5px 10px var(--bg-color);
   --box-shadow-inset: inset 3px 3px 8px var(--secondary-color), inset -5px -5px 10px var(--bg-color);
@@ -16,7 +16,7 @@
 html,
 body {
   height: 100%;
-  background-color: var(--bg-color) !important;
+  background-color: #e5eef4 !important;
 }
 body {
   margin: 0;

@@ -1,15 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@600&display=swap');
 
-:root {
-  --primary-color: #302696;
-  --soft-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
 
 .sidenav {
   width: 62px;
   position: fixed;
   height: 100vh;
-  background: var(--primary-color);
+  background: var(--bg-color);
   box-shadow: var(--soft-box-shadow);
   display: flex;
   flex-direction: column;
@@ -35,7 +31,7 @@
   height: 100%;
   box-shadow: var(--soft-box-shadow);
   width: 210px;
-  background: var(--primary-color);
+  background: var(--bg-color);
   z-index: 100;
   transition: all 0.5s ease;
 }
@@ -49,16 +45,29 @@
   margin-bottom: 10px;
   &:hover {
     cursor: pointer;
+    background-color: var(--primary-color);
+    a{
+      i,span{
+        color: #fff !important;
+      }
+    }
+    i{
+      color: #fff !important;
+    }
   }
+}
+
+a.sub-menu-title{
+  color: #333 !important;
+    font-size: 18px;
+    font-family: 'Work Sans', sans-serif;
 }
 
 .sub-menu > li {
   margin: 10px 0px;
   padding: 2px 20px;
-  a {
-    color: #333;
-    font-size: 18px;
-    font-family: 'Work Sans', sans-serif;
+  a.sub-menu-title {
+    
   }
   &:hover {
     box-shadow: var(--soft-box-shadow);
@@ -80,7 +89,7 @@
 
 .sidebar .logo-details i {
   font-size: 30px;
-  color: #fff;
+  color: var(--primary-color);
   height: 50px;
   min-width: 60px;
   text-align: center;
@@ -141,7 +150,7 @@
   justify-content: center;
   align-items: center;
   line-height: 50px;
-  color: #fff;
+  color: var(--primary-color);
   font-size: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -164,7 +173,7 @@
 .sidebar .nav-links li a .link_name {
   font-size: 18px;
   font-weight: 400;
-  color: #fff;
+  color: var(--primary-color);
   transition: all 0.4s ease;
 }
 
@@ -186,7 +195,7 @@
 }
 
 .sidebar .nav-links li .sub-menu a {
-  color: #333;
+  // color: #333;
   font-size: 15px;
   padding: 5px 0;
   white-space: nowrap;
@@ -342,7 +351,22 @@
   .active{
     background-color: var(--primary-color);
     border-radius: 5px;
-    a{
+    i,span{
+      color: #fff !important;
+    }
+    .sub-menu-title{
       color: #fff !important;
     }
   }
+
+  .main-menu-active{
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    i,span{
+      color: #fff !important;
+    }
+  }
+
+  // .active>a.sub-menu-title{
+  //   color: #fff !important;
+  // }

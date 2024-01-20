@@ -48,7 +48,8 @@ export class AddEditClientComponent implements OnInit {
       ContactNo: [''],
       CategoryId:[null, Validators.required],
       isActive:[true],
-      EmailId: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]]
+      EmailId: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
+      password:['', Validators.required]
     });
     await this.getCategoryList();
     if (this.dialogData.value) {

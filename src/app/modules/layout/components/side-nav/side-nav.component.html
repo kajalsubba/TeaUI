@@ -1,4 +1,4 @@
-<div class="sidenav" [style.width.px]="isExpanded ? 180 : 62">
+<div class="sidenav" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false" [style.width.px]="isExpanded ? 180 : 62">
     <div [ngClass]="{'close': !isExpanded }" class="sidebar">
         <div class="logo-details">
           <!-- <i class='bx bxl-c-plus-plus'></i> -->
@@ -8,7 +8,7 @@
           
         </div>
         <ul class="nav-links">
-          <li class="main-menu">
+          <li class="main-menu" routerLinkActive="main-menu-active">
             <a routerLink="dashboard">
               <i class='bx bx-grid-alt' ></i>
               <span class="link_name">Dashboard</span>
@@ -17,20 +17,34 @@
               <li  routerLink="dashboard" routerLinkActive="active"><a>Dashboard</a></li>
             </ul>
           </li>
-          <li class="main-menu">
+          <li class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link">
               <a routerLink="master">
-                <i class='bx bx-collection' ></i>
+                <i class="fa-solid fa-layer-group"></i>
                 <span class="link_name">Masters</span>
               </a>
               <i class='bx bxs-chevron-down arrow' (click)="toggleMenu($event)" ></i>
             </div>
             <ul class="sub-menu">
-              <li routerLink="master/category" routerLinkActive="active"><a>Category</a></li>
-              <li routerLink="master/client" routerLinkActive="active"><a>Client</a></li>
-              <li routerLink="master/grade" routerLinkActive="active"><a>Grade</a></li>
-              <li routerLink="master/factory" routerLinkActive="active"><a>Factory</a></li>
-              <li routerLink="master/factory-account" routerLinkActive="active"><a>Factory Account</a></li>
+              <li routerLink="master/category" routerLinkActive="active"><a class="sub-menu-title">Category</a></li>
+              <li routerLink="master/client" routerLinkActive="active"><a class="sub-menu-title">Client</a></li>
+              <li routerLink="master/grade" routerLinkActive="active"><a class="sub-menu-title">Grade</a></li>
+              <li routerLink="master/factory" routerLinkActive="active"><a class="sub-menu-title">Factory</a></li>
+              <li routerLink="master/factory-account" routerLinkActive="active"><a class="sub-menu-title">Factory Account</a></li>
+            </ul>
+          </li>
+
+          <li class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link">
+              <a routerLink="collection">
+                <i class='bx bx-collection' ></i>
+                <span class="link_name">Collection</span>
+              </a>
+              <i class='bx bxs-chevron-down arrow' (click)="toggleMenu($event)" ></i>
+            </div>
+            <ul class="sub-menu">
+              <li routerLink="collection/stg" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+              <li routerLink="collection/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
             </ul>
           </li>
           <!-- <li>

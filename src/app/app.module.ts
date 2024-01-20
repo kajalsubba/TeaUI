@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { ApiService } from './core/services/api.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,13 @@ import { ApiService } from './core/services/api.service';
       progressAnimation:'increasing',    
     }),
   ],
-  providers: [ToastrService, ApiService],
+  providers: [ToastrService, ApiService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

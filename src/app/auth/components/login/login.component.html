@@ -1,9 +1,17 @@
 <div class="container">
-    <div class="row justify-content-center align-items-center vh-100">
-      <div class="col-lg-4 col-md-6 col-sm-12">
+  <div class="row align-items-center vh-100">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="image-container">
+        <img class="background-image" src="assets/images/download2.jpg" alt="">
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-center">
         <div class="form-container">
+          <div class="welcome-message">
+            <p>Welcome to </p>
+          </div>
           <div class="logo-container text-center">
-            Tea Agent Portal
+            <i class="fa-brands fa-pagelines"></i> Tea Agent Portal
           </div>
           <div class="line m-1"></div>
           <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
@@ -26,14 +34,14 @@
             <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
           </form>
   
-          <a class="forgot-password-link text-center link" href="#">Forgot Password</a>
+          <!-- <a class="forgot-password-link text-end link" href="#">Forgot Password</a> -->
   
           <p class="signup-link text-center">
             Version 1.0.0
           </p>
+          <p class="copy-right">&copy; 2024 ALL RIGHTS RESERVED.</p>
         </div>
       </div>
     </div>
-    <!-- <img class="background-image" src="assets/images/download.jpg" alt=""> -->
   </div>
   

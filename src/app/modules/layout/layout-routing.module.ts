@@ -8,7 +8,8 @@ const routes: Routes = [
   {path:'', component: LayoutComponent, children:[
     {path:'', redirectTo: 'dashboard', pathMatch: 'full'},
     {path:'dashboard', component: DashboardComponent},
-    {path:'master', loadChildren: () => import('../masters/masters.module').then(m => m.MastersModule)}
+    {path:'master', loadChildren: () => import('../masters/masters.module').then(m => m.MastersModule)},
+    {path:'collection', loadChildren: () => import('../collection/collection.module').then(m => m.CollectionModule)},
   ]}
 ];
 
