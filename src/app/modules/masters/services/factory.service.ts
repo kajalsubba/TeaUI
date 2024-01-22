@@ -10,11 +10,11 @@ export class FactoryService {
 
   constructor(private apiService: ApiService) { }
 
-  getCategory(factoryBody:IGetFactory): Observable<any> {
+  GetFactory(factoryBody:IGetFactory): Observable<any> {
     return this.apiService.post('Master/GetFactory', factoryBody);
   }
 
-  saveCategory(factoryBody:ISaveFactory): Observable<any> {
+  SaveFactory(factoryBody:ISaveFactory): Observable<any> {
     return this.apiService.post('Master/SaveFactory', factoryBody);
   }
 }

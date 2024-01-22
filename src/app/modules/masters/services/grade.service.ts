@@ -10,11 +10,11 @@ export class GradeService {
 
   constructor(private apiService: ApiService) { }
 
-  getCategory(gradeBody:IGetGrade): Observable<any> {
+  GetGrade(gradeBody:IGetGrade): Observable<any> {
     return this.apiService.post('Master/GetGrade', gradeBody);
   }
 
-  saveCategory(gradeBody:ISaveGrade): Observable<any> {
+  SaveGrade(gradeBody:ISaveGrade): Observable<any> {
     return this.apiService.post('Master/SaveGrade', gradeBody);
   }
 }

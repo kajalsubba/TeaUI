@@ -36,6 +36,7 @@ export class AddEditClientComponent implements OnInit {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.dialogRef.close(true);
   }
 
   async ngOnInit() {
@@ -99,9 +100,10 @@ export class AddEditClientComponent implements OnInit {
         ClientLastName:this.clientForm.value.clientLastName,
         ContactNo:this.clientForm.value.ContactNo,
         EmailId:this.clientForm.value.EmailId,
+        Password:this.clientForm.value.password,
         TenantId:this.loginDetails.TenantId,
-        CreatedBy:this.loginDetails.CreatedBy,
-        IsActive:true
+        CreatedBy:this.loginDetails.UserId,
+        IsActive:this.clientForm.value.isActive,
       }
       this.saveClientData(data);
     }else{
@@ -115,7 +117,8 @@ export class AddEditClientComponent implements OnInit {
         ContactNo:this.dialogData?.value?.ContactNo ? this.dialogData?.value?.ContactNo : this.clientForm.value.ContactNo,
         EmailId:this.dialogData?.value?.EmailId,
         TenantId:this.loginDetails.TenantId,
-        CreatedBy:this.loginDetails.CreatedBy,
+        Password:this.clientForm.value.password,
+        CreatedBy:this.loginDetails.UserId,
         IsActive:this.clientForm.value.isActive
       }
       this.saveClientData(data);
@@ -133,9 +136,10 @@ export class AddEditClientComponent implements OnInit {
             })
         )
         .subscribe((res: any) => {
-            console.log(res);
+            //console.log(res);
             this.toastr.success(res.Message, 'SUCCESS');
-            this.dialogRef.close(true);
+          //  this.dialogRef.close(true);
+          this.clientForm.reset();
         });
 }
 

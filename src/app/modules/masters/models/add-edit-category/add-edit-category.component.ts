@@ -46,14 +46,14 @@ export class AddEditCategoryComponent implements OnInit, AfterViewInit {
     }else{
       let bodyData:ISaveCategory = {
         TenantId:this.loginDetails.TenantId,
-        CreatedBy:this.loginDetails.CreatedBy,
+        CreatedBy:this.loginDetails.UserId,
         CategoryId :this.dialogData?.value?.CategoryId? this.dialogData?.value?.CategoryId : 0,
         CategoryName : this.categoryForm.value.categoryName
       }
       const saveCategory = this.categoryService.saveCategory(bodyData).subscribe((res:any)=>{
         console.log(res, "Save Response");
         if(this.dialogData.buttonName == 'Save'){
-          this.toastr.success("Category saved successfully", "SUCCESS");
+          this.toastr.success(res.Message, "SUCCESS");
         }else if(this.dialogData.buttonName == "Update"){
           this.toastr.success("Category updated successfully", "SUCCESS")
         }

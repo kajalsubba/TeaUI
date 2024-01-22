@@ -4,6 +4,7 @@ export interface ISaveClient {
   ClientMiddleName: string;
   ClientLastName: string;
   ClientAddress: string;
+  Password:any;
   ContactNo: string;
   EmailId: string;
   CategoryID: number;
