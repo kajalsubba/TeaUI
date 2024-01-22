@@ -112,7 +112,7 @@
 }
 
 .image-container {
-  height: 90vh; /* Optional: Set a maximum height for the image container */
+  height: 80vh; /* Optional: Set a maximum height for the image container */
 }
 
 .image-container img {
@@ -125,6 +125,7 @@
 @media (max-width:48em){
   .image-container{
     height: 30vh;
+    display: none;
   }
 }
 
@@ -141,6 +142,7 @@
   position: absolute;
   bottom: 0;
   font-size: 0.8rem;
+  text-wrap: nowrap;
   left: 50%;
   transform: translateX(-50%);
   color: #33333360;
