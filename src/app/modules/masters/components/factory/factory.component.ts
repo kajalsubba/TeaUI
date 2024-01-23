@@ -56,14 +56,28 @@ constructor(
       TenantId:this.loginDetails.TenantId
     }
     const GetService = this.factoryService.GetFactory(bodyData).subscribe((res:any)=>{
-      console.log(res);
+   //   console.log(res);
       this.dataSource.data = res.FactoryDetails;
     });
     this.subscriptions.push(GetService);
   }
-  editItem(e:any)
+  editItem(element:any)
   {
+    const dialogRef = this.dialog.open(AddEditFactoryComponent, {
+      width: "30%",
+      data:{
+        title:"Update Factory",
+        buttonName:"Update",
+        value:element
+      },
+      disableClose:true
+    });
 
+    dialogRef.afterClosed().subscribe((result:any)=>{
+      if(result){
+        this.GetFactoryList();
+      }
+    })
   }
   addFactory()
   {

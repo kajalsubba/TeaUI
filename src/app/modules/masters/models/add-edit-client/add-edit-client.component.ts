@@ -42,25 +42,29 @@ export class AddEditClientComponent implements OnInit {
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails')
     this.clientForm = this.fb.group({
-      clientFirstName: ['', Validators.required],
-      clientMiddleName: [''],
-      clientLastName: ['', Validators.required],
-      clientAddress: [''],
+      ClientFirstName: ['', Validators.required],
+      ClientMiddleName: [''],
+      ClientLastName: ['', Validators.required],
+      ClientAddress: [''],
       ContactNo: [''],
       CategoryId:[null, Validators.required],
-      isActive:[true],
+      IsActive:[true],
       EmailId: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
-      password:['', Validators.required]
+      Password:['', Validators.required]
     });
+  
     await this.getCategoryList();
     if (this.dialogData.value) {
-      this.clientForm.controls['clientFirstName'].setValue(this.dialogData.value.ClientFirstName);
-      this.clientForm.controls['clientMiddleName'].setValue(this.dialogData.value.ClientMiddleName);
-      this.clientForm.controls['clientLastName'].setValue(this.dialogData.value.ClientLastName);
-      this.clientForm.controls['clientAddress'].setValue(this.dialogData.value.ClientAddress);
+      this.clientForm.controls['ClientFirstName'].setValue(this.dialogData.value.ClientFirstName);
+      this.clientForm.controls['ClientMiddleName'].setValue(this.dialogData.value.ClientMiddleName);
+      this.clientForm.controls['ClientLastName'].setValue(this.dialogData.value.ClientLastName);
+      this.clientForm.controls['ClientAddress'].setValue(this.dialogData.value.ClientAddress);
       this.clientForm.controls['ContactNo'].setValue(this.dialogData.value.ContactNo);
       this.clientForm.controls['EmailId'].setValue(this.dialogData.value.EmailId);
+      this.clientForm.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
+      this.clientForm.controls['IsActive'].setValue(this.dialogData.value.IsActive);
     }    
+  
   }
 
   async getCategoryList() {
@@ -75,9 +79,9 @@ export class AddEditClientComponent implements OnInit {
 
         this.categoryList = res.CategoryDetails;
 
-        if (this.dialogData.value) {
-            this.clientForm.controls['CategoryId'].setValue(this.dialogData.value.CategoryID);
-        }
+        // if (this.dialogData.value) {
+        //     this.clientForm.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
+        // }
 
     } catch (error) {
         console.error('Error:', error);
@@ -90,39 +94,23 @@ export class AddEditClientComponent implements OnInit {
       this.clientForm.markAllAsTouched();
       return;
     }
-    if(this.dialogData.buttonName == "Save"){
+    // if(this.dialogData.buttonName == "Save"){
       let data:ISaveClient = {
-        ClientId:0,
+        ClientId:this.dialogData?.value?.ClientId? this.dialogData?.value?.ClientId : 0,
         CategoryID:this.clientForm.value.CategoryId,
-        ClientAddress:this.clientForm.value.clientAddress,
-        ClientFirstName:this.clientForm.value.clientFirstName,
-        ClientMiddleName:this.clientForm.value.clientMiddleName,
-        ClientLastName:this.clientForm.value.clientLastName,
-        ContactNo:this.clientForm.value.ContactNo,
+        ClientAddress:this.clientForm.value.ClientAddress,
+        ClientFirstName:this.clientForm.value.ClientFirstName,
+        ClientMiddleName:this.clientForm.value.ClientMiddleName,
+        ClientLastName:this.clientForm.value.ClientLastName,
+        ContactNo:this.clientForm.value.ContactNo.toString(),
         EmailId:this.clientForm.value.EmailId,
-        Password:this.clientForm.value.password,
+        Password:this.clientForm.value.Password,
         TenantId:this.loginDetails.TenantId,
         CreatedBy:this.loginDetails.UserId,
-        IsActive:this.clientForm.value.isActive,
+        IsActive:this.clientForm.value.IsActive,
       }
       this.saveClientData(data);
-    }else{
-      let data:ISaveClient = {
-        ClientId:this.dialogData?.value?.ClientId,
-        CategoryID:this.dialogData?.value?.CategoryID,
-        ClientAddress:this.dialogData?.value?.ClientAddress ? this.dialogData?.value?.ClientAddress : this.clientForm.value.clientAddress,
-        ClientFirstName:this.dialogData?.value?.ClientFirstName,
-        ClientMiddleName:this.dialogData?.value?.ClientMiddleName ? this.dialogData?.value?.ClientMiddleName :this.clientForm.value.clientMiddleName ,
-        ClientLastName:this.dialogData?.value?.ClientLastName,
-        ContactNo:this.dialogData?.value?.ContactNo ? this.dialogData?.value?.ContactNo : this.clientForm.value.ContactNo,
-        EmailId:this.dialogData?.value?.EmailId,
-        TenantId:this.loginDetails.TenantId,
-        Password:this.clientForm.value.password,
-        CreatedBy:this.loginDetails.UserId,
-        IsActive:this.clientForm.value.isActive
-      }
-      this.saveClientData(data);
-    }
+ 
   }
 
   saveClientData(clientBody: ISaveClient) {
@@ -138,7 +126,11 @@ export class AddEditClientComponent implements OnInit {
         .subscribe((res: any) => {
             //console.log(res);
             this.toastr.success(res.Message, 'SUCCESS');
-          //  this.dialogRef.close(true);
+           if (this.dialogData.buttonName == "Update")
+           {
+                this.dialogRef.close(true);
+           }
+        
           this.clientForm.reset();
         });
 }

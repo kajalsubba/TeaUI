@@ -38,11 +38,12 @@ constructor(
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails')
     this.GradeForm = this.formBuilder.group({
-      GradeId:[],
+    //  GradeId:[],
       GradeName: ['', Validators.required],
     });
     if(this.dialogData.value){
-   //   this.categoryForm.controls['categoryName'].setValue(this.dialogData.value.CategoryName);
+    //  this.GradeForm.controls['GradeId'].setValue(this.dialogData.value.GradeId);
+      this.GradeForm.controls['GradeName'].setValue(this.dialogData.value.GradeName);
     }
   }
 

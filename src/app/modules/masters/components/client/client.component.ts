@@ -17,14 +17,16 @@ import { AddEditClientComponent } from '../../models/add-edit-client/add-edit-cl
 export class ClientComponent implements OnInit, AfterViewInit {
   private subscriptions: Subscription[] = [];
 
-  displayedColumns: string[] = ['ClientId', 'ClientFirstName', 'ClientMiddleName', 'ClientLastName', 'ClientAddress', 'ContactNo','EmailId','actions'];
+  displayedColumns: string[] = ['ClientId', 'ClientFirstName', 'ClientLastName', 'ClientAddress','CategoryName', 'ContactNo','EmailId','actions'];
   dataSource = new MatTableDataSource<any>();
   columns: { columnDef: string, header: string }[] = [
     { columnDef: 'ClientId', header: 'Client ID' },
     { columnDef: 'ClientFirstName', header: 'First Name' },
-    { columnDef: 'ClientMiddleName', header: 'Middle Name' },
+   // { columnDef: 'ClientMiddleName', header: 'Middle Name' },
     { columnDef: 'ClientLastName', header: 'Last Name' },
     { columnDef: 'ClientAddress', header: 'Client Address' },
+   // { columnDef: 'CategoryID', header: 'CategoryID' },
+    { columnDef: 'CategoryName', header: 'Category' },
     { columnDef: 'ContactNo', header: 'Contact No.' },
     { columnDef: 'EmailId', header: 'Email ID' }
   ];
@@ -41,9 +43,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
   ){}
 
   ngAfterViewInit() {
-    console.log(this.loginDetails);
-    
-    
+//    console.log(this.loginDetails);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -64,7 +64,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
       TenantId:this.loginDetails.TenantId
     }
     const clientListService = this.clientService.getClient(bodyData).subscribe((res:any)=>{
-      console.log(res);
+     // console.log(res);
       this.dataSource.data = res.ClientDetails;
     });
     this.subscriptions.push(clientListService);

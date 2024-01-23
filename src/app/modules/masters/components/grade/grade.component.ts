@@ -46,6 +46,7 @@ constructor(
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.GetGradeList();
+    
   }
 
   GetGradeList(){
@@ -63,7 +64,7 @@ constructor(
     const dialogRef = this.dialog.open(AddEditGradeComponent, {
       width: "30%",
       data:{
-        title:"Add Category",
+        title:"Add Grade",
         buttonName:"Save"
       },
       disableClose:true
@@ -82,9 +83,23 @@ constructor(
     })
 }
 
-editItem(e:any)
+editItem(element:any)
 {
+  const dialogRef = this.dialog.open(AddEditGradeComponent, {
+    width: "30%",
+    data:{
+      title:"Update Grade",
+      buttonName:"Update",
+      value:element
+    },
+    disableClose:true
+  });
 
+  dialogRef.afterClosed().subscribe((result:any)=>{
+    if(result){
+      this.GetGradeList();
+    }
+  })
 }
 }
 

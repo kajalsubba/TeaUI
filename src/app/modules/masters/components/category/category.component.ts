@@ -57,7 +57,7 @@ export class CategoryComponent implements OnInit, AfterViewInit, OnDestroy {
       TenantId:this.loginDetails.TenantId
     }
     const categoryListService = this.categoryService.getCategory(bodyData).subscribe((res:any)=>{
-      console.log(res);
+     // console.log(res);
       this.dataSource.data = res.CategoryDetails;
     });
     this.subscriptions.push(categoryListService);

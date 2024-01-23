@@ -10,45 +10,45 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group row mb-3">
-                                <label for="clientFirstName" class="col-lg-5 col-form-label">First Name <span class="text-danger">*</span></label>
+                                <label for="ClientFirstName" class="col-lg-5 col-form-label">First Name <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
                                     <input
                                         type="text"
                                         class="form-control"
-                                        id="clientFirstName"
+                                        id="ClientFirstName"
                                         placeholder="Enter First Name"
-                                        formControlName="clientFirstName"
+                                        formControlName="ClientFirstName"
                                     >
-                                    <span *ngIf="clientForm.get('clientFirstName')?.hasError('required') && clientForm.get('clientFirstName')?.touched" class="text-danger validation-message">
+                                    <span *ngIf="clientForm.get('ClientFirstName')?.hasError('required') && clientForm.get('ClientFirstName')?.touched" class="text-danger validation-message">
                                         First Name is required.
                                     </span>
                                 </div>
                             </div>
         
                             <div class="form-group row mb-3">
-                                <label for="clientMiddleName" class="col-lg-5 col-form-label">Middle Name</label>
+                                <label for="ClientMiddleName" class="col-lg-5 col-form-label">Middle Name</label>
                                 <div class="col-lg-7 position-relative">
                                     <input
                                         type="text"
                                         class="form-control"
-                                        id="clientMiddleName"
+                                        id="ClientMiddleName"
                                         placeholder="Enter Middle Name"
-                                        formControlName="clientMiddleName"
+                                        formControlName="ClientMiddleName"
                                     >
                                 </div>
                             </div>
         
                             <div class="form-group row mb-3">
-                                <label for="clientLastName" class="col-lg-5 col-form-label">Last Name <span class="text-danger">*</span></label>
+                                <label for="ClientLastName" class="col-lg-5 col-form-label">Last Name <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
                                     <input
                                         type="text"
                                         class="form-control"
-                                        id="clientLastName"
+                                        id="ClientLastName"
                                         placeholder="Enter Last Name"
-                                        formControlName="clientLastName"
+                                        formControlName="ClientLastName"
                                     >
-                                    <span *ngIf="clientForm.get('clientLastName')?.hasError('required') && clientForm.get('clientLastName')?.touched" class="text-danger validation-message">
+                                    <span *ngIf="clientForm.get('ClientLastName')?.hasError('required') && clientForm.get('ClientLastName')?.touched" class="text-danger validation-message">
                                         Last Name is required.
                                     </span>
                                 </div>
@@ -70,14 +70,14 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group row mb-3">
-                                <label for="clientAddress" class="col-lg-5 col-form-label">Address</label>
+                                <label for="ClientAddress" class="col-lg-5 col-form-label">Address</label>
                                 <div class="col-lg-7 position-relative">
                                     <input
                                         type="text"
                                         class="form-control"
-                                        id="clientAddress"
+                                        id="ClientAddress"
                                         placeholder="Enter Address"
-                                        formControlName="clientAddress"
+                                        formControlName="ClientAddress"
                                     >
                                 </div>
                             </div>
@@ -122,9 +122,9 @@
                                         class="form-control"
                                         id="password"
                                         placeholder="Enter Email"
-                                        formControlName="password"
+                                        formControlName="Password"
                                     >
-                                    <div *ngIf="clientForm.get('password')?.hasError('required') && clientForm.get('password')?.touched" class="text-danger validation-message">
+                                    <div *ngIf="clientForm.get('Password')?.hasError('required') && clientForm.get('Password')?.touched" class="text-danger validation-message">
                                         Password is required.
                                     </div>
                                 </div>
@@ -133,7 +133,7 @@
                             <div class="form-group row mb-3">
                                 <label for="isActive" class="col-lg-5 col-form-label">IsActive <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <mat-slide-toggle formControlName="isActive">{{clientForm.value.isActive ? "Active" : "InActive"}}</mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="IsActive">{{clientForm.value.IsActive ? "Active" : "InActive"}}</mat-slide-toggle>
                                 </div>
                             </div>
                             

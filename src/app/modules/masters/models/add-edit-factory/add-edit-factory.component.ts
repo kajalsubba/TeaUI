@@ -32,7 +32,7 @@ export class AddEditFactoryComponent {
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails')
     this.FactoryForm = this.formBuilder.group({
-      FactoryId:[],
+     // FactoryId:[],
       FactoryName:['', Validators.required],
       FactoryAddress:[],
       ContactNo:[],
@@ -40,7 +40,10 @@ export class AddEditFactoryComponent {
   
     });
     if(this.dialogData.value){
-    //  this.FactoryForm.controls['categoryName'].setValue(this.dialogData.value.CategoryName);
+      this.FactoryForm.controls['FactoryName'].setValue(this.dialogData.value.FactoryName);
+      this.FactoryForm.controls['FactoryAddress'].setValue(this.dialogData.value.FactoryAddress);
+      this.FactoryForm.controls['ContactNo'].setValue(this.dialogData.value.ContactNo);
+      this.FactoryForm.controls['EmailId'].setValue(this.dialogData.value.EmailId);
     }
   }
 

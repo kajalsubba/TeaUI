@@ -10,11 +10,11 @@ export class FactoryAccountService {
 
   constructor(private apiService: ApiService) { }
 
-  getCategory(factoryAccountBody:IGetFactoryAccount): Observable<any> {
+  GetFactoryAccount(factoryAccountBody:IGetFactoryAccount): Observable<any> {
     return this.apiService.post('Master/GetFactoryAccount', factoryAccountBody);
   }
 
-  saveCategory(factoryAccountBody:ISaveFactoryAccount): Observable<any> {
+  SaveFactoryAccount(factoryAccountBody:ISaveFactoryAccount): Observable<any> {
     return this.apiService.post('Master/SaveFactoryAccount', factoryAccountBody);
   }
 }
