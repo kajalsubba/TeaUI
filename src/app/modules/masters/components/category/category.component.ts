@@ -3,11 +3,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CategoryService } from '../../services/category.service';
-import { IGetCategory } from '../../interfaces/ICategory';
+import { IDeleteCategory, IGetCategory } from '../../interfaces/ICategory';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditCategoryComponent } from '../../models/add-edit-category/add-edit-category.component';
 import { Subscription } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-category',
@@ -30,6 +32,7 @@ export class CategoryComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private categoryService:CategoryService,
     private dialog:MatDialog,
+    private toastr:ToastrService,
     private helper:HelperService
   ){}
 
@@ -99,8 +102,27 @@ export class CategoryComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteItem(element: any): void {
-    // Implement the logic to handle delete action
-    console.log('Delete clicked for:', element);
+    
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '30%',
+      data: {
+        title: 'Confirmation',
+        message: 'Are you sure you want to delete this record?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        let bodyData:IDeleteCategory = {
+          CategoryId:element.CategoryId
+        }
+        const categoryListService = this.categoryService.deleteCategory(bodyData).subscribe((res:any)=>{
+            this.toastr.error(res.Message,"SUCCESS");
+            this.getCategoryList()
+;         });
+         this.subscriptions.push(categoryListService);
+      }
+    });
   }
 
   applyFilter(event: Event) {
