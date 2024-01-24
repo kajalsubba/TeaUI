@@ -1,9 +1,20 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CollectionComponent } from './collection.component';
 import { StgComponent } from './components/stg/stg.component';
 import { SupplierComponent } from './components/supplier/supplier.component';
 import { CollectionRoutingModule } from './collection-routing.module';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 
@@ -15,7 +26,20 @@ import { CollectionRoutingModule } from './collection-routing.module';
   ],
   imports: [
     CommonModule,
-    CollectionRoutingModule
-  ]
+    CollectionRoutingModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatTableModule, 
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSlideToggleModule
+  ],
+  providers : [DatePipe]
 })
 export class CollectionModule { }
