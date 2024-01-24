@@ -13,7 +13,7 @@ export class TopNavComponent implements OnInit {
   @Output() sideNavSwitch = new EventEmitter<any>();
   loginDetails: any;
 
-  constructor(private helper:HelperService, private router:Router){}
+  constructor(public helper:HelperService, private router:Router){}
 
   ngOnInit(): void {
       this.loginDetails = this.helper.getItem('loginDetails')
@@ -28,4 +28,15 @@ export class TopNavComponent implements OnInit {
     this.helper.clear();
     this.router.navigateByUrl('login')
   }
+
+  formatCurrentRoute(): string {
+    const currentRoute = this.helper.getCurrentRoute();
+    const parts = currentRoute.split('/');
+
+    // Remove the first empty string and join the rest with ' > '
+    const formattedRoute = parts.slice(1).join(' > ');
+
+    return formattedRoute.toUpperCase();
+  }
+
 }

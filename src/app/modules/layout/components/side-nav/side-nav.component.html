@@ -1,10 +1,10 @@
-<div class="sidenav" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false" [style.width.px]="isExpanded ? 180 : 62">
+<div class="sidenav" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false" [style.width.px]="isExpanded ? 210 : 62">
     <div [ngClass]="{'close': !isExpanded }" class="sidebar">
         <div class="logo-details">
           <!-- <i class='bx bxl-c-plus-plus'></i> -->
           <i (click)="toggleWidth()" *ngIf="!isExpanded" class="fa-solid m-0 openCloseIcon fa-bars"></i>
             <i (click)="toggleWidth()" *ngIf="isExpanded" class="fa-solid m-0 openCloseIcon fa-xmark"></i>
-          <span *ngIf="isExpanded" class="logo_name">Company</span>
+          <!-- <span *ngIf="isExpanded" class="logo_name">Company</span> -->
           
         </div>
         <ul class="nav-links">

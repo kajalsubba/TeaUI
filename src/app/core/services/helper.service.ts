@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HelperService {
-  constructor() {}
+  constructor(private route:Router) {}
 
   setItem(key: string, value: any): void {
     const stringValue = JSON.stringify(value);
@@ -20,6 +21,10 @@ export class HelperService {
     }
 
     return null;
+  }
+
+  getCurrentRoute(){
+    return this.route.url;
   }
 
   // Remove item from session storage

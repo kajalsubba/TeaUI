@@ -25,7 +25,7 @@
   padding: 5px;
   color: var(--primary-color);
   box-shadow: var(--soft-box-shadow);
-  background: var(--bg-color);
+  background: var(--primary-color);
 }
 
 .logo,
@@ -39,9 +39,22 @@
 }
 
 .company-name{
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 3px;
-  color: var(--primary-color);
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  color: var(--bg-color);
+  .router{
+    font-size: 0.7rem;
+    font-weight: 400;
+    background: #e5eef4;
+    box-shadow: var(--box-shadow-inset);
+    color: var(--primary-color);
+    padding: 0px 15px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+  }
 }
 
 .user-profile {

@@ -33,7 +33,7 @@
   width: 210px;
   background: var(--bg-color);
   z-index: 100;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 
 .sidebar.close {
@@ -171,10 +171,10 @@ a.sub-menu-title{
 }
 
 .sidebar .nav-links li a .link_name {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--primary-color);
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
 }
 
 .sidebar.close .nav-links li a .link_name {

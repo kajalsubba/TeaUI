@@ -12,13 +12,19 @@ import { AddEditFactoryComponent } from '../../models/add-edit-factory/add-edit-
 @Component({
   selector: 'app-factory',
   templateUrl: './factory.component.html',
-  styleUrls: ['./factory.component.scss']
+  styleUrls: ['./factory.component.scss'],
 })
 export class FactoryComponent implements OnInit, AfterViewInit {
-
-  displayedColumns: string[] = ['FactoryId', 'FactoryName','FactoryAddress','ContactNo','EmailId', 'actions'];
+  displayedColumns: string[] = [
+    'FactoryId',
+    'FactoryName',
+    'FactoryAddress',
+    'ContactNo',
+    'EmailId',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<any>();
-  columns: { columnDef: string, header: string }[] = [
+  columns: { columnDef: string; header: string }[] = [
     { columnDef: 'FactoryId', header: 'FactoryId' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'FactoryAddress', header: 'Address' },
@@ -26,21 +32,19 @@ export class FactoryComponent implements OnInit, AfterViewInit {
     { columnDef: 'EmailId', header: 'Email' },
   ];
 
-  loginDetails:any;
+  loginDetails: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
-/**
- *
- */
-constructor( 
-   private factoryService:FactoryService,
-  private dialog:MatDialog,
-  private helper:HelperService) {
-
-  
-}
+  /**
+   *
+   */
+  constructor(
+    private factoryService: FactoryService,
+    private dialog: MatDialog,
+    private helper: HelperService
+  ) {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -51,59 +55,54 @@ constructor(
     this.loginDetails = this.helper.getItem('loginDetails');
     this.GetFactoryList();
   }
-  GetFactoryList(){
-    let bodyData:IGetFactory = {
-      TenantId:this.loginDetails.TenantId
-    }
-    const GetService = this.factoryService.GetFactory(bodyData).subscribe((res:any)=>{
-   //   console.log(res);
-      this.dataSource.data = res.FactoryDetails;
-    });
+  GetFactoryList() {
+    let bodyData: IGetFactory = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    const GetService = this.factoryService
+      .GetFactory(bodyData)
+      .subscribe((res: any) => {
+        //   console.log(res);
+        this.dataSource.data = res.FactoryDetails;
+      });
     this.subscriptions.push(GetService);
   }
-  editItem(element:any)
-  {
+  editItem(element: any) {
     const dialogRef = this.dialog.open(AddEditFactoryComponent, {
-      width: "30%",
-      data:{
-        title:"Update Factory",
-        buttonName:"Update",
-        value:element
+      width: '30%',
+      data: {
+        title: 'Update Factory',
+        buttonName: 'Update',
+        value: element,
       },
-      disableClose:true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result:any)=>{
-      if(result){
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
         this.GetFactoryList();
       }
-    })
+    });
   }
-  addFactory()
-  {
+  addFactory() {
     const dialogRef = this.dialog.open(AddEditFactoryComponent, {
-      width: "30%",
-      data:{
-        title:"Add Factory",
-        buttonName:"Save"
+      width: '30%',
+      data: {
+        title: 'Add Factory',
+        buttonName: 'Save',
       },
-      disableClose:true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result:any)=>{
-      if(result){
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
         this.GetFactoryList();
       }
-    })
+    });
   }
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub)=>{
+    this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
-    })
+    });
+  }
 }
-
-
-}
-
-
-
