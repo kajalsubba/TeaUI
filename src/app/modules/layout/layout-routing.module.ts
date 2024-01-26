@@ -9,7 +9,7 @@ const routes: Routes = [
     {path:'', redirectTo: 'dashboard', pathMatch: 'full'},
     {path:'dashboard', component: DashboardComponent},
     {path:'master', loadChildren: () => import('../masters/masters.module').then(m => m.MastersModule)},
-    {path:'collection', loadChildren: () => import('../collection/collection.module').then(m => m.CollectionModule)},
+    {path:'leafEntry', loadChildren: () => import('../collection/collection.module').then(m => m.CollectionModule)},
   ]}
 ];
 
