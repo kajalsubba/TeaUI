@@ -83,7 +83,7 @@
                             </div>
         
                             <div class="form-group row mb-3">
-                                <label for="ContactNo" class="col-lg-5 col-form-label">Contact No</label>
+                                <label for="ContactNo" class="col-lg-5 col-form-label">Contact No <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
                                     <input
                                         type="number"
@@ -91,12 +91,16 @@
                                         id="ContactNo"
                                         placeholder="Enter Contact No"
                                         formControlName="ContactNo"
+                                        maxlength="10"
                                     >
+                                    <div *ngIf="clientForm.get('ContactNo')?.hasError('required') && clientForm.get('ContactNo')?.touched" class="text-danger validation-message">
+                                        Contact No is required.
+                                    </div>
                                 </div>
                             </div>
         
                             <div class="form-group row mb-3">
-                                <label for="clientEmail" class="col-lg-5 col-form-label">Email <span class="text-danger">*</span></label>
+                                <label for="clientEmail" class="col-lg-5 col-form-label">Email </label>
                                 <div class="col-lg-7 position-relative">
                                     <input
                                         type="email"
@@ -105,17 +109,17 @@
                                         placeholder="Enter Email"
                                         formControlName="EmailId"
                                     >
-                                    <div *ngIf="clientForm.get('EmailId')?.hasError('required') && clientForm.get('EmailId')?.touched" class="text-danger validation-message">
+                                    <!-- <div *ngIf="clientForm.get('EmailId')?.hasError('required') && clientForm.get('EmailId')?.touched" class="text-danger validation-message">
                                         Enter a valid email address.
-                                    </div>
+                                    </div> -->
                                     <div *ngIf="clientForm.get('EmailId')?.hasError('pattern') && clientForm.get('EmailId')?.touched" class="text-danger validation-message">
                                         Invalid email format.
-                                    </div>
+                                    </div> 
                                 </div>
                             </div>
 
                             <div class="form-group row mb-3">
-                                <label for="password" class="col-lg-5 col-form-label">Password <span class="text-danger">*</span></label>
+                                <label for="password" class="col-lg-5 col-form-label">Password </label>
                                 <div class="col-lg-7 position-relative">
                                     <input
                                         type="password"
@@ -124,9 +128,9 @@
                                         placeholder="Enter Email"
                                         formControlName="Password"
                                     >
-                                    <div *ngIf="clientForm.get('Password')?.hasError('required') && clientForm.get('Password')?.touched" class="text-danger validation-message">
+                                    <!-- <div *ngIf="clientForm.get('Password')?.hasError('required') && clientForm.get('Password')?.touched" class="text-danger validation-message">
                                         Password is required.
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 

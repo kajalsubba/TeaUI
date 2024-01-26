@@ -19,7 +19,9 @@
                                         placeholder="Factory Name"
                                         formControlName="FactoryName"
                                     >
-                                
+                                    <div *ngIf="FactoryForm.get('FactoryName')?.hasError('required') && FactoryForm.get('FactoryName')?.touched" class="text-danger validation-message">
+                                        Contact No is required.
+                                    </div>
                                 </div>
                             </div>
         
@@ -46,12 +48,15 @@
                                         placeholder="Contact No"
                                         formControlName="ContactNo"
                                     >
-                            
+                                    <div *ngIf="FactoryForm.get('ContactNo')?.hasError('required') && FactoryForm.get('ContactNo')?.touched" class="text-danger validation-message">
+                                        Contact No is required.
+                                    </div>
                                 </div>
+                               
                             </div>
 
                             <div class="form-group row mb-3">
-                                <label for="EmailId" class="col-lg-5 col-form-label">Email <span class="text-danger">*</span></label>
+                                <label for="EmailId" class="col-lg-5 col-form-label">Email </label>
                                 <div class="col-lg-7 position-relative">
                                     <input
                                         type="text"
@@ -60,7 +65,9 @@
                                         placeholder="Email"
                                         formControlName="EmailId"
                                     >
-                                  
+                                    <div *ngIf="FactoryForm.get('EmailId')?.hasError('pattern') && FactoryForm.get('EmailId')?.touched" class="text-danger validation-message">
+                                        Invalid email format.
+                                    </div> 
                                 </div>
                             </div>
                       

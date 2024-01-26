@@ -46,11 +46,11 @@ export class AddEditClientComponent implements OnInit {
       ClientMiddleName: [''],
       ClientLastName: ['', Validators.required],
       ClientAddress: [''],
-      ContactNo: [''],
+      ContactNo: ['', Validators.required],
       CategoryId:[null, Validators.required],
       IsActive:[true],
-      EmailId: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)]],
-      Password:['', Validators.required]
+      EmailId: ['', Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)],
+      Password:['']
     });
   
     await this.getCategoryList();

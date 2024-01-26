@@ -35,8 +35,8 @@ export class AddEditFactoryComponent {
      // FactoryId:[],
       FactoryName:['', Validators.required],
       FactoryAddress:[],
-      ContactNo:[],
-      EmailId:[]
+      ContactNo:[, Validators.required],
+      EmailId: ['', Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)],
   
     });
     if(this.dialogData.value){
