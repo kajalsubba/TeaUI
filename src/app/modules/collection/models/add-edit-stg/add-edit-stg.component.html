@@ -13,9 +13,14 @@
                                 <label for="collectionDate" class="col-lg-5 col-form-label">Collection Date <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input type="text" class="form-control" id="collectionDate"
+                                    <!-- <input type="text" class="form-control" id="collectionDate"
                                         placeholder="CollectionDate" disabled readonly
-                                        [value]="currentDate | date: 'dd-MMM-yyyy'">
+                                        [value]="currentDate | date: 'dd-MMM-yyyy'"> -->
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker" placeholder="collectionDate" formControlName="collectionDate">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
                                 </div>
                             </div>
                         </div>

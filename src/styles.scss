@@ -54,6 +54,10 @@ table{
   }
 }
 
+.mat-mdc-table th:last-child{
+  min-width: 130px;
+}
+
 .mat-sort-header-container{
   justify-content: center !important;
 }
@@ -102,6 +106,58 @@ input[type="text"],input[type="email"],input[type="number"].form-control{
 .form-group input:read-only {
   background-color: #e7e7e7;
   box-shadow: none;
+}
+
+.mat-date-range-input-inner{
+  box-shadow: none !important;
+}
+
+.mat-calendar-table-header{
+  background-color: transparent !important;
+  tr{
+    background-color: transparent !important;
+    height: 0px !important;
+  }
+}
+.mat-calendar-body-label{
+  text-align: left !important;
+}
+
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix{
+  width: 100%;
+}
+
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-right: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--secondary-color);
+  border-radius: 0px;
+}
+
+.mat-mdc-form-field-subscript-wrapper{
+  display: none;
+}
+
+.mat-calendar-header{
+  background-color: var(--primary-color);
+}
+
+mat-datepicker-toggle{
+  button{
+    color: var(--primary-color) !important;
+  }
+}
+
+.mat-calendar-controls{
+  button{
+    color: #fff !important;
+  }
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before{
+  border-bottom-color:transparent !important;
 }
 
 textarea{

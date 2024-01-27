@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { AddEditStgComponent } from '../../models/add-edit-stg/add-edit-stg.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-stg',
@@ -48,15 +50,22 @@ export class StgComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
   loginDetails: any;
+  dateRangeForm!: FormGroup;
+  minToDate!: any;
 
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
     private helper: HelperService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private fb:FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.dateRangeForm = this.fb.group({
+      fromDate: [null, Validators.required],
+      toDate: [null, [Validators.required]]
+    });
     const dummyData = [
       {
         CollectionDate: '2022-01-01',
@@ -109,4 +118,15 @@ export class StgComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  fromDateChange(event: MatDatepickerInputEvent<Date>): void {
+    this.dateRangeForm.controls['toDate'].setValue(null);
+    this.minToDate = event.value
+  }
+
+  clearFilter(){
+    this.dateRangeForm.controls['fromDate'].setValue(null);
+    this.dateRangeForm.controls['toDate'].setValue(null);
+  }
+
 }

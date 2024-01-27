@@ -37,6 +37,7 @@ export class AddEditStgComponent implements OnInit {
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
       this.stgForm = this.fb.group({
+        collectionDate:[new Date()],
         vehicleNo:['', Validators.required],
         clientName:['', Validators.required],
         firstWeight:[0, Validators.required],

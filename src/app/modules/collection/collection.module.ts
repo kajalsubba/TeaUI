@@ -17,6 +17,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AddEditStgComponent } from './models/add-edit-stg/add-edit-stg.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD-MMM-YYYY',
+  },
+  display: {
+    dateInput: 'DD-MMM-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 
 @NgModule({
@@ -30,6 +45,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     CommonModule,
     CollectionRoutingModule,
     MatSelectModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     ReactiveFormsModule,
     FormsModule,
     MatTableModule, 
@@ -43,6 +60,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSlideToggleModule,
     MatAutocompleteModule
   ],
-  providers : [DatePipe]
+  providers : [
+    DatePipe,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ]
 })
 export class CollectionModule { }
