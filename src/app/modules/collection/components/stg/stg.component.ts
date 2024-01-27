@@ -18,8 +18,6 @@ export class StgComponent implements OnInit {
   displayedColumns: string[] = [
     'CollectionDate',
     'VehicleNo',
-    'FactoryName',
-    'AccountName',
     'ClientName',
     'FirstWeight',
     'WetLeaf',
@@ -35,8 +33,6 @@ export class StgComponent implements OnInit {
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionDate', header: 'Collection Date' },
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
-    { columnDef: 'FactoryName', header: 'Factory Name' },
-    { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'FirstWeight', header: 'First Weight(Kg)' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf' },
@@ -65,8 +61,6 @@ export class StgComponent implements OnInit {
       {
         CollectionDate: '2022-01-01',
         VehicleNo: 'ABC123',
-        FactoryName: 'Factory 1',
-        AccountName: 'Account 1',
         ClientName: 'Client 1',
         FirstWeight: 100,
         WetLeaf: 20,

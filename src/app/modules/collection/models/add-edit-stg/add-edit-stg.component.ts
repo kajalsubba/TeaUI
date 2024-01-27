@@ -38,8 +38,6 @@ export class AddEditStgComponent implements OnInit {
     this.loginDetails = this.helper.getItem('loginDetails');
       this.stgForm = this.fb.group({
         vehicleNo:['', Validators.required],
-        factoryName:['', Validators.required],
-        accountName:['', Validators.required],
         clientName:['', Validators.required],
         firstWeight:[0, Validators.required],
         wetLeaf:[0, Validators.required],
@@ -56,37 +54,57 @@ export class AddEditStgComponent implements OnInit {
       this.getGradeList();
   }
 
-  firstWeightInput(value:any){
+  firstWeightInput(value: any) {
     console.log(value);
-    this.calculateFinalWeight()
-  }
-
-  longLeafInput(value:any){
-    let wetLeaf = this.stgForm.value.wetLeaf;
-    let longLeaf = this.stgForm.value.longLeaf;
-    let deduction = longLeaf + wetLeaf;
-    this.stgForm.controls['deduction'].setValue(deduction);
     this.calculateFinalWeight();
   }
-
-  wetLeafInput(value:any){
-    let wetLeaf = this.stgForm.value.wetLeaf;
-    let longLeaf = this.stgForm.value.longLeaf;
-    let deduction = longLeaf + wetLeaf;
-    this.stgForm.controls['deduction'].setValue(deduction);
-    this.calculateFinalWeight();
+  
+  longLeafInput(value: any) {
+    this.calculateDeductionAndFinalWeight();
   }
-
-  calculateFinalWeight(){
-    let firstWeight = this.stgForm.value.firstWeight;
-    let wetLeaf = this.stgForm.value.wetLeaf;
-    let longLeaf = this.stgForm.value.longLeaf;
-    let deduction = this.stgForm.value.deduction;
-
-    let finalWeight = (firstWeight - (wetLeaf+longLeaf));
+  
+  wetLeafInput(value: any) {
+    this.calculateDeductionAndFinalWeight();
+  }
+  
+  calculateFinalWeight() {
+    const firstWeight = this.stgForm.value.firstWeight || 0;
+    const wetLeafPercentage = (this.stgForm.value.wetLeaf || 0) / 100;
+    const longLeafPercentage = (this.stgForm.value.longLeaf || 0) / 100;
+    
+    // Calculate wetLeaf and longLeaf in kg
+    const wetLeaf = firstWeight * wetLeafPercentage;
+    const longLeaf = firstWeight * longLeafPercentage;
+    
+    // Deduction is the sum of wetLeaf and longLeaf
+    const deduction = Math.round(wetLeaf + longLeaf);
+    
+    // Calculate final weight in kg
+    const finalWeight = Math.round(firstWeight - deduction);
+    
+    // Update the form control
+    this.stgForm.controls['deduction'].setValue(deduction);
     this.stgForm.controls['finalWeight'].setValue(finalWeight);
-
   }
+  
+  calculateDeductionAndFinalWeight() {
+    const firstWeight = this.stgForm.value.firstWeight || 0;
+    const wetLeafPercentage = (this.stgForm.value.wetLeaf || 0) / 100;
+    const longLeafPercentage = (this.stgForm.value.longLeaf || 0) / 100;
+  
+    // Calculate wetLeaf and longLeaf in kg
+    const wetLeaf = firstWeight * wetLeafPercentage;
+    const longLeaf = firstWeight * longLeafPercentage;
+    
+    // Deduction is the sum of wetLeaf and longLeaf
+    const deduction = Math.round(wetLeaf + longLeaf);
+    
+    // Update the form controls
+    this.stgForm.controls['deduction'].setValue(deduction);
+    this.calculateFinalWeight();
+  }
+  
+  
 
 
   onSubmit(){

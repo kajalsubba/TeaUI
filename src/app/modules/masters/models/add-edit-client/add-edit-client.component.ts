@@ -46,7 +46,7 @@ export class AddEditClientComponent implements OnInit {
       ClientMiddleName: [''],
       ClientLastName: ['', Validators.required],
       ClientAddress: [''],
-      ContactNo: ['', Validators.required],
+      ContactNo: ['', [Validators.required, Validators.maxLength(10), Validators.pattern(/^[6-9]\d{9}$/) ]],
       CategoryId:[null, Validators.required],
       IsActive:[true],
       EmailId: ['', Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)],
@@ -87,6 +87,15 @@ export class AddEditClientComponent implements OnInit {
         console.error('Error:', error);
         this.toastr.error('Something went wrong.', 'ERROR');
     }
+}
+
+onKeyPress(event: KeyboardEvent): void {
+  const charCode = event.which || event.keyCode;
+
+  // Allow only numeric characters (0 to 9)
+  if (charCode < 48 || charCode > 57) {
+    event.preventDefault();
+  }
 }
 
   onSubmit(){

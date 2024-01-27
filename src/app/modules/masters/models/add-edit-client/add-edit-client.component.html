@@ -85,19 +85,24 @@
                             <div class="form-group row mb-3">
                                 <label for="ContactNo" class="col-lg-5 col-form-label">Contact No <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        id="ContactNo"
-                                        placeholder="Enter Contact No"
-                                        formControlName="ContactNo"
-                                        maxlength="10"
-                                    >
-                                    <div *ngIf="clientForm.get('ContactNo')?.hasError('required') && clientForm.get('ContactNo')?.touched" class="text-danger validation-message">
-                                        Contact No is required.
-                                    </div>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="ContactNo"
+                                    placeholder="Enter Contact No"
+                                    formControlName="ContactNo"
+                                    (keypress)="onKeyPress($event)"
+                                    maxlength="10"
+                                  >
+                                  <div *ngIf="clientForm.get('ContactNo')?.hasError('required') && clientForm.get('ContactNo')?.touched" class="text-danger validation-message">
+                                    Contact No is required.
+                                  </div>
+                                  <div *ngIf="clientForm.get('ContactNo')?.hasError('pattern') && clientForm.get('ContactNo')?.touched" class="text-danger validation-message">
+                                    Invalid mobile number format.
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
+                              
         
                             <div class="form-group row mb-3">
                                 <label for="clientEmail" class="col-lg-5 col-form-label">Email </label>
