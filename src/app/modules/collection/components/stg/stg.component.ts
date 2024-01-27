@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -16,7 +16,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
   templateUrl: './stg.component.html',
   styleUrls: ['./stg.component.scss'],
 })
-export class StgComponent implements OnInit {
+export class StgComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'CollectionDate',
     'VehicleNo',
@@ -29,7 +29,8 @@ export class StgComponent implements OnInit {
     'Grade',
     'Rate',
     'Remarks',
-    'actions',
+    'status',
+    'actions'
   ];
   dataSource = new MatTableDataSource<any>();
   columns: { columnDef: string; header: string }[] = [
@@ -86,6 +87,14 @@ export class StgComponent implements OnInit {
     this.dataSource.data = dummyData;
   }
 
+  ngAfterViewInit() {
+    console.log(this.loginDetails);
+    
+    
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   addEntry() {
     const dialogRef = this.dialog.open(AddEditStgComponent, {
       width: '80%',
@@ -127,6 +136,17 @@ export class StgComponent implements OnInit {
   clearFilter(){
     this.dateRangeForm.controls['fromDate'].setValue(null);
     this.dateRangeForm.controls['toDate'].setValue(null);
+  }
+
+  handleChange(event: any): void {
+    // Your code to handle the change event
+    if (event.target.checked) {
+      // Checkbox is checked, do something
+      console.log('Checkbox is checked');
+    } else {
+      // Checkbox is unchecked, do something else
+      console.log('Checkbox is unchecked');
+    }
   }
 
 }

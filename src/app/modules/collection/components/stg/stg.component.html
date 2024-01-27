@@ -57,6 +57,23 @@
                   </div>
                 </td>
               </ng-container>
+
+              <!-- Status column -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let row">
+                  <div>
+                    <div class="btn-container">
+                      <i class="fa-solid fa-hourglass-half text-warning px-2"></i>
+                          <label class="switch btn-color-mode-switch">
+                                <input (change)="handleChange($event)" value="1" id="color_mode" name="color_mode" type="checkbox">
+                                <label class="btn-color-mode-switch-inner" data-off="Pending" data-on="Approved" for="color_mode"></label>
+                            </label>
+                            <i class="fa-solid text-success fa-clipboard-check px-2"></i>
+                      </div>
+                  </div>
+                </td>
+              </ng-container>
   
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

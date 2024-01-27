@@ -84,6 +84,7 @@
                                 <div class="col-lg-7 position-relative">
                                     <input #firstWeight (input)="firstWeightInput(firstWeight.value)" type="number" class="form-control" id="firstWeight" placeholder="firstWeight"
                                         formControlName="firstWeight">
+                                        <span class="kg-text">KG</span>
                                     <span
                                         *ngIf="stgForm.get('firstWeight')?.hasError('required') && stgForm.get('firstWeight')?.touched"
                                         class="text-danger d-block validation-message">
@@ -99,6 +100,7 @@
                                 <div class="col-lg-7 position-relative">
                                     <input #longLeaf (input)="longLeafInput(longLeaf.value)" type="number" class="form-control" id="wetLeaf" placeholder="wetLeaf"
                                         formControlName="wetLeaf">
+                                        <i class="fa-solid fa-percent"></i>
                                     <span
                                         *ngIf="stgForm.get('wetLeaf')?.hasError('required') && stgForm.get('wetLeaf')?.touched"
                                         class="text-danger d-block validation-message">
@@ -115,6 +117,7 @@
                                 <div class="col-lg-7 position-relative">
                                     <input #wetLeaf (input)="wetLeafInput(wetLeaf.value)" type="number" class="form-control" id="longLeaf" placeholder="longLeaf"
                                         formControlName="longLeaf">
+                                        <i class="fa-solid fa-percent"></i>
                                     <span
                                         *ngIf="stgForm.get('longLeaf')?.hasError('required') && stgForm.get('longLeaf')?.touched"
                                         class="text-danger d-block validation-message">
@@ -132,6 +135,7 @@
                                 <div class="col-lg-7 position-relative">
                                     <input type="number" class="form-control" id="deduction" readonly placeholder="deduction"
                                         formControlName="deduction">
+                                    <span class="kg-text">KG</span>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +158,7 @@
                                 <label for="rate" class="col-lg-5 col-form-label">Rate <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input type="number" class="form-control" id="rate" placeholder="rate"
+                                    <input type="number" class="form-control" id="rate" placeholder="Rate"
                                         formControlName="rate">
                                     <span *ngIf="stgForm.get('rate')?.hasError('required') && stgForm.get('rate')?.touched"
                                         class="text-danger d-block validation-message">
