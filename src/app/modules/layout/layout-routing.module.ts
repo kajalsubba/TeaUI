@@ -10,6 +10,7 @@ const routes: Routes = [
     {path:'dashboard', component: DashboardComponent},
     {path:'master', loadChildren: () => import('../masters/masters.module').then(m => m.MastersModule)},
     {path:'leafEntry', loadChildren: () => import('../collection/collection.module').then(m => m.CollectionModule)},
+    {path:'user-management', loadChildren: () => import('../user-management/user-management.module').then(m => m.UserManagementModule)},
   ]}
 ];
 

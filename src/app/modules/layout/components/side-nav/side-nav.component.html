@@ -37,7 +37,7 @@
 
           <li class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event)">
-              <a routerLink="collection">
+              <a>
                 <i class='bx bx-collection' ></i>
                 <span class="link_name">Leaf Entry</span>
               </a>
@@ -46,6 +46,20 @@
             <ul class="sub-menu">
               <li routerLink="leafEntry/stg" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
               <li routerLink="leafEntry/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
+            </ul>
+          </li>
+
+          <li class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event)">
+              <a>
+                <i class="fa-solid fa-sliders"></i>
+                <span class="link_name">Settings</span>
+              </a>
+              <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+              <li routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">User</a></li>
+              <li routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Role</a></li>
             </ul>
           </li>
     </ul>
