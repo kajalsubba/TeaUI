@@ -22,7 +22,7 @@
               <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
                 <td mat-cell *matCellDef="let row; let i = index;">
-                    {{ column.header === 'CollectionDate' ? (row[column.columnDef] | date:'dd-MMM-yyyy') : row[column.columnDef] }}
+                    {{ column.columnDef == 'CollectionDate' ? (row[column.columnDef] | date:'dd-MMM-yyyy') : row[column.columnDef] }}
                   </td>                  
               </ng-container>
   

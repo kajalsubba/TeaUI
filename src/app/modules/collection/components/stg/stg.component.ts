@@ -7,17 +7,32 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { AddEditStgComponent } from '../../models/add-edit-stg/add-edit-stg.component';
 
 @Component({
   selector: 'app-stg',
   templateUrl: './stg.component.html',
-  styleUrls: ['./stg.component.scss']
+  styleUrls: ['./stg.component.scss'],
 })
 export class StgComponent implements OnInit {
-
-  displayedColumns: string[] = ['CollectionDate', 'VehicleNo', 'FactoryName', 'AccountName', 'ClientName', 'FirstWeight', 'WetLeaf', 'LongLeaf', 'Deduction', 'FinalWeight', 'Grade', 'Rate', 'Remarks', 'actions'];
+  displayedColumns: string[] = [
+    'CollectionDate',
+    'VehicleNo',
+    'FactoryName',
+    'AccountName',
+    'ClientName',
+    'FirstWeight',
+    'WetLeaf',
+    'LongLeaf',
+    'Deduction',
+    'FinalWeight',
+    'Grade',
+    'Rate',
+    'Remarks',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<any>();
-  columns: { columnDef: string, header: string }[] = [
+  columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionDate', header: 'Collection Date' },
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
@@ -30,7 +45,7 @@ export class StgComponent implements OnInit {
     { columnDef: 'FinalWeight', header: 'Final Weight' },
     { columnDef: 'Grade', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
-    { columnDef: 'Remarks', header: 'Remarks' }
+    { columnDef: 'Remarks', header: 'Remarks' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -39,11 +54,11 @@ export class StgComponent implements OnInit {
   loginDetails: any;
 
   constructor(
-    private dialog:MatDialog,
-    private toastr:ToastrService,
-    private helper:HelperService,
-    private datePipe:DatePipe
-  ){}
+    private dialog: MatDialog,
+    private toastr: ToastrService,
+    private helper: HelperService,
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit(): void {
     const dummyData = [
@@ -60,7 +75,7 @@ export class StgComponent implements OnInit {
         FinalWeight: 85,
         Grade: 'A',
         Rate: 10,
-        Remarks: 'Sample Remark 1'
+        Remarks: 'Sample Remark 1',
       },
     ];
 
@@ -68,17 +83,24 @@ export class StgComponent implements OnInit {
     this.dataSource.data = dummyData;
   }
 
-  addEntry(){
-
+  addEntry() {
+    const dialogRef = this.dialog.open(AddEditStgComponent, {
+      width: '60%',
+      data: {
+        title: 'Add Entry',
+        buttonName: 'Save',
+      },
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+      }
+    });
   }
 
-  editItem(element:any){
-    
-  }
+  editItem(element: any) {}
 
-  deleteItem(element:any){
-
-  }
+  deleteItem(element: any) {}
 
   convertDate(date: any): string {
     const parsedDate = new Date(date);
@@ -93,6 +115,4 @@ export class StgComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-
 }

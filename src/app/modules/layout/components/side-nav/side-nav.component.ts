@@ -14,9 +14,10 @@ export class SideNavComponent {
   }
 
   toggleMenu(event: MouseEvent): void {
-    const arrowParent = (event.target as HTMLElement).parentElement?.parentElement;
+    const arrowParent = (event.target as HTMLElement).closest('.main-menu');
     if (arrowParent) {
       arrowParent.classList.toggle('showMenu');
     }
   }
+  
 }

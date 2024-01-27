@@ -15,14 +15,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { AddEditStgComponent } from './models/add-edit-stg/add-edit-stg.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
   declarations: [
     CollectionComponent,
     StgComponent,
-    SupplierComponent
+    SupplierComponent,
+    AddEditStgComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +40,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatTooltipModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatAutocompleteModule
   ],
   providers : [DatePipe]
 })
