@@ -85,7 +85,7 @@ export class StgComponent implements OnInit {
 
   addEntry() {
     const dialogRef = this.dialog.open(AddEditStgComponent, {
-      width: '60%',
+      width: '80%',
       data: {
         title: 'Add Entry',
         buttonName: 'Save',

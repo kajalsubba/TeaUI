@@ -14,4 +14,10 @@ export class AutoCompleteService {
     return of(vehicleNumbers);
   }
 
+  getClientNames(): Observable<string[]> {
+    // Replace this with your actual data fetching logic
+    const clientName: string[] = ['Kajal Subba', 'Akshar Patel', 'Hari Prasad'];
+    return of(clientName);
+  }
+
 }
