@@ -117,9 +117,9 @@ export class CategoryComponent implements OnInit, AfterViewInit, OnDestroy {
           CategoryId:element.CategoryId
         }
         const categoryListService = this.categoryService.deleteCategory(bodyData).subscribe((res:any)=>{
-            this.toastr.error(res.Message,"SUCCESS");
-            this.getCategoryList()
-;         });
+            this.toastr.success(res.Message,"SUCCESS");
+            this.getCategoryList();
+        });
          this.subscriptions.push(categoryListService);
       }
     });

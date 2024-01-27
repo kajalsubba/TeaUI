@@ -5,10 +5,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AddEditGradeComponent } from '../../models/add-edit-grade/add-edit-grade.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HelperService } from 'src/app/core/services/helper.service';
-import { IGetGrade } from '../../interfaces/IGrade';
+import { IDeleteGrade, IGetGrade } from '../../interfaces/IGrade';
 import { GradeService } from '../../services/grade.service';
 import { Subscription } from 'rxjs';
 
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-grade',
   templateUrl: './grade.component.html',
@@ -32,7 +34,8 @@ export class GradeComponent implements OnInit, AfterViewInit {
 constructor(
   private dialog:MatDialog,
   private helper:HelperService,
-  private gradeService:GradeService
+  private gradeService:GradeService,
+  private toastr:ToastrService,
   ) {
 
   
@@ -100,6 +103,30 @@ editItem(element:any)
       this.GetGradeList();
     }
   })
+}
+
+deleteItem(element: any): void {
+    
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    width: '30%',
+    data: {
+      title: 'Confirmation',
+      message: 'Are you sure you want to delete this record?'
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      let bodyData:IDeleteGrade = {
+        GradeId:element.GradeId
+      }
+      const categoryListService = this.gradeService.DeleteGrade(bodyData).subscribe((res:any)=>{
+         this.toastr.success(res.Message,"SUCCESS");
+          this.GetGradeList();
+      });
+       this.subscriptions.push(categoryListService);
+    }
+  });
 }
 }
 

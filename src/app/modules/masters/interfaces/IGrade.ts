@@ -8,3 +8,8 @@ export interface ISaveGrade {
 export interface IGetGrade {
   TenantId: number;
 }
+
+export interface IDeleteGrade
+{
+  GradeId: number;
+}
