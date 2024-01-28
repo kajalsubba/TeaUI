@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import * as _moment from 'moment';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { LoadingService } from './core/services/loading.service';
 
 export const MY_FORMATS = {
   parse: {
@@ -46,7 +47,7 @@ export const MY_FORMATS = {
       progressAnimation:'increasing',    
     }),
   ],
-  providers: [ToastrService, ApiService, DatePipe,
+  providers: [ToastrService, ApiService, DatePipe,LoadingService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,

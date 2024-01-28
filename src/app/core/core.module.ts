@@ -4,9 +4,10 @@ import { ApiService } from './services/api.service';
 import { ConfigService } from './services/config.service';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { LoaderComponent } from './components/loader/loader.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [HttpClientModule],
+  imports: [HttpClientModule, CommonModule],
   providers: [
     ApiService,
     ConfigService,
