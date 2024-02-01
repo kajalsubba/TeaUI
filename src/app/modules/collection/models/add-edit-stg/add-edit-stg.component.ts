@@ -46,13 +46,13 @@ export class AddEditStgComponent implements OnInit {
         VehicleNo:['', Validators.required],
         ClientName:['', Validators.required],
         FirstWeight:[0, Validators.required],
-        WetLeaf:[0, Validators.required],
-        LongLeaf:[0, Validators.required],
+        WetLeaf:[0],
+        LongLeaf:[0],
         Deduction:[0],
         FinalWeight:[0],
         Grade:['', Validators.required],
-        Rate:['', Validators.required],
-        Remarks:['', Validators.required],
+        Rate:[''],
+        Remarks:[''],
       });
      await this.loadClientNames();
      await this.loadVehicleNumbers();
@@ -74,33 +74,33 @@ export class AddEditStgComponent implements OnInit {
   }
   
   CalculateFinalWeight() {
-    const firstWeight = this.stgForm.value.firstWeight || 0;
+    const FirstWeight = this.stgForm.value.FirstWeight || 0;
     const WetLeafPercentage = (this.stgForm.value.WetLeaf || 0) / 100;
     const LongLeafPercentage = (this.stgForm.value.LongLeaf || 0) / 100;
     
     // Calculate WetLeaf and LongLeaf in kg
-    const WetLeaf = firstWeight * WetLeafPercentage;
-    const LongLeaf = firstWeight * LongLeafPercentage;
+    const WetLeaf = FirstWeight * WetLeafPercentage;
+    const LongLeaf = FirstWeight * LongLeafPercentage;
     
     // Deduction is the sum of WetLeaf and LongLeaf
     const Deduction = Math.round(WetLeaf + LongLeaf);
     
     // Calculate final weight in kg
-    const finalWeight = Math.round(firstWeight - Deduction);
+    const FinalWeight = Math.round(FirstWeight - Deduction);
     
     // Update the form control
     this.stgForm.controls['Deduction'].setValue(Deduction);
-    this.stgForm.controls['finalWeight'].setValue(finalWeight);
+    this.stgForm.controls['FinalWeight'].setValue(FinalWeight);
   }
   
   calculateDeductionAndFinalWeight() {
-    const firstWeight = this.stgForm.value.firstWeight || 0;
+    const FirstWeight = this.stgForm.value.FirstWeight || 0;
     const WetLeafPercentage = (this.stgForm.value.WetLeaf || 0) / 100;
     const LongLeafPercentage = (this.stgForm.value.LongLeaf || 0) / 100;
   
     // Calculate WetLeaf and LongLeaf in kg
-    const WetLeaf = firstWeight * WetLeafPercentage;
-    const LongLeaf = firstWeight * LongLeafPercentage;
+    const WetLeaf = FirstWeight * WetLeafPercentage;
+    const LongLeaf = FirstWeight * LongLeafPercentage;
     
     // Deduction is the sum of WetLeaf and LongLeaf
     const Deduction = Math.round(WetLeaf + LongLeaf);
@@ -123,8 +123,8 @@ export class AddEditStgComponent implements OnInit {
       let data:IStg = {
         CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
         CollectionDate:this.stgForm.value.CollectionDate,
-        VehicleId:this.stgForm.value.VehicleId,
-        ClientId:this.stgForm.value.ClientId,
+        VehicleId:1,
+        ClientId:2,
         FirstWeight:this.stgForm.value.FirstWeight,
         WetLeaf:this.stgForm.value.WetLeaf,
         LongLeaf:this.stgForm.value.LongLeaf,

@@ -101,11 +101,11 @@
                                     <input #LongLeaf (input)="LongLeafInput(LongLeaf.value)" type="number" class="form-control" id="WetLeaf" placeholder="WetLeaf"
                                         formControlName="WetLeaf">
                                         <i class="fa-solid fa-percent"></i>
-                                    <span
+                                    <!-- <span
                                         *ngIf="stgForm.get('WetLeaf')?.hasError('required') && stgForm.get('WetLeaf')?.touched"
                                         class="text-danger d-block validation-message">
                                         Wet Leaf is required.
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
@@ -118,11 +118,11 @@
                                     <input #WetLeaf (input)="WetLeafInput(WetLeaf.value)" type="number" class="form-control" id="LongLeaf" placeholder="LongLeaf"
                                         formControlName="LongLeaf">
                                         <i class="fa-solid fa-percent"></i>
-                                    <span
+                                    <!-- <span
                                         *ngIf="stgForm.get('LongLeaf')?.hasError('required') && stgForm.get('LongLeaf')?.touched"
                                         class="text-danger d-block validation-message">
                                         Long Leaf is required.
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
@@ -160,10 +160,10 @@
                                 <div class="col-lg-7 position-relative">
                                     <input type="number" class="form-control" id="Rate" placeholder="Rate"
                                         formControlName="Rate">
-                                    <span *ngIf="stgForm.get('Rate')?.hasError('required') && stgForm.get('Rate')?.touched"
+                                    <!-- <span *ngIf="stgForm.get('Rate')?.hasError('required') && stgForm.get('Rate')?.touched"
                                         class="text-danger d-block validation-message">
                                         Rate is required.
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
