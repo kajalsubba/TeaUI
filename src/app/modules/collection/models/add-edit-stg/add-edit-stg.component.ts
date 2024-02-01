@@ -50,8 +50,8 @@ export class AddEditStgComponent implements OnInit {
         LongLeaf:[0],
         Deduction:[0],
         FinalWeight:[0],
-        Grade:['', Validators.required],
-        Rate:[''],
+        GradeId:['', Validators.required],
+        Rate:[0],
         Remarks:[''],
       });
      await this.loadClientNames();
@@ -115,6 +115,9 @@ export class AddEditStgComponent implements OnInit {
 
   onSubmit(){
 
+   // console.log(moment(this.stgForm.value.CollectionDate).format('YYYY-MM-DD'),'date');
+    
+
     if(this.stgForm.invalid){
       this.stgForm.markAllAsTouched();
       return;
@@ -122,7 +125,7 @@ export class AddEditStgComponent implements OnInit {
     // if(this.dialogData.buttonName == "Save"){
       let data:IStg = {
         CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
-        CollectionDate:this.stgForm.value.CollectionDate,
+        CollectionDate:'2024-02-01',//this.stgForm.value.CollectionDate,
         VehicleId:1,
         ClientId:2,
         FirstWeight:this.stgForm.value.FirstWeight,
@@ -131,7 +134,7 @@ export class AddEditStgComponent implements OnInit {
         Deduction:this.stgForm.value.Deduction,
         FinalWeight:this.stgForm.value.FinalWeight,
         Rate:this.stgForm.value.Rate,
-        GrossAmount:this.stgForm.value.GrossAmount,
+        GrossAmount:0,
         GradeId: this.stgForm.value.GradeId,
         Remarks: this.stgForm.value.Remarks,
         Status:'Pending',

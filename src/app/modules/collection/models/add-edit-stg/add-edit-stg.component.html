@@ -95,8 +95,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
-                                <label for="WetLeaf" class="col-lg-5 col-form-label">WET Leaf <span
-                                        class="text-danger">*</span></label>
+                                <label for="WetLeaf" class="col-lg-5 col-form-label">WET Leaf </label>
                                 <div class="col-lg-7 position-relative">
                                     <input #LongLeaf (input)="LongLeafInput(LongLeaf.value)" type="number" class="form-control" id="WetLeaf" placeholder="WetLeaf"
                                         formControlName="WetLeaf">
@@ -112,8 +111,7 @@
                         <div class="col-lg-4">
 
                             <div class="form-group row mb-3">
-                                <label for="LongLeaf" class="col-lg-5 col-form-label">Long Leaf <span
-                                        class="text-danger">*</span></label>
+                                <label for="LongLeaf" class="col-lg-5 col-form-label">Long Leaf </label>
                                 <div class="col-lg-7 position-relative">
                                     <input #WetLeaf (input)="WetLeafInput(WetLeaf.value)" type="number" class="form-control" id="LongLeaf" placeholder="LongLeaf"
                                         formControlName="LongLeaf">
@@ -155,8 +153,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
-                                <label for="Rate" class="col-lg-5 col-form-label">Rate <span
-                                        class="text-danger">*</span></label>
+                                <label for="Rate" class="col-lg-5 col-form-label">Rate </label>
                                 <div class="col-lg-7 position-relative">
                                     <input type="number" class="form-control" id="Rate" placeholder="Rate"
                                         formControlName="Rate">
@@ -176,12 +173,12 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
                                     <mat-select aria-placeholder="--Select Category--" class="fromSelect"
-                                        formControlName="Grade">
+                                        formControlName="GradeId">
                                         <mat-option *ngFor="let Grade of GradeList" [value]="Grade.GradeId">
                                             {{Grade.GradeName}}
                                         </mat-option>
                                     </mat-select>
-                                    <span *ngIf="stgForm.get('Grade')?.hasError('required') && stgForm.get('Grade')?.touched"
+                                    <span *ngIf="stgForm.get('GradeId')?.hasError('required') && stgForm.get('GradeId')?.touched"
                                         class="text-danger d-block validation-message">
                                         Grade is required.
                                     </span>
