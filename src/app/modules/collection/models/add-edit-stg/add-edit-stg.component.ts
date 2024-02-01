@@ -7,7 +7,9 @@ import { AutoCompleteService } from '../../services/auto-complete.service';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
+import { IStg } from '../../interfaces/istg';
+import { StgService } from '../../services/stg.service';
 
 
 @Component({
@@ -32,6 +34,7 @@ export class AddEditStgComponent implements OnInit {
     private fb:FormBuilder,
     private helper:HelperService,
     private toastr:ToastrService,
+    private stgService:StgService,
     private autocompleteService: AutoCompleteService,
     private gradeService:GradeService
   ){}
@@ -112,8 +115,56 @@ export class AddEditStgComponent implements OnInit {
 
   onSubmit(){
 
+    if(this.stgForm.invalid){
+      this.stgForm.markAllAsTouched();
+      return;
+    }
+    // if(this.dialogData.buttonName == "Save"){
+      let data:IStg = {
+        CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
+        CollectionDate:this.stgForm.value.CollectionDate,
+        VehicleId:this.stgForm.value.VehicleId,
+        ClientId:this.stgForm.value.ClientId,
+        FirstWeight:this.stgForm.value.FirstWeight,
+        WetLeaf:this.stgForm.value.WetLeaf,
+        LongLeaf:this.stgForm.value.LongLeaf,
+        Deduction:this.stgForm.value.Deduction,
+        FinalWeight:this.stgForm.value.FinalWeight,
+        Rate:this.stgForm.value.Rate,
+        GrossAmount:this.stgForm.value.GrossAmount,
+        GradeId: this.stgForm.value.GradeId,
+        Remarks: this.stgForm.value.Remarks,
+        Status:'Pending',
+        TenantId:this.loginDetails.TenantId,
+        CreatedBy:this.loginDetails.UserId
+      
+      }
+      this.SaveStgtData(data);
+
   }
 
+
+  SaveStgtData(clientBody: IStg) {
+    this.stgService.SaveStg(clientBody)
+        .pipe(
+            takeUntil(this.destroy$),
+            catchError(error => {
+                console.error('Error:', error);
+                this.toastr.error('An error occurred', 'ERROR');
+                throw error;
+            })
+        )
+        .subscribe((res: any) => {
+            //console.log(res);
+            this.toastr.success(res.Message, 'SUCCESS');
+           if (this.dialogData.buttonName == "Update")
+           {
+                this.dialogRef.close(true);
+           }
+        
+          this.stgForm.reset();
+        });
+}
   getFactoryDate(){
     let bodyData:IGetFactory = {
       TenantId:this.loginDetails.TenantId
