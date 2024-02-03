@@ -46,7 +46,7 @@ export class StgComponent implements OnInit, AfterViewInit {
       Grade: 'A',
       Rate: 10,
       Remarks: 'Sample Remark 1',
-      status:'Pending'
+      status:''
     },
   ];
   dataSource = new MatTableDataSource<any>(this.dummyData);

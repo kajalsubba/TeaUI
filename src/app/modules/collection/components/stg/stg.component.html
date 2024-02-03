@@ -72,7 +72,7 @@
                             <i class="fa-solid text-success fa-clipboard-check px-2"></i>
                       </div> -->
                       <span [ngClass]="{'active-status': row.status == 'Reject'}" (click)="setStatus('Reject',row)" class="btn-reject">Reject</span>
-                      <span [ngClass]="{'active-status': row.status == 'Pending'}" (click)="setStatus('Pending',row)" class="btn-pending">Pending</span>
+                      <span [ngClass]="{'active-status': (row.status == 'Pending' || row.status == '')}" (click)="setStatus('Pending',row)" class="btn-pending">Pending</span>
                       <span [ngClass]="{'active-status': row.status == 'Approved'}" (click)="setStatus('Approved',row)" class="btn-approved">Approved</span>
                   </div>
                 </td>
