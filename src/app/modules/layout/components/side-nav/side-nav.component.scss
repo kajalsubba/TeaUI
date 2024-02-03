@@ -42,7 +42,7 @@
 
 .main-menu {
   // box-shadow: var(--soft-box-shadow);
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   &:hover {
     cursor: pointer;
     background-color: var(--primary-color);
@@ -183,10 +183,10 @@ a.sub-menu-title{
 }
 
 .sidebar .nav-links li .sub-menu {
-  background: var(--bg-color);
-  box-shadow: var(--soft-box-shadow);
+  background: #e5eef4;
+  box-shadow: 0px 1px 3px inset var(--bs-form-valid-color);
   padding: 1px 20px;
-  border-radius: 5px;
+  // border-radius: 5px;
   display: none;
 }
 
@@ -196,7 +196,7 @@ a.sub-menu-title{
 
 .sidebar .nav-links li .sub-menu a {
   // color: #333;
-  font-size: 15px;
+  font-size: 14px;
   padding: 5px 0;
   white-space: nowrap;
   transition: all 0.3s ease;
@@ -361,7 +361,7 @@ a.sub-menu-title{
 
   .main-menu-active{
     background-color: var(--primary-color);
-    border-radius: 5px;
+    border-radius: 0px;
     i,span{
       color: #fff !important;
     }

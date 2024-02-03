@@ -89,7 +89,7 @@ table{
 
 // Form and Validation style
 
-input[type="text"],input[type="email"],input[type="number"].form-control{
+input[type="text"],input[type="email"],input[type="number"],input[type="password"].form-control{
   border-radius: 0;
   box-shadow: var(--box-shadow-inset);
   &:focus{
@@ -233,4 +233,8 @@ textarea{
   background: var(--secondary-color) !important;
   border: 1px solid lightgray !important;
   box-shadow: var(--box-shadow) !important;
+}
+
+.mat-mdc-option:focus.mdc-list-item, .mat-mdc-option.mat-mdc-option-active.mdc-list-item{
+  background-color: lightgray !important;
 }

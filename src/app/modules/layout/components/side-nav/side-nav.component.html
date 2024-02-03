@@ -17,8 +17,8 @@
               <li  routerLink="dashboard" routerLinkActive="active"><a>Dashboard</a></li>
             </ul>
           </li>
-          <li class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event)">
+          <li [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event, 'Masters')">
               <a>
                 <i class="fa-solid fa-layer-group"></i>
                 <span class="link_name">Masters</span>
@@ -35,8 +35,8 @@
           </li>
           
 
-          <li class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event)">
+          <li [class.showMenu]="currentOpenMenu === 'LeafEntry'" class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event, 'LeafEntry')">
               <a>
                 <i class='bx bx-collection' ></i>
                 <span class="link_name">Leaf Entry</span>
@@ -49,8 +49,8 @@
             </ul>
           </li>
 
-          <li class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event)">
+          <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">
               <a>
                 <i class="fa-solid fa-sliders"></i>
                 <span class="link_name">Settings</span>

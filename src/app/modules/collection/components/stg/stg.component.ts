@@ -10,6 +10,7 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { AddEditStgComponent } from '../../models/add-edit-stg/add-edit-stg.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-stg',
@@ -32,7 +33,24 @@ export class StgComponent implements OnInit, AfterViewInit {
     'status',
     'actions'
   ];
-  dataSource = new MatTableDataSource<any>();
+  dummyData = [
+    {
+      CollectionDate: '2022-01-01',
+      VehicleNo: 'ABC123',
+      ClientName: 'Client 1',
+      FirstWeight: 100,
+      WetLeaf: 20,
+      LongLeaf: 30,
+      Deduction: 5,
+      FinalWeight: 85,
+      Grade: 'A',
+      Rate: 10,
+      Remarks: 'Sample Remark 1',
+      status:'Pending'
+    },
+  ];
+  dataSource = new MatTableDataSource<any>(this.dummyData);
+  filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionDate', header: 'Collection Date' },
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
@@ -67,24 +85,6 @@ export class StgComponent implements OnInit, AfterViewInit {
       fromDate: [null, Validators.required],
       toDate: [null, [Validators.required]]
     });
-    const dummyData = [
-      {
-        CollectionDate: '2022-01-01',
-        VehicleNo: 'ABC123',
-        ClientName: 'Client 1',
-        FirstWeight: 100,
-        WetLeaf: 20,
-        LongLeaf: 30,
-        Deduction: 5,
-        FinalWeight: 85,
-        Grade: 'A',
-        Rate: 10,
-        Remarks: 'Sample Remark 1',
-      },
-    ];
-
-    // Set the dummy data to the dataSource
-    this.dataSource.data = dummyData;
   }
 
   ngAfterViewInit() {
@@ -136,6 +136,21 @@ export class StgComponent implements OnInit, AfterViewInit {
   clearFilter(){
     this.dateRangeForm.controls['fromDate'].setValue(null);
     this.dateRangeForm.controls['toDate'].setValue(null);
+    this.dataSource.data = this.dummyData;
+  }
+
+  search(): void {
+    const fromDate = this.dateRangeForm.value.fromDate;
+    const toDate = this.dateRangeForm.value.toDate;
+
+    // Filter the data based on the date range
+    this.filteredData = this.dummyData.filter((item) => {
+      const collectionDate = new Date(item.CollectionDate);
+      return collectionDate >= fromDate && collectionDate <= toDate;
+    });
+
+    // Update the dataSource with the filtered data
+    this.dataSource.data = this.filteredData;
   }
 
   handleChange(event: any): void {
@@ -147,6 +162,28 @@ export class StgComponent implements OnInit, AfterViewInit {
       // Checkbox is unchecked, do something else
       console.log('Checkbox is unchecked');
     }
+  }
+
+  setStatus(status:string, row:any){
+    console.log(row);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '30%',
+      data: {
+        title: 'Confirmation',
+        message: `Do you want to make the status as <b [ngClass]="{
+          'text-danger': status === 'Reject',
+          'text-warning': status === 'Pending',
+          'text-success': status === 'Approved'
+        }">${status}</b> ?`
+      }
+    });
+    
+    
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        row.status = status;
+      }
+    });
   }
 
 }

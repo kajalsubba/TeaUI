@@ -22,9 +22,9 @@ export class AddEditStgComponent implements OnInit {
   stgForm!:FormGroup;
   private destroy$ = new Subject<void>();
   currentDate:Date = new Date();
-  vehicleNumbers: any;
+  vehicleNumbers: any[]=[];
   loginDetails: any;
-  ClientNames: any;
+  ClientNames: any[]=[];
   GradeList:any[]=[];
   private subscriptions: Subscription[] = [];
 
@@ -221,14 +221,14 @@ export class AddEditStgComponent implements OnInit {
   // Autocomplete function
   filterVehicleNumbers(value: string): any {
    const filterValue = value.toLowerCase();
-   return this.vehicleNumbers.filter((x:any) => x.VehicleNo.toLowerCase().includes(filterValue));
+   return this.vehicleNumbers.filter((x:any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
  }
 
   // Autocomplete function
-  filterClientNames(value: string): string[] {
+  filterClientNames(value: string): any[] {
     const filterValue = value.toLowerCase();
    // console.log(this.ClientNames.filter((number:any) => number.toLowerCase().includes(filterValue)),'Clinet');
-    return this.ClientNames.filter((x:any) => x.ClientName.toLowerCase().includes(filterValue));
+    return this.ClientNames.filter((x:any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
   }
 
   displayWithFn(value: string): string {
