@@ -1,7 +1,7 @@
 export interface IStg {
     CollectionId: any;
     CollectionDate: any;
-    VehicleId: any;
+    VehicleNo: any;
     ClientId: any;
     FirstWeight: any;
     WetLeaf: any;

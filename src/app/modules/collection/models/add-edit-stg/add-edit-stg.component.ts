@@ -130,7 +130,7 @@ export class AddEditStgComponent implements OnInit {
       let data:IStg = {
         CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
         CollectionDate:formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
-        VehicleId:1,
+        VehicleNo:this.stgForm.value.VehicleNo,
         ClientId:2,
         FirstWeight:this.stgForm.value.FirstWeight,
         WetLeaf:this.stgForm.value.WetLeaf,
