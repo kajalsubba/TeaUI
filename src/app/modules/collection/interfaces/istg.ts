@@ -16,3 +16,9 @@ export interface IStg {
     Status: string,
     CreatedBy: any;
 }
+
+export interface IStgSelect
+{
+    CollectionDate: any;
+    TenantId: any;
+}

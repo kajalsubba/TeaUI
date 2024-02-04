@@ -11,6 +11,8 @@ import { AddEditStgComponent } from '../../models/add-edit-stg/add-edit-stg.comp
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { IStgSelect } from '../../interfaces/istg';
+import { StgService } from '../../services/stg.service';
 
 @Component({
   selector: 'app-stg',
@@ -30,26 +32,11 @@ export class StgComponent implements OnInit, AfterViewInit {
     'Grade',
     'Rate',
     'Remarks',
-    'status',
+    'Status',
     'actions'
   ];
-  dummyData = [
-    {
-      CollectionDate: '2022-01-01',
-      VehicleNo: 'ABC123',
-      ClientName: 'Client 1',
-      FirstWeight: 100,
-      WetLeaf: 20,
-      LongLeaf: 30,
-      Deduction: 5,
-      FinalWeight: 85,
-      Grade: 'A',
-      Rate: 10,
-      Remarks: 'Sample Remark 1',
-      status:''
-    },
-  ];
-  dataSource = new MatTableDataSource<any>(this.dummyData);
+ 
+  dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionDate', header: 'Collection Date' },
@@ -62,6 +49,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     { columnDef: 'FinalWeight', header: 'Final Weight' },
     { columnDef: 'Grade', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
+    { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' },
   ];
 
@@ -77,14 +65,18 @@ export class StgComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private helper: HelperService,
     private datePipe: DatePipe,
-    private fb:FormBuilder
+    private fb:FormBuilder,
+    private stgService:StgService,
   ) {}
 
   ngOnInit(): void {
+    this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [null, Validators.required],
       toDate: [null, [Validators.required]]
     });
+
+    this.GetStgList();
   }
 
   ngAfterViewInit() {
@@ -95,11 +87,25 @@ export class StgComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+
+  GetStgList(){
+    let bodyData:IStgSelect = {
+      CollectionDate:'2024-02-01',
+      TenantId:this.loginDetails.TenantId
+    }
+    const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
+     // console.log(res);
+      this.dataSource.data = res.STGDetails;
+    });
+    this.subscriptions.push(categoryListService);
+  }
+
+
   addEntry() {
     const dialogRef = this.dialog.open(AddEditStgComponent, {
       width: '80%',
       data: {
-        title: 'Add Entry',
+        title: 'Add STG Entry',
         buttonName: 'Save',
       },
       disableClose: true,
@@ -136,7 +142,7 @@ export class StgComponent implements OnInit, AfterViewInit {
   clearFilter(){
     this.dateRangeForm.controls['fromDate'].setValue(null);
     this.dateRangeForm.controls['toDate'].setValue(null);
-    this.dataSource.data = this.dummyData;
+    this.dataSource.data = this.dataSource.data;
   }
 
   search(): void {
@@ -144,7 +150,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     const toDate = this.dateRangeForm.value.toDate;
 
     // Filter the data based on the date range
-    this.filteredData = this.dummyData.filter((item) => {
+    this.filteredData =  this.dataSource.data.filter((item) => {
       const collectionDate = new Date(item.CollectionDate);
       return collectionDate >= fromDate && collectionDate <= toDate;
     });

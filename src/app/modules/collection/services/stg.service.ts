@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IStg } from '../interfaces/istg';
+import { IStg, IStgSelect } from '../interfaces/istg';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,5 +13,10 @@ export class StgService {
   SaveStg(clientBody:IStg): Observable<string[]> {
     return this.apiService.post('Collection/SaveStg', clientBody);
   }
+
+  GetStg(clientBody:IStgSelect): Observable<string[]> {
+    return this.apiService.post('Collection/GetStgPendingData', clientBody);
+  }
+
 
 }
