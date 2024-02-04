@@ -19,6 +19,7 @@ export interface IStg {
 
 export interface IStgSelect
 {
-    CollectionDate: any;
+    FromDate: any;
+    ToDate: any;
     TenantId: any;
 }

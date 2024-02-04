@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -76,7 +76,9 @@ export class StgComponent implements OnInit, AfterViewInit {
       toDate: [null, [Validators.required]]
     });
 
-    this.GetStgList();
+  
+    this.GetStgList(null,null);
+ 
   }
 
   ngAfterViewInit() {
@@ -88,9 +90,11 @@ export class StgComponent implements OnInit, AfterViewInit {
   }
 
 
-  GetStgList(){
+  GetStgList(FromDate:any,ToDate:any){
+    const currentDate = new Date();
     let bodyData:IStgSelect = {
-      CollectionDate:'2024-02-01',
+      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
+      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
       TenantId:this.loginDetails.TenantId
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
@@ -122,7 +126,7 @@ export class StgComponent implements OnInit, AfterViewInit {
 
   convertDate(date: any): string {
     const parsedDate = new Date(date);
-    return this.datePipe.transform(parsedDate, 'dd-MMM-yyyy') || '';
+    return this.datePipe.transform(parsedDate, 'dd-MM-yyyy') || '';
   }
 
   applyFilter(event: Event) {
@@ -145,18 +149,15 @@ export class StgComponent implements OnInit, AfterViewInit {
     this.dataSource.data = this.dataSource.data;
   }
 
-  search(): void {
-    const fromDate = this.dateRangeForm.value.fromDate;
-    const toDate = this.dateRangeForm.value.toDate;
+  search(){
 
-    // Filter the data based on the date range
-    this.filteredData =  this.dataSource.data.filter((item) => {
-      const collectionDate = new Date(item.CollectionDate);
-      return collectionDate >= fromDate && collectionDate <= toDate;
-    });
+    const currentDate = new Date();
+  //  this.GetStgList(formatDate(currentDate, 'yyyy-MM-dd', 'en-US'),formatDate(currentDate, 'yyyy-MM-dd', 'en-US'));
+ 
+    const fromDate = this.dateRangeForm.value.fromDate.format('yyyy-MM-DD');
+    const toDate =  this.dateRangeForm.value.toDate.format('yyyy-MM-DD');
 
-    // Update the dataSource with the filtered data
-    this.dataSource.data = this.filteredData;
+    this.GetStgList(fromDate,toDate);
   }
 
   handleChange(event: any): void {

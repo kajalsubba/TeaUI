@@ -10,6 +10,7 @@ import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { IStg } from '../../interfaces/istg';
 import { StgService } from '../../services/stg.service';
+import { DatePipe, formatDate } from '@angular/common';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class AddEditStgComponent implements OnInit {
   loginDetails: any;
   ClientNames: any[]=[];
   GradeList:any[]=[];
+  myDatepipe!: any;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -36,7 +39,8 @@ export class AddEditStgComponent implements OnInit {
     private toastr:ToastrService,
     private stgService:StgService,
     private autocompleteService: AutoCompleteService,
-    private gradeService:GradeService
+    private gradeService:GradeService,
+    datepipe: DatePipe
   ){}
 
   async ngOnInit() {
@@ -116,8 +120,8 @@ export class AddEditStgComponent implements OnInit {
   onSubmit(){
 
    // console.log(moment(this.stgForm.value.CollectionDate).format('YYYY-MM-DD'),'date');
-    
-
+  //  const ConvertedDate = this.myDatepipe.transform(this.stgForm.value.CollectionDate, 'yyyy-MM-dd');
+   // console.log(formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),'date');
     if(this.stgForm.invalid){
       this.stgForm.markAllAsTouched();
       return;
@@ -125,7 +129,7 @@ export class AddEditStgComponent implements OnInit {
     // if(this.dialogData.buttonName == "Save"){
       let data:IStg = {
         CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
-        CollectionDate:'2024-02-01',//this.stgForm.value.CollectionDate,
+        CollectionDate:formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
         VehicleId:1,
         ClientId:2,
         FirstWeight:this.stgForm.value.FirstWeight,
