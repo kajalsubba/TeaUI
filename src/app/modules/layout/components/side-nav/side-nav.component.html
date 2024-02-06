@@ -48,6 +48,20 @@
               <li routerLink="leafEntry/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
             </ul>
           </li>
+          
+          <li [class.showMenu]="currentOpenMenu === 'LeafApprove'" class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event, 'LeafApprove')">
+              <a>
+                <i class='bx bx-collection' ></i>
+                <span class="link_name">Leaf Approve</span>
+              </a>
+              <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+              <li routerLink="LeafApprove/stgapprove" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+              <li routerLink="LeafApprove/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
+            </ul>
+          </li>
 
           <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">

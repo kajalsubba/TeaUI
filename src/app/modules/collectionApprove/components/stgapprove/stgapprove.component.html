@@ -1,0 +1,83 @@
+<div class="container-fluid mt-2">
+    <div class="row">
+      <div class="col-lg-6 my-2 d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-8">
+            <form [formGroup]="dateRangeForm" class="d-flex">
+              <mat-form-field>
+                <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)" placeholder="From Date" formControlName="fromDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            
+              <!-- <mat-form-field class="mx-2">
+                <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="dateRangeForm.value.fromDate" placeholder="To Date" formControlName="toDate">
+                <mat-datepicker-toggle [disabled]="dateRangeForm.value.fromDate == null" matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field> -->
+            </form>
+          </div>
+          <div class="col-lg-4">
+            <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button>
+            <button (click)="search()" class="btn btn-color ms-2">Search</button> 
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-lg-4 offset-lg-2 my-2">
+        <div class="top-container">
+          <div class="search-field px-2">
+            <input readonly (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <div class="add-button">
+            <button (click)="addEntry()" class="btn btn-color">Add New Entry</button>
+          </div>
+        </div>
+      </div> -->
+      <hr>
+      <div class="col-lg-12">
+        <div class="table-container">
+          <div>
+            <table matSort mat-table [dataSource]="dataSource">
+              <!-- Displayed columns -->
+              <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+                <td mat-cell *matCellDef="let row; let i = index;">
+                    {{ row[column.columnDef]  }}
+                  </td>                  
+              </ng-container>
+  
+              <!-- Actions column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let row">
+                  <div>
+                    <i (click)="editItem(row)" matTooltip="Edit" matTooltipPosition="left" class="fa-solid edit-delete-button fa-pen-to-square"></i>
+                    <i (click)="deleteItem(row)" matTooltip="Delete" matTooltipPosition="right" class="fa-solid text-danger edit-delete-button fa-trash-can"></i>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Status column -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let row">
+                  <!-- <div class="d-flex statusBtn">
+                  
+                      <span [ngClass]="{'active-status': row.status == 'Reject'}" (click)="setStatus('Reject',row)" class="btn-reject">Reject</span>
+                      <span [ngClass]="{'active-status': (row.status == 'Pending' || row.status == '')}" (click)="setStatus('Pending',row)" class="btn-pending">Pending</span>
+                      <span [ngClass]="{'active-status': row.status == 'Approved'}" (click)="setStatus('Approved',row)" class="btn-approved">Approved</span>
+                  </div> -->
+                </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+  

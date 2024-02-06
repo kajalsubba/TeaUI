@@ -15,6 +15,8 @@ import * as _moment from 'moment';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { LoadingService } from './core/services/loading.service';
+import { StgapproveComponent } from './modules/collectionApprove/components/stgapprove/stgapprove.component';
+import { SupplierapproveComponent } from './modules/collectionApprove/components/supplierapprove/supplierapprove.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -31,7 +33,10 @@ export const MY_FORMATS = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // StgapproveComponent,
+    // StagapproveComponent,
+    // SupplierapproveComponent
   ],
   imports: [
     BrowserModule,
