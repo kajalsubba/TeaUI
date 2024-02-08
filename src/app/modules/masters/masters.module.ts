@@ -24,6 +24,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { CompanyComponent } from './components/company/company.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     AddEditClientComponent,
     AddEditFactoryComponent,
     AddEditFactoryAccountComponent,
-    AddEditGradeComponent
+    AddEditGradeComponent,
+    CompanyComponent
   ],
   imports: [
     CommonModule,
