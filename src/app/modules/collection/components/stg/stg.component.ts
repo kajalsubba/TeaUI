@@ -31,7 +31,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     'LongLeaf',
     'Deduction',
     'FinalWeight',
-    'Grade',
+    'GradeName',
     'Rate',
     'Remarks',
     'Status',
@@ -50,6 +50,9 @@ export class StgComponent implements OnInit, AfterViewInit {
     // { columnDef: 'Deduction', header: 'Deduction' },
     // { columnDef: 'FinalWeight', header: 'Final Weight' },
     { columnDef: 'Grade', header: 'Grade' },
+    { columnDef: 'Deduction', header: 'Deduction' },
+    { columnDef: 'FinalWeight', header: 'Final Weight' },
+    { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' },
@@ -102,7 +105,8 @@ export class StgComponent implements OnInit, AfterViewInit {
     let bodyData:IStgSelect = {
       FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
       ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
-      TenantId:this.loginDetails.TenantId
+      TenantId:this.loginDetails.TenantId,
+      VehicleNo:null,
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
      // console.log(res);
@@ -123,6 +127,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
+        this.GetStgList(null,null);
       }
     });
   }
