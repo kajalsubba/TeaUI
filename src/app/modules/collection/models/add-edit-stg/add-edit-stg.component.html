@@ -193,6 +193,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="CategoryId" class="col-lg-5 col-form-label">Status <span class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select aria-placeholder="--Select Status--" class="fromSelect" formControlName="Status">
+                                        <mat-option *ngFor="let item of statusList" [value]="item">
+                                          {{item}}
+                                        </mat-option>
+                                      </mat-select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </form>

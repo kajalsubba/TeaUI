@@ -1,6 +1,6 @@
 <div class="container-fluid mt-2">
     <div class="row">
-      <div class="col-lg-6 my-2 d-flex align-items-center">
+      <div class="col-lg-8 my-2 d-flex align-items-center">
         <div class="row">
           <div class="col-lg-8">
             <form [formGroup]="dateRangeForm" class="d-flex">
@@ -15,6 +15,17 @@
                 <mat-datepicker-toggle [disabled]="dateRangeForm.value.fromDate == null" matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
               </mat-form-field>
+                <div class="position-relative">
+                    <input #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                        formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
+                    <!-- Autocomplete options -->
+                    <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
+                        <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                            [value]="number.VehicleNo">
+                            {{ number.VehicleNo }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
             </form>
           </div>
           <div class="col-lg-4">
@@ -23,10 +34,10 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 offset-lg-2 my-2">
+      <div class="col-lg-4 my-2">
         <div class="top-container">
           <div class="search-field px-2">
-            <input readonly (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
+            <input (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
             <i class="fa-solid fa-magnifying-glass"></i>
           </div>
           <div class="add-button">
@@ -44,9 +55,40 @@
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
                 <td mat-cell *matCellDef="let row; let i = index;">
                     {{ row[column.columnDef]  }}
-                  </td>                  
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>                  
               </ng-container>
   
+              <!-- Collection Date -->
+              <ng-container matColumnDef="CollectionDate">
+                <th mat-header-cell *matHeaderCellDef> Collection Date </th>
+                <td mat-cell *matCellDef="let row"> {{row.CollectionDate | date:'dd-MMM-yyyy'}} </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+              </ng-container>
+              
+              <!-- First Weight -->
+              <ng-container matColumnDef="FirstWeight">
+                <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
+                <td mat-cell *matCellDef="let row"> {{row.FirstWeight}} </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                  <b>{{ getTotalCost('FirstWeight') }} KG</b>
+                </td>
+              </ng-container>
+
+              <!-- Deduction -->
+              <ng-container matColumnDef="Deduction">
+                <th mat-header-cell *matHeaderCellDef> Deduction ( KG ) </th>
+                <td mat-cell *matCellDef="let row"> {{row.Deduction}} </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('Deduction') }} KG</b> </td>
+              </ng-container>
+
+              <!-- Final Weight -->
+              <ng-container matColumnDef="FinalWeight">
+                <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
+                <td mat-cell *matCellDef="let row"> {{row.FinalWeight}} </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalWeight') }} KG</b> </td>
+              </ng-container>
+
               <!-- Actions column -->
               <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
@@ -56,6 +98,7 @@
                     <i (click)="deleteItem(row)" matTooltip="Delete" matTooltipPosition="right" class="fa-solid text-danger edit-delete-button fa-trash-can"></i>
                   </div>
                 </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
               </ng-container>
 
               <!-- Status column -->
@@ -76,10 +119,12 @@
                       <span [ngClass]="{'active-status': row.status == 'Approved'}" (click)="setStatus('Approved',row)" class="btn-approved">Approved</span>
                   </div>
                 </td>
+                <td mat-footer-cell *matFooterCellDef></td>
               </ng-container>
   
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
             </table>
           </div>
         </div>

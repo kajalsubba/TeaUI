@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { AddEditStgComponent } from '../../models/add-edit-stg/add-edit-stg.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -13,6 +13,8 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { IStgSelect } from '../../interfaces/istg';
 import { StgService } from '../../services/stg.service';
+import { AutoCompleteService } from '../../services/auto-complete.service';
+import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 
 @Component({
   selector: 'app-stg',
@@ -33,20 +35,20 @@ export class StgComponent implements OnInit, AfterViewInit {
     'Rate',
     'Remarks',
     'Status',
-    'actions'
+    'actions',
   ];
  
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'CollectionDate', header: 'Collection Date' },
+    // { columnDef: 'CollectionDate', header: 'Collection Date' },
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'FirstWeight', header: 'First Weight(Kg)' },
+    // { columnDef: 'FirstWeight', header: 'First Weight(Kg)' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf' },
     { columnDef: 'LongLeaf', header: 'Long Leaf' },
-    { columnDef: 'Deduction', header: 'Deduction' },
-    { columnDef: 'FinalWeight', header: 'Final Weight' },
+    // { columnDef: 'Deduction', header: 'Deduction' },
+    // { columnDef: 'FinalWeight', header: 'Final Weight' },
     { columnDef: 'Grade', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Status', header: 'Status' },
@@ -59,12 +61,15 @@ export class StgComponent implements OnInit, AfterViewInit {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   minToDate!: any;
+  vehicleNumbers: any[]=[];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
     private helper: HelperService,
     private datePipe: DatePipe,
+    private autocompleteService: AutoCompleteService,
     private fb:FormBuilder,
     private stgService:StgService,
   ) {}
@@ -73,11 +78,13 @@ export class StgComponent implements OnInit, AfterViewInit {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [null, Validators.required],
-      toDate: [null, [Validators.required]]
+      toDate: [null, [Validators.required]],
+      VehicleNo:['']
     });
 
   
     this.GetStgList(null,null);
+    this.loadVehicleNumbers();
  
   }
 
@@ -192,5 +199,39 @@ export class StgComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  getTotalCost(columnName: string): number {
+    return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
+  }
+
+  async loadVehicleNumbers() {
+    try {
+        const bodyData: IGetGrade = {
+            TenantId: this.loginDetails.TenantId
+        };
+
+        const res: any = await this.autocompleteService.GetVehicleNumbers(bodyData)
+            .pipe(takeUntil(this.destroy$))
+            .toPromise();
+
+        this.vehicleNumbers = res.VehicleDetails;
+
+
+    } catch (error) {
+        console.error('Error:', error);
+        this.toastr.error('Something went wrong.', 'ERROR');
+    }
+}
+
+ // Autocomplete function
+ filterVehicleNumbers(value: string): any {
+  const filterValue = value.toLowerCase();
+  return this.vehicleNumbers.filter((x:any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
+}
+
+displayWithFn(value: string): string {
+  return value || '';
+}
+  
 
 }

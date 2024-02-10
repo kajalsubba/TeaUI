@@ -4,12 +4,14 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ColumnTotalPipe } from './pipes/column-total.pipe';
 
 
 
 @NgModule({
   declarations: [
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    ColumnTotalPipe
   ],
   exports:[ConfirmDialogComponent],
   imports: [

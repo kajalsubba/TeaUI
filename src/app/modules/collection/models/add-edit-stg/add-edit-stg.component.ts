@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -22,12 +22,14 @@ export class AddEditStgComponent implements OnInit {
 
   stgForm!:FormGroup;
   private destroy$ = new Subject<void>();
+  @ViewChild('vehicleNo') vehicleNoInput!: ElementRef;
   currentDate:Date = new Date();
   vehicleNumbers: any[]=[];
   loginDetails: any;
   ClientNames: any[]=[];
   GradeList:any[]=[];
   myDatepipe!: any;
+  statusList:string[]=['Pending', 'Reject', 'Approved']
 
   private subscriptions: Subscription[] = [];
 
@@ -57,6 +59,7 @@ export class AddEditStgComponent implements OnInit {
         GradeId:['', Validators.required],
         Rate:[0],
         Remarks:[''],
+        Status:['Pending'],
       });
      await this.loadClientNames();
      await this.loadVehicleNumbers();
@@ -170,6 +173,7 @@ export class AddEditStgComponent implements OnInit {
            }
         
           this.stgForm.reset();
+          this.vehicleNoInput.nativeElement.focus();
         });
 }
   getFactoryDate(){
