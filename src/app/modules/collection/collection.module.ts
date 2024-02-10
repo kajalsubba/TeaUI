@@ -40,8 +40,7 @@ export const MY_FORMATS = {
     CollectionComponent,
     StgComponent,
     SupplierComponent,
-    AddEditStgComponent,
-    ColumnTotalPipe
+    AddEditStgComponent
   ],
   imports: [
     CommonModule,
