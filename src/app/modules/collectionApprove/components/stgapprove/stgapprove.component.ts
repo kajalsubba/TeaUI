@@ -31,7 +31,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     'LongLeaf',
     'Deduction',
     'FinalWeight',
-    'Grade',
+    'GradeName',
     'Rate',
     'Remarks',
     'Status',
@@ -50,57 +50,13 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     { columnDef: 'LongLeaf', header: 'Long Leaf' },
     { columnDef: 'Deduction', header: 'Deduction' },
     { columnDef: 'FinalWeight', header: 'Final Weight' },
-    { columnDef: 'Grade', header: 'Grade' },
+    { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' },
   ];
 
-  dummyData = [
-    {
-      CollectionDate: '2022-01-01',
-      VehicleNo: 'ABC123',
-      ClientName: 'Client 1',
-      FirstWeight: 100,
-      WetLeaf: 20,
-      LongLeaf: 30,
-      Deduction: 5,
-      FinalWeight: 85,
-      Grade: 'A',
-      Rate: 10,
-      Remarks: 'Sample Remark 1',
-      Status: 'Pending',
-    },
-    {
-      CollectionDate: '2022-01-02',
-      VehicleNo: 'ABC1234',
-      ClientName: 'Client 2',
-      FirstWeight: 100,
-      WetLeaf: 20,
-      LongLeaf: 30,
-      Deduction: 5,
-      FinalWeight: 85,
-      Grade: 'A',
-      Rate: 10,
-      Remarks: 'Sample Remark 1',
-      Status: 'Reject',
-    },
-    {
-      CollectionDate: '2022-01-03',
-      VehicleNo: 'ABC1235',
-      ClientName: 'Client 3',
-      FirstWeight: 100,
-      WetLeaf: 20,
-      LongLeaf: 30,
-      Deduction: 5,
-      FinalWeight: 85,
-      Grade: 'A',
-      Rate: 10,
-      Remarks: 'Sample Remark 1',
-      Status: 'Approved',
-    },
-  ];
-  
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -127,9 +83,9 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
       fromDate: [null, Validators.required],
       VehicleNo:['']
     });
-    this.dataSource.data = this.dummyData;
+   // this.dataSource.data = this.dummyData;
     await this.loadVehicleNumbers();
-    // this.GetStgList(null,null);
+    this.GetStgList(null,null);
  
   }
   GetStgList(FromDate:any,ToDate:any){
@@ -137,10 +93,11 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     let bodyData:IStgSelect = {
       FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
       ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
-      TenantId:this.loginDetails.TenantId
+      TenantId:this.loginDetails.TenantId,
+      VehicleNo: this.dateRangeForm.value.VehicleNo
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
-     // console.log(res);
+      console.log(res,'approve');
       this.dataSource.data = res.STGDetails;
     });
     this.subscriptions.push(categoryListService);
@@ -157,7 +114,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
 
   search()
   {
-
+    this.GetStgList( this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'), this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'));
   }
 
   clearFilter()
@@ -187,15 +144,15 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
 
   approveEntry() {
     // Iterate through the selected items
-    this.selection.selected.forEach(selectedItem => {
-      // Find the index of the selected item in the dummyData array
-      const index = this.dummyData.findIndex(item => item === selectedItem);
-      // Update the Status property of the selected item to 'Approved'
-      this.dummyData[index].Status = 'Approved';
-    });
-    // Clear the selection after updating the statuses
-    this.selection.clear();
-    this.GetStgList,this.dataSource.data = this.dummyData;
+    // this.selection.selected.forEach(selectedItem => {
+    //   // Find the index of the selected item in the dummyData array
+    //   const index = this.dummyData.findIndex(item => item === selectedItem);
+    //   // Update the Status property of the selected item to 'Approved'
+    //   this.dummyData[index].Status = 'Approved';
+    // });
+    // // Clear the selection after updating the statuses
+    // this.selection.clear();
+    // this.GetStgList,this.dataSource.data = this.dummyData;
   }
   
 

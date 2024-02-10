@@ -131,7 +131,7 @@ export class AddEditStgComponent implements OnInit {
         CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
         CollectionDate:formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
         VehicleNo:this.stgForm.value.VehicleNo,
-        ClientId:2,
+        ClientId:14,
         FirstWeight:this.stgForm.value.FirstWeight,
         WetLeaf:this.stgForm.value.WetLeaf,
         LongLeaf:this.stgForm.value.LongLeaf,
@@ -168,8 +168,8 @@ export class AddEditStgComponent implements OnInit {
            {
                 this.dialogRef.close(true);
            }
-        
-          this.stgForm.reset();
+        this.CleanFormControl();
+       
         });
 }
   getFactoryDate(){
@@ -178,6 +178,21 @@ export class AddEditStgComponent implements OnInit {
     }
   }
 
+  CleanFormControl()
+  {
+   // const controlNames = ['ClientId', 'FirstWeight','WetLeaf'];
+   // controlNames.map((value: string) => this.stgForm.get(value).setValue(null));
+     
+      // this.stgForm.reset();
+      // this.stgForm.controls['ClientId'].reset()
+       this.stgForm.controls['FirstWeight'].reset()
+      this.stgForm.controls['WetLeaf'].reset()
+      this.stgForm.controls['LongLeaf'].reset()
+      this.stgForm.controls['Deduction'].reset()
+      this.stgForm.controls['FinalWeight'].reset()
+      this.stgForm.controls['Rate'].reset()
+      this.stgForm.controls['Remarks'].reset()
+  }
   async loadVehicleNumbers() {
     try {
         const bodyData: IGetGrade = {
@@ -258,6 +273,7 @@ export class AddEditStgComponent implements OnInit {
     this.subscriptions.forEach((sub)=>{
       sub.unsubscribe();
     })
+    this.dialogRef.close(true);
 }
 
 

@@ -22,4 +22,5 @@ export interface IStgSelect
     FromDate: any;
     ToDate: any;
     TenantId: any;
+    VehicleNo: any;
 }
