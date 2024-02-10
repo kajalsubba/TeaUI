@@ -23,6 +23,8 @@ import { MatTableModule } from "@angular/material/table";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatSelectModule } from "@angular/material/select";
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { SupplierapproveComponent } from './components/supplierapprove/supplierapprove.component';
 
 export const MY_FORMATS = {
     parse: {
@@ -40,8 +42,8 @@ export const MY_FORMATS = {
   @NgModule({
     declarations: [
     CollectionApproveComponent,
-      StgapproveComponent
-   //   SupplierComponent,
+      StgapproveComponent,
+      SupplierapproveComponent
      // AddEditStgComponent
     ],
     imports: [
@@ -61,7 +63,8 @@ export const MY_FORMATS = {
       MatInputModule,
       MatFormFieldModule,
       MatSlideToggleModule,
-      MatAutocompleteModule
+      MatAutocompleteModule,
+      MatCheckboxModule
     ],
     providers : [
       DatePipe,

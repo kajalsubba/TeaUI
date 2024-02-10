@@ -171,8 +171,9 @@ a.sub-menu-title{
 }
 
 .sidebar .nav-links li a .link_name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 400;
+  text-wrap: nowrap;
   color: var(--primary-color);
   transition: all 0.3s ease;
 }
