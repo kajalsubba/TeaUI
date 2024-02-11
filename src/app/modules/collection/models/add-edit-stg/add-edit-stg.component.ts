@@ -22,7 +22,7 @@ export class AddEditStgComponent implements OnInit {
 
   stgForm!:FormGroup;
   private destroy$ = new Subject<void>();
-  @ViewChild('vehicleNo') vehicleNoInput!: ElementRef;
+  @ViewChild('clientName') ClientNoInput!: ElementRef;
   currentDate:Date = new Date();
   vehicleNumbers: any[]=[];
   loginDetails: any;
@@ -134,7 +134,7 @@ export class AddEditStgComponent implements OnInit {
         CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
         CollectionDate:formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
         VehicleNo:this.stgForm.value.VehicleNo,
-        ClientId:14,
+        ClientId:this.stgForm.value.ClientName,
         FirstWeight:this.stgForm.value.FirstWeight,
         WetLeaf:this.stgForm.value.WetLeaf,
         LongLeaf:this.stgForm.value.LongLeaf,
@@ -172,8 +172,8 @@ export class AddEditStgComponent implements OnInit {
                 this.dialogRef.close(true);
            }
         
-          this.stgForm.reset();
-          this.vehicleNoInput.nativeElement.focus();
+    
+          this.ClientNoInput.nativeElement.focus();
         this.CleanFormControl();
        
         });
