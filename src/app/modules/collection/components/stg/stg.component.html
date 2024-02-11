@@ -63,13 +63,13 @@
               <ng-container matColumnDef="CollectionDate">
                 <th mat-header-cell *matHeaderCellDef> Collection Date </th>
                 <td mat-cell *matCellDef="let row"> {{row.CollectionDate | date:'dd-MMM-yyyy'}} </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+                <td mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
               </ng-container>
               
               <!-- First Weight -->
               <ng-container matColumnDef="FirstWeight">
                 <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
-                <td mat-cell *matCellDef="let row"> {{row.FirstWeight}} </td>
+                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FirstWeight}} KG </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
                   <b>{{ getTotalCost('FirstWeight') }} KG</b>
                 </td>
@@ -78,14 +78,14 @@
               <!-- Deduction -->
               <ng-container matColumnDef="Deduction">
                 <th mat-header-cell *matHeaderCellDef> Deduction ( KG ) </th>
-                <td mat-cell *matCellDef="let row"> {{row.Deduction}} </td>
+                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.Deduction}} KG </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('Deduction') }} KG</b> </td>
               </ng-container>
 
               <!-- Final Weight -->
               <ng-container matColumnDef="FinalWeight">
                 <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
-                <td mat-cell *matCellDef="let row"> {{row.FinalWeight}} </td>
+                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG</td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalWeight') }} KG</b> </td>
               </ng-container>
 
@@ -124,11 +124,11 @@
   
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+              <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
             </table>
           </div>
         </div>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
       </div>
     </div>
   </div>

@@ -59,7 +59,7 @@
                                     <!-- Autocomplete options -->
                                     <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
                                         <mat-option *ngFor="let client of filterClientNames(clientName.value)"
-                                            [value]="client?.ClientId">
+                                            [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
                                             {{ client?.ClientName }}
                                         </mat-option>
                                     </mat-autocomplete>

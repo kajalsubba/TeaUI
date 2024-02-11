@@ -51,6 +51,7 @@ export class AddEditStgComponent implements OnInit {
         CollectionDate:[new Date()],
         VehicleNo:['', Validators.required],
         ClientName:['', Validators.required],
+        ClientId:['', Validators.required],
         FirstWeight:[0, Validators.required],
         WetLeaf:[0],
         LongLeaf:[0],
@@ -134,7 +135,7 @@ export class AddEditStgComponent implements OnInit {
         CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
         CollectionDate:formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
         VehicleNo:this.stgForm.value.VehicleNo,
-        ClientId:14,
+        ClientId:this.stgForm.value.ClientId,
         FirstWeight:this.stgForm.value.FirstWeight,
         WetLeaf:this.stgForm.value.WetLeaf,
         LongLeaf:this.stgForm.value.LongLeaf,
@@ -282,5 +283,8 @@ export class AddEditStgComponent implements OnInit {
     this.dialogRef.close(true);
 }
 
+selectClient(client: any) {
+  this.stgForm.controls['ClientId'].setValue(client?.ClientId);
+}
 
 }
