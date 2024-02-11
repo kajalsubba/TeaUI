@@ -106,14 +106,6 @@
                 <th mat-header-cell *matHeaderCellDef>Status</th>
                 <td mat-cell *matCellDef="let row">
                   <div class="d-flex statusBtn">
-                    <!-- <div class="btn-container">
-                      <i class="fa-solid fa-hourglass-half text-warning px-2"></i>
-                          <label class="switch btn-color-mode-switch">
-                                <input (change)="handleChange($event)" value="1" id="color_mode" name="color_mode" type="checkbox">
-                                <label class="btn-color-mode-switch-inner" data-off="Pending" data-on="Approved" for="color_mode"></label>
-                            </label>
-                            <i class="fa-solid text-success fa-clipboard-check px-2"></i>
-                      </div> -->
                       <span [ngClass]="{'active-status': row.status == 'Reject'}" (click)="setStatus('Reject',row)" class="btn-reject">Reject</span>
                       <span [ngClass]="{'active-status': (row.status == 'Pending' || row.status == '')}" (click)="setStatus('Pending',row)" class="btn-pending">Pending</span>
                       <span [ngClass]="{'active-status': row.status == 'Approved'}" (click)="setStatus('Approved',row)" class="btn-approved">Approved</span>

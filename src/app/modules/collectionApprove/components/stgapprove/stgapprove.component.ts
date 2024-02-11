@@ -7,12 +7,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IStgSelect } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
+import { IstgApprove } from '../../interfaces/istg-approve';
+import { StgApproveService } from '../../services/stg-approve.service';
 
 @Component({
   selector: 'app-stgapprove',
@@ -53,7 +55,8 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Status', header: 'Status' },
-    { columnDef: 'Remarks', header: 'Remarks' },
+    { columnDef: 'Remarks', header: 'Remarks' }
+    
   ];
 
 
@@ -75,6 +78,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     private fb:FormBuilder,
     private autocompleteService: AutoCompleteService,
     private stgService:StgService,
+    private stgapproveService:StgApproveService
   ) {}
 
   async ngOnInit() {
@@ -153,8 +157,45 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     // // Clear the selection after updating the statuses
     // this.selection.clear();
     // this.GetStgList,this.dataSource.data = this.dummyData;
+this.dataSource.data.forEach((keys:any,vals:any)=>{
+ // keys.CollectionId=keys.CollectionId
+  keys.IsAprrove=true
+})
+    console.log(this.dataSource.data,'this.dataSource.data ');
+    
+    let data:IstgApprove = {
+      TotalFirstWeight: 0,
+      TotalWetLeaf: 0,
+      TotalLongLeaf:0,
+      TotalDeduction:0,
+      TotalFinalWeight: 0,
+      TenantId:this.loginDetails.TenantId,
+      CreatedBy:this.loginDetails.UserId,
+      ApproveList:this.dataSource.data
+    
+    }
+    this.SaveStgtData(data);
+    this.GetStgList(null,null);
   }
   
+  SaveStgtData(clientBody: IstgApprove) {
+    this.stgapproveService.SaveStgApprove(clientBody)
+        .pipe(
+            takeUntil(this.destroy$),
+            catchError(error => {
+                console.error('Error:', error);
+                this.toastr.error('An error occurred', 'ERROR');
+                throw error;
+            })
+        )
+        .subscribe((res: any) => {
+            //console.log(res);
+            this.toastr.success(res.Message, 'SUCCESS');
+        
+      
+       
+        });
+}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
