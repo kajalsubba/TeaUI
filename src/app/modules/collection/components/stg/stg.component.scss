@@ -183,6 +183,18 @@ th.mat-sort-header-sorted {
 }
 
 .table-footer{
-  box-shadow: 0px 0px 2px;
+  // box-shadow: 0px 0px 2px;
+  border: 1px solid gray;
   height: 35px;
+}
+
+th:first-child, td:first-child{
+  position: sticky;
+  left: 0;
+  z-index: 990 !important;
+}
+th:last-child, td:last-child{
+  position: sticky;
+  right: 0;
+  z-index: 990 !important;
 }

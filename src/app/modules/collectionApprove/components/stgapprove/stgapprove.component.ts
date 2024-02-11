@@ -43,17 +43,17 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
   selection = new SelectionModel<any>(true, []);
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'CollectionDate', header: 'Collection Date' },
+    // { columnDef: 'CollectionDate', header: 'Collection Date' },
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'FirstWeight', header: 'First Weight(Kg)' },
+    // { columnDef: 'FirstWeight', header: 'First Weight(Kg)' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf' },
     { columnDef: 'LongLeaf', header: 'Long Leaf' },
-    { columnDef: 'Deduction', header: 'Deduction' },
-    { columnDef: 'FinalWeight', header: 'Final Weight' },
+    // { columnDef: 'Deduction', header: 'Deduction' },
+    // { columnDef: 'FinalWeight', header: 'Final Weight' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
-    { columnDef: 'Status', header: 'Status' },
+    // { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' }
     
   ];
@@ -83,7 +83,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
-      fromDate: [null, Validators.required],
+      fromDate: [new Date(), Validators.required],
       VehicleNo:['']
     });
    // this.dataSource.data = this.dummyData;
@@ -102,6 +102,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
       console.log(res,'approve');
       this.dataSource.data = res.STGDetails;
+      this.dataSource.data.forEach(row => this.selection.select(row));
     });
     this.subscriptions.push(categoryListService);
   }
@@ -146,36 +147,50 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
   }
 
   approveEntry() {
+    const selectedObjects: any[] = [];
+    let totalFirstWeight = 0;
+    let totalDeduction = 0;
+    let totalFinalWeight = 0;
+    
     // Iterate through the selected items
-    // this.selection.selected.forEach(selectedItem => {
-    //   // Find the index of the selected item in the dummyData array
-    //   const index = this.dummyData.findIndex(item => item === selectedItem);
-    //   // Update the Status property of the selected item to 'Approved'
-    //   this.dummyData[index].Status = 'Approved';
-    // });
-    // // Clear the selection after updating the statuses
-    // this.selection.clear();
-    // this.GetStgList,this.dataSource.data = this.dummyData;
-this.dataSource.data.forEach((keys:any,vals:any)=>{
- // keys.CollectionId=keys.CollectionId
-  keys.IsAprrove=true
-})
-    console.log(this.dataSource.data,'this.dataSource.data ');
+    this.selection.selected.forEach(selectedItem => {
+        // Create the selected object based on the selected item
+        const selectedObject = {
+            IsApprove: true, // Set the IsApprove property to true
+            CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
+            Status: selectedItem.Status // Assuming Status is present in your data
+        };
+        
+        // Push the selected object to the array
+        selectedObjects.push(selectedObject);
+
+        // Calculate totals
+        totalFirstWeight += selectedItem.FirstWeight;
+        totalDeduction += selectedItem.Deduction;
+        totalFinalWeight += selectedItem.FinalWeight;
+    });
     
-    let data:IstgApprove = {
-      TotalFirstWeight: 0,
-      TotalWetLeaf: 0,
-      TotalLongLeaf:0,
-      TotalDeduction:0,
-      TotalFinalWeight: 0,
-      TenantId:this.loginDetails.TenantId,
-      CreatedBy:this.loginDetails.UserId,
-      ApproveList:this.dataSource.data
+    // Log the array of selected objects
+    console.log(selectedObjects);
     
-    }
-    this.SaveStgtData(data);
-    this.GetStgList(null,null);
-  }
+    // Create the data object to be saved
+    let data: IstgApprove = {
+        TotalFirstWeight: totalFirstWeight,
+        TotalWetLeaf: 0,
+        TotalLongLeaf: 0,
+        TotalDeduction: totalDeduction,
+        TotalFinalWeight: totalFinalWeight,
+        TenantId: this.loginDetails.TenantId,
+        CreatedBy: this.loginDetails.UserId,
+        ApproveList: selectedObjects
+    };
+
+    console.log(data, "Data to save");
+
+    // Perform any additional actions with the data object as needed
+    // this.SaveStgtData(data);
+    // this.GetStgList(null,null);
+}
   
   SaveStgtData(clientBody: IstgApprove) {
     this.stgapproveService.SaveStgApprove(clientBody)
@@ -260,6 +275,10 @@ checkboxLabel(row?: any): string {
 VehicleInput(value:string){
   let newVal = value.toUpperCase();
   this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+}
+
+getTotalCost(columnName: string): number {
+  return this.selection.selected.reduce((acc, curr) => acc + curr[columnName], 0);
 }
 
 }
