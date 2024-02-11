@@ -10,7 +10,7 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
                     <div class="position-relative d-grid ms-2">
-                        <input #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                        <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
                             formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
                         <!-- Autocomplete options -->
                         <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
@@ -19,13 +19,6 @@
                                 {{ number.VehicleNo }}
                             </mat-option>
                         </mat-autocomplete>
-
-                        <!-- Validation message -->
-                        <!-- <span
-                            *ngIf="stgForm.get('VehicleNo')?.hasError('required') && stgForm.get('VehicleNo')?.touched"
-                            class="text-danger d-block validation-message">
-                            Vehicle No. is required.
-                        </span> -->
                     </div>
             </form>
           </div>
@@ -90,7 +83,7 @@
               </ng-container>
   
               <!-- Actions column -->
-              <ng-container matColumnDef="actions">
+              <!-- <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                 <td mat-cell *matCellDef="let row">
                   <div>
@@ -98,7 +91,7 @@
                     <i (click)="deleteItem(row)" matTooltip="Delete" matTooltipPosition="right" class="fa-solid text-danger edit-delete-button fa-trash-can"></i>
                   </div>
                 </td>
-              </ng-container>
+              </ng-container> -->
 
               <!-- Status column -->
               <ng-container matColumnDef="status">

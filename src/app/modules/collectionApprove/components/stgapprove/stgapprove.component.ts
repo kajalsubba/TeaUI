@@ -36,8 +36,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     'GradeName',
     'Rate',
     'Remarks',
-    'Status',
-    'actions'
+    'Status'
   ];
  
   dataSource = new MatTableDataSource<any>();
@@ -256,6 +255,11 @@ checkboxLabel(row?: any): string {
     return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
   }
   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+}
+
+VehicleInput(value:string){
+  let newVal = value.toUpperCase();
+  this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
 }
 
 }

@@ -287,4 +287,9 @@ selectClient(client: any) {
   this.stgForm.controls['ClientId'].setValue(client?.ClientId);
 }
 
+VehicleInput(value:string){
+  let newVal = value.toUpperCase();
+  this.stgForm.controls['VehicleNo'].setValue(newVal);
+}
+
 }

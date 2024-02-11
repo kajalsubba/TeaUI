@@ -29,7 +29,7 @@
                                 <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
                                         formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
                                     <!-- Autocomplete options -->
                                     <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">

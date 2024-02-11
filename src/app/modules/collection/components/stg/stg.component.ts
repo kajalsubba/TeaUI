@@ -49,7 +49,6 @@ export class StgComponent implements OnInit, AfterViewInit {
     { columnDef: 'Grade', header: 'Grade' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
-    { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' },
   ];
 
@@ -75,8 +74,8 @@ export class StgComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
-      fromDate: [null, Validators.required],
-      toDate: [null, [Validators.required]],
+      fromDate: [new Date(), Validators.required],
+      toDate: [new Date(), [Validators.required]],
       VehicleNo:['']
     });
 
@@ -231,6 +230,11 @@ export class StgComponent implements OnInit, AfterViewInit {
 
 displayWithFn(value: string): string {
   return value || '';
+}
+
+VehicleInput(value:string){
+  let newVal = value.toUpperCase();
+  this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
 }
   
 

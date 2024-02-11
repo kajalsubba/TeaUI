@@ -144,9 +144,6 @@ th.mat-sort-header-sorted {
   
   
 .statusBtn{
-  background-color: lightgray;
-  border-radius: 20px;
-  box-shadow: 0px 0px 3px inset gray;
   span{
     padding: 5px 10px;
     cursor: pointer;
@@ -155,45 +152,22 @@ th.mat-sort-header-sorted {
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
   .btn-reject{
-    color: #dc3545;
-    &:hover{
       background-color: #dc3545;
       color: white;
       box-shadow: var(--soft-box-shadow);
-    }
   }
   .btn-pending{
-    color: #ffc107;
-    &:hover{
       background-color: #ffc107;
       color: white;
       box-shadow: var(--soft-box-shadow);
-    }
   }
   .btn-approved{
-    color: var(--primary-color);
-    &:hover{
       background-color: var(--primary-color);
       color: white;
       box-shadow: var(--soft-box-shadow);
-    }
-  }
-  .active-status.btn-reject{
-    background-color: #dc3545;
-    color: white;
-    box-shadow: var(--soft-box-shadow);
-  }
-  .active-status.btn-pending{
-    background-color: #ffc107;
-    color: white;
-    box-shadow: var(--soft-box-shadow);
-  }
-  .active-status.btn-approved{
-    background-color: var(--primary-color);
-    color: white;
-    box-shadow: var(--soft-box-shadow);
   }
 }
+
 
 .footer-total{
   text-wrap: nowrap;

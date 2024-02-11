@@ -28,10 +28,10 @@ import { SupplierapproveComponent } from './components/supplierapprove/suppliera
 
 export const MY_FORMATS = {
     parse: {
-      dateInput: 'DD-MMM-YYYY',
+      dateInput: 'DD/MM/YYYY',
     },
     display: {
-      dateInput: 'DD-MMM-YYYY',
+      dateInput: 'DD/MM/YYYY',
       monthYearLabel: 'MMM YYYY',
       dateA11yLabel: 'LL',
       monthYearA11yLabel: 'MMMM YYYY',
