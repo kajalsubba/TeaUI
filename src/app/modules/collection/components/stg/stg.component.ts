@@ -106,7 +106,7 @@ export class StgComponent implements OnInit, AfterViewInit {
       FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
       ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
       TenantId:this.loginDetails.TenantId,
-      VehicleNo:null,
+      VehicleNo:this.dateRangeForm.value.VehicleNo
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
      // console.log(res);
