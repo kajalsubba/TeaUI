@@ -28,11 +28,14 @@ export class StgComponent implements OnInit, AfterViewInit {
     'ClientName',
     'FirstWeight',
     'WetLeaf',
+    'WetLeafKg',
     'LongLeaf',
+    'LongLeafKg',
     'Deduction',
     'FinalWeight',
     'GradeName',
     'Rate',
+    'GrossAmount',
     'Remarks',
     'Status',
     'actions',
@@ -45,10 +48,13 @@ export class StgComponent implements OnInit, AfterViewInit {
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf' },
+   // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
     { columnDef: 'LongLeaf', header: 'Long Leaf' },
+   // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
     { columnDef: 'Grade', header: 'Grade' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
+    { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
   ];
 
@@ -184,7 +190,7 @@ export class StgComponent implements OnInit, AfterViewInit {
       data: {
         title: 'Confirmation',
         message: `Do you want to make the status as <b [ngClass]="{
-          'text-danger': status === 'Reject',
+          'text-danger': status === 'Rejected',
           'text-warning': status === 'Pending',
           'text-success': status === 'Approved'
         }">${status}</b> ?`

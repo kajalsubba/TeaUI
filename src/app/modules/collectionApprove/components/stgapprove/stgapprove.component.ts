@@ -30,11 +30,14 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     'ClientName',
     'FirstWeight',
     'WetLeaf',
+    'WetLeafKg',
     'LongLeaf',
+    'LongLeafKg',
     'Deduction',
     'FinalWeight',
     'GradeName',
     'Rate',
+    'GrossAmount',
     'Remarks',
     'Status'
   ];
@@ -48,11 +51,14 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     { columnDef: 'ClientName', header: 'Client Name' },
     // { columnDef: 'FirstWeight', header: 'First Weight(Kg)' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf' },
+    //{ columnDef: 'WetLeafKg', header: 'Wet Leaf (KG)' },
     { columnDef: 'LongLeaf', header: 'Long Leaf' },
+ //    { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
     // { columnDef: 'Deduction', header: 'Deduction' },
     // { columnDef: 'FinalWeight', header: 'Final Weight' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
+       { columnDef: 'GrossAmount', header: 'Gross Amount' },
     // { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' }
     
@@ -100,8 +106,9 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
       VehicleNo: this.dateRangeForm.value.VehicleNo
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
-      console.log(res,'approve');
-      this.dataSource.data = res.STGDetails;
+    //  console.log(res,'approve');
+    //  const result=res.STGDetails.filter((x:any)=>x.Status=='Pending');
+      this.dataSource.data = res.STGDetails.filter((x:any)=>x.Status=='Pending');
       this.dataSource.data.forEach(row => this.selection.select(row));
     });
     this.subscriptions.push(categoryListService);
@@ -148,7 +155,11 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
 
   approveEntry() {
     const selectedObjects: any[] = [];
+    const selectedObjects1: any[] = [];
+    var ApproveList:any[]=[];
     let totalFirstWeight = 0;
+    let totalWetLeaf=0;
+    let totalLongLeaf=0;
     let totalDeduction = 0;
     let totalFinalWeight = 0;
     
@@ -160,36 +171,50 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
             CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
             Status: selectedItem.Status // Assuming Status is present in your data
         };
-        
         // Push the selected object to the array
         selectedObjects.push(selectedObject);
-
         // Calculate totals
         totalFirstWeight += selectedItem.FirstWeight;
+        totalWetLeaf+=selectedItem.WetLeafKg;
+        totalLongLeaf+=selectedItem.LongLeafKg;
         totalDeduction += selectedItem.Deduction;
         totalFinalWeight += selectedItem.FinalWeight;
     });
     
+    this.dataSource.data.forEach(selectedItem => {
+      // Create the selected object based on the selected item
+      const selectedObject1 = {
+          IsApprove: false, // Set the IsApprove property to true
+          CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
+          Status: selectedItem.Status // Assuming Status is present in your data
+      };
+      // Push the selected object to the array
+      selectedObjects1.push(selectedObject1);
+    
+  });
+  let result = selectedObjects1.filter(o1 => !selectedObjects.some(o2 => o1.CollectionId === o2.CollectionId));
+   ApproveList=[...selectedObjects, ...result];
+
     // Log the array of selected objects
-    console.log(selectedObjects);
+    console.log(ApproveList,'result');
     
     // Create the data object to be saved
     let data: IstgApprove = {
         TotalFirstWeight: totalFirstWeight,
-        TotalWetLeaf: 0,
-        TotalLongLeaf: 0,
+        TotalWetLeaf: totalWetLeaf,
+        TotalLongLeaf: totalLongLeaf,
         TotalDeduction: totalDeduction,
         TotalFinalWeight: totalFinalWeight,
         TenantId: this.loginDetails.TenantId,
         CreatedBy: this.loginDetails.UserId,
-        ApproveList: selectedObjects
+        ApproveList: ApproveList
     };
 
-    console.log(data, "Data to save");
+    //console.log(data, "Data to save");
 
     // Perform any additional actions with the data object as needed
-    // this.SaveStgtData(data);
-    // this.GetStgList(null,null);
+     this.SaveStgtData(data);
+ 
 }
   
   SaveStgtData(clientBody: IstgApprove) {
@@ -206,7 +231,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
             //console.log(res);
             this.toastr.success(res.Message, 'SUCCESS');
         
-      
+            this.GetStgList(null,null);
        
         });
 }
