@@ -41,7 +41,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     'Remarks',
     'Status'
   ];
- 
+//  dataList:any=[];
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
   filteredData: any[] = [];
@@ -211,9 +211,12 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     };
 
     //console.log(data, "Data to save");
-
+//this.dataList=this.dataSource.data;
     // Perform any additional actions with the data object as needed
+    if (this.dataSource.data.length>0)
+    {
      this.SaveStgtData(data);
+    }
  
 }
   
