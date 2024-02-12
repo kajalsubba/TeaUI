@@ -47,11 +47,11 @@ export class StgComponent implements OnInit, AfterViewInit {
     // { columnDef: 'CollectionDate', header: 'Collection Date' },
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'WetLeaf', header: 'Wet Leaf' },
+    { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
    // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
-    { columnDef: 'LongLeaf', header: 'Long Leaf' },
+    { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
    // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
-    { columnDef: 'Grade', header: 'Grade' },
+  //  { columnDef: 'Grade', header: 'Grade' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
@@ -132,7 +132,24 @@ export class StgComponent implements OnInit, AfterViewInit {
     });
   }
 
-  editItem(element: any) {}
+  editItem(element: any) {
+
+    const dialogRef = this.dialog.open(AddEditStgComponent, {
+      width: "80%",
+      data:{
+        title:"Update STG",
+        buttonName:"Update",
+        value:element
+      },
+      disableClose:true
+    });
+
+    dialogRef.afterClosed().subscribe((result:any)=>{
+      if(result){
+        this.GetStgList(null,null);
+      }
+    })
+  }
 
   deleteItem(element: any) {}
 

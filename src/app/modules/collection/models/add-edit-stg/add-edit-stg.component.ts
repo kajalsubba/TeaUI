@@ -29,7 +29,7 @@ export class AddEditStgComponent implements OnInit {
   ClientNames: any[]=[];
   GradeList:any[]=[];
   myDatepipe!: any;
-  statusList:string[]=['Pending', 'Reject', 'Approved']
+  statusList:string[]=['Pending', 'Rejected']
 
   private subscriptions: Subscription[] = [];
 
@@ -66,6 +66,26 @@ export class AddEditStgComponent implements OnInit {
      await this.loadVehicleNumbers();
       this.getFactoryDate();
       this.getGradeList();
+
+      if (this.dialogData.value) {
+        console.log(this.dialogData,'this.dialogData');
+        
+        this.stgForm.controls['CollectionDate'].setValue(new Date(this.dialogData.value.CollDate));
+   //   this.stgForm.get('date').patchValue(new Date('2/14/2021')));
+
+        this.stgForm.controls['ClientName'].setValue(this.dialogData.value.ClientName);
+        this.stgForm.controls['ClientId'].setValue(this.dialogData.value.ClientId);
+        this.stgForm.controls['VehicleNo'].setValue(this.dialogData.value.VehicleNo);
+        this.stgForm.controls['FirstWeight'].setValue(this.dialogData.value.FirstWeight);
+        this.stgForm.controls['WetLeaf'].setValue(this.dialogData.value.WetLeaf);
+        this.stgForm.controls['LongLeaf'].setValue(this.dialogData.value.LongLeaf);
+        this.stgForm.controls['Deduction'].setValue(this.dialogData.value.Deduction);
+        this.stgForm.controls['FinalWeight'].setValue(this.dialogData.value.FinalWeight);
+        this.stgForm.controls['GradeId'].setValue(this.dialogData.value.GradeId);
+        this.stgForm.controls['Rate'].setValue(this.dialogData.value.Rate);
+        this.stgForm.controls['Remarks'].setValue(this.dialogData.value.Remarks);
+        this.stgForm.controls['Status'].setValue(this.dialogData.value.Status);
+      }  
   }
 
   FirstWeightInput(value: any) {
@@ -145,7 +165,7 @@ export class AddEditStgComponent implements OnInit {
         GrossAmount:0,
         GradeId: this.stgForm.value.GradeId,
         Remarks: this.stgForm.value.Remarks,
-        Status:'Pending',
+        Status:this.stgForm.value.Status,
         TenantId:this.loginDetails.TenantId,
         CreatedBy:this.loginDetails.UserId
       

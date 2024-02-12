@@ -13,9 +13,7 @@
                                 <label for="CollectionDate" class="col-lg-5 col-form-label">Collection Date <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <!-- <input type="text" class="form-control" id="CollectionDate"
-                                        placeholder="CollectionDate" disabled readonly
-                                        [value]="currentDate | date: 'dd-MMM-yyyy'"> -->
+                          
                                         <mat-form-field>
                                             <input matInput [matDatepicker]="picker" placeholder="CollectionDate" formControlName="CollectionDate">
                                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -95,7 +93,7 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
-                                <label for="WetLeaf" class="col-lg-5 col-form-label">WET Leaf </label>
+                                <label for="WetLeaf" class="col-lg-5 col-form-label">Wet Leaf </label>
                                 <div class="col-lg-7 position-relative">
                                     <input #LongLeaf (input)="LongLeafInput(LongLeaf.value)" type="number" class="form-control" id="WetLeaf" placeholder="WetLeaf"
                                         formControlName="WetLeaf">
@@ -193,7 +191,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" *ngIf="dialogData.buttonName=='Update'">
                             <div class="form-group row mb-3">
                                 <label for="CategoryId" class="col-lg-5 col-form-label">Status <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
