@@ -20,7 +20,7 @@
           <li [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'Masters')">
               <a>
-                <i class="fa-solid fa-layer-group"></i>
+                <i class="bx bxs-cylinder"></i>
                 <span class="link_name">Masters</span>
               </a>
               <i class='bx bxs-chevron-down arrow'></i>
@@ -39,7 +39,7 @@
           <li [class.showMenu]="currentOpenMenu === 'LeafEntry'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'LeafEntry')">
               <a>
-                <i class='bx bx-collection' ></i>
+                <i class='bx bx-list-ul' ></i>
                 <span class="link_name">Leaf Entry</span>
               </a>
               <i class='bx bxs-chevron-down arrow'></i>
@@ -53,7 +53,7 @@
           <li [class.showMenu]="currentOpenMenu === 'LeafApprove'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'LeafApprove')">
               <a>
-                <i class='bx bx-collection' ></i>
+                <i class='bx bx-check-shield' ></i>
                 <span class="link_name">Leaf Approve</span>
               </a>
               <i class='bx bxs-chevron-down arrow'></i>
@@ -61,6 +61,20 @@
             <ul class="sub-menu">
               <li routerLink="LeafApprove/stgapprove" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
               <li routerLink="LeafApprove/supplierapprove" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
+            </ul>
+          </li>
+
+          <li [class.showMenu]="currentOpenMenu === 'LeafHistory'" class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event, 'LeafHistory')">
+              <a>
+                <i class='bx bx-history' ></i>
+                <span class="link_name">Leaf History</span>
+              </a>
+              <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+              <li routerLink="LeafHistory/stg-history" routerLinkActive="active"><a class="sub-menu-title">STG History</a></li>
+              <li routerLink="LeafHistory/supplier-history" routerLinkActive="active"><a class="sub-menu-title">Supplier History</a></li>
             </ul>
           </li>
 
@@ -75,6 +89,21 @@
             <ul class="sub-menu">
               <li routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">User</a></li>
               <li routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Role</a></li>
+            </ul>
+          </li>
+
+          <li [class.showMenu]="currentOpenMenu === 'SuperAdmin'" class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event, 'SuperAdmin')">
+              <a>
+                <i class="bx bxs-cog"></i>
+                <span class="link_name">Super Admin</span>
+              </a>
+              <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+              <li routerLink="super-admin/tenant" routerLinkActive="active"><a class="sub-menu-title">Tenant</a></li>
+              <li routerLink="super-admin/user" routerLinkActive="active"><a class="sub-menu-title">User</a></li>
+              <li routerLink="super-admin/role" routerLinkActive="active"><a class="sub-menu-title">Role</a></li>
             </ul>
           </li>
     </ul>
