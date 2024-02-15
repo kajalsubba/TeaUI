@@ -92,7 +92,7 @@
             </ul>
           </li>
 
-          <li [class.showMenu]="currentOpenMenu === 'SuperAdmin'" class="main-menu" routerLinkActive="main-menu-active">
+          <li *ngIf="loginDetails.TenantId==0" [class.showMenu]="currentOpenMenu === 'SuperAdmin'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'SuperAdmin')">
               <a>
                 <i class="bx bxs-cog"></i>

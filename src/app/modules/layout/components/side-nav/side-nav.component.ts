@@ -1,4 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -9,6 +10,19 @@ export class SideNavComponent {
   isExpanded: boolean = false;
   panelOpenState = false;
   currentOpenMenu: string | null = null;
+  loginDetails:any;
+
+  /**
+   *
+   */
+  constructor(public helper: HelperService) {
+    
+  }
+  
+  ngOnInit(): void {
+    this.loginDetails = this.helper.getItem('loginDetails');
+ 
+  }
 
 
   toggleWidth() {
