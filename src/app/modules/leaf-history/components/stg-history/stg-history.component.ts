@@ -8,7 +8,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { IStgSelect } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
+import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 
 @Component({
@@ -59,6 +61,8 @@ export class StgHistoryComponent {
   dateRangeForm!: FormGroup;
   minToDate!: any;
   vehicleNumbers: any[]=[];
+  statusList:string[]=['All','Pending', 'Rejected','Approved']
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -67,6 +71,7 @@ export class StgHistoryComponent {
     private toastr:ToastrService,
     private autocompleteService: AutoCompleteService,
     private fb:FormBuilder,
+    private stgService:StgService,
   ) {}
 
   ngOnInit(): void {
@@ -74,7 +79,8 @@ export class StgHistoryComponent {
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      VehicleNo:['']
+      VehicleNo:[''],
+      Status:['']
     });
     this.loadVehicleNumbers();
  
@@ -122,8 +128,25 @@ export class StgHistoryComponent {
  
     const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): this.dateRangeForm.value.fromDate.format('yyyy-MM-DD');
     const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):  this.dateRangeForm.value.toDate.format('yyyy-MM-DD');
+  
+    this.GetStgList(fromDate,toDate);
   }
 
+  GetStgList(FromDate:any,ToDate:any){
+    const currentDate = new Date();
+    let bodyData:IStgSelect = {
+      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
+      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
+      TenantId:this.loginDetails.TenantId,
+      VehicleNo:this.dateRangeForm.value.VehicleNo,
+      Status: this.dateRangeForm.value.Status=='All'?'':this.dateRangeForm.value.Status,
+    }
+    const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
+     // console.log(res);
+      this.dataSource.data = res.STGDetails;
+    });
+    this.subscriptions.push(categoryListService);
+  }
   handleChange(event: any): void {
     // Your code to handle the change event
     if (event.target.checked) {

@@ -26,6 +26,15 @@
                         </mat-option>
                     </mat-autocomplete>
                 </div>
+
+                <div class="position-relative">
+                <mat-select placeholder="--Select Status--" class="fromSelect"
+                formControlName="Status">
+                <mat-option *ngFor="let status of statusList" [value]="status">
+                    {{status}}
+                </mat-option>
+            </mat-select>
+          </div>
             </form>
           </div>
           <div class="col-lg-4">

@@ -23,4 +23,5 @@ export interface IStgSelect
     ToDate: any;
     TenantId: any;
     VehicleNo: any;
+    Status: string;
 }

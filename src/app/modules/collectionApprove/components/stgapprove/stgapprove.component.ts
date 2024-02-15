@@ -103,7 +103,8 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
       FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
       ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
       TenantId:this.loginDetails.TenantId,
-      VehicleNo: this.dateRangeForm.value.VehicleNo
+      VehicleNo: this.dateRangeForm.value.VehicleNo,
+      Status:''
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
     //  console.log(res,'approve');
