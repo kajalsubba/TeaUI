@@ -14,7 +14,7 @@
                             formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
                         <!-- Autocomplete options -->
                         <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
-                            <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                            <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)" (onSelectionChange)="selectVehicle(number)"
                                 [value]="number.VehicleNo">
                                 {{ number.VehicleNo }}
                             </mat-option>
@@ -42,7 +42,7 @@
           </div> -->
           <div class="add-button">
             <button (click)="approveEntry()" class="btn btn-color">Approve</button>
-            <button (click)="saleEntry()" class="btn btn-color">Sale Entry</button>
+            <!-- <button (click)="saleEntry('','')" class="btn btn-color">Sale Entry</button> -->
           </div>
         </div>
       </div>

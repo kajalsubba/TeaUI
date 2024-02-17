@@ -19,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { SaleHistoryComponent } from './components/sale-history/sale-history.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -36,7 +37,8 @@ export const MY_FORMATS = {
   declarations: [
     LeafHistoryComponent,
     StgHistoryComponent,
-    SupplierHistoryComponent
+    SupplierHistoryComponent,
+    SaleHistoryComponent
   ],
   imports: [
     CommonModule,

@@ -21,12 +21,17 @@
             </div>
             <div class="col-lg-3">
                 <div class="form-group row py-1">
-                    <label for="Buyer" class="col-lg-5 col-form-label">Buyer Name</label>
+                    <label for="Factory" class="col-lg-5 col-form-label">Factory Name</label>
                     <div class="col-lg-7 position-relative">
-                        <mat-select placeholder="--Select Buyer--" class="fromSelect" formControlName="BuyerName">
+                        <mat-select placeholder="--Select Factory--" class="fromSelect" formControlName="FactoryName"  (selectionChange)="SelectFactory($event.value)">
                             <input #buyer (input)="filterBuyers(buyer.value)" type="text" class="form-control inset-shadow" placeholder="Search Buyer">
-                            <mat-option *ngFor="let buyer of filteredBuyers" [value]="buyer.value">{{buyer.viewValue}}</mat-option>
+                            <mat-option *ngFor="let item of filteredFactory" [value]="item.FactoryId">{{item.FactoryName}}</mat-option>
                         </mat-select>
+                        <span
+                        *ngIf="saleEntryForm.get('FactoryName')?.hasError('required') && saleEntryForm.get('FactoryName')?.touched"
+                        class="text-danger d-block validation-message">
+                        Factory Name is required.
+                    </span>
                     </div>
                 </div>
             </div>
@@ -34,10 +39,15 @@
                 <div class="form-group row py-1">
                     <label for="account" class="col-lg-5 col-form-label">Account Name</label>
                     <div class="col-lg-7 position-relative">
-                        <mat-select placeholder="--Select Account--" class="fromSelect" formControlName="AccountName">
+                        <mat-select placeholder="--Select Account--" class="fromSelect" formControlName="AccountId">
                             <input #account (input)="filterAccounts(account.value)" type="text" class="form-control inset-shadow" placeholder="Search Account">
-                            <mat-option *ngFor="let account of filteredAccounts" [value]="account.value">{{account.viewValue}}</mat-option>
+                            <mat-option *ngFor="let account of filteredAccounts" [value]="account.AccountId">{{account.AccountName}}</mat-option>
                         </mat-select>
+                        <span
+                        *ngIf="saleEntryForm.get('AccountName')?.hasError('required') && saleEntryForm.get('AccountName')?.touched"
+                        class="text-danger d-block validation-message">
+                        Account Name  is required.
+                    </span>
                     </div>
                 </div>
             </div>
@@ -49,7 +59,7 @@
                             formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
                         <!-- Autocomplete options -->
                         <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
-                            <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                            <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)" (onSelectionChange)="selectVehicle(number)"
                                 [value]="number.VehicleNo">
                                 {{ number.VehicleNo }}
                             </mat-option>
@@ -145,7 +155,7 @@
                     <div class="form-group row mb-1">
                         <label for="FinalCollection" class="col-lg-5 col-form-label">Field Collection</label>
                         <div class="col-lg-7 position-relative">
-                            <input #FieldCollection readonly type="number" formControlName="FinalCollection" class="form-control" placeholder="Field Collection">
+                            <input #FieldCollection readonly type="number" formControlName="FieldCollectionWeight" class="form-control" placeholder="Field Collection">
                                 <span class="kg-text">KG</span>
                         </div>
                     </div>
@@ -225,7 +235,7 @@
             <div class="row">
                 <div class="col-lg-5"></div>
                 <div class="col-lg-7 d-grid">
-                    <button class="btn-color" mat-raised-button cdkFocusInitial> <i class="fa-solid fa-indian-rupee-sign px-2"></i> Sale</button>
+                    <button class="btn-color" mat-raised-button cdkFocusInitial (click)="SaleEntry()"> <i class="fa-solid fa-indian-rupee-sign px-2"></i> Sale</button>
                 </div>
             </div>
         </div>

@@ -184,8 +184,8 @@ export class StgComponent implements OnInit, AfterViewInit {
     const currentDate = new Date();
   //  this.GetStgList(formatDate(currentDate, 'yyyy-MM-dd', 'en-US'),formatDate(currentDate, 'yyyy-MM-dd', 'en-US'));
  
-    const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): this.dateRangeForm.value.fromDate.format('yyyy-MM-DD');
-    const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):  this.dateRangeForm.value.toDate.format('yyyy-MM-DD');
+    const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
+    const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US')  ;
 
     this.GetStgList(fromDate,toDate);
   }

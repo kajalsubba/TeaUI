@@ -91,13 +91,21 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
-      VehicleNo:['', Validators.required]
+      VehicleNo:['', Validators.required],
+      VehicleId:['']
     });
    // this.dataSource.data = this.dummyData;
     await this.loadVehicleNumbers();
    // this.GetStgList(null,null);
  
   }
+
+
+  selectVehicle(number:any)
+{
+  this.dateRangeForm.controls['VehicleId'].setValue(number?.VehicleId);
+}
+
   GetStgList(FromDate:any,ToDate:any){
    
     const currentDate = new Date();
@@ -133,7 +141,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
       return;
     }
    
-   // this.GetStgList( this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'), this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'));
+  
    this.GetStgList( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
   }
 
@@ -205,7 +213,6 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
    ApproveList=[...selectedObjects, ...result];
 
     // Log the array of selected objects
-    console.log(ApproveList,'result');
     
     // Create the data object to be saved
     let data: IstgApprove = {
@@ -241,11 +248,13 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
         )
         .subscribe((res: any) => {
             //console.log(res);
-            this.toastr.success(res.Message, 'SUCCESS');
+       //     this.toastr.success(res.Message, 'SUCCESS');
         
-            this.GetStgList(null,null);
-            this.selection = new SelectionModel<any>(true, [])
-       
+           
+            this.saleEntry(res,this.selection.selected);
+           // this.GetStgList(null,null);
+           // this.selection = new SelectionModel<any>(true, [])
+     
         });
 }
 
@@ -319,86 +328,27 @@ getTotalCost(columnName: string): number {
   return this.selection.selected.reduce((acc, curr) => acc + curr[columnName], 0);
 }
 
-saleEntry(){
-  let approveData = [
-    {
-        "CollectionId": 28,
-        "CollectionDate": "16/02/2024",
-        "CollDate": "2024-02-16T00:00:00",
-        "VehicleNo": "as05h6777",
-        "ClientName": "Jack Ryn",
-        "ClientId": 15,
-        "FirstWeight": 141,
-        "WetLeaf": 0,
-        "WetLeafKg": 0,
-        "LongLeaf": 0,
-        "LongLeafKg": 0,
-        "Deduction": 0,
-        "FinalWeight": 141,
-        "Rate": 0,
-        "GrossAmount": 0,
-        "GradeName": "A",
-        "GradeId": 4,
-        "Remarks": "",
-        "Status": "Approved",
-        "TenantId": 1
-    },
-    {
-        "CollectionId": 28,
-        "CollectionDate": "16/02/2024",
-        "CollDate": "2024-02-16T00:00:00",
-        "VehicleNo": "as05h6777",
-        "ClientName": "Jack Ryn",
-        "ClientId": 15,
-        "FirstWeight": 141,
-        "WetLeaf": 0,
-        "WetLeafKg": 0,
-        "LongLeaf": 0,
-        "LongLeafKg": 0,
-        "Deduction": 0,
-        "FinalWeight": 141,
-        "Rate": 0,
-        "GrossAmount": 0,
-        "GradeName": "A",
-        "GradeId": 4,
-        "Remarks": "",
-        "Status": "Approved",
-        "TenantId": 1
-    },
-    {
-        "CollectionId": 28,
-        "CollectionDate": "16/02/2024",
-        "CollDate": "2024-02-16T00:00:00",
-        "VehicleNo": "as05h6777",
-        "ClientName": "Jack Ryn",
-        "ClientId": 15,
-        "FirstWeight": 141,
-        "WetLeaf": 0,
-        "WetLeafKg": 0,
-        "LongLeaf": 0,
-        "LongLeafKg": 0,
-        "Deduction": 0,
-        "FinalWeight": 141,
-        "Rate": 0,
-        "GrossAmount": 0,
-        "GradeName": "A",
-        "GradeId": 4,
-        "Remarks": "",
-        "Status": "Approved",
-        "TenantId": 1
-    },
-    
-    
-    ]
+saleEntry(response:any,approveData:any){
+
   const dialogRef = this.dialog.open(SaleEntryComponent,{
     width:"90vw",
     height: "95%",
     disableClose:true,
     data:{
-      title:"Sale Entry Form",
-      approveData:approveData
+      title:"Sale Entry Form-STG",
+      approveId:response.Id,
+      approveData:approveData,
+      VehicleNo:this.dateRangeForm.value.VehicleNo,
+     VehicleId:this.dateRangeForm.value.VehicleId,
+      saleTypeId:1
     }
   });
+  dialogRef.afterClosed().subscribe((result:any)=>{
+    if(result){
+        this.GetStgList(null,null);
+           this.selection = new SelectionModel<any>(true, []);
+    }
+  })
 }
-
+     
 }
