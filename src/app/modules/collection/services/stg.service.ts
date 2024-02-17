@@ -18,5 +18,8 @@ export class StgService {
     return this.apiService.post('Collection/GetStgPendingData', clientBody);
   }
 
+  GetTrip(): Observable<string[]> {
+    return this.apiService.get('Master/GetTrip');
+  }
 
 }

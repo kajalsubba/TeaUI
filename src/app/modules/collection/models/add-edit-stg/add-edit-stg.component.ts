@@ -61,6 +61,7 @@ export class AddEditStgComponent implements OnInit {
         Rate:[0],
         Remarks:[''],
         Status:['Pending'],
+        TripId:[]
       });
      await this.loadClientNames();
      await this.loadVehicleNumbers();
@@ -163,6 +164,7 @@ export class AddEditStgComponent implements OnInit {
         FinalWeight:this.stgForm.value.FinalWeight,
         Rate:this.stgForm.value.Rate,
         GrossAmount:0,
+        TripId:this.stgForm.value.TripId,
         GradeId: this.stgForm.value.GradeId,
         Remarks: this.stgForm.value.Remarks,
         Status:this.stgForm.value.Status,

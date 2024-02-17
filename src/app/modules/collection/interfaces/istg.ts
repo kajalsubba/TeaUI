@@ -10,6 +10,7 @@ export interface IStg {
     FinalWeight: any;
     Rate: any;
     GrossAmount: any;
+    TripId:any;
     GradeId: any;
     Remarks: string,
     TenantId: any;
