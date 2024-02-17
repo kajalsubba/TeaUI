@@ -6,10 +6,10 @@
 <mat-dialog-content>
     <form [formGroup]="saleEntryForm">
         <div class="row border-box mt-1">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="form-group row py-1">
-                    <label for="CollectionDate" class="col-lg-5 col-form-label">Select Date</label>
-                    <div class="col-lg-7 position-relative">
+                    <label for="CollectionDate" class="col-lg-4 col-form-label">Select Date</label>
+                    <div class="col-lg-8 position-relative">
             
                             <mat-form-field>
                                 <input formControlName="StartDate" matInput [matDatepicker]="picker" placeholder="Select Date">
@@ -19,9 +19,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row border-box border-top-none">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="form-group row py-1">
                     <label for="Buyer" class="col-lg-5 col-form-label">Buyer Name</label>
                     <div class="col-lg-7 position-relative">
@@ -32,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="form-group row py-1">
                     <label for="account" class="col-lg-5 col-form-label">Account Name</label>
                     <div class="col-lg-7 position-relative">
@@ -43,9 +41,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="form-group row py-1">
-                    <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle Reg. No.</label>
+                    <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No.</label>
                     <div class="col-lg-7 d-grid position-relative">
                         <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
                             formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
@@ -173,16 +171,17 @@
             <div class="form-group row mb-3">
                 <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf</label>
                 <div class="col-lg-7 position-relative">
-                    <input #FineLeaf readonly type="number" formControlName="FineLeaf" class="form-control" placeholder="Fine Leaf">
-                        <span class="kg-text">KG</span>
+                    <input maxlength="2" (keypress)="restrictInput($event)" #FineLeaf type="text" formControlName="FineLeaf" class="form-control" placeholder="0 - 99">
+                    <span class="kg-text"><i class="fa-solid fa-percent"></i></span>
                 </div>
             </div>
+            
         </div>
         <div class="col-lg-4">
             <div class="form-group row mb-3">
-                <label for="ChallanWeight" class="col-lg-5 col-form-label">Channal Weight</label>
+                <label for="ChallanWeight" class="col-lg-5 col-form-label">Challan Weight</label>
                 <div class="col-lg-7 position-relative">
-                    <input #ChallanWeight readonly type="number" formControlName="ChallanWeight" class="form-control" placeholder="Channal Weight">
+                    <input (input)="ChallanWeightChange(ChallanWeight.value)" #ChallanWeight type="number" formControlName="ChallanWeight" class="form-control" placeholder="Channal Weight">
                         <span class="kg-text">KG</span>
                 </div>
             </div>
@@ -191,7 +190,17 @@
             <div class="form-group row mb-3">
                 <label for="Rate" class="col-lg-5 col-form-label">Rate</label>
                 <div class="col-lg-7 position-relative">
-                    <input #Rate readonly type="number" formControlName="Rate" class="form-control" placeholder="Rate">
+                    <input (input)="RateChange(Rate.value)" #Rate type="number" formControlName="Rate" class="form-control" placeholder="Rate">
+                    <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="form-group row mb-3">
+                <label for="Incentive" class="col-lg-5 col-form-label">Incentive</label>
+                <div class="col-lg-7 position-relative">
+                    <input (input)="IncentiveChange(Incentive.value)" #Incentive type="number" formControlName="Incentive" class="form-control" placeholder="Incentive">
+                        <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
                 </div>
             </div>
         </div>
@@ -200,16 +209,7 @@
                 <label for="GrossAmount" class="col-lg-5 col-form-label">Gross Amount</label>
                 <div class="col-lg-7 position-relative">
                     <input #GrossAmount readonly type="number" formControlName="GrossAmount" class="form-control" placeholder="Gross Amount">
-                        <span class="kg-text">KG</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="form-group row mb-3">
-                <label for="NetAmount" class="col-lg-5 col-form-label">Net Amount</label>
-                <div class="col-lg-7 position-relative">
-                    <input #NetAmount readonly type="number" formControlName="NetAmount" class="form-control" placeholder="Net Amount">
-                        <span class="kg-text">KG</span>
+                        <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
                 </div>
             </div>
         </div>
@@ -221,8 +221,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2 offset-lg-6 d-grid">
-            <button class="btn-color" mat-raised-button cdkFocusInitial> <i class="fa-solid fa-indian-rupee-sign px-2"></i> Sale</button>
+        <div class="col-lg-4 offset-lg-4">
+            <div class="row">
+                <div class="col-lg-5"></div>
+                <div class="col-lg-7 d-grid">
+                    <button class="btn-color" mat-raised-button cdkFocusInitial> <i class="fa-solid fa-indian-rupee-sign px-2"></i> Sale</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

@@ -83,20 +83,33 @@ export class SaleEntryComponent implements OnInit {
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
+    this.dataSource.data = this.data.approveData;
       this.saleEntryForm = this.fb.group({
         StartDate:[new Date()],
         BuyerName:[''],
         VehicleNo:[''],
         AccountName:[''],
         FinalCollection:[0],
-        SaleDate:[''],
+        SaleDate:[new Date()],
         FineLeaf:[0],
         ChallanWeight:[0],
         Rate:[0],
         GrossAmount:[0],
-        NetAmount:[0],
+        Incentive:[0],
         Remarks:[''],
       });
+      this.saleEntryForm.controls['ChallanWeight'].valueChanges.subscribe(() => {
+        this.calculateGrossAmount();
+      });
+  
+      this.saleEntryForm.controls['Rate'].valueChanges.subscribe(() => {
+        this.calculateGrossAmount();
+      });
+  
+      this.saleEntryForm.controls['Incentive'].valueChanges.subscribe(() => {
+        this.calculateGrossAmount();
+      });
+      this.saleEntryForm.controls['FinalCollection'].setValue(this.getTotalCost('FinalWeight'));
       await this.loadVehicleNumbers();
   }
 
@@ -145,5 +158,34 @@ VehicleInput(value:string){
   getTotalCost(columnName: string): number {
     return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
   }
+
+  restrictInput(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    console.log(charCode);
+    if(charCode >= 48 && charCode <= 57){
+      return true;
+    }else{
+      return false;
+    }
+}
+
+ChallanWeightChange(value:any){
+  this.calculateGrossAmount();
+}
+RateChange(value:any){
+  this.calculateGrossAmount();
+}
+IncentiveChange(value:any){
+  this.calculateGrossAmount();
+}
+
+private calculateGrossAmount() {
+  const challanWeight = this.saleEntryForm.controls['ChallanWeight'].value;
+  const rate = this.saleEntryForm.controls['Rate'].value;
+  const incentive = this.saleEntryForm.controls['Incentive'].value;
+  const grossAmount = challanWeight * (rate + incentive);
+  this.saleEntryForm.controls['GrossAmount'].setValue(grossAmount);
+}
+
 
 }

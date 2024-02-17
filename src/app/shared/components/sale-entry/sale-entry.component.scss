@@ -14,14 +14,14 @@
 }
 
 .table-container{
-    height: calc(60vh - 200px);
+    height: calc(65vh - 200px);
     overflow: auto;
     box-shadow: var(--soft-box-shadow);
 }
 
 .kg-text{
     position: absolute;
-    right: 20%;
+    right: 10%;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -70,3 +70,8 @@
     border: 1px solid gray;
     height: 35px;
   }
+
+  label,input,mat-select{
+    font-size: 14px;
+  }
+  

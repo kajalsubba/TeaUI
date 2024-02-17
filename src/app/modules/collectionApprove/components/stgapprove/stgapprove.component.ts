@@ -319,12 +319,83 @@ getTotalCost(columnName: string): number {
 }
 
 saleEntry(){
+  let approveData = [
+    {
+        "CollectionId": 28,
+        "CollectionDate": "16/02/2024",
+        "CollDate": "2024-02-16T00:00:00",
+        "VehicleNo": "as05h6777",
+        "ClientName": "Jack Ryn",
+        "ClientId": 15,
+        "FirstWeight": 141,
+        "WetLeaf": 0,
+        "WetLeafKg": 0,
+        "LongLeaf": 0,
+        "LongLeafKg": 0,
+        "Deduction": 0,
+        "FinalWeight": 141,
+        "Rate": 0,
+        "GrossAmount": 0,
+        "GradeName": "A",
+        "GradeId": 4,
+        "Remarks": "",
+        "Status": "Approved",
+        "TenantId": 1
+    },
+    {
+        "CollectionId": 28,
+        "CollectionDate": "16/02/2024",
+        "CollDate": "2024-02-16T00:00:00",
+        "VehicleNo": "as05h6777",
+        "ClientName": "Jack Ryn",
+        "ClientId": 15,
+        "FirstWeight": 141,
+        "WetLeaf": 0,
+        "WetLeafKg": 0,
+        "LongLeaf": 0,
+        "LongLeafKg": 0,
+        "Deduction": 0,
+        "FinalWeight": 141,
+        "Rate": 0,
+        "GrossAmount": 0,
+        "GradeName": "A",
+        "GradeId": 4,
+        "Remarks": "",
+        "Status": "Approved",
+        "TenantId": 1
+    },
+    {
+        "CollectionId": 28,
+        "CollectionDate": "16/02/2024",
+        "CollDate": "2024-02-16T00:00:00",
+        "VehicleNo": "as05h6777",
+        "ClientName": "Jack Ryn",
+        "ClientId": 15,
+        "FirstWeight": 141,
+        "WetLeaf": 0,
+        "WetLeafKg": 0,
+        "LongLeaf": 0,
+        "LongLeafKg": 0,
+        "Deduction": 0,
+        "FinalWeight": 141,
+        "Rate": 0,
+        "GrossAmount": 0,
+        "GradeName": "A",
+        "GradeId": 4,
+        "Remarks": "",
+        "Status": "Approved",
+        "TenantId": 1
+    },
+    
+    
+    ]
   const dialogRef = this.dialog.open(SaleEntryComponent,{
     width:"90vw",
-    height: "90%",
+    height: "95%",
     disableClose:true,
     data:{
-      title:"Sale Entry Form"
+      title:"Sale Entry Form",
+      approveData:approveData
     }
   });
 }
