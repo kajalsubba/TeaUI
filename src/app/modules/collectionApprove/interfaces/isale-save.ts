@@ -16,3 +16,10 @@ export interface IsaleSave {
     TenantId: any; 
     CreatedBy: any; 
 }
+
+export interface IGetSale
+{
+    FromDate:any;
+    ToDate:any;
+    TenantId:any;
+}

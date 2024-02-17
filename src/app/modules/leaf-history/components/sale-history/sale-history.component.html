@@ -1,1 +1,136 @@
-<p>sale-history works!</p>
+<div class="container-fluid mt-2">
+    <div class="row">
+      <div class="col-lg-8 my-2">
+        <div class="row">
+          <div class="col-lg-10">
+            <form [formGroup]="SaleForm" class="d-flex">
+              <div class="col-lg-3 d-grid">
+                <mat-form-field>
+                  <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)" placeholder="From Date" formControlName="fromDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            
+              <div class="col-lg-3 d-grid">
+                <mat-form-field class="mx-2 ">
+                  <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="SaleForm.value.fromDate" placeholder="To Date" formControlName="toDate">
+                  <mat-datepicker-toggle [disabled]="SaleForm.value.fromDate == null" matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+                <div class="position-relative col-lg-3 d-grid">
+                    <input #vehicleNo (input)="VehicleInput(vehicleNo.value)" type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                        formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
+                    <!-- Autocomplete options -->
+                    <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
+                        <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                            [value]="number.VehicleNo">
+                            {{ number.VehicleNo }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+
+                <!-- <div class="col-lg-3 mx-2">
+                  <mat-select placeholder="--Select Status--" class="fromSelect"
+                  formControlName="Status">
+                    <mat-option *ngFor="let status of statusList" [value]="status">
+                        {{status}}
+                    </mat-option>
+                  </mat-select>
+                </div> -->
+            </form>
+          </div>
+          <div class="col-lg-2">
+            <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
+            <button (click)="search()" class="btn btn-color ms-2">Search</button> 
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 offset-lg-2 my-2">
+        <div class="top-container">
+          <div class="search-field px-2">
+            <input (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="col-lg-12">
+        <div class="table-container">
+          <div>
+            <table matSort mat-table [dataSource]="dataSource">
+              <!-- Displayed columns -->
+              <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+                <td mat-cell *matCellDef="let row; let i = index;">
+                    {{ row[column.columnDef]  }}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>                  
+              </ng-container>
+  
+              <!-- Collection Date -->
+              <ng-container matColumnDef="SaleDate">
+                <th mat-header-cell *matHeaderCellDef> Collection Date </th>
+                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.SaleDate }} </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+              </ng-container>
+              
+         
+                       <!-- Long FieldWeight -->
+                       <ng-container matColumnDef="FieldWeight">
+                        <th mat-header-cell *matHeaderCellDef> Long Leaf ( KG ) </th>
+                        <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FieldWeight}} KG </td>
+                        <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                          <b>{{ getTotalCost('FieldWeight') }} KG</b>
+                        </td>
+                      </ng-container>
+
+                  <!-- ChallanWeight -->
+                  <ng-container matColumnDef="ChallanWeight">
+                    <th mat-header-cell *matHeaderCellDef> Wet Leaf ( KG ) </th>
+                    <td class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
+                    <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                      <b>{{ getTotalCost('ChallanWeight') }} KG</b>
+                    </td>
+                  </ng-container>
+
+
+              <!-- Deduction -->
+              <!-- <ng-container matColumnDef="Deduction">
+                <th mat-header-cell *matHeaderCellDef> Deduction ( KG ) </th>
+                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.Deduction}} KG </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('Deduction') }} KG</b> </td>
+              </ng-container> -->
+
+              <!-- Final Weight -->
+              <!-- <ng-container matColumnDef="FinalWeight">
+                <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
+                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG</td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalWeight') }} KG</b> </td>
+              </ng-container> -->
+
+              <!-- Status column
+              <ng-container matColumnDef="Status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let row">
+                    <div class="statusBtn">
+                      <span *ngIf="row.Status == 'Rejected'" class="btn-reject">Rejected</span>
+                      <span *ngIf="row.Status == 'Pending'" class="btn-pending">Pending</span>
+                      <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
+                    </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container> -->
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+            </table>
+          </div>
+        </div>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+  

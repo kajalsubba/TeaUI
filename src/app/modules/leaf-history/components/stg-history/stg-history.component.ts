@@ -87,8 +87,7 @@ export class StgHistoryComponent {
   }
 
   ngAfterViewInit() {
-    console.log(this.loginDetails);
-    
+
     
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -124,7 +123,6 @@ export class StgHistoryComponent {
   search(){
 
     const currentDate = new Date();
-  //  this.GetStgList(formatDate(currentDate, 'yyyy-MM-dd', 'en-US'),formatDate(currentDate, 'yyyy-MM-dd', 'en-US'));
  
     const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): this.dateRangeForm.value.fromDate.format('yyyy-MM-DD');
     const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):  this.dateRangeForm.value.toDate.format('yyyy-MM-DD');
@@ -147,6 +145,8 @@ export class StgHistoryComponent {
     });
     this.subscriptions.push(categoryListService);
   }
+
+
   handleChange(event: any): void {
     // Your code to handle the change event
     if (event.target.checked) {
