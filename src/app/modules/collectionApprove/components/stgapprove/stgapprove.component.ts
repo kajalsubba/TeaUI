@@ -244,6 +244,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
             this.toastr.success(res.Message, 'SUCCESS');
         
             this.GetStgList(null,null);
+            this.selection = new SelectionModel<any>(true, [])
        
         });
 }
