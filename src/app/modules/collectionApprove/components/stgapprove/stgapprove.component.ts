@@ -15,6 +15,7 @@ import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { IstgApprove } from '../../interfaces/istg-approve';
 import { StgApproveService } from '../../services/stg-approve.service';
+import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-entry.component';
 
 @Component({
   selector: 'app-stgapprove',
@@ -308,6 +309,17 @@ VehicleInput(value:string){
 
 getTotalCost(columnName: string): number {
   return this.selection.selected.reduce((acc, curr) => acc + curr[columnName], 0);
+}
+
+saleEntry(){
+  const dialogRef = this.dialog.open(SaleEntryComponent,{
+    width:"90vw",
+    height: "90%",
+    disableClose:true,
+    data:{
+      title:"Sale Entry Form"
+    }
+  });
 }
 
 }

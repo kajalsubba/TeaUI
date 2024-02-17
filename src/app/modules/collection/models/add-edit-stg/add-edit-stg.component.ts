@@ -42,7 +42,7 @@ export class AddEditStgComponent implements OnInit {
     private stgService:StgService,
     private autocompleteService: AutoCompleteService,
     private gradeService:GradeService,
-    datepipe: DatePipe
+    private datepipe: DatePipe
   ){}
 
   async ngOnInit() {
