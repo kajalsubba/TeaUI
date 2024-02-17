@@ -19,6 +19,12 @@
                                 {{ number.VehicleNo }}
                             </mat-option>
                         </mat-autocomplete>
+                          <!-- Validation message -->
+                          <span
+                          *ngIf="dateRangeForm.get('VehicleNo')?.hasError('required') && dateRangeForm.get('VehicleNo')?.touched"
+                          class="text-danger d-block validation-message">
+                          Vehicle No is required.
+                      </span>
                     </div>
             </form>
           </div>
