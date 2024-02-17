@@ -8,11 +8,11 @@
         <div class="row border-box mt-1">
             <div class="col-lg-3">
                 <div class="form-group row py-1">
-                    <label for="CollectionDate" class="col-lg-4 col-form-label">Select Date</label>
+                    <label for="CollectionDate" class="col-lg-4 col-form-label">Sale Date</label>
                     <div class="col-lg-8 position-relative">
             
                             <mat-form-field>
-                                <input formControlName="StartDate" matInput [matDatepicker]="picker" placeholder="Select Date">
+                                <input formControlName="SaleDate" matInput [matDatepicker]="picker" placeholder="Select Date">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
@@ -154,7 +154,7 @@
           </div>
     </div>
     <div class="row py-2 border-box border-top-none">
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
             <div class="form-group row py-1">
                 <label for="SaleDate" class="col-lg-5 col-form-label">Sale Date</label>
                 <div class="col-lg-7 position-relative">
@@ -166,7 +166,7 @@
                         </mat-form-field>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="col-lg-4">
             <div class="form-group row mb-3">
                 <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf</label>
@@ -221,7 +221,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 offset-lg-4">
+        <div class="col-lg-4 offset-lg-8">
             <div class="row">
                 <div class="col-lg-5"></div>
                 <div class="col-lg-7 d-grid">

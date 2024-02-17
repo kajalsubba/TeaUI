@@ -184,7 +184,7 @@ private calculateGrossAmount() {
   const rate = this.saleEntryForm.controls['Rate'].value;
   const incentive = this.saleEntryForm.controls['Incentive'].value;
   const grossAmount = challanWeight * (rate + incentive);
-  this.saleEntryForm.controls['GrossAmount'].setValue(Math.round(grossAmount));
+  this.saleEntryForm.controls['GrossAmount'].setValue(grossAmount.toFixed(2));
 }
 
 
