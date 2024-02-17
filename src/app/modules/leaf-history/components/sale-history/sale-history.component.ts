@@ -50,7 +50,7 @@ export class SaleHistoryComponent {
   //  { columnDef: 'ChallanWeight', header: 'Challa Weight' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Incentive', header: 'Incentive' },
-    { columnDef: 'GrossAmount', header: 'Gross Amount' },
+  //  { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
     { columnDef: 'TypeName', header: 'Sale Type' },
   ];
