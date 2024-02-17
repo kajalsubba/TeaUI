@@ -28,6 +28,7 @@ export class AddEditStgComponent implements OnInit {
   loginDetails: any;
   ClientNames: any[]=[];
   GradeList:any[]=[];
+  TripList:any[]=[];
   myDatepipe!: any;
   statusList:string[]=['Pending', 'Rejected']
 
@@ -61,12 +62,13 @@ export class AddEditStgComponent implements OnInit {
         Rate:[0],
         Remarks:[''],
         Status:['Pending'],
-        TripId:[]
+        TripId:['', Validators.required]
       });
      await this.loadClientNames();
      await this.loadVehicleNumbers();
       this.getFactoryDate();
       this.getGradeList();
+      this.GeTript();
 
       if (this.dialogData.value) {
         console.log(this.dialogData,'this.dialogData');
@@ -83,6 +85,7 @@ export class AddEditStgComponent implements OnInit {
         this.stgForm.controls['Deduction'].setValue(this.dialogData.value.Deduction);
         this.stgForm.controls['FinalWeight'].setValue(this.dialogData.value.FinalWeight);
         this.stgForm.controls['GradeId'].setValue(this.dialogData.value.GradeId);
+        this.stgForm.controls['TripId'].setValue(this.dialogData.value.TripId);
         this.stgForm.controls['Rate'].setValue(this.dialogData.value.Rate);
         this.stgForm.controls['Remarks'].setValue(this.dialogData.value.Remarks);
         this.stgForm.controls['Status'].setValue(this.dialogData.value.Status);
@@ -297,6 +300,18 @@ export class AddEditStgComponent implements OnInit {
     this.subscriptions.push(gradeGetService);
 
   }
+
+ GeTript(){
+  
+
+    const gradeGetService = this.stgService.GetTrip().subscribe((res:any)=>{
+      this.TripList = res.TripDetails
+    });
+
+    this.subscriptions.push(gradeGetService);
+
+  }
+
 
   
 

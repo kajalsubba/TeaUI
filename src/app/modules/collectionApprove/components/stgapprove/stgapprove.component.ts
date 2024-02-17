@@ -40,6 +40,7 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     'Rate',
     'GrossAmount',
     'Remarks',
+    'TripName',
     'Status'
   ];
 //  dataList:any=[];
@@ -61,8 +62,8 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     { columnDef: 'Rate', header: 'Rate' },
        { columnDef: 'GrossAmount', header: 'Gross Amount' },
     // { columnDef: 'Status', header: 'Status' },
-    { columnDef: 'Remarks', header: 'Remarks' }
-    
+    { columnDef: 'Remarks', header: 'Remarks' },
+    { columnDef: 'TripName', header: 'Trip' }
   ];
 
 

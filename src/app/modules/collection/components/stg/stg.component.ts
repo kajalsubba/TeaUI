@@ -37,6 +37,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     'Rate',
     'GrossAmount',
     'Remarks',
+    'TripName',
     'Status',
     'actions',
   ];
@@ -56,6 +57,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
+    { columnDef: 'TripName', header: 'Trip' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
