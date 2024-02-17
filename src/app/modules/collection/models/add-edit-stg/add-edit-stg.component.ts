@@ -211,7 +211,8 @@ export class AddEditStgComponent implements OnInit {
    // controlNames.map((value: string) => this.stgForm.get(value).setValue(null));
      
       // this.stgForm.reset();
-      // this.stgForm.controls['ClientId'].reset()
+      this.stgForm.controls['ClientName'].reset()
+       this.stgForm.controls['ClientId'].reset()
        this.stgForm.controls['FirstWeight'].reset()
       this.stgForm.controls['WetLeaf'].reset()
       this.stgForm.controls['LongLeaf'].reset()
@@ -219,6 +220,7 @@ export class AddEditStgComponent implements OnInit {
       this.stgForm.controls['FinalWeight'].reset()
       this.stgForm.controls['Rate'].reset()
       this.stgForm.controls['Remarks'].reset()
+      this.stgForm.controls['GradeId'].reset()
   }
   async loadVehicleNumbers() {
     try {

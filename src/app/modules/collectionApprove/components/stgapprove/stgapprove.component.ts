@@ -91,14 +91,15 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
-      VehicleNo:['']
+      VehicleNo:['', Validators.required]
     });
    // this.dataSource.data = this.dummyData;
     await this.loadVehicleNumbers();
-    this.GetStgList(null,null);
+   // this.GetStgList(null,null);
  
   }
   GetStgList(FromDate:any,ToDate:any){
+   
     const currentDate = new Date();
     let bodyData:IStgSelect = {
       FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
@@ -127,7 +128,13 @@ export class StgapproveComponent implements OnInit,  AfterViewInit {
 
   search()
   {
-    this.GetStgList( this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'), this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'));
+    if(this.dateRangeForm.invalid){
+      this.dateRangeForm.markAllAsTouched();
+      return;
+    }
+   
+   // this.GetStgList( this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'), this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'));
+   this.GetStgList( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
   }
 
   clearFilter()
