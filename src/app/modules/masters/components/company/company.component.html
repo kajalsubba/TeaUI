@@ -69,6 +69,23 @@
                 </div>
               </div>
               <div class="form-group row my-2">
+                <label class="col-lg-5 col-form-label">Upload Image</label>
+                <div class="col-lg-7 d-flex align-items-center">
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="imageUpload"
+                    accept="image/*"
+                    (change)="onFileSelected($event)"
+                  >
+                  <!-- Image preview container -->
+                  <div class="image-preview mx-2" *ngIf="imageUrl">
+                    <img width="50px" [src]="imageUrl" alt="Selected Image" class="img-thumbnail">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group row my-2">
                 <label for="CompanyDetails" class="col-lg-5 col-form-label">Details </label>
                 <div class="col-lg-7 position-relative">
                   <!-- <textarea

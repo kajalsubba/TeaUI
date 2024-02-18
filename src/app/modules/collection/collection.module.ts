@@ -21,6 +21,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} fro
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { ColumnTotalPipe } from 'src/app/shared/pipes/column-total.pipe';
+import { AddEditSupplierComponent } from './models/add-edit-supplier/add-edit-supplier.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -40,7 +41,8 @@ export const MY_FORMATS = {
     CollectionComponent,
     StgComponent,
     SupplierComponent,
-    AddEditStgComponent
+    AddEditStgComponent,
+    AddEditSupplierComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,200 @@
+.table-container{
+    height: calc(100vh - 200px);
+    overflow: auto;
+    box-shadow: var(--soft-box-shadow);
+}
+
+.title{
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    span{
+        border-bottom: 2px solid var(--primary-color);
+        text-shadow: 1px 2px 3px;
+    }
+}
+
+.top-container{
+    display: flex;
+    .search-field{
+        flex: 1;
+        position: relative;
+        i{
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            text-shadow: var(--soft-box-shadow);
+        }
+    }
+}
+
+th.mat-sort-header-sorted {
+    color: white;
+}
+
+// .btn-container {
+//     display: flex;
+//     align-items: baseline;
+//   }
+  
+//   .btn-container i {
+//     display: inline-block;
+//     position: relative;
+//     top: -9px;
+//   }
+  
+//   label {
+//     font-size: 13px;
+//     color: #424242;
+//     font-weight: 500;
+//   }
+  
+//   .btn-color-mode-switch {
+//     display: inline-block;
+//     margin: 0px;
+//     position: relative;
+//   }
+  
+//   .btn-color-mode-switch > label.btn-color-mode-switch-inner {
+//     margin: 0px;
+//     width: 150px;
+//     height: 30px;
+//     background: #E0E0E0;
+//     border-radius: 26px;
+//     overflow: hidden;
+//     position: relative;
+//     transition: all 0.3s ease;
+//       /*box-shadow: 0px 0px 8px 0px rgba(17, 17, 17, 0.34) inset;*/
+//     display: block;
+//   }
+  
+//   .btn-color-mode-switch > label.btn-color-mode-switch-inner:before {
+//     content: attr(data-on);
+//     position: absolute;
+//     font-size: 12px;
+//     font-weight: 500;
+//     top: 7px;
+//     right: 20px;
+//   }
+  
+//   .btn-color-mode-switch > label.btn-color-mode-switch-inner:after {
+//     content: attr(data-off);
+//     width: 70px;
+//     height: 90%;
+//     background: #ffc107;
+//     color: #fff;
+//     border-radius: 26px;
+//     position: absolute;
+//     left: 2px;
+//     top: 2px;
+//     text-align: center;
+//     transition: all 0.3s ease;
+//     box-shadow: 0px 0px 6px -2px #111;
+//     padding: 4px 0px;
+//   }
+  
+//   .btn-color-mode-switch > .alert {
+//     display: none;
+//     background: #FF9800;
+//     border: none;
+//     color: #fff;
+//   }
+  
+//   .btn-color-mode-switch input[type="checkbox"] {
+//     cursor: pointer;
+//     width: 50px;
+//     height: 25px;
+//     opacity: 0;
+//     position: absolute;
+//     top: 0;
+//     z-index: 1;
+//     margin: 0px;
+//   }
+  
+//   .btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner {
+//     color: #333;
+//   }
+  
+//   .btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner:after {
+//     content: attr(data-on);
+//     left: 68px;
+//     background: #28a745;
+//   }
+  
+//   .btn-color-mode-switch input[type="checkbox"]:checked + label.btn-color-mode-switch-inner:before {
+//     content: attr(data-off);
+//     right: auto;
+//     left: 20px;
+//   }
+  
+//   .btn-color-mode-switch input[type="checkbox"]:checked ~ .alert {
+//     display: block;
+//   }
+  
+//   .dark-preview {
+//     background: #0d0d0d;
+//   }
+  
+//   .white-preview {
+//     background: #fff;
+//   }
+  
+  
+.statusBtn{
+  span{
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    margin: 3px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  .btn-reject{
+      background-color: #dc3545;
+      color: white;
+      box-shadow: var(--soft-box-shadow);
+  }
+  .btn-pending{
+      background-color: #ffc107;
+      color: white;
+      box-shadow: var(--soft-box-shadow);
+  }
+  .btn-approved{
+      background-color: var(--primary-color);
+      color: white;
+      box-shadow: var(--soft-box-shadow);
+  }
+}
+
+
+.footer-total{
+  text-wrap: nowrap;
+  text-align: center;
+  background-color: #84d3b6;
+  border: 1px solid gray;
+
+}
+
+.weight-column{
+  background-color: #84d3b6;
+  border: 1px solid gray;
+}
+
+.table-footer{
+  // box-shadow: 0px 0px 2px;
+  border: 1px solid gray;
+  height: 35px;
+}
+
+th:first-child, td:first-child{
+  position: sticky;
+  left: 0;
+  z-index: 990 !important;
+}
+th:last-child, td:last-child{
+  position: sticky;
+  right: 0;
+  z-index: 990 !important;
+}

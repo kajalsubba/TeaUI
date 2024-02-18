@@ -17,6 +17,7 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
   CompanyForm!: FormGroup;
   loginDetails:any;
   private subscriptions: Subscription[] = [];
+  imageUrl: any | ArrayBuffer | null = null;
   constructor(    
     private formBuilder:FormBuilder,
     private companyService:CompanyService,
@@ -56,6 +57,17 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
       });
     this.subscriptions.push(GetService);
   }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    // Read the file as a data URL
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imageUrl = e.target?.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   onSubmit()
   {
     if(this.CompanyForm.invalid){

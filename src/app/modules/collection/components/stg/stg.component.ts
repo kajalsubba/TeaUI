@@ -67,6 +67,7 @@ export class StgComponent implements OnInit, AfterViewInit {
   dateRangeForm!: FormGroup;
   minToDate!: any;
   vehicleNumbers: any[]=[];
+  TripList:any[]=[];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -84,12 +85,14 @@ export class StgComponent implements OnInit, AfterViewInit {
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      VehicleNo:['']
+      VehicleNo:[''],
+      TripId:['']
     });
 
   
     this.GetStgList(null,null);
     this.loadVehicleNumbers();
+    this.GeTript();
  
   }
 
@@ -261,6 +264,18 @@ displayWithFn(value: string): string {
 VehicleInput(value:string){
   let newVal = value.toUpperCase();
   this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+}
+
+GeTript(){
+  
+
+  const gradeGetService = this.stgService.GetTrip().subscribe((res:any)=>{
+    this.TripList = res.TripDetails;
+    this.dateRangeForm.controls['TripId'].setValue(this.TripList[0].TripId);
+  });
+
+  this.subscriptions.push(gradeGetService);
+
 }
   
 

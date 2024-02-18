@@ -305,7 +305,8 @@ export class AddEditStgComponent implements OnInit {
   
 
     const gradeGetService = this.stgService.GetTrip().subscribe((res:any)=>{
-      this.TripList = res.TripDetails
+      this.TripList = res.TripDetails;
+      this.stgForm.controls['TripId'].setValue(this.TripList[0].TripId);
     });
 
     this.subscriptions.push(gradeGetService);

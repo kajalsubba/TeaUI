@@ -241,6 +241,14 @@ textarea{
   background-color: lightgray !important;
 }
 
+.mat-mdc-option{
+  max-height: 40px !important;
+}
+
 .mat-mdc-dialog-content {
   max-height: 90% !important;
+}
+
+.mat-mdc-paginator-container .mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-mdc-text-field-wrapper{
+  padding: 0px 10px;
 }

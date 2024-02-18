@@ -35,6 +35,7 @@ export class SaleEntryComponent implements OnInit {
   private subscriptions: Subscription[] = [];
 
   displayedColumns: string[] = [
+    'serialNumber',
     'CollectionDate',
     'VehicleNo',
     'ClientName',

@@ -11,15 +11,16 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { IGetSale } from 'src/app/modules/collectionApprove/interfaces/isale-save';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
+import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 
 @Component({
   selector: 'app-sale-history',
   templateUrl: './sale-history.component.html',
-  styleUrls: ['./sale-history.component.scss']
+  styleUrls: ['./sale-history.component.scss'],
 })
 export class SaleHistoryComponent {
-
   displayedColumns: string[] = [
     'SaleId',
     'SaleDate',
@@ -34,71 +35,97 @@ export class SaleHistoryComponent {
     'GrossAmount',
     'Remarks',
     'TypeName',
+    'actions',
   ];
- 
+
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'SaleId', header: 'Sale Id' },
- //   { columnDef: 'SaleDate', header: 'Sale Date' },
+    //   { columnDef: 'SaleDate', header: 'Sale Date' },
     { columnDef: 'FactoryName', header: 'FactoryName' },
     { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-   // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
-  //  { columnDef: 'Grade', header: 'Grade' },
-  //  { columnDef: 'ChallanWeight', header: 'Challa Weight' },
+    // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
+    //  { columnDef: 'Grade', header: 'Grade' },
+    //  { columnDef: 'ChallanWeight', header: 'Challa Weight' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Incentive', header: 'Incentive' },
-  //  { columnDef: 'GrossAmount', header: 'Gross Amount' },
+    //  { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
     { columnDef: 'TypeName', header: 'Sale Type' },
   ];
 
-  loginDetails:any;
+  loginDetails: any;
   SaleForm!: FormGroup;
   private destroy$ = new Subject<void>();
-  vehicleNumbers: any[]=[];
+  vehicleNumbers: any[] = [];
   minToDate!: any;
   private subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  factoryNames: any[]=[];
+  accountNames: any[]=[];
+  saleTypeList:any[]=[
+    {
+      SaleType:"Sale Type 1",
+      SaleId:1
+    },
+    {
+      SaleType:"Sale Type 2",
+      SaleId:2
+    },
+    {
+      SaleType:"Sale Type 3",
+      SaleId:3
+    },
+  ]
 
-constructor(   
-  private helper: HelperService,
-  private datePipe: DatePipe,
-  private toastr:ToastrService,
-  private autocompleteService: AutoCompleteService,
-  private fb:FormBuilder,
-  private saleService:StgApproveService
+  constructor(
+    private helper: HelperService,
+    private datePipe: DatePipe,
+    private toastr: ToastrService,
+    private autocompleteService: AutoCompleteService,
+    private fb: FormBuilder,
+    private saleService: StgApproveService
   ) {
-    this.SaleForm = this.fb.group({
-      fromDate: [new Date(), Validators.required],
-      toDate: [new Date(), [Validators.required]],
-      VehicleNo:[''],
-    
-    });
-  
-}
+    // this.SaleForm = this.fb.group({
+    //   fromDate: [new Date(), Validators.required],
+    //   toDate: [new Date(), [Validators.required]],
+    //   VehicleNo: [''],
+    //   FactoryName:['']
+    // });
+  }
 
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.SaleForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      VehicleNo:[''],
-      Status:['']
+      VehicleNo: [''],
+      FactoryName:[''],
+      FactoryId:[null],
+      AccountName:[''],
+      AccountId:[null],
+      SaleId:[null]
     });
     this.loadVehicleNumbers();
- 
+    this.loadFactoryNames();
+    this.loadAccountNames();
   }
-  search()
-  {
-    this.GetSaleDeatils(formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+  search() {
+    this.GetSaleDeatils(
+      formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US')
+    );
   }
 
   getTotalCost(columnName: string): number {
-    return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
+    return this.dataSource.filteredData.reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
   }
 
   applyFilter(event: Event) {
@@ -110,65 +137,131 @@ constructor(
     }
   }
 
-   // Autocomplete function
- filterVehicleNumbers(value: string): any {
-  const filterValue = value.toLowerCase();
-  return this.vehicleNumbers.filter((x:any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
-}
+  // Autocomplete function
+  filterVehicleNumbers(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.vehicleNumbers.filter((x: any) =>
+      x?.VehicleNo?.toLowerCase()?.includes(filterValue)
+    );
+  }
 
-async loadVehicleNumbers() {
-  try {
+  filterFactoryNames(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.factoryNames.filter((x: any) =>
+      x?.FactoryName?.toLowerCase()?.includes(filterValue)
+    );
+  }
+
+  filterAccountNames(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.accountNames.filter((x: any) =>
+      x?.AccountName?.toLowerCase()?.includes(filterValue)
+    );
+  }
+
+  async loadVehicleNumbers() {
+    try {
       const bodyData: IGetGrade = {
-          TenantId: this.loginDetails.TenantId
+        TenantId: this.loginDetails.TenantId,
       };
 
-      const res: any = await this.autocompleteService.GetVehicleNumbers(bodyData)
-          .pipe(takeUntil(this.destroy$))
-          .toPromise();
+      const res: any = await this.autocompleteService
+        .GetVehicleNumbers(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
       this.vehicleNumbers = res.VehicleDetails;
-
-
-  } catch (error) {
+    } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
+    }
   }
-}
-displayWithFn(value: string): string {
-  return value || '';
-}
-GetSaleDeatils(FromDate:any,ToDate:any){
-  const currentDate = new Date();
-  let bodyData:IGetSale = {
-    FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
-    ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
-    TenantId:this.loginDetails.TenantId,
-  //  VehicleNo:this.dateRangeForm.value.VehicleNo,
-   
+
+  async loadFactoryNames() {
+    try {
+      const bodyData: IGetFactory = {
+        TenantId: this.loginDetails.TenantId,
+      };
+
+      const res: any = await this.autocompleteService
+        .GetFactoryNames(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.factoryNames = res.FactoryDetails;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
   }
-  const categoryListService = this.saleService.GetSaleDetails(bodyData).subscribe((res:any)=>{
-   // console.log(res);
-    this.dataSource.data = res.SaleDetails;
-  });
-  this.subscriptions.push(categoryListService);
-}
 
+  async loadAccountNames() {
+    try {
+      const bodyData: IGetFactoryAccount = {
+        TenantId: this.loginDetails.TenantId,
+      };
 
-ngAfterViewInit() {
+      const res: any = await this.autocompleteService
+        .GetAccountNames(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
-  
-  this.dataSource.paginator = this.paginator;
-  this.dataSource.sort = this.sort;
-}
+      this.accountNames = res.AccountDetails;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+  displayWithFn(value: string): string {
+    return value || '';
+  }
+  GetSaleDeatils(FromDate: any, ToDate: any) {
+    const currentDate = new Date();
+    let bodyData: IGetSale = {
+      FromDate:
+        FromDate == null
+          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+          : FromDate,
+      ToDate:
+        ToDate == null
+          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+          : ToDate,
+      TenantId: this.loginDetails.TenantId,
+      //  VehicleNo:this.dateRangeForm.value.VehicleNo,
+    };
+    const categoryListService = this.saleService
+      .GetSaleDetails(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.dataSource.data = res.SaleDetails;
+      });
+    this.subscriptions.push(categoryListService);
+  }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
-VehicleInput(value:string){
-  let newVal = value.toUpperCase();
-  this.SaleForm.controls['VehicleNo'].setValue(newVal);
-}
+  VehicleInput(value: string) {
+    let newVal = value.toUpperCase();
+    this.SaleForm.controls['VehicleNo'].setValue(newVal);
+  }
 
-fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-  this.SaleForm.controls['toDate'].setValue(null);
-  this.minToDate = event.value
-}
+  selectFactory(factory: any) {
+    this.SaleForm.controls['FactoryId'].setValue(factory?.FactoryId);
+  }
+
+  selectAccount(account: any) {
+    this.SaleForm.controls['AccountId'].setValue(account?.AccountId);
+  }
+
+  fromDateChange(event: MatDatepickerInputEvent<Date>): void {
+    this.SaleForm.controls['toDate'].setValue(null);
+    this.minToDate = event.value;
+  }
+
+  editItem(row: any) {}
+
+  deleteItem(row: any) {}
 }

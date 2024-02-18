@@ -1,53 +1,80 @@
 <div class="container-fluid mt-2">
     <div class="row">
-      <div class="col-lg-8 my-2">
+      <div class="col-lg-10 my-2">
         <div class="row">
-          <div class="col-lg-10">
+          <div class="col-lg-12">
             <form [formGroup]="SaleForm" class="d-flex">
-              <div class="col-lg-3 d-grid">
-                <mat-form-field>
-                  <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)" placeholder="From Date" formControlName="fromDate">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-              </div>
-            
-              <div class="col-lg-3 d-grid">
-                <mat-form-field class="mx-2 ">
-                  <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="SaleForm.value.fromDate" placeholder="To Date" formControlName="toDate">
-                  <mat-datepicker-toggle [disabled]="SaleForm.value.fromDate == null" matSuffix [for]="picker1"></mat-datepicker-toggle>
-                  <mat-datepicker #picker1></mat-datepicker>
-                </mat-form-field>
-              </div>
-                <div class="position-relative col-lg-3 d-grid">
-                    <input #vehicleNo (input)="VehicleInput(vehicleNo.value)" type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
-                        formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
-                    <!-- Autocomplete options -->
-                    <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
-                        <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
-                            [value]="number.VehicleNo">
-                            {{ number.VehicleNo }}
-                        </mat-option>
-                    </mat-autocomplete>
+              <div class="row">
+                <div class="col-lg-3 d-grid">
+                  <mat-form-field>
+                    <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)" placeholder="From Date" formControlName="fromDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
                 </div>
-
-                <!-- <div class="col-lg-3 mx-2">
-                  <mat-select placeholder="--Select Status--" class="fromSelect"
-                  formControlName="Status">
-                    <mat-option *ngFor="let status of statusList" [value]="status">
-                        {{status}}
-                    </mat-option>
-                  </mat-select>
-                </div> -->
+              
+                <div class="col-lg-3 d-grid">
+                  <mat-form-field>
+                    <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="SaleForm.value.fromDate" placeholder="To Date" formControlName="toDate">
+                    <mat-datepicker-toggle [disabled]="SaleForm.value.fromDate == null" matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                  <div class="position-relative col-lg-3 d-grid">
+                      <input #vehicleNo (input)="VehicleInput(vehicleNo.value)" type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                          formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
+                      <!-- Autocomplete options -->
+                      <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
+                          <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                              [value]="number.VehicleNo">
+                              {{ number.VehicleNo }}
+                          </mat-option>
+                      </mat-autocomplete>
+                  </div>
+                  <div class="position-relative col-lg-3 d-grid">
+                      <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
+                          formControlName="FactoryName" [matAutocomplete]="factoryAuto">
+                      <!-- Autocomplete options -->
+                      <mat-autocomplete #factoryAuto="matAutocomplete" [displayWith]="displayWithFn">
+                          <mat-option *ngFor="let factory of filterFactoryNames(factoryName.value)"
+                              [value]="factory?.FactoryName" (onSelectionChange)="selectFactory(factory)">
+                              {{ factory?.FactoryName }}
+                          </mat-option>
+                      </mat-autocomplete>
+                  </div>
+                  <div class="position-relative col-lg-3 d-grid my-2">
+                      <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
+                          formControlName="AccountName" [matAutocomplete]="accountAuto">
+                      <!-- Autocomplete options -->
+                      <mat-autocomplete #accountAuto="matAutocomplete" [displayWith]="displayWithFn">
+                          <mat-option *ngFor="let account of filterAccountNames(accountName.value)"
+                              [value]="account?.AccountName" (onSelectionChange)="selectAccount(account)">
+                              {{ account?.AccountName }}
+                          </mat-option>
+                      </mat-autocomplete>
+                  </div>
+                  <div class="col-lg-3 position-relative my-2">
+                    <mat-select placeholder="--Sale Type--" class="fromSelect"
+                        formControlName="SaleId">
+                        <mat-option *ngFor="let sale of saleTypeList" [value]="sale.SaleId">
+                            {{sale.SaleType}}
+                        </mat-option>
+                    </mat-select>
+                    <span *ngIf="SaleForm.get('SaleId')?.hasError('required') && SaleForm.get('SaleId')?.touched"
+                        class="text-danger d-block validation-message">
+                        Sale Type is required.
+                    </span>
+                </div>
+                  <div class="col-lg-3 d-grid my-2">
+                    <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
+                    <button (click)="search()" class="btn btn-color">Search</button> 
+                  </div>
+              </div>
             </form>
-          </div>
-          <div class="col-lg-2">
-            <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
-            <button (click)="search()" class="btn btn-color ms-2">Search</button> 
           </div>
         </div>
       </div>
-      <div class="col-lg-2 offset-lg-2 my-2">
+      <div class="col-lg-2 border-left my-2">
         <div class="top-container">
           <div class="search-field px-2">
             <input (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
@@ -122,6 +149,17 @@
                 </td>
                 <td mat-footer-cell *matFooterCellDef></td>
               </ng-container> -->
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let row">
+                  <div>
+                    <i (click)="editItem(row)" matTooltip="Edit" matTooltipPosition="left" class="fa-solid edit-delete-button fa-pen-to-square"></i>
+                    <i (click)="deleteItem(row)" matTooltip="Delete" matTooltipPosition="right" class="fa-solid text-danger edit-delete-button fa-trash-can"></i>
+                  </div>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+              </ng-container>
   
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -1,0 +1,234 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.title}}</span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="supplierForm">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="TransactDate" class="col-lg-5 col-form-label">Transaction Date <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                          
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker" placeholder="TransactDate" formControlName="TransactDate">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row py-1">
+                                <label for="Factory" class="col-lg-5 col-form-label">Factory Name</label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select placeholder="--Select Factory--" class="fromSelect" formControlName="FactoryName"  (selectionChange)="SelectFactory($event.value)">
+                                        <input #buyer (input)="filterFactory(buyer.value)" type="text" class="form-control inset-shadow" placeholder="Search Buyer">
+                                        <mat-option *ngFor="let item of filteredFactory" [value]="item.FactoryId">{{item.FactoryName}}</mat-option>
+                                    </mat-select>
+                                    <span
+                                    *ngIf="supplierForm.get('FactoryName')?.hasError('required') && supplierForm.get('FactoryName')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Factory Name is required.
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="ClientName" class="col-lg-5 col-form-label">Account Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
+                                        formControlName="AccountName" [matAutocomplete]="accountAuto">
+                                    <!-- Autocomplete options -->
+                                    <mat-autocomplete #accountAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                        <mat-option *ngFor="let account of filterAccountNames(accountName.value)"
+                                            [value]="account?.AccountName" (onSelectionChange)="selectAccount(account)">
+                                            {{ account?.AccountName }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                    <!-- Validation message -->
+                                    <span
+                                        *ngIf="supplierForm.get('AccountName')?.hasError('required') && supplierForm.get('AccountName')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Account Name is required.
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                                        formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
+                                    <!-- Autocomplete options -->
+                                    <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                        <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                                            [value]="number.VehicleNo">
+                                            {{ number.VehicleNo }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                    <!-- Validation message -->
+                                    <span
+                                        *ngIf="supplierForm.get('VehicleNo')?.hasError('required') && supplierForm.get('VehicleNo')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Vehicle No. is required.
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
+                                        formControlName="ClientName" [matAutocomplete]="clientAuto">
+                                    <!-- Autocomplete options -->
+                                    <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                        <mat-option *ngFor="let client of filterClientNames(clientName.value)"
+                                            [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
+                                            {{ client?.ClientName }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                    <!-- Validation message -->
+                                    <span
+                                        *ngIf="supplierForm.get('ClientName')?.hasError('required') && supplierForm.get('ClientName')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Client Name is required.
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf <span
+                                    class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input maxlength="2" (keypress)="restrictInput($event)" #FineLeaf type="text" formControlName="FineLeaf" class="form-control" placeholder="0 - 99">
+                                    <span class="kg-text"><i class="fa-solid fa-percent"></i></span>
+                                    <!-- Validation message -->
+                                    <span
+                                        *ngIf="supplierForm.get('FineLeaf')?.hasError('required') && supplierForm.get('FineLeaf')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Fine Leaf is required.
+                                    </span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="ChallanWeight" class="col-lg-5 col-form-label">Challan Weight <span
+                                    class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #ChallanWeight (input)="ChallanWeightInput(ChallanWeight.value)" type="number" class="form-control" id="ChallanWeight" placeholder="Challan Weight"
+                                        formControlName="ChallanWeight">
+                                        <span class="kg-text">KG</span>
+                                        <!-- Validation message -->
+                                    <span
+                                        *ngIf="supplierForm.get('ChallanWeight')?.hasError('required') && supplierForm.get('ChallanWeight')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        ChallanWeight is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="Rate" class="col-lg-5 col-form-label">Rate <span
+                                    class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #Rate (input)="RateInput(Rate.value)" type="number" class="form-control" id="Rate" placeholder="Rate"
+                                        formControlName="Rate">
+                                        <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                                        <!-- Validation message -->
+                                    <span
+                                        *ngIf="supplierForm.get('Rate')?.hasError('required') && supplierForm.get('Rate')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Rate is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="GrossAmount" class="col-lg-5 col-form-label">Gross Amount</label>
+                                <div class="col-lg-7 position-relative">
+                                    <input readonly #GrossAmount type="number" class="form-control" id="GrossAmount" placeholder="Gross Amount"
+                                        formControlName="GrossAmount">
+                                        <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row py-1">
+                                <label for="account" class="col-lg-5 col-form-label">Transaction Type</label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select placeholder="--Transaction Type--" class="fromSelect" formControlName="TransactionType">
+                                        <input #transaction (input)="filterTransactionType(transaction.value)" type="text" class="form-control inset-shadow" placeholder="Search Type">
+                                        <mat-option *ngFor="let transaction of FilteredTranscationType" [value]="transaction.TransactionId">{{transaction.TransactionName}}</mat-option>
+                                    </mat-select>
+                                    <span
+                                    *ngIf="supplierForm.get('TransactionType')?.hasError('required') && supplierForm.get('TransactionType')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Transaction Type  is required.
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row py-1">
+                                <label for="account" class="col-lg-5 col-form-label">Factory Challan Recept <span
+                                    class="text-danger">*</span></label>
+                                <div class="col-lg-7">
+                                    <input
+                                            type="file"
+                                            class="form-control"
+                                            id="imageUpload"
+                                            accept="image/*"
+                                            (change)="onFileSelected($event)"
+                                          >
+                                          <!-- Image preview container -->
+                                        <div class="image-preview mx-2" *ngIf="imageUrl">
+                                            <img width="50px" [src]="imageUrl" alt="Selected Image" class="img-thumbnail"> 
+                                </div>
+                                    <span
+                                        *ngIf="supplierForm.get('TransactionType')?.hasError('required') && supplierForm.get('TransactionType')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Transaction Type  is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button>
+    <button (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
+</mat-dialog-actions>
