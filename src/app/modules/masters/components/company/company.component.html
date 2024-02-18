@@ -80,7 +80,7 @@
                   >
                   <!-- Image preview container -->
                   <div class="image-preview mx-2" *ngIf="imageUrl">
-                    <img width="50px" [src]="imageUrl" alt="Selected Image" class="img-thumbnail">
+                    <img (click)="openImage(imageUrl)" width="50px" [src]="imageUrl" alt="Selected Image" class="img-thumbnail">
                   </div>
                 </div>
               </div>

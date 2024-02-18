@@ -18,9 +18,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent],
+  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent],
   exports: [ConfirmDialogComponent],
   imports: [
     CommonModule,

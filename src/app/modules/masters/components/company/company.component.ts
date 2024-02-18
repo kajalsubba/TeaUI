@@ -5,6 +5,8 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { CompanyService } from '../../services/company.service';
 import { ICompany, IGetCompany } from '../../interfaces/icompany';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-company',
@@ -22,6 +24,7 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
     private formBuilder:FormBuilder,
     private companyService:CompanyService,
     private helper:HelperService,
+    private dialog:MatDialog,
     private toastr:ToastrService) {}
 
   ngAfterViewInit(): void {
@@ -95,6 +98,18 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
         
       })
     }
+  }
+
+  openImage(imageUrl:any){
+    const dialogRef = this.dialog.open(ImageViewerComponent, {
+      width:"80vw",
+      height:"95%",
+      disableClose:true,
+      data:{
+        title:"Image Viewer",
+        imageUrl:imageUrl
+      }
+    })
   }
 
 }
