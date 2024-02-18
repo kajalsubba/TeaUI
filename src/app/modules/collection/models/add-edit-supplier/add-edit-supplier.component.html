@@ -13,12 +13,13 @@
                                 <label for="TransactDate" class="col-lg-5 col-form-label">Transaction Date <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                          
-                                        <mat-form-field>
-                                            <input matInput [matDatepicker]="picker" placeholder="TransactDate" formControlName="TransactDate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker></mat-datepicker>
-                                        </mat-form-field>
+
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="picker" placeholder="TransactDate"
+                                            formControlName="TransactDate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
                                 </div>
                             </div>
                         </div>
@@ -26,15 +27,18 @@
                             <div class="form-group row py-1">
                                 <label for="Factory" class="col-lg-5 col-form-label">Factory Name</label>
                                 <div class="col-lg-7 position-relative">
-                                    <mat-select placeholder="--Select Factory--" class="fromSelect" formControlName="FactoryName"  (selectionChange)="SelectFactory($event.value)">
-                                        <input #buyer (input)="filterFactory(buyer.value)" type="text" class="form-control inset-shadow" placeholder="Search Buyer">
-                                        <mat-option *ngFor="let item of filteredFactory" [value]="item.FactoryId">{{item.FactoryName}}</mat-option>
+                                    <mat-select placeholder="--Select Factory--" class="fromSelect"
+                                        formControlName="FactoryName" (selectionChange)="SelectFactory($event.value)">
+                                        <input #buyer (input)="filterFactory(buyer.value)" type="text"
+                                            class="form-control inset-shadow" placeholder="Search Buyer">
+                                        <mat-option *ngFor="let item of filteredFactory"
+                                            [value]="item.FactoryId">{{item.FactoryName}}</mat-option>
                                     </mat-select>
                                     <span
-                                    *ngIf="supplierForm.get('FactoryName')?.hasError('required') && supplierForm.get('FactoryName')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Factory Name is required.
-                                </span>
+                                        *ngIf="supplierForm.get('FactoryName')?.hasError('required') && supplierForm.get('FactoryName')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Factory Name is required.
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -43,8 +47,9 @@
                                 <label for="ClientName" class="col-lg-5 col-form-label">Account Name <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
-                                        formControlName="AccountName" [matAutocomplete]="accountAuto">
+                                    <input #accountName type="text" class="form-control" id="accountName"
+                                        placeholder="Account Name" formControlName="AccountName"
+                                        [matAutocomplete]="accountAuto">
                                     <!-- Autocomplete options -->
                                     <mat-autocomplete #accountAuto="matAutocomplete" [displayWith]="displayWithFn">
                                         <mat-option *ngFor="let account of filterAccountNames(accountName.value)"
@@ -70,7 +75,8 @@
                                 <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text"
+                                        class="form-control" id="VehicleNo" placeholder="Vehicle No."
                                         formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
                                     <!-- Autocomplete options -->
                                     <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
@@ -95,8 +101,9 @@
                                 <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
-                                        formControlName="ClientName" [matAutocomplete]="clientAuto">
+                                    <input #clientName type="text" class="form-control" id="ClientName"
+                                        placeholder="Client Name" formControlName="ClientName"
+                                        [matAutocomplete]="clientAuto">
                                     <!-- Autocomplete options -->
                                     <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
                                         <mat-option *ngFor="let client of filterClientNames(clientName.value)"
@@ -118,9 +125,10 @@
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf <span
-                                    class="text-danger">*</span></label>
+                                        class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input maxlength="2" (keypress)="restrictInput($event)" #FineLeaf type="text" formControlName="FineLeaf" class="form-control" placeholder="0 - 99">
+                                    <input maxlength="2" (keypress)="restrictInput($event)" #FineLeaf type="text"
+                                        formControlName="FineLeaf" class="form-control" placeholder="0 - 99">
                                     <span class="kg-text"><i class="fa-solid fa-percent"></i></span>
                                     <!-- Validation message -->
                                     <span
@@ -130,19 +138,20 @@
                                     </span>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="ChallanWeight" class="col-lg-5 col-form-label">Challan Weight <span
-                                    class="text-danger">*</span></label>
+                                        class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #ChallanWeight (input)="ChallanWeightInput(ChallanWeight.value)" type="number" class="form-control" id="ChallanWeight" placeholder="Challan Weight"
-                                        formControlName="ChallanWeight">
-                                        <span class="kg-text">KG</span>
-                                        <!-- Validation message -->
+                                    <input #ChallanWeight (input)="ChallanWeightInput(ChallanWeight.value)"
+                                        type="number" class="form-control" id="ChallanWeight"
+                                        placeholder="Challan Weight" formControlName="ChallanWeight">
+                                    <span class="kg-text">KG</span>
+                                    <!-- Validation message -->
                                     <span
                                         *ngIf="supplierForm.get('ChallanWeight')?.hasError('required') && supplierForm.get('ChallanWeight')?.touched"
                                         class="text-danger d-block validation-message">
@@ -154,12 +163,12 @@
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="Rate" class="col-lg-5 col-form-label">Rate <span
-                                    class="text-danger">*</span></label>
+                                        class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #Rate (input)="RateInput(Rate.value)" type="number" class="form-control" id="Rate" placeholder="Rate"
-                                        formControlName="Rate">
-                                        <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                                        <!-- Validation message -->
+                                    <input #Rate (input)="RateInput(Rate.value)" type="number" class="form-control"
+                                        id="Rate" placeholder="Rate" formControlName="Rate">
+                                    <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                                    <!-- Validation message -->
                                     <span
                                         *ngIf="supplierForm.get('Rate')?.hasError('required') && supplierForm.get('Rate')?.touched"
                                         class="text-danger d-block validation-message">
@@ -172,9 +181,9 @@
                             <div class="form-group row mb-3">
                                 <label for="GrossAmount" class="col-lg-5 col-form-label">Gross Amount</label>
                                 <div class="col-lg-7 position-relative">
-                                    <input readonly #GrossAmount type="number" class="form-control" id="GrossAmount" placeholder="Gross Amount"
-                                        formControlName="GrossAmount">
-                                        <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                                    <input readonly #GrossAmount type="number" class="form-control" id="GrossAmount"
+                                        placeholder="Gross Amount" formControlName="GrossAmount">
+                                    <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
                                 </div>
                             </div>
                         </div>
@@ -184,15 +193,18 @@
                             <div class="form-group row py-1">
                                 <label for="account" class="col-lg-5 col-form-label">Transaction Type</label>
                                 <div class="col-lg-7 position-relative">
-                                    <mat-select placeholder="--Transaction Type--" class="fromSelect" formControlName="TransactionType">
-                                        <input #transaction (input)="filterTransactionType(transaction.value)" type="text" class="form-control inset-shadow" placeholder="Search Type">
-                                        <mat-option *ngFor="let transaction of FilteredTranscationType" [value]="transaction.TransactionId">{{transaction.TransactionName}}</mat-option>
+                                    <mat-select placeholder="--Transaction Type--" class="fromSelect"
+                                        formControlName="TransactionType">
+                                        <input #transaction (input)="filterTransactionType(transaction.value)"
+                                            type="text" class="form-control inset-shadow" placeholder="Search Type">
+                                        <mat-option *ngFor="let transaction of FilteredTranscationType"
+                                            [value]="transaction.TransactionId">{{transaction.TransactionName}}</mat-option>
                                     </mat-select>
                                     <span
-                                    *ngIf="supplierForm.get('TransactionType')?.hasError('required') && supplierForm.get('TransactionType')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Transaction Type  is required.
-                                </span>
+                                        *ngIf="supplierForm.get('TransactionType')?.hasError('required') && supplierForm.get('TransactionType')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Transaction Type is required.
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -201,23 +213,27 @@
                         <div class="col-lg-6">
                             <div class="form-group row py-1">
                                 <label for="account" class="col-lg-5 col-form-label">Factory Challan Recept <span
-                                    class="text-danger">*</span></label>
+                                        class="text-danger">*</span></label>
                                 <div class="col-lg-7">
-                                    <input
-                                            type="file"
-                                            class="form-control"
-                                            id="imageUpload"
-                                            accept="image/*"
-                                            (change)="onFileSelected($event)"
-                                          >
-                                          <!-- Image preview container -->
-                                        <div class="image-preview mx-2" *ngIf="imageUrl">
-                                            <img width="50px" [src]="imageUrl" alt="Selected Image" class="img-thumbnail"> 
-                                </div>
+                                    <div class="row">
+                                        <div class="col-lg-10">
+                                            <input type="file" class="form-control" id="imageUpload" accept="image/*"
+                                                (change)="onFileSelected($event)">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <!-- Image preview container -->
+                                            <div class="image-preview mx-2 w-100" *ngIf="imageUrl">
+                                                <img (click)="openImage(imageUrl)" [src]="imageUrl"
+                                                    alt="Selected Image" class="img-thumbnail">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <span
                                         *ngIf="supplierForm.get('TransactionType')?.hasError('required') && supplierForm.get('TransactionType')?.touched"
                                         class="text-danger d-block validation-message">
-                                        Transaction Type  is required.
+                                        Transaction Type is required.
                                     </span>
                                 </div>
                             </div>

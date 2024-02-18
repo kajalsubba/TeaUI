@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
@@ -8,6 +8,7 @@ import { AutoCompleteService } from '../../services/auto-complete.service';
 import { DatePipe } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
+import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-add-edit-supplier',
@@ -47,6 +48,7 @@ export class AddEditSupplierComponent implements OnInit {
     private helper: HelperService,
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
+    private dialog: MatDialog,
     private datepipe: DatePipe
   ) {}
 
@@ -219,6 +221,18 @@ filterFactory(value: string) {
       this.imageUrl = e.target?.result;
     };
     reader.readAsDataURL(file);
+  }
+
+  openImage(imageUrl:any){
+    const dialogRef = this.dialog.open(ImageViewerComponent, {
+      width:"80vw",
+      height:"95%",
+      disableClose:true,
+      data:{
+        title:"Image Viewer",
+        imageUrl:imageUrl
+      }
+    })
   }
 
   onSubmit() {}
