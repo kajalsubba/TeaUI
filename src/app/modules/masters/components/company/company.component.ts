@@ -20,6 +20,8 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
   loginDetails:any;
   private subscriptions: Subscription[] = [];
   imageUrl: any | ArrayBuffer | null = null;
+
+  FileData:any;
   constructor(    
     private formBuilder:FormBuilder,
     private companyService:CompanyService,
@@ -69,10 +71,14 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
       this.imageUrl = e.target?.result;
     };
     reader.readAsDataURL(file);
+
+    this.FileData=file;
   }
 
   onSubmit()
   {
+
+
     if(this.CompanyForm.invalid){
       this.CompanyForm.markAllAsTouched();
       return;
@@ -88,7 +94,7 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
         CreatedBy:this.loginDetails.UserId,
      
       }
-      const saveCategory = this.companyService.SaveComapany(bodyData).subscribe((res:any)=>{
+      const saveCategory = this.companyService.SaveComapany(bodyData,this.FileData).subscribe((res:any)=>{
        
         // if(res.Id == 0){
         //   this.toastr.error(res.Message, "Exists");

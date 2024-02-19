@@ -19,6 +19,16 @@ export class ApiService {
     return { headers };
   }
 
+
+  private getFileRequestOptions(contentType: string = 'multipart/form-data'): { headers: HttpHeaders } {
+    const headers = new HttpHeaders({
+      'Content-Type': contentType,
+      // Add any other headers as needed
+    });
+
+    return { headers };
+  }
+
   private handleHttpError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An error occurred';
     if (error.error instanceof ErrorEvent) {
@@ -58,6 +68,17 @@ export class ApiService {
     this.logRequest('POST', endpoint, data);
 
     return this.http.post<T>(`${this.config.apiUrl}/${endpoint}`, data, this.getRequestOptions()).pipe(
+      tap((response) => this.logResponse('POST', endpoint, response)),
+      catchError(this.handleHttpError)
+    );
+  }
+
+  postfile<T>(endpoint: string, data: FormData): Observable<T> {
+     const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+   this.logRequest('POST', endpoint, data);
+
+    return this.http.post<T>(`${this.config.apiUrl}/${endpoint}`, data, {headers} ).pipe(
       tap((response) => this.logResponse('POST', endpoint, response)),
       catchError(this.handleHttpError)
     );
