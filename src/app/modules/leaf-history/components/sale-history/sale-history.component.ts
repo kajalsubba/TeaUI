@@ -67,20 +67,9 @@ export class SaleHistoryComponent {
   @ViewChild(MatSort) sort!: MatSort;
   factoryNames: any[]=[];
   accountNames: any[]=[];
-  saleTypeList:any[]=[
-    {
-      SaleType:"Sale Type 1",
-      SaleId:1
-    },
-    {
-      SaleType:"Sale Type 2",
-      SaleId:2
-    },
-    {
-      SaleType:"Sale Type 3",
-      SaleId:3
-    },
-  ]
+  AccountList:any=[];
+  saleTypeList:any;
+  
 
   constructor(
     private helper: HelperService,
@@ -108,11 +97,12 @@ export class SaleHistoryComponent {
       FactoryId:[null],
       AccountName:[''],
       AccountId:[null],
-      SaleId:[null]
+      SaleTypeId:[null]
     });
     this.loadVehicleNumbers();
     this.loadFactoryNames();
     this.loadAccountNames();
+    this.GetSaleType();
   }
   search() {
     this.GetSaleDeatils(
@@ -157,6 +147,14 @@ export class SaleHistoryComponent {
     return this.accountNames.filter((x: any) =>
       x?.AccountName?.toLowerCase()?.includes(filterValue)
     );
+  }
+
+  GetSaleType(){
+   
+    const services = this.saleService.GetSaleType().subscribe((res:any)=>{
+      this.saleTypeList= res.SaleTypes;
+    });
+    this.subscriptions.push(services);
   }
 
   async loadVehicleNumbers() {
@@ -206,7 +204,7 @@ export class SaleHistoryComponent {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.accountNames = res.AccountDetails;
+      this.AccountList = res.AccountDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -250,6 +248,7 @@ export class SaleHistoryComponent {
 
   selectFactory(factory: any) {
     this.SaleForm.controls['FactoryId'].setValue(factory?.FactoryId);
+    this.accountNames=   this.AccountList.filter((x:any)=> x.FactoryId==factory.FactoryId)
   }
 
   selectAccount(account: any) {

@@ -25,4 +25,5 @@ export interface IStgSelect
     TenantId: any;
     VehicleNo: any;
     Status: string;
+    TripId:any;
 }

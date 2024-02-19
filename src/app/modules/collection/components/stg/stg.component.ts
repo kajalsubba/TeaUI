@@ -90,7 +90,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     });
 
   
-    this.GetStgList(null,null);
+  //  this.GetStgList(null,null);
     this.loadVehicleNumbers();
     this.GeTript();
  
@@ -112,7 +112,8 @@ export class StgComponent implements OnInit, AfterViewInit {
       ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
       TenantId:this.loginDetails.TenantId,
       VehicleNo:this.dateRangeForm.value.VehicleNo,
-      Status:''
+      Status:'',
+      TripId:this.dateRangeForm.value.TripId,
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
      // console.log(res);

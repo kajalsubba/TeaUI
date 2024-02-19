@@ -105,6 +105,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   }
 
   GetStgList(FromDate: any, ToDate: any) {
+    
     const currentDate = new Date();
     let bodyData: IStgSelect = {
       FromDate:
@@ -118,6 +119,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
+      TripId:this.dateRangeForm.value.TripId,
     };
     const categoryListService = this.stgService
       .GetStg(bodyData)

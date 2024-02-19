@@ -58,6 +58,7 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
            console.log(res,'res');
    
     this.CompanyForm.patchValue(res.CompanyDetails[0]);
+    this.imageUrl =res.CompanyDetails[0].CompanyLogo;
   //  this.CompanyForm.controls['CompanyName'].setValue(res.CompanyDetails[0].CompanyName);
       });
     this.subscriptions.push(GetService);

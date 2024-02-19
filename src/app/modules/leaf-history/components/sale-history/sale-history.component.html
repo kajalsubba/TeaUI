@@ -55,12 +55,12 @@
                   </div>
                   <div class="col-lg-3 position-relative my-2">
                     <mat-select placeholder="--Sale Type--" class="fromSelect"
-                        formControlName="SaleId">
-                        <mat-option *ngFor="let sale of saleTypeList" [value]="sale.SaleId">
-                            {{sale.SaleType}}
+                        formControlName="SaleTypeId">
+                        <mat-option *ngFor="let sale of saleTypeList" [value]="sale.SaleTypeId">
+                            {{sale.TypeName}}
                         </mat-option>
                     </mat-select>
-                    <span *ngIf="SaleForm.get('SaleId')?.hasError('required') && SaleForm.get('SaleId')?.touched"
+                    <span *ngIf="SaleForm.get('SaleTypeId')?.hasError('required') && SaleForm.get('SaleTypeId')?.touched"
                         class="text-danger d-block validation-message">
                         Sale Type is required.
                     </span>

@@ -24,5 +24,8 @@ export class StgApproveService {
     return this.apiService.post('Collection/GetSaleDetails', clientBody);
   }
 
+  GetSaleType(): Observable<string[]> {
+    return this.apiService.get('Master/GetSaleType');
+  }
 
 }
