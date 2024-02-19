@@ -6,7 +6,7 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { AutoCompleteService } from '../../services/auto-complete.service';
 import { DatePipe, formatDate } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
@@ -33,6 +33,7 @@ export class AddEditSupplierComponent implements OnInit {
   FactoryList: any[]=[];
   statusList:string[]=['Pending', 'Rejected']
   TripList:any[]=[];
+  private subscriptions: Subscription[] = [];
   FileData:any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
@@ -59,10 +60,10 @@ export class AddEditSupplierComponent implements OnInit {
       AccountId: [null],
     //  TransactionType: ['', Validators.required],
       VehicleNo: ['', Validators.required],
-      FineLeaf: [null, Validators.required],
+      FineLeaf: [null],
       ChallanWeight: [0, Validators.required],
-      Rate: [0, Validators.required],
-      GrossAmount: [0, Validators.required],
+      Rate: [0],
+      GrossAmount: [0],
       Status:['Pending'],
       TripId:['',Validators.required],
       ChallanImage:['',Validators.required],
@@ -332,5 +333,13 @@ filterFactory(value: string) {
         console.error('Error:', error);
         this.toastr.error('Something went wrong.', 'ERROR');
     }
+}
+
+
+ngOnDestroy(): void {
+  this.subscriptions.forEach((sub)=>{
+    sub.unsubscribe();
+  })
+  this.dialogRef.close(true);
 }
 }

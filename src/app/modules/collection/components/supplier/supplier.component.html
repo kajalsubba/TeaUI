@@ -84,9 +84,9 @@
               </ng-container>
   
               <!-- Collection Date -->
-              <ng-container matColumnDef="TransactDate">
-                <th mat-header-cell *matHeaderCellDef> Transact Date </th>
-                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.TransactDate }} </td>
+              <ng-container matColumnDef="CollectionDate">
+                <th mat-header-cell *matHeaderCellDef> Collection Date  </th>
+                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
               </ng-container>
   
@@ -117,24 +117,25 @@
                       class="fa-solid edit-delete-button fa-pen-to-square"></i>
                     <!-- <i (click)="deleteItem(row)" matTooltip="Delete" matTooltipPosition="right"
                       class="fa-solid text-danger edit-delete-button fa-trash-can"></i> -->
-                      <i matTooltip="View Challan" matTooltipPosition="right" class="fa-solid fa-eye edit-delete-button "></i>
+                      <i (click)="openImage(row.imageUrl)" matTooltip="View Challan" matTooltipPosition="right" class="fa-solid fa-eye edit-delete-button "></i>
                   </div>
                 </td>
                 <td mat-footer-cell *matFooterCellDef> </td>
               </ng-container>
   
-              <!-- Status column -->
-              <!-- <ng-container matColumnDef="Status">
-                <th mat-header-cell *matHeaderCellDef>Status</th>
-                <td mat-cell *matCellDef="let row">
-                  <div class="statusBtn">
-                    <span *ngIf="row.Status == 'Rejected'" class="btn-reject">Rejected</span>
-                    <span *ngIf="row.Status == 'Pending'" class="btn-pending">Pending</span>
-                    <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
-                  </div>
-                </td>
-                <td mat-footer-cell *matFooterCellDef></td>
-              </ng-container> -->
+            
+                 <!-- Status column -->
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let row">
+                <div class="statusBtn">
+                  <span *ngIf="row.Status == 'Rejected'" class="btn-reject">Rejected</span>
+                  <span *ngIf="row.Status == 'Pending'" class="btn-pending">Pending</span>
+                  <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
+                </div>
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
   
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

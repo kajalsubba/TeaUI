@@ -16,6 +16,9 @@ import { StgService } from '../../services/stg.service';
 import { AutoCompleteService } from '../../services/auto-complete.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { AddEditSupplierComponent } from '../../models/add-edit-supplier/add-edit-supplier.component';
+import { ISupplierSelect } from '../../interfaces/isupplier';
+import { SupplierService } from '../../services/supplier.service';
+import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
 
 @Component({
   selector: 'app-supplier',
@@ -24,52 +27,37 @@ import { AddEditSupplierComponent } from '../../models/add-edit-supplier/add-edi
 })
 export class SupplierComponent implements OnInit {
   displayedColumns: string[] = [
-    'TransactDate',
+    'CollectionId',
+    'CollectionDate',
     'ClientName',
-    'ClientId',
-    'BuyerName',
-    'AccountName',
-    'TranscationType',
     'VehicleNo',
+    'FactoryName',
+    'AccountName',
     'FineLeaf',
     'ChallanWeight',
     'Rate',
     'GrossAmount',
-    'OwnerName',
+    'Remarks',
+    'TripName',
+    'Status',
     'actions'
   ];
-  dummyData = [
-    {
-      TransactDate: '18/02/2024',
-      ClientName: 'John Doe',
-      ClientId: '12345',
-      BuyerName: 'Jane Smith',
-      AccountName: 'XYZ Corp',
-      TranscationType: 'Sale',
-      VehicleNo: 'AS01B2525',
-      FineLeaf: 10,
-      ChallanWeight: 500,
-      Rate: 50,
-      GrossAmount: 5000,
-      OwnerName: 'Alice',
-    }
-  ];
- 
+  
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    // { columnDef: 'TransactDate', header: 'Transaction Date' },
+    { columnDef: 'CollectionId', header: 'Id ' },
+   // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'ClientId', header: 'Client ID' },
-    { columnDef: 'BuyerName', header: 'Buyer Name' },
+    { columnDef: 'VehicleNo', header: 'Vehicle No' },
+    { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
-    { columnDef: 'TranscationType', header: 'Transaction Type' },
-    { columnDef: 'VehicleNo', header: 'Vehicle No.' },
-    { columnDef: 'FineLeaf', header: 'Fine Leaf' },
+       { columnDef: 'FineLeaf', header: 'Fine Leaf' },
     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     { columnDef: 'Rate', header: 'Rate' },
-    // { columnDef: 'GrossAmount', header: 'Gross Amount' },
-    { columnDef: 'OwnerName', header: 'Owner Name' }
+    { columnDef: 'Remarks', header: 'Remark' },
+    { columnDef: 'TripName', header: 'TripName ' },
+   // { columnDef: 'Status', header: 'Status ' }
 ];
 
 
@@ -91,6 +79,7 @@ export class SupplierComponent implements OnInit {
     private autocompleteService: AutoCompleteService,
     private fb:FormBuilder,
     private stgService:StgService,
+    private supplierService:SupplierService
   ) {}
 
   ngOnInit(): void {
@@ -101,12 +90,12 @@ export class SupplierComponent implements OnInit {
       VehicleNo:[''],
       TripId:['']
     });
-    this.dataSource.data = this.dummyData;
+   // this.dataSource.data = this.dummyData;
   
-    this.GetSupplierList(null,null);
+   // this.GetSupplierList(null,null);
     this.loadVehicleNumbers();
     this.GeTript();
- 
+   
   }
 
   ngAfterViewInit() {
@@ -119,6 +108,21 @@ export class SupplierComponent implements OnInit {
 
 
   GetSupplierList(FromDate:any,ToDate:any){
+   
+      const currentDate = new Date();
+      let bodyData:ISupplierSelect = {
+        FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
+        ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
+        TenantId:this.loginDetails.TenantId,
+        VehicleNo:this.dateRangeForm.value.VehicleNo,
+        Status:'',
+        TripId:this.dateRangeForm.value.TripId,
+      }
+      const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res:any)=>{
+       // console.log(res);
+        this.dataSource.data = res.SupplierDetails;
+      });
+      this.subscriptions.push(categoryListService);
     
   }
 
@@ -188,7 +192,6 @@ export class SupplierComponent implements OnInit {
   search(){
 
     const currentDate = new Date();
-  //  this.GetStgList(formatDate(currentDate, 'yyyy-MM-dd', 'en-US'),formatDate(currentDate, 'yyyy-MM-dd', 'en-US'));
  
     const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
     const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US')  ;
@@ -265,6 +268,17 @@ displayWithFn(value: string): string {
 VehicleInput(value:string){
   let newVal = value.toUpperCase();
   this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+}
+openImage(imageUrl:any){
+  const dialogRef = this.dialog.open(ImageViewerComponent, {
+    width:"80vw",
+    height:"95%",
+    disableClose:true,
+    data:{
+      title:"Image Viewer",
+      imageUrl:imageUrl
+    }
+  })
 }
 
 GeTript(){

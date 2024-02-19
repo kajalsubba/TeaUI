@@ -20,3 +20,12 @@ export interface IUploadChallan
     CollectionId: any;
     TenantId: any;
 }
+export interface ISupplierSelect
+{
+    FromDate: any;
+    ToDate: any;
+    TenantId: any;
+    VehicleNo: any;
+    Status: string;
+    TripId:any;
+}
