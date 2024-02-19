@@ -22,38 +22,37 @@ import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 export class SupplierHistoryComponent {
 
   displayedColumns: string[] = [
+    'CollectionId',
     'CollectionDate',
-    'VehicleNo',
     'ClientName',
-    'FirstWeight',
-    'WetLeaf',
-    'WetLeafKg',
-    'LongLeaf',
-    'LongLeafKg',
-    'Deduction',
-    'FinalWeight',
-    'GradeName',
+    'VehicleNo',
+    'FactoryName',
+    'AccountName',
+    'FineLeaf',
+    'ChallanWeight',
     'Rate',
     'GrossAmount',
     'Remarks',
+    'TripName',
     'Status',
+    //'actions'
   ];
  
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    // { columnDef: 'CollectionDate', header: 'Collection Date' },
-    { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
-    { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-   // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
-    { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-   // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
-  //  { columnDef: 'Grade', header: 'Grade' },
-    { columnDef: 'GradeName', header: 'Grade' },
-    { columnDef: 'Rate', header: 'Rate' },
-    { columnDef: 'GrossAmount', header: 'Gross Amount' },
-    { columnDef: 'Remarks', header: 'Remarks' },
+    { columnDef: 'CollectionId', header: 'Id ' },
+    // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
+     { columnDef: 'ClientName', header: 'Client Name' },
+     { columnDef: 'VehicleNo', header: 'Vehicle No' },
+     { columnDef: 'FactoryName', header: 'Factory' },
+     { columnDef: 'AccountName', header: 'Account Name' },
+        { columnDef: 'FineLeaf', header: 'Fine Leaf' },
+     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
+     { columnDef: 'Rate', header: 'Rate' },
+     { columnDef: 'Remarks', header: 'Remark' },
+     { columnDef: 'TripName', header: 'TripName ' },
+    // { columnDef: 'Status', header: 'Status ' }
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
