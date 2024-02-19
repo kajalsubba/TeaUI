@@ -28,9 +28,7 @@ export class CompanyService {
     formData.append('CompanyDetails', clientBody.CompanyDetails);
     formData.append('TenantId', clientBody.TenantId);
     formData.append('CreatedBy', clientBody.CreatedBy);
-   // const headers = new HttpHeaders();
-   // headers.append('Content-Type', 'multipart/form-data');
-   //return this.http.post<any>('http://72.167.37.70:81/Master/SaveCompany', formData, { headers });
+
      return this.apiService.postfile('Master/SaveCompany', formData);
   }
 }

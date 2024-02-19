@@ -1,0 +1,22 @@
+export interface ISupplier {
+    CollectionId: any;
+    CollectionDate: any,
+    VehicleNo: any;
+    ClientId: any;
+    AccountId: any;
+    FineLeaf: any;
+    ChallanWeight: any;
+    Rate: any;
+    GrossAmount: any;
+    TripId: any;
+    Status: any;
+    Remarks: any;
+    TenantId: any;
+    CreatedBy: 0
+}
+
+export interface IUploadChallan
+{
+    CollectionId: any;
+    TenantId: any;
+}

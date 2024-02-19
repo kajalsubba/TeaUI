@@ -5,10 +5,14 @@ import { ToastrService } from 'ngx-toastr';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { AutoCompleteService } from '../../services/auto-complete.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
+import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { StgService } from '../../services/stg.service';
+import { ISupplier, IUploadChallan } from '../../interfaces/isupplier';
+import { SupplierService } from '../../services/supplier.service';
 
 @Component({
   selector: 'app-add-edit-supplier',
@@ -22,25 +26,14 @@ export class AddEditSupplierComponent implements OnInit {
   private destroy$ = new Subject<void>();
   loginDetails: any;
   accountNames: any[] = [];
-  TranscationTypeList: any[] = [
-    {
-      TransactionName: 'Transaction 1',
-      TransactionId: 1,
-    },
-    {
-      TransactionName: 'Transaction 2',
-      TransactionId: 2,
-    },
-    {
-      TransactionName: 'Transaction 3',
-      TransactionId: 3,
-    },
-  ];
+  AccountList:any=[];
   FilteredTranscationType: any[] = [];
   vehicleNumbers: any[] = [];
   filteredFactory: any[]=[];
   FactoryList: any[]=[];
-
+  statusList:string[]=['Pending', 'Rejected']
+  TripList:any[]=[];
+  FileData:any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     public dialogRef: MatDialogRef<AddEditSupplierComponent>,
@@ -49,30 +42,38 @@ export class AddEditSupplierComponent implements OnInit {
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
     private dialog: MatDialog,
-    private datepipe: DatePipe
+    private stgService:StgService,
+    private datepipe: DatePipe,
+    private supplierService:SupplierService
   ) {}
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.supplierForm = this.fb.group({
-      TransactDate: [new Date()],
+      CollectionDate: [new Date()],
       ClientName: ['', Validators.required],
       ClientId: [null],
-      BuyerName: ['', Validators.required],
+     // BuyerName: ['', Validators.required],
       AccountName: ['', Validators.required],
       FactoryName: ['', Validators.required],
       AccountId: [null],
-      TransactionType: ['', Validators.required],
+    //  TransactionType: ['', Validators.required],
       VehicleNo: ['', Validators.required],
       FineLeaf: [null, Validators.required],
       ChallanWeight: [0, Validators.required],
       Rate: [0, Validators.required],
       GrossAmount: [0, Validators.required],
+      Status:['Pending'],
+      TripId:['',Validators.required],
+      ChallanImage:['',Validators.required],
+      Remarks:[]
     });
     await this.loadClientNames();
+    await this.loadFactoryNames();
     await this.loadAccountNames();
     await this.loadVehicleNumbers();
-    this.FilteredTranscationType = this.TranscationTypeList;
+    this.GeTript();
+  //  this.FilteredTranscationType = this.TranscationTypeList;
   }
 
   async loadClientNames() {
@@ -93,6 +94,17 @@ export class AddEditSupplierComponent implements OnInit {
     }
   }
 
+
+  GeTript(){
+  
+    const gradeGetService = this.stgService.GetTrip().subscribe((res:any)=>{
+      this.TripList = res.TripDetails;
+      this.supplierForm.controls['TripId'].setValue(this.TripList[0].TripId);
+    });
+
+  
+
+  }
   async loadAccountNames() {
     try {
       const bodyData: IGetFactoryAccount = {
@@ -104,7 +116,7 @@ export class AddEditSupplierComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.accountNames = res.AccountDetails;
+      this.AccountList = res.AccountDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -129,9 +141,27 @@ export class AddEditSupplierComponent implements OnInit {
     }
   }
 
+  async loadFactoryNames() {
+    try {
+      const bodyData: IGetFactory = {
+        TenantId: this.loginDetails.TenantId,
+      };
+
+      const res: any = await this.autocompleteService
+        .GetFactoryNames(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.filteredFactory = res.FactoryDetails;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
   SelectFactory(e:any)
 {
-  this.filteredFactory =   this.FactoryList.filter((x:any)=> x.FactoryId==e)
+
+  this.accountNames =   this.AccountList.filter((x:any)=> x.FactoryId==e)
   
 }
 
@@ -149,12 +179,12 @@ filterFactory(value: string) {
     );
   }
 
-  filterTransactionType(value: string) {
-    const filterValue = value.toLowerCase();
-    this.FilteredTranscationType = this.TranscationTypeList.filter((x: any) =>
-      x?.TransactionName?.toLowerCase()?.includes(filterValue)
-    );
-  }
+  // filterTransactionType(value: string) {
+  //   const filterValue = value.toLowerCase();
+  //   this.FilteredTranscationType = this.TranscationTypeList.filter((x: any) =>
+  //     x?.TransactionName?.toLowerCase()?.includes(filterValue)
+  //   );
+  // }
 
   filterAccountNames(value: string): any {
     const filterValue = value.toLowerCase();
@@ -221,6 +251,7 @@ filterFactory(value: string) {
       this.imageUrl = e.target?.result;
     };
     reader.readAsDataURL(file);
+    this.FileData=file;
   }
 
   openImage(imageUrl:any){
@@ -235,5 +266,71 @@ filterFactory(value: string) {
     })
   }
 
-  onSubmit() {}
+ async onSubmit() {
+
+    if(this.supplierForm.invalid){
+      this.supplierForm.markAllAsTouched();
+      return;
+    }
+
+      let data:ISupplier = {
+      CollectionId:this.dialogData?.value?.CollectionId? this.dialogData?.value?.CollectionId : 0,
+      CollectionDate:formatDate(this.supplierForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
+      VehicleNo:this.supplierForm.value.VehicleNo,
+      ClientId:this.supplierForm.value.ClientId,
+      AccountId:this.supplierForm.value.AccountId,
+      FineLeaf:this.supplierForm.value.FineLeaf,
+      ChallanWeight:this.supplierForm.value.ChallanWeight,
+      Rate:this.supplierForm.value.Rate,
+      GrossAmount:this.supplierForm.value.GrossAmount,
+      TripId:this.supplierForm.value.TripId,
+
+      Remarks: this.supplierForm.value.Remarks,
+      Status:this.supplierForm.value.Status,
+      TenantId:this.loginDetails.TenantId,
+      CreatedBy:this.loginDetails.UserId
+      
+      }
+      console.log('a');
+   var CollId= await this.SaveSupplier(data);
+    console.log(CollId.Id,'data');
+
+    this.uploadChallan(CollId.Id)
+      
+  }
+
+  uploadChallan(CollectionId:any)
+  {
+    let bodyData:IUploadChallan = {
+     
+      TenantId:this.loginDetails.TenantId,
+      CollectionId:CollectionId
+   
+    }
+    const saveCategory = this.supplierService.UploadChallan(bodyData,this.FileData).subscribe((res:any)=>{
+     
+      // if(res.Id == 0){
+      //   this.toastr.error(res.Message, "Exists");
+      // }else{
+        this.toastr.success(res.Message, "SUCCESS");
+   //   }
+      
+    })
+  }
+
+  async SaveSupplier(bodyData:ISupplier) {
+    try {
+       
+        const res: any = await this.supplierService.SaveSupplier(bodyData)
+            .pipe(takeUntil(this.destroy$))
+            .toPromise();
+
+         //  this.toastr.success(res.Message, 'SUCCESS');
+         return res;
+
+    } catch (error) {
+        console.error('Error:', error);
+        this.toastr.error('Something went wrong.', 'ERROR');
+    }
+}
 }

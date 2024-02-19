@@ -130,14 +130,20 @@
                 <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('GrossAmount') }} </b> </td>
               </ng-container>
 
-              <!-- Final Weight -->
-              <!-- <ng-container matColumnDef="FinalWeight">
-                <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
-                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG</td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalWeight') }} KG</b> </td>
-              </ng-container> -->
+     <!-- Incetive Amount -->
+     <ng-container matColumnDef="IncentiveAmount">
+      <th mat-header-cell *matHeaderCellDef> Insentive Amount</th>
+      <td class="weight-column" mat-cell *matCellDef="let row"> {{row.IncentiveAmount}} </td>
+      <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('IncentiveAmount') }} </b> </td>
+    </ng-container>
 
-              <!-- Status column
+     <!-- Final Amount  -->
+     <ng-container matColumnDef="FinalAmount">
+      <th mat-header-cell *matHeaderCellDef> Final Amount</th>
+      <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalAmount}} </td>
+      <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalAmount') }} </b> </td>
+    </ng-container>
+
               <ng-container matColumnDef="Status">
                 <th mat-header-cell *matHeaderCellDef>Status</th>
                 <td mat-cell *matCellDef="let row">

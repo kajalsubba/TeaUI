@@ -156,7 +156,7 @@ export class AddEditStgComponent implements OnInit {
     }
     // if(this.dialogData.buttonName == "Save"){
       let data:IStg = {
-        CollectionId:this.dialogData?.value?.ClientId? this.dialogData?.value?.CollectionId : 0,
+        CollectionId:this.dialogData?.value?.CollectionId? this.dialogData?.value?.CollectionId : 0,
         CollectionDate:formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
         VehicleNo:this.stgForm.value.VehicleNo,
         ClientId:this.stgForm.value.ClientId,

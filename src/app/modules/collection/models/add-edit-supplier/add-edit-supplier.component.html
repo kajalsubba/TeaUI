@@ -10,20 +10,76 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
-                                <label for="TransactDate" class="col-lg-5 col-form-label">Transaction Date <span
+                                <label for="CollectionDate" class="col-lg-5 col-form-label">Collect Date <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
 
                                     <mat-form-field>
-                                        <input matInput [matDatepicker]="picker" placeholder="TransactDate"
-                                            formControlName="TransactDate">
+                                        <input matInput [matDatepicker]="picker" placeholder="CollectionDate"
+                                            formControlName="CollectionDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>
                                 </div>
                             </div>
                         </div>
+                      
+                          <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #clientName type="text" class="form-control" id="ClientName"
+                                        placeholder="Client Name" formControlName="ClientName"
+                                        [matAutocomplete]="clientAuto">
+                                    <!-- Autocomplete options -->
+                                    <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                        <mat-option *ngFor="let client of filterClientNames(clientName.value)"
+                                            [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
+                                            {{ client?.ClientName }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                    <!-- Validation message -->
+                                    <span
+                                        *ngIf="supplierForm.get('ClientName')?.hasError('required') && supplierForm.get('ClientName')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Client Name is required.
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+
                         <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text"
+                                        class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                                        formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
+                                    <!-- Autocomplete options -->
+                                    <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                        <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                                            [value]="number.VehicleNo">
+                                            {{ number.VehicleNo }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                    <!-- Validation message -->
+                                    <span
+                                        *ngIf="supplierForm.get('VehicleNo')?.hasError('required') && supplierForm.get('VehicleNo')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Vehicle No. is required.
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                          <div class="col-lg-4">
                             <div class="form-group row py-1">
                                 <label for="Factory" class="col-lg-5 col-form-label">Factory Name</label>
                                 <div class="col-lg-7 position-relative">
@@ -68,74 +124,20 @@
 
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                    
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
-                                <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
-                                        class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text"
-                                        class="form-control" id="VehicleNo" placeholder="Vehicle No."
-                                        formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
-                                    <!-- Autocomplete options -->
-                                    <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
-                                        <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
-                                            [value]="number.VehicleNo">
-                                            {{ number.VehicleNo }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-
-                                    <!-- Validation message -->
-                                    <span
-                                        *ngIf="supplierForm.get('VehicleNo')?.hasError('required') && supplierForm.get('VehicleNo')?.touched"
-                                        class="text-danger d-block validation-message">
-                                        Vehicle No. is required.
-                                    </span>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group row mb-3">
-                                <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
-                                        class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                    <input #clientName type="text" class="form-control" id="ClientName"
-                                        placeholder="Client Name" formControlName="ClientName"
-                                        [matAutocomplete]="clientAuto">
-                                    <!-- Autocomplete options -->
-                                    <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
-                                        <mat-option *ngFor="let client of filterClientNames(clientName.value)"
-                                            [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
-                                            {{ client?.ClientName }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-
-                                    <!-- Validation message -->
-                                    <span
-                                        *ngIf="supplierForm.get('ClientName')?.hasError('required') && supplierForm.get('ClientName')?.touched"
-                                        class="text-danger d-block validation-message">
-                                        Client Name is required.
-                                    </span>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group row mb-3">
-                                <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf <span
-                                        class="text-danger">*</span></label>
+                                <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf </label>
                                 <div class="col-lg-7 position-relative">
                                     <input maxlength="2" (keypress)="restrictInput($event)" #FineLeaf type="text"
                                         formControlName="FineLeaf" class="form-control" placeholder="0 - 99">
                                     <span class="kg-text"><i class="fa-solid fa-percent"></i></span>
                                     <!-- Validation message -->
-                                    <span
+                                    <!-- <span
                                         *ngIf="supplierForm.get('FineLeaf')?.hasError('required') && supplierForm.get('FineLeaf')?.touched"
                                         class="text-danger d-block validation-message">
                                         Fine Leaf is required.
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
 
@@ -162,18 +164,17 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
-                                <label for="Rate" class="col-lg-5 col-form-label">Rate <span
-                                        class="text-danger">*</span></label>
+                                <label for="Rate" class="col-lg-5 col-form-label">Rate </label>
                                 <div class="col-lg-7 position-relative">
                                     <input #Rate (input)="RateInput(Rate.value)" type="number" class="form-control"
                                         id="Rate" placeholder="Rate" formControlName="Rate">
                                     <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
                                     <!-- Validation message -->
-                                    <span
+                                    <!-- <span
                                         *ngIf="supplierForm.get('Rate')?.hasError('required') && supplierForm.get('Rate')?.touched"
                                         class="text-danger d-block validation-message">
                                         Rate is required.
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
@@ -189,22 +190,41 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group row py-1">
-                                <label for="account" class="col-lg-5 col-form-label">Transaction Type</label>
+                        <div class="col-lg-4" *ngIf="dialogData.buttonName=='Update'">
+                            <div class="form-group row mb-3">
+                                <label for="CategoryId" class="col-lg-5 col-form-label">Status <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <mat-select placeholder="--Transaction Type--" class="fromSelect"
-                                        formControlName="TransactionType">
-                                        <input #transaction (input)="filterTransactionType(transaction.value)"
-                                            type="text" class="form-control inset-shadow" placeholder="Search Type">
-                                        <mat-option *ngFor="let transaction of FilteredTranscationType"
-                                            [value]="transaction.TransactionId">{{transaction.TransactionName}}</mat-option>
+                                    <mat-select aria-placeholder="--Select Status--" class="fromSelect" formControlName="Status">
+                                        <mat-option *ngFor="let item of statusList" [value]="item">
+                                          {{item}}
+                                        </mat-option>
+                                      </mat-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="Grade" class="col-lg-5 col-form-label">Trip <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select placeholder="--Select Trip--" class="fromSelect"
+                                        formControlName="TripId">
+                                        <mat-option *ngFor="let trip of TripList" [value]="trip.TripId">
+                                            {{trip.TripName}}
+                                        </mat-option>
                                     </mat-select>
-                                    <span
-                                        *ngIf="supplierForm.get('TransactionType')?.hasError('required') && supplierForm.get('TransactionType')?.touched"
+                                    <span *ngIf="supplierForm.get('TripId')?.hasError('required') && supplierForm.get('TripId')?.touched"
                                         class="text-danger d-block validation-message">
-                                        Transaction Type is required.
+                                        Trip is required.
                                     </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>
+                                <div class="col-lg-7 position-relative">
+                                    <textarea class="form-control" name="Remarks" id="Remarks" formControlName="Remarks"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -218,8 +238,13 @@
                                     <div class="row">
                                         <div class="col-lg-10">
                                             <input type="file" class="form-control" id="imageUpload" accept="image/*"
-                                                (change)="onFileSelected($event)">
+                                                (change)="onFileSelected($event)" formControlName="ChallanImage">
                                         </div>
+                                        <span
+                                        *ngIf="supplierForm.get('ChallanImage')?.hasError('required') && supplierForm.get('ChallanImage')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Challan Copy is required.
+                                        </span>
                                         <div class="col-lg-2">
                                             <!-- Image preview container -->
                                             <div class="image-preview mx-2 w-100" *ngIf="imageUrl">
@@ -227,14 +252,11 @@
                                                     alt="Selected Image" class="img-thumbnail">
                                             </div>
                                         </div>
+                                      
                                     </div>
 
 
-                                    <span
-                                        *ngIf="supplierForm.get('TransactionType')?.hasError('required') && supplierForm.get('TransactionType')?.touched"
-                                        class="text-danger d-block validation-message">
-                                        Transaction Type is required.
-                                    </span>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -245,6 +267,6 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-    <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button>
+    <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
     <button (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
 </mat-dialog-actions>
