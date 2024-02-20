@@ -8,7 +8,7 @@ import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
-import { IStg } from '../../interfaces/istg';
+import { IGetTeaClient, IStg } from '../../interfaces/istg';
 import { StgService } from '../../services/stg.service';
 import { DatePipe, formatDate } from '@angular/common';
 
@@ -254,8 +254,10 @@ export class AddEditStgComponent implements OnInit {
 
   async loadClientNames() {
     try {
-        const bodyData: IGetGrade = {
-            TenantId: this.loginDetails.TenantId
+        const bodyData: IGetTeaClient = {
+            TenantId: this.loginDetails.TenantId,
+            Category:'STG'
+     
         };
 
         const res: any = await this.autocompleteService.GetClientNames(bodyData)

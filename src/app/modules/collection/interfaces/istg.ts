@@ -27,3 +27,8 @@ export interface IStgSelect
     Status: string;
     TripId:any;
 }
+
+export interface IGetTeaClient {
+    TenantId: number;
+    Category:any;
+  }

@@ -4,6 +4,9 @@ import { IGetGrade } from '../../masters/interfaces/IGrade';
 import { ApiService } from 'src/app/core/services/api.service';
 import { IGetFactory } from '../../masters/interfaces/IFactory';
 import { IGetFactoryAccount } from '../../masters/interfaces/IFactoryAccount';
+import { IGetTeaClient } from '../interfaces/istg';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -31,10 +34,13 @@ export class AutoCompleteService {
   //   return of(clientName);
   // }
 
-  GetClientNames(clientBody:IGetGrade): Observable<string[]> {
+  GetClientNames(clientBody:IGetTeaClient): Observable<string[]> {
     return this.apiService.post('Master/GetClientList', clientBody);
   }
 
+ 
+
+  
   // getClient(clientBody:IGetClient): Observable<any> {
   //   return this.apiService.post('Master/GetClient', clientBody);
   // }

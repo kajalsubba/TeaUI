@@ -13,6 +13,8 @@ import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { StgService } from '../../services/stg.service';
 import { ISupplier, IUploadChallan } from '../../interfaces/isupplier';
 import { SupplierService } from '../../services/supplier.service';
+import { IGetTeaClient } from '../../interfaces/istg';
+
 
 @Component({
   selector: 'app-add-edit-supplier',
@@ -79,8 +81,10 @@ export class AddEditSupplierComponent implements OnInit {
 
   async loadClientNames() {
     try {
-      const bodyData: IGetGrade = {
+      const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
+        Category:'Supplier'
+   
       };
 
       const res: any = await this.autocompleteService
