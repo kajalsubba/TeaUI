@@ -130,7 +130,7 @@
                                         type="password"
                                         class="form-control"
                                         id="password"
-                                        placeholder="Enter Email"
+                                        placeholder="Enter Password"
                                         formControlName="Password"
                                     >
                                     <!-- <div *ngIf="clientForm.get('Password')?.hasError('required') && clientForm.get('Password')?.touched" class="text-danger validation-message">
@@ -155,6 +155,6 @@
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
-    <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button>
+    <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
     <button (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
 </mat-dialog-actions>

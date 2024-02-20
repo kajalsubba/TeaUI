@@ -45,7 +45,7 @@ export class SaleHistoryComponent {
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'SaleId', header: 'Sale Id' },
     //   { columnDef: 'SaleDate', header: 'Sale Date' },
-    { columnDef: 'FactoryName', header: 'FactoryName' },
+    { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },

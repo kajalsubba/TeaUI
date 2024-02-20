@@ -92,7 +92,7 @@ export class SaleEntryComponent implements OnInit {
      FieldCollectionWeight:[0],
      //   SaleDate:[new Date()],
      FineLeaf:[0],
-     ChallanWeight:[0,Validators.required],
+     ChallanWeight:['',Validators.required],
         Rate:[0],
         Incentive:[0],
         GrossAmount:[0],
@@ -114,6 +114,7 @@ export class SaleEntryComponent implements OnInit {
 
       this.saleEntryForm.controls["VehicleNo"].setValue(this.data.VehicleNo);
       this.saleEntryForm.controls["VehicleId"].setValue(this.data.VehicleId);
+      this.saleEntryForm.controls["SaleDate"].setValue(new Date(this.data.CollectionDate));
       await this.loadVehicleNumbers();
       await this.GetFactoryList();
       await this.GetFactoryAccountList();

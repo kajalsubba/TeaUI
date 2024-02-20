@@ -1,6 +1,6 @@
 <h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
     <span>{{data.title}}</span>
-    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+    <!-- <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i> -->
 </h2>
 
 <mat-dialog-content>
@@ -21,7 +21,8 @@
             </div>
             <div class="col-lg-3">
                 <div class="form-group row py-1">
-                    <label for="Factory" class="col-lg-5 col-form-label">Factory Name</label>
+                    <label for="Factory" class="col-lg-5 col-form-label">Factory Name <span
+                        class="text-danger">*</span></label>
                     <div class="col-lg-7 position-relative">
                         <mat-select placeholder="--Select Factory--" class="fromSelect" formControlName="FactoryName"  (selectionChange)="SelectFactory($event.value)">
                             <input #buyer (input)="filterBuyers(buyer.value)" type="text" class="form-control inset-shadow" placeholder="Search Buyer">
@@ -37,14 +38,15 @@
             </div>
             <div class="col-lg-3">
                 <div class="form-group row py-1">
-                    <label for="account" class="col-lg-5 col-form-label">Account Name</label>
+                    <label for="account" class="col-lg-5 col-form-label">Account Name <span
+                        class="text-danger">*</span></label>
                     <div class="col-lg-7 position-relative">
                         <mat-select placeholder="--Select Account--" class="fromSelect" formControlName="AccountId">
                             <input #account (input)="filterAccounts(account.value)" type="text" class="form-control inset-shadow" placeholder="Search Account">
                             <mat-option *ngFor="let account of filteredAccounts" [value]="account.AccountId">{{account.AccountName}}</mat-option>
                         </mat-select>
                         <span
-                        *ngIf="saleEntryForm.get('AccountName')?.hasError('required') && saleEntryForm.get('AccountName')?.touched"
+                        *ngIf="saleEntryForm.get('AccountId')?.hasError('required') && saleEntryForm.get('AccountId')?.touched"
                         class="text-danger d-block validation-message">
                         Account Name  is required.
                     </span>
@@ -53,7 +55,8 @@
             </div>
             <div class="col-lg-3">
                 <div class="form-group row py-1">
-                    <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No.</label>
+                    <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
+                        class="text-danger">*</span></label>
                     <div class="col-lg-7 d-grid position-relative">
                         <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
                             formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
@@ -171,19 +174,7 @@
           </div>
     </div>
     <div class="row py-2 border-box border-top-none">
-        <!-- <div class="col-lg-4">
-            <div class="form-group row py-1">
-                <label for="SaleDate" class="col-lg-5 col-form-label">Sale Date</label>
-                <div class="col-lg-7 position-relative">
-        
-                        <mat-form-field>
-                            <input formControlName="SaleDate" matInput [matDatepicker]="picker1" placeholder="Sale Date">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
-                        </mat-form-field>
-                </div>
-            </div>
-        </div> -->
+      
         <div class="col-lg-4">
             <div class="form-group row mb-3">
                 <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf</label>
@@ -196,11 +187,18 @@
         </div>
         <div class="col-lg-4">
             <div class="form-group row mb-3">
-                <label for="ChallanWeight" class="col-lg-5 col-form-label">Challan Weight</label>
+                <label for="ChallanWeight" class="col-lg-5 col-form-label">Challan Weight <span
+                    class="text-danger">*</span></label>
                 <div class="col-lg-7 position-relative">
                     <input (input)="ChallanWeightChange(ChallanWeight.value)" #ChallanWeight type="number" formControlName="ChallanWeight" class="form-control" placeholder="Channal Weight">
                         <span class="kg-text">KG</span>
+                        <span
+                        *ngIf="saleEntryForm.get('ChallanWeight')?.hasError('required') && saleEntryForm.get('ChallanWeight')?.touched"
+                        class="text-danger d-block validation-message">
+                        Challan Weight  is required.
+                    </span>
                 </div>
+             
             </div>
         </div>
         <div class="col-lg-4">

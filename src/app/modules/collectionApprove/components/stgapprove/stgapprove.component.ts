@@ -244,12 +244,8 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log(res);
-        //     this.toastr.success(res.Message, 'SUCCESS');
-
-        this.saleEntry(res, this.selection.selected);
-        // this.GetStgList(null,null);
-        // this.selection = new SelectionModel<any>(true, [])
+         this.saleEntry(res, this.selection.selected);
+     
       });
   }
 
@@ -340,12 +336,13 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         approveData: approveData,
         VehicleNo: this.dateRangeForm.value.VehicleNo,
         VehicleId: this.dateRangeForm.value.VehicleId,
+        CollectionDate: this.dateRangeForm.value.fromDate,
         saleTypeId: 1,
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetStgList(null, null);
+        this.GetStgList(   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
         this.selection = new SelectionModel<any>(true, []);
       }
     });
