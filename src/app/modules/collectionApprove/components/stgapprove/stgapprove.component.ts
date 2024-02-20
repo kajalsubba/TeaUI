@@ -142,6 +142,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   }
 
   search() {
+    this.selection.clear();
     if (this.dateRangeForm.invalid) {
       this.dateRangeForm.markAllAsTouched();
       return;
@@ -164,9 +165,11 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   setStatus(e: any) {}
 
   approveEntry() {
+   
     const selectedObjects: any[] = [];
     const selectedObjects1: any[] = [];
     var ApproveList: any[] = [];
+
     let totalFirstWeight = 0;
     let totalWetLeaf = 0;
     let totalLongLeaf = 0;
@@ -176,6 +179,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     // Iterate through the selected items
     this.selection.selected.forEach((selectedItem) => {
       // Create the selected object based on the selected item
+      
       const selectedObject = {
         IsApprove: true, // Set the IsApprove property to true
         CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
