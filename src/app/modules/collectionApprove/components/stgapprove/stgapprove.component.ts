@@ -337,6 +337,10 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         VehicleNo: this.dateRangeForm.value.VehicleNo,
         VehicleId: this.dateRangeForm.value.VehicleId,
         CollectionDate: this.dateRangeForm.value.fromDate,
+        FactoryName:this.selection.selected[0].FactoryName,
+        FactoryId:0,
+        AccountId:0,
+        ChallanWeight:0,
         saleTypeId: 1,
       },
     });

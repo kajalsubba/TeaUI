@@ -99,6 +99,8 @@ export class SaleEntryComponent implements OnInit {
         Remarks:[''],
         SaleTypeId:[]
       });
+
+      console.log(this.data,'data');
       this.saleEntryForm.controls['ChallanWeight'].valueChanges.subscribe(() => {
         this.calculateGrossAmount();
       });
@@ -110,14 +112,27 @@ export class SaleEntryComponent implements OnInit {
       this.saleEntryForm.controls['Incentive'].valueChanges.subscribe(() => {
         this.calculateGrossAmount();
       });
+
+console.log('A');
+
+      await this.loadVehicleNumbers();
+      await this.GetFactoryList();
+      await this.GetFactoryAccountList();
+      console.log('B');
       this.saleEntryForm.controls['FieldCollectionWeight'].setValue(this.getTotalCost('FinalWeight'));
 
       this.saleEntryForm.controls["VehicleNo"].setValue(this.data.VehicleNo);
       this.saleEntryForm.controls["VehicleId"].setValue(this.data.VehicleId);
       this.saleEntryForm.controls["SaleDate"].setValue(new Date(this.data.CollectionDate));
-      await this.loadVehicleNumbers();
-      await this.GetFactoryList();
-      await this.GetFactoryAccountList();
+      if (this.data.saleTypeId==2)
+      {
+            this.saleEntryForm.controls["FactoryName"].setValue(this.data.FactoryId);
+     
+          this.filteredAccounts=   this.AccountList.filter((x:any)=> x.FactoryId==this.data.FactoryId)
+            this.saleEntryForm.controls["AccountId"].setValue(this.data.AccountId);
+
+            this.saleEntryForm.controls["ChallanWeight"].setValue(this.data.ChallanWeight);
+      }
   }
 
   async loadVehicleNumbers() {
@@ -150,17 +165,18 @@ export class SaleEntryComponent implements OnInit {
 
         this.FactoryList = res.FactoryDetails;
         this.filteredFactory=res.FactoryDetails;
-        console.log( this.FactoryList ,' this.FactoryList ');
-  
+     
 
     } catch (error) {
         console.error('Error:', error);
         this.toastr.error('Something went wrong.', 'ERROR');
     }
-}
-SaleEntry()
+} SaleEntry()
 {
-
+  // console.log('a')
+  // await this.GetFactoryList();
+  // await this.GetFactoryAccountList();
+  // console.log('b')
   if(this.saleEntryForm.invalid){
     this.saleEntryForm.markAllAsTouched();
     return;
@@ -185,7 +201,6 @@ let data: IsaleSave = {
 
 };
 
-console.log(data,'save sale data');
 
 this.SaveSaleData(data);
 

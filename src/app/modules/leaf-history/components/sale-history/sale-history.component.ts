@@ -224,6 +224,10 @@ export class SaleHistoryComponent {
         ToDate == null
           ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
           : ToDate,
+          VehicleNo:this.SaleForm.value.VehicleNo,
+          FactoryId:this.SaleForm.value.FactoryId,
+          AccountId:this.SaleForm.value.AccountId,
+          SaleTypeId:this.SaleForm.value.SaleTypeId,
       TenantId: this.loginDetails.TenantId,
       //  VehicleNo:this.dateRangeForm.value.VehicleNo,
     };

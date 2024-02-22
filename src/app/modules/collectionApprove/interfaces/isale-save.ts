@@ -21,5 +21,9 @@ export interface IGetSale
 {
     FromDate:any;
     ToDate:any;
+    VehicleNo: any;
+    FactoryId: any;
+    AccountId:any;
+    SaleTypeId: any;
     TenantId:any;
 }
