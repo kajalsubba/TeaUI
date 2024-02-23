@@ -24,13 +24,13 @@
                     </mat-option>
                   </mat-autocomplete>
                   <!-- Validation message -->
-                  <span
+                  <!-- <span
                     *ngIf="dateRangeForm.get('VehicleNo')?.hasError('required') && dateRangeForm.get('VehicleNo')?.touched"
                     class="text-danger d-block validation-message">
                     Vehicle No is required.
-                  </span>
+                  </span> -->
                 </div>
-                  <div class="position-relative d-grid col-lg-3">
+                  <!-- <div class="position-relative d-grid col-lg-3">
                     <mat-select placeholder="--Select Trip--" class="fromSelect" formControlName="TripId">
                       <mat-option *ngFor="let trip of TripList" [value]="trip.TripId">
                         {{trip.TripName}}
@@ -41,7 +41,7 @@
                       class="text-danger d-block validation-message">
                       Trip is required.
                     </span>
-                  </div>
+                  </div> -->
                 <div class="col-lg-2 d-flex">
                   <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
                   <button (click)="search()" class="btn btn-color ms-2">Search</button>

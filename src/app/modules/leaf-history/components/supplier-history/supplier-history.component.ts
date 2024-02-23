@@ -110,7 +110,8 @@ export class SupplierHistoryComponent {
       TenantId:this.loginDetails.TenantId,
       VehicleNo:this.dateRangeForm.value.VehicleNo,
       Status: this.dateRangeForm.value.Status=='All'?'':this.dateRangeForm.value.Status,
-      TripId:0
+      TripId:0,
+      CreatedBy:this.loginDetails.LoginType =='Client'?this.loginDetails.UserId:0,
     }
     const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res:any)=>{
      // console.log(res);
@@ -122,12 +123,12 @@ export class SupplierHistoryComponent {
 
   search(){
 
-    const currentDate = new Date();
+    // const currentDate = new Date();
  
-    const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): this.dateRangeForm.value.fromDate.format('yyyy-MM-DD');
-    const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):  this.dateRangeForm.value.toDate.format('yyyy-MM-DD');
+    // const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): this.dateRangeForm.value.fromDate.format('yyyy-MM-DD');
+    // const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):  this.dateRangeForm.value.toDate.format('yyyy-MM-DD');
   
-   this.GetSupplierList(fromDate,toDate);
+   this.GetSupplierList(     formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),  formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),);
   }
   getTotalCost(columnName: string): number {
     return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);

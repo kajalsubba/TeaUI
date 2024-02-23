@@ -28,4 +28,5 @@ export interface ISupplierSelect
     VehicleNo: any;
     Status: string;
     TripId:any;
+    CreatedBy:any;
 }

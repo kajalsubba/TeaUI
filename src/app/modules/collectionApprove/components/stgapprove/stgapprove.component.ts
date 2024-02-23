@@ -120,6 +120,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
       TripId:this.dateRangeForm.value.TripId,
+      CreatedBy: 0,
     };
     const categoryListService = this.stgService
       .GetStg(bodyData)

@@ -114,6 +114,7 @@ export class StgComponent implements OnInit, AfterViewInit {
       VehicleNo:this.dateRangeForm.value.VehicleNo,
       Status:'',
       TripId:this.dateRangeForm.value.TripId,
+      CreatedBy:0,// this.loginDetails.UserId,
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
      // console.log(res);

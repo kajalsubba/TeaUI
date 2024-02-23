@@ -26,6 +26,7 @@ export interface IStgSelect
     VehicleNo: any;
     Status: string;
     TripId:any;
+    CreatedBy:any;
 }
 
 export interface IGetTeaClient {

@@ -4,6 +4,19 @@ import { UserManagementComponent } from './user-management.component';
 import { UserComponent } from './components/user/user.component';
 import { RoleComponent } from './components/role/role.component';
 import { UserManagementRoutingModule } from './user-management-routing.module';
+import { ApiService } from 'src/app/core/services/api.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AddEditRoleComponent } from './models/add-edit-role/add-edit-role.component';
 
 
 
@@ -11,11 +24,25 @@ import { UserManagementRoutingModule } from './user-management-routing.module';
   declarations: [
     UserManagementComponent,
     UserComponent,
-    RoleComponent
+    RoleComponent,
+    AddEditRoleComponent
   ],
   imports: [
     CommonModule,
-    UserManagementRoutingModule
-  ]
+    UserManagementRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatTableModule, 
+    MatPaginatorModule,
+    MatSortModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSlideToggleModule
+  ],
+  providers: [ApiService]
 })
 export class UserManagementModule { }

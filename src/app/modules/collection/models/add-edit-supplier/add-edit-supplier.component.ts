@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { HelperService } from 'src/app/core/services/helper.service';
@@ -52,6 +52,8 @@ export class AddEditSupplierComponent implements OnInit {
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
+
+    
     this.supplierForm = this.fb.group({
       CollectionDate: [new Date()],
       ClientName: ['', Validators.required],
@@ -68,7 +70,7 @@ export class AddEditSupplierComponent implements OnInit {
       GrossAmount: [0],
       Status:['Pending'],
       TripId:['',Validators.required],
-      ChallanImage:['',Validators.required],
+      ChallanImage:[''],
       Remarks:[]
     });
     await this.loadClientNames();
@@ -76,8 +78,34 @@ export class AddEditSupplierComponent implements OnInit {
     await this.loadAccountNames();
     await this.loadVehicleNumbers();
     this.GeTript();
+    if (this.loginDetails.LoginType =='Client')
+    {
+      this.supplierForm.controls['ClientName'].setValue(this.loginDetails.ClientName);
+      this.supplierForm.controls['ClientId'].setValue(this.loginDetails.ClientId);
+      this.supplierForm.controls['ClientName'].disable({ onlySelf: true });
+
+    }
   //  this.FilteredTranscationType = this.TranscationTypeList;
   }
+
+  CleanFormControl()
+  {
+   
+    
+       this.supplierForm.controls['FactoryName'].reset()
+       this.supplierForm.controls['AccountId'].reset()
+       this.supplierForm.controls['AccountName'].reset()
+      this.supplierForm.controls['VehicleNo'].reset()
+      this.supplierForm.controls['FineLeaf'].reset()
+
+      this.supplierForm.controls['ChallanWeight'].reset()
+      this.supplierForm.controls['Rate'].reset()
+
+     this.supplierForm.controls['GrossAmount'].reset()
+     this.supplierForm.controls['Remarks'].reset()
+     this.supplierForm.controls['ChallanImage'].reset()
+  }
+
 
   async loadClientNames() {
     try {
@@ -223,6 +251,7 @@ filterFactory(value: string) {
     this.supplierForm.controls['VehicleNo'].setValue(newVal);
   }
 
+ 
   FineLeafInput(value: any) {}
 
   ChallanWeightInput(value: any) {
@@ -296,31 +325,51 @@ filterFactory(value: string) {
       CreatedBy:this.loginDetails.UserId
       
       }
-      console.log('a');
+     
+    //  var dd= this.loginDetails.LoginType 
    var CollId= await this.SaveSupplier(data);
-    console.log(CollId.Id,'data');
+console.log( this.loginDetails,' this.loginDetails.LoginTyp');
 
+   if (this.loginDetails.LoginType =='Client')
+   {
+   
+    
     this.uploadChallan(CollId.Id)
+   }
+   else
+   {
+    this.toastr.success(CollId.Message, "SUCCESS");
+    this.CleanFormControl();
+    this.supplierForm.controls['ClientName'].reset()
+    this.supplierForm.controls['ClientId'].reset()
+   }
       
   }
 
+ 
+
   uploadChallan(CollectionId:any)
   {
+
+    this.supplierForm.controls['ChallanImage'].setValidators([Validators.required]);              
+
+    if(this.supplierForm.invalid){
+      this.supplierForm.markAllAsTouched();
+      return;
+    }
     let bodyData:IUploadChallan = {
      
       TenantId:this.loginDetails.TenantId,
       CollectionId:CollectionId
    
     }
-    const saveCategory = this.supplierService.UploadChallan(bodyData,this.FileData).subscribe((res:any)=>{
-     
-      // if(res.Id == 0){
-      //   this.toastr.error(res.Message, "Exists");
-      // }else{
-        this.toastr.success(res.Message, "SUCCESS");
-   //   }
-      
-    })
+   
+      const saveCategory = this.supplierService.UploadChallan(bodyData,this.FileData).subscribe((res:any)=>{
+          this.toastr.success(res.Message, "SUCCESS");
+          this.CleanFormControl();
+            
+      })
+    
   }
 
   async SaveSupplier(bodyData:ISupplier) {

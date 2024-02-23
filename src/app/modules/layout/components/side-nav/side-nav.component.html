@@ -17,7 +17,7 @@
               <li  routerLink="dashboard" routerLinkActive="active"><a>Dashboard</a></li>
             </ul>
           </li>
-          <li [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu" routerLinkActive="main-menu-active">
+          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'Masters')">
               <a>
                 <i class="bx bxs-cylinder"></i>
@@ -45,12 +45,12 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li routerLink="leafEntry/stg" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="leafEntry/stg" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
               <li routerLink="leafEntry/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
             </ul>
           </li>
           
-          <li [class.showMenu]="currentOpenMenu === 'LeafApprove'" class="main-menu" routerLinkActive="main-menu-active">
+          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'LeafApprove'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'LeafApprove')">
               <a>
                 <i class='bx bx-check-shield' ></i>
@@ -73,13 +73,13 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li routerLink="LeafHistory/stg-history" routerLinkActive="active"><a class="sub-menu-title">STG History</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/stg-history" routerLinkActive="active"><a class="sub-menu-title">STG History</a></li>
               <li routerLink="LeafHistory/supplier-history" routerLinkActive="active"><a class="sub-menu-title">Supplier History</a></li>
-              <li routerLink="LeafHistory/sale-history" routerLinkActive="active"><a class="sub-menu-title">Sale History</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/sale-history" routerLinkActive="active"><a class="sub-menu-title">Sale History</a></li>
             </ul>
           </li>
 
-          <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
+          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">
               <a>
                 <i class="fa-solid fa-sliders"></i>
@@ -88,8 +88,10 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">Create User</a></li>
               <li routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
+              <li routerLink="user-management/Permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
+              <li routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">Create User</a></li>
+
             </ul>
           </li>
 

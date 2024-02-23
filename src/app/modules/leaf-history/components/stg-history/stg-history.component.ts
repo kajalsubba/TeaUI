@@ -138,7 +138,8 @@ export class StgHistoryComponent {
       TenantId:this.loginDetails.TenantId,
       VehicleNo:this.dateRangeForm.value.VehicleNo,
       Status: this.dateRangeForm.value.Status=='All'?'':this.dateRangeForm.value.Status,
-      TripId:0
+      TripId:0,
+      CreatedBy:this.loginDetails.UserId,
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
      // console.log(res);

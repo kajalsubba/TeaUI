@@ -17,7 +17,7 @@ import { AddEditClientComponent } from '../../models/add-edit-client/add-edit-cl
 export class ClientComponent implements OnInit, AfterViewInit {
   private subscriptions: Subscription[] = [];
 
-  displayedColumns: string[] = ['ClientId', 'ClientFirstName', 'ClientLastName', 'ClientAddress','CategoryName', 'ContactNo','EmailId','actions'];
+  displayedColumns: string[] = ['ClientId', 'ClientFirstName', 'ClientLastName', 'ClientAddress','CategoryName', 'ContactNo','EmailId','LoginStatus','actions'];
   dataSource = new MatTableDataSource<any>();
   columns: { columnDef: string, header: string }[] = [
     { columnDef: 'ClientId', header: 'Client ID' },
@@ -28,7 +28,8 @@ export class ClientComponent implements OnInit, AfterViewInit {
    // { columnDef: 'CategoryID', header: 'CategoryID' },
     { columnDef: 'CategoryName', header: 'Category' },
     { columnDef: 'ContactNo', header: 'Contact No.' },
-    { columnDef: 'EmailId', header: 'Email ID' }
+    { columnDef: 'EmailId', header: 'Email ID' },
+    { columnDef: 'LoginStatus', header: 'Client Login' }
   ];
 
 

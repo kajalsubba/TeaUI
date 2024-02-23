@@ -117,6 +117,7 @@ export class SupplierComponent implements OnInit {
         VehicleNo:this.dateRangeForm.value.VehicleNo,
         Status:'',
         TripId:this.dateRangeForm.value.TripId,
+        CreatedBy:this.loginDetails.LoginType =='Client'?this.loginDetails.UserId:0,
       }
       const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res:any)=>{
        // console.log(res);

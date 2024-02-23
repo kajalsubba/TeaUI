@@ -91,7 +91,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
-      VehicleNo: ['', Validators.required],
+      VehicleNo: [''],
       VehicleId: [''],
       TripId:[null]
     });
@@ -121,6 +121,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
       TripId:this.dateRangeForm.value.TripId,
+      CreatedBy:0
     };
     const categoryListService = this.supplierService
       .GetSupplierData(bodyData)
