@@ -15,7 +15,7 @@
                                 <div class="col-lg-7 position-relative">
 
                                     <mat-form-field>
-                                        <input matInput [matDatepicker]="picker" placeholder="CollectionDate"
+                                        <input #CollectDate  matInput [matDatepicker]="picker" placeholder="CollectionDate"
                                             formControlName="CollectionDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
@@ -56,7 +56,7 @@
                                 <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text"
+                                    <input #VehicleNo (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text"
                                         class="form-control" id="VehicleNo" placeholder="Vehicle No."
                                         formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
                                     <!-- Autocomplete options -->

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -35,6 +35,8 @@ export class AddEditSupplierComponent implements OnInit {
   FactoryList: any[]=[];
   statusList:string[]=['Pending', 'Rejected']
   TripList:any[]=[];
+  @ViewChild('CollectDate') CollDateInput!: ElementRef;
+  @ViewChild('VehicleNo') VehicleNoInput!: ElementRef;
   private subscriptions: Subscription[] = [];
   FileData:any;
   constructor(
@@ -70,7 +72,7 @@ export class AddEditSupplierComponent implements OnInit {
       GrossAmount: [0],
       Status:['Pending'],
       TripId:['',Validators.required],
-      ChallanImage:[''],
+      ChallanImage:['',this.loginDetails.LoginType =='Client'?Validators.required:''],
       Remarks:[]
     });
     await this.loadClientNames();
@@ -326,19 +328,17 @@ filterFactory(value: string) {
       
       }
      
-    //  var dd= this.loginDetails.LoginType 
    var CollId= await this.SaveSupplier(data);
-console.log( this.loginDetails,' this.loginDetails.LoginTyp');
 
    if (this.loginDetails.LoginType =='Client')
    {
-   
-    
+       
     this.uploadChallan(CollId.Id)
    }
    else
    {
     this.toastr.success(CollId.Message, "SUCCESS");
+    this.CollDateInput.nativeElement.focus();
     this.CleanFormControl();
     this.supplierForm.controls['ClientName'].reset()
     this.supplierForm.controls['ClientId'].reset()
@@ -350,8 +350,6 @@ console.log( this.loginDetails,' this.loginDetails.LoginTyp');
 
   uploadChallan(CollectionId:any)
   {
-
-    this.supplierForm.controls['ChallanImage'].setValidators([Validators.required]);              
 
     if(this.supplierForm.invalid){
       this.supplierForm.markAllAsTouched();
@@ -366,7 +364,10 @@ console.log( this.loginDetails,' this.loginDetails.LoginTyp');
    
       const saveCategory = this.supplierService.UploadChallan(bodyData,this.FileData).subscribe((res:any)=>{
           this.toastr.success(res.Message, "SUCCESS");
+      
           this.CleanFormControl();
+          this.imageUrl=null;
+          this.VehicleNoInput.nativeElement.focus();
             
       })
     

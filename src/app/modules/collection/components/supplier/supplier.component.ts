@@ -116,7 +116,7 @@ export class SupplierComponent implements OnInit {
         TenantId:this.loginDetails.TenantId,
         VehicleNo:this.dateRangeForm.value.VehicleNo,
         Status:'',
-        TripId:this.dateRangeForm.value.TripId,
+        TripId:0,
         CreatedBy:this.loginDetails.LoginType =='Client'?this.loginDetails.UserId:0,
       }
       const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res:any)=>{
