@@ -76,7 +76,7 @@
         <div class="col-lg-12">
             <div class="table-container my-2">
               <div>
-                <table matSort mat-table [dataSource]="dataSource">
+                <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
 
                     <!-- Displayed columns -->
                     <ng-container matColumnDef="serialNumber">
@@ -154,7 +154,9 @@
                   </ng-container>
       
                   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+                        [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+                </tr>
                   <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
                 </table>
               </div>

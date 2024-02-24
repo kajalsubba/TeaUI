@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -33,6 +33,7 @@ export class SaleEntryComponent implements OnInit {
   private destroy$ = new Subject<void>();
   loginDetails: any;
   private subscriptions: Subscription[] = [];
+  selectedRowIndex: number = -1;
 
   displayedColumns: string[] = [
     'serialNumber',
@@ -310,6 +311,23 @@ private calculateGrossAmount() {
   const incentive = this.saleEntryForm.controls['Incentive'].value;
   const grossAmount = challanWeight * (rate + incentive);
   this.saleEntryForm.controls['GrossAmount'].setValue(grossAmount.toFixed(2));
+}
+
+selectRow(row: any, index: number) {
+  this.selectedRowIndex = index; // Set the selected row index
+}
+
+@HostListener('document:keydown', ['$event'])
+handleKeyboardNavigation(event: KeyboardEvent) {
+  if (event.key === 'ArrowDown') {
+    if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+      this.selectedRowIndex++;
+    }
+  } else if (event.key === 'ArrowUp') {
+    if (this.selectedRowIndex > 0) {
+      this.selectedRowIndex--;
+    }
+  }
 }
 
 
