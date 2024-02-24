@@ -133,12 +133,17 @@ onKeyPress(event: KeyboardEvent): void {
             })
         )
         .subscribe((res: any) => {
-            //console.log(res);
+            console.log(res);
+            if (res.Id=0)
+            {
+              this.toastr.error(res.Message, 'ERROR');
+            }
+            else
+            {
             this.toastr.success(res.Message, 'SUCCESS');
-           if (this.dialogData.buttonName == "Update")
-           {
-                this.dialogRef.close(true);
-           }
+              }
+            this.dialogRef.close(true);
+           
         
           this.clientForm.reset();
         });

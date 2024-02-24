@@ -4,7 +4,7 @@ export interface ILogin {
 }
 
 export interface IClientLogin {
-    Email: string;
+    UserId: string;
     Password: string;
     TenantId:any;
 }

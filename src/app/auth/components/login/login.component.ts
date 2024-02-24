@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
       return;
     } else {
       let loginBody: IClientLogin = {
-        Email: this.ClientloginForm.value.userName,
+        UserId: this.ClientloginForm.value.userName,
         Password: this.ClientloginForm.value.password,
         TenantId:this.ClientloginForm.value.TenantId,
       };
