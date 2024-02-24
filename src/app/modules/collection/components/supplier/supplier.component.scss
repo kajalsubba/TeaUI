@@ -188,13 +188,32 @@ th.mat-sort-header-sorted {
   height: 35px;
 }
 
-th:first-child, td:first-child{
+th:first-child{
+  position: sticky;
+  left: 0;
+  z-index: 991 !important;
+}
+td:first-child{
   position: sticky;
   left: 0;
   z-index: 990 !important;
 }
-th:last-child, td:last-child{
+td:first-child.total{
+  position: sticky;
+  left: 0;
+  z-index: 991 !important;
+}
+th:last-child{
+  position: sticky;
+  right: 0;
+  z-index: 991 !important;
+}
+td:last-child{
   position: sticky;
   right: 0;
   z-index: 990 !important;
+}
+
+::ng-deep tfoot{
+  z-index: 991 !important;
 }

@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe, formatDate } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-entry.component';
@@ -27,7 +27,7 @@ import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/ima
 })
 export class SupplierapproveComponent implements OnInit,AfterViewInit {
   displayedColumns: string[] = [
-    'select',
+    // 'select',
     'actions',
     'CollectionDate',
     'VehicleNo',
@@ -40,7 +40,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     'GrossAmount',
     'Remarks',
     'TripName',
-    'Status'
+    'Status',
   
   ];
   //  dataList:any=[];
@@ -73,6 +73,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
   minToDate!: any;
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
+  selectedRowIndex: number = -1;
 
   constructor(
     private dialog: MatDialog,
@@ -328,6 +329,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     const dialogRef = this.dialog.open(SaleEntryComponent, {
       width: '90vw',
       height: '95%',
+      minWidth:'90vw',
       disableClose: true,
       data: {
         title: 'Sale Entry Form-SUPPLIER',
@@ -336,10 +338,10 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
         VehicleNo: this.dateRangeForm.value.VehicleNo,
         VehicleId: this.dateRangeForm.value.VehicleId,
         CollectionDate: this.dateRangeForm.value.fromDate,
-        FactoryName:this.selection.selected[0].FactoryName,
-        FactoryId:this.selection.selected[0].FactoryId,
-        AccountId:this.selection.selected[0].AccountId,
-        ChallanWeight:this.selection.selected[0].ChallanWeight,
+        FactoryName:this.selection?.selected[0]?.FactoryName,
+        FactoryId:this.selection?.selected[0]?.FactoryId,
+        AccountId:this.selection?.selected[0]?.AccountId,
+        ChallanWeight:this.selection?.selected[0]?.ChallanWeight,
         saleTypeId: 2,
       },
     });
@@ -369,5 +371,22 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
         imageUrl:imageUrl
       }
     })
+  }
+
+  selectRow(row: any, index: number) {
+    this.selectedRowIndex = index; // Set the selected row index
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+        this.selectedRowIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      if (this.selectedRowIndex > 0) {
+        this.selectedRowIndex--;
+      }
+    }
   }
 }

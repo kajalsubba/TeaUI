@@ -143,6 +143,8 @@
   bottom: 0;
   font-size: 0.8rem;
   text-wrap: nowrap;
+  display: flex;
+  justify-content: center;
   left: 50%;
   transform: translateX(-50%);
   color: #33333360;
@@ -155,3 +157,4 @@
   letter-spacing: 3px;
   font-weight: 500;
 }
+

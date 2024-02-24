@@ -202,3 +202,33 @@ th.mat-sort-header-sorted {
 .border-left{
     border-left: 2px solid gray;
 }
+
+th:first-child{
+    position: sticky;
+    left: 0;
+    z-index: 991 !important;
+  }
+  td:first-child{
+    position: sticky;
+    left: 0;
+    z-index: 990 !important;
+  }
+  td:first-child.total{
+    position: sticky;
+    left: 0;
+    z-index: 991 !important;
+  }
+  th:last-child{
+    position: sticky;
+    right: 0;
+    z-index: 991 !important;
+  }
+  td:last-child{
+    position: sticky;
+    right: 0;
+    z-index: 990 !important;
+  }
+  
+  ::ng-deep tfoot{
+    z-index: 991 !important;
+  }

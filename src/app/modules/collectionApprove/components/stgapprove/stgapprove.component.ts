@@ -330,6 +330,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(SaleEntryComponent, {
       width: '90vw',
       height: '95%',
+      minWidth:'90vw',
       disableClose: true,
       data: {
         title: 'Sale Entry Form-STG',

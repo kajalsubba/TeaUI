@@ -172,10 +172,18 @@ th.mat-sort-header-sorted {
     position: sticky;
     left: 0;
 }
-th:first-child, td:first-child ,th:nth-child(1){
+td:first-child ,th:nth-child(1){
     position: sticky;
     left: 0;
     z-index: 990 !important;
+    mat-checkbox{
+        border-color: white !important;
+    }
+}
+th:first-child{
+    position: sticky;
+    left: 0;
+    z-index: 991 !important;
     mat-checkbox{
         border-color: white !important;
     }

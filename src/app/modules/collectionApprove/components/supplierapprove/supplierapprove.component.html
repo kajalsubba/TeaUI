@@ -1,6 +1,6 @@
 <div class="container-fluid mt-2">
     <div class="row">
-      <div class="col-lg-8 my-2 d-flex align-items-center">
+      <div class="col-lg-8 my-2">
         <div class="row">
           <div class="col-lg-12">
             <form [formGroup]="dateRangeForm">
@@ -58,7 +58,7 @@
               <i class="fa-solid fa-magnifying-glass"></i>
             </div> -->
           <div class="add-button">
-            <button (click)="approveEntry()" class="btn btn-color">Approve</button>
+            <!-- <button (click)="approveEntry()" class="btn btn-color">Approve</button> -->
             <!-- <button (click)="saleEntry('','')" class="btn btn-color">Sale Entry</button> -->
           </div>
         </div>
@@ -67,7 +67,7 @@
       <div class="col-lg-12">
         <div class="table-container">
           <div>
-            <table matSort mat-table [dataSource]="dataSource">
+            <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
               <!-- Displayed columns -->
               <<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
@@ -87,7 +87,7 @@
                           <i (click)="openImage(row.imageUrl)" matTooltip="View Challan" matTooltipPosition="right" class="fa-solid fa-eye edit-delete-button "></i>
                       </div>
                     </td>
-                    <td mat-footer-cell *matFooterCellDef> </td>
+                    <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
                   </ng-container>
 
                  <ng-container matColumnDef="ChallanWeight">
@@ -103,15 +103,19 @@
                 <ng-container matColumnDef="Status">
                   <th mat-header-cell *matHeaderCellDef>Status</th>
                   <td mat-cell *matCellDef="let row">
-                    <div class="statusBtn">
+                    <div *ngIf="row.Status != 'Pending'" class="statusBtn">
                       <span *ngIf="row.Status == 'Reject'" class="btn-reject">Reject</span>
-                      <span *ngIf="row.Status == 'Pending'" class="btn-pending">Pending</span>
+                      <!-- <span *ngIf="row.Status == 'Pending'" class="btn-pending">Pending</span> -->
                       <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
+                    </div>
+                    <div *ngIf="row.Status == 'Pending'" class="approve-reject-btn">
+                      <span class="btn btn-sm btn-outline-danger m-1">Reject</span>
+                      <span class="btn btn-sm btn-outline-success m-1">Approved</span>
                     </div>
                   </td>
                   <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
-                <ng-container matColumnDef="select">
+                <!-- <ng-container matColumnDef="select">
                   <th class="select-check" mat-header-cell *matHeaderCellDef>
                     <mat-checkbox matTooltip="Select All" matTooltipPosition="right"
                       (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
@@ -125,12 +129,14 @@
                   </td>
                   <td class="text-center" mat-footer-cell *matFooterCellDef><i matTooltip="Calcutation"
                       class="fa-solid fa-scale-unbalanced"></i></td>
-                </ng-container>
+                </ng-container> -->
   
              
   
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+                    [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+                </tr>
                 <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
             </table>
           </div>

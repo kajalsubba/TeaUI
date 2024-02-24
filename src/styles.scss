@@ -242,7 +242,7 @@ textarea{
 }
 
 .mat-mdc-option{
-  max-height: 40px !important;
+  min-height: 38px !important;
 }
 
 .mat-mdc-dialog-content {
@@ -251,4 +251,34 @@ textarea{
 
 .mat-mdc-paginator-container .mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-mdc-text-field-wrapper{
   padding: 0px 10px;
+}
+
+app-login .mat-mdc-tab-labels{
+  justify-content: center !important;
+
+  .mdc-tab--active{
+    background-color: var(--primary-color) !important;
+    border-radius: 10px 10px 0px 0px !important;
+    box-shadow: var(--soft-box-shadow);
+    .mdc-tab__text-label{
+      color: #fff !important;
+    }
+  }
+
+}
+
+.mat-mdc-option .mdc-list-item__primary-text {
+  white-space: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+  overflow: hidden !important;
+  margin-right: auto;
+  text-wrap: nowrap !important;
+  /* width: 38%; */
+  text-overflow: ellipsis !important;
 }
