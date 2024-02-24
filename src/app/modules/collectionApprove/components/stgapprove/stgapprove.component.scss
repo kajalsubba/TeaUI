@@ -213,3 +213,11 @@ th:first-child{
     font-size: 1.2rem;
     cursor: pointer;
   }
+
+  .selected-row {
+    background-color: #cacaca; /* Change this to the desired background color */
+  }
+
+  .error-border{
+    border: 2px solid red;
+  }

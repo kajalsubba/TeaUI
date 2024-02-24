@@ -14,7 +14,7 @@
                 </mat-form-field>
               </div>
               <div class="position-relative col-lg-3 d-grid ms-2">
-                <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control"
+                <input [ngClass]="{'error-border': dateRangeForm.get('VehicleNo')?.hasError('required') && dateRangeForm.get('VehicleNo')?.touched}" (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control"
                   id="VehicleNo" placeholder="Vehicle No." formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
                 <!-- Autocomplete options -->
                 <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
@@ -24,11 +24,11 @@
                   </mat-option>
                 </mat-autocomplete>
                 <!-- Validation message -->
-                <span
+                <!-- <span
                   *ngIf="dateRangeForm.get('VehicleNo')?.hasError('required') && dateRangeForm.get('VehicleNo')?.touched"
                   class="text-danger d-block validation-message">
                   Vehicle No is required.
-                </span>
+                </span> -->
               </div>
                 <div class="position-relative d-grid col-lg-3">
                   <mat-select placeholder="--Select Trip--" class="fromSelect" formControlName="TripId">
@@ -67,7 +67,7 @@
     <div class="col-lg-12">
       <div class="table-container">
         <div>
-          <table matSort mat-table [dataSource]="dataSource">
+          <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
             <!-- Displayed columns -->
             <<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
               <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
@@ -165,7 +165,9 @@
               </ng-container> -->
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+                        [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+                </tr>
               <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
           </table>
         </div>

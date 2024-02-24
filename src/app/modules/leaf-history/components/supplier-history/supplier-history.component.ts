@@ -1,5 +1,5 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
@@ -63,6 +63,7 @@ export class SupplierHistoryComponent {
   minToDate!: any;
   vehicleNumbers: any[]=[];
   statusList:string[]=['All','Pending', 'Rejected','Approved']
+  selectedRowIndex: number = -1;
 
   private destroy$ = new Subject<void>();
 
@@ -166,6 +167,23 @@ displayWithFn(value: string): string {
 VehicleInput(value:string){
   let newVal = value.toUpperCase();
   this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+}
+
+selectRow(row: any, index: number) {
+  this.selectedRowIndex = index; // Set the selected row index
+}
+
+@HostListener('document:keydown', ['$event'])
+handleKeyboardNavigation(event: KeyboardEvent) {
+  if (event.key === 'ArrowDown') {
+    if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+      this.selectedRowIndex++;
+    }
+  } else if (event.key === 'ArrowUp') {
+    if (this.selectedRowIndex > 0) {
+      this.selectedRowIndex--;
+    }
+  }
 }
 
 }

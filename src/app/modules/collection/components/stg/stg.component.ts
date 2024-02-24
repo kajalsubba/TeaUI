@@ -1,5 +1,11 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -41,7 +47,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     'Status',
     'actions',
   ];
- 
+
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
@@ -49,10 +55,10 @@ export class StgComponent implements OnInit, AfterViewInit {
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-   // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
+    // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-   // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
-  //  { columnDef: 'Grade', header: 'Grade' },
+    // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
+    //  { columnDef: 'Grade', header: 'Grade' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
@@ -66,9 +72,10 @@ export class StgComponent implements OnInit, AfterViewInit {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   minToDate!: any;
-  vehicleNumbers: any[]=[];
-  TripList:any[]=[];
+  vehicleNumbers: any[] = [];
+  TripList: any[] = [];
   private destroy$ = new Subject<void>();
+  selectedRowIndex: number = -1;
 
   constructor(
     private dialog: MatDialog,
@@ -76,8 +83,8 @@ export class StgComponent implements OnInit, AfterViewInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private autocompleteService: AutoCompleteService,
-    private fb:FormBuilder,
-    private stgService:StgService,
+    private fb: FormBuilder,
+    private stgService: StgService
   ) {}
 
   ngOnInit(): void {
@@ -85,44 +92,47 @@ export class StgComponent implements OnInit, AfterViewInit {
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      VehicleNo:[''],
-      TripId:['']
+      VehicleNo: [''],
+      TripId: [''],
     });
 
-  
-  //  this.GetStgList(null,null);
+    //  this.GetStgList(null,null);
     this.loadVehicleNumbers();
     this.GeTript();
- 
   }
 
   ngAfterViewInit() {
     console.log(this.loginDetails);
-    
-    
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-
-  GetStgList(FromDate:any,ToDate:any){
+  GetStgList(FromDate: any, ToDate: any) {
     const currentDate = new Date();
-    let bodyData:IStgSelect = {
-      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
-      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
-      TenantId:this.loginDetails.TenantId,
-      VehicleNo:this.dateRangeForm.value.VehicleNo,
-      Status:'',
-      TripId:this.dateRangeForm.value.TripId,
-      CreatedBy:0,// this.loginDetails.UserId,
-    }
-    const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
-     // console.log(res);
-      this.dataSource.data = res.STGDetails;
-    });
+    let bodyData: IStgSelect = {
+      FromDate:
+        FromDate == null
+          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+          : FromDate,
+      ToDate:
+        ToDate == null
+          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+          : ToDate,
+      TenantId: this.loginDetails.TenantId,
+      VehicleNo: this.dateRangeForm.value.VehicleNo,
+      Status: '',
+      TripId: this.dateRangeForm.value.TripId,
+      CreatedBy: 0, // this.loginDetails.UserId,
+    };
+    const categoryListService = this.stgService
+      .GetStg(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.dataSource.data = res.STGDetails;
+      });
     this.subscriptions.push(categoryListService);
   }
-
 
   addEntry() {
     const dialogRef = this.dialog.open(AddEditStgComponent, {
@@ -135,28 +145,27 @@ export class StgComponent implements OnInit, AfterViewInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetStgList(null,null);
+        this.GetStgList(null, null);
       }
     });
   }
 
   editItem(element: any) {
-
     const dialogRef = this.dialog.open(AddEditStgComponent, {
-      width: "80%",
-      data:{
-        title:"Update STG",
-        buttonName:"Update",
-        value:element
+      width: '80%',
+      data: {
+        title: 'Update STG',
+        buttonName: 'Update',
+        value: element,
       },
-      disableClose:true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result:any)=>{
-      if(result){
-        this.GetStgList(null,null);
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetStgList(null, null);
       }
-    })
+    });
   }
 
   deleteItem(element: any) {}
@@ -177,24 +186,29 @@ export class StgComponent implements OnInit, AfterViewInit {
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
     this.dateRangeForm.controls['toDate'].setValue(null);
-    this.minToDate = event.value
+    this.minToDate = event.value;
   }
 
-  clearFilter(){
+  clearFilter() {
     this.dateRangeForm.controls['fromDate'].setValue(null);
     this.dateRangeForm.controls['toDate'].setValue(null);
     this.dataSource.data = this.dataSource.data;
   }
 
-  search(){
-
+  search() {
     const currentDate = new Date();
-  //  this.GetStgList(formatDate(currentDate, 'yyyy-MM-dd', 'en-US'),formatDate(currentDate, 'yyyy-MM-dd', 'en-US'));
- 
-    const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
-    const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US')  ;
+    //  this.GetStgList(formatDate(currentDate, 'yyyy-MM-dd', 'en-US'),formatDate(currentDate, 'yyyy-MM-dd', 'en-US'));
 
-    this.GetStgList(fromDate,toDate);
+    const fromDate =
+      this.dateRangeForm.value.fromDate == null
+        ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+        : formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
+    const toDate =
+      this.dateRangeForm.value.toDate == null
+        ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+        : formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US');
+
+    this.GetStgList(fromDate, toDate);
   }
 
   handleChange(event: any): void {
@@ -208,7 +222,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setStatus(status:string, row:any){
+  setStatus(status: string, row: any) {
     console.log(row);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30%',
@@ -218,12 +232,11 @@ export class StgComponent implements OnInit, AfterViewInit {
           'text-danger': status === 'Rejected',
           'text-warning': status === 'Pending',
           'text-success': status === 'Approved'
-        }">${status}</b> ?`
-      }
+        }">${status}</b> ?`,
+      },
     });
-    
-    
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         row.status = status;
       }
@@ -231,54 +244,70 @@ export class StgComponent implements OnInit, AfterViewInit {
   }
 
   getTotalCost(columnName: string): number {
-    return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
+    return this.dataSource.filteredData.reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
   }
 
   async loadVehicleNumbers() {
     try {
-        const bodyData: IGetGrade = {
-            TenantId: this.loginDetails.TenantId
-        };
+      const bodyData: IGetGrade = {
+        TenantId: this.loginDetails.TenantId,
+      };
 
-        const res: any = await this.autocompleteService.GetVehicleNumbers(bodyData)
-            .pipe(takeUntil(this.destroy$))
-            .toPromise();
+      const res: any = await this.autocompleteService
+        .GetVehicleNumbers(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
-        this.vehicleNumbers = res.VehicleDetails;
-
-
+      this.vehicleNumbers = res.VehicleDetails;
     } catch (error) {
-        console.error('Error:', error);
-        this.toastr.error('Something went wrong.', 'ERROR');
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
     }
-}
+  }
 
- // Autocomplete function
- filterVehicleNumbers(value: string): any {
-  const filterValue = value.toLowerCase();
-  return this.vehicleNumbers.filter((x:any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
-}
+  // Autocomplete function
+  filterVehicleNumbers(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.vehicleNumbers.filter((x: any) =>
+      x?.VehicleNo?.toLowerCase()?.includes(filterValue)
+    );
+  }
 
-displayWithFn(value: string): string {
-  return value || '';
-}
+  displayWithFn(value: string): string {
+    return value || '';
+  }
 
-VehicleInput(value:string){
-  let newVal = value.toUpperCase();
-  this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
-}
+  VehicleInput(value: string) {
+    let newVal = value.toUpperCase();
+    this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+  }
 
-GeTript(){
-  
+  GeTript() {
+    const gradeGetService = this.stgService.GetTrip().subscribe((res: any) => {
+      this.TripList = res.TripDetails;
+      this.dateRangeForm.controls['TripId'].setValue(this.TripList[0].TripId);
+    });
 
-  const gradeGetService = this.stgService.GetTrip().subscribe((res:any)=>{
-    this.TripList = res.TripDetails;
-    this.dateRangeForm.controls['TripId'].setValue(this.TripList[0].TripId);
-  });
+    this.subscriptions.push(gradeGetService);
+  }
 
-  this.subscriptions.push(gradeGetService);
+  selectRow(row: any, index: number) {
+    this.selectedRowIndex = index; // Set the selected row index
+  }
 
-}
-  
-
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+        this.selectedRowIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      if (this.selectedRowIndex > 0) {
+        this.selectedRowIndex--;
+      }
+    }
+  }
 }

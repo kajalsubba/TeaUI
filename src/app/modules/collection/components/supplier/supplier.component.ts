@@ -1,5 +1,11 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -23,7 +29,7 @@ import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/ima
 @Component({
   selector: 'app-supplier',
   templateUrl: './supplier.component.html',
-  styleUrls: ['./supplier.component.scss']
+  styleUrls: ['./supplier.component.scss'],
 })
 export class SupplierComponent implements OnInit {
   displayedColumns: string[] = [
@@ -40,26 +46,25 @@ export class SupplierComponent implements OnInit {
     'Remarks',
     'TripName',
     'Status',
-    'actions'
+    'actions',
   ];
-  
+
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionId', header: 'Id ' },
-   // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
+    // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
-       { columnDef: 'FineLeaf', header: 'Fine Leaf' },
+    { columnDef: 'FineLeaf', header: 'Fine Leaf' },
     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Remarks', header: 'Remark' },
     { columnDef: 'TripName', header: 'TripName ' },
-   // { columnDef: 'Status', header: 'Status ' }
-];
-
+    // { columnDef: 'Status', header: 'Status ' }
+  ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -67,9 +72,10 @@ export class SupplierComponent implements OnInit {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   minToDate!: any;
-  vehicleNumbers: any[]=[];
-  TripList:any[]=[];
+  vehicleNumbers: any[] = [];
+  TripList: any[] = [];
   private destroy$ = new Subject<void>();
+  selectedRowIndex: number = -1;
 
   constructor(
     private dialog: MatDialog,
@@ -77,9 +83,9 @@ export class SupplierComponent implements OnInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private autocompleteService: AutoCompleteService,
-    private fb:FormBuilder,
-    private stgService:StgService,
-    private supplierService:SupplierService
+    private fb: FormBuilder,
+    private stgService: StgService,
+    private supplierService: SupplierService
   ) {}
 
   ngOnInit(): void {
@@ -87,46 +93,49 @@ export class SupplierComponent implements OnInit {
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      VehicleNo:[''],
-      TripId:['']
+      VehicleNo: [''],
+      TripId: [''],
     });
-   // this.dataSource.data = this.dummyData;
-  
-   // this.GetSupplierList(null,null);
+    // this.dataSource.data = this.dummyData;
+
+    // this.GetSupplierList(null,null);
     this.loadVehicleNumbers();
     this.GeTript();
-   
   }
 
   ngAfterViewInit() {
     console.log(this.loginDetails);
-    
-    
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-
-  GetSupplierList(FromDate:any,ToDate:any){
-   
-      const currentDate = new Date();
-      let bodyData:ISupplierSelect = {
-        FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
-        ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
-        TenantId:this.loginDetails.TenantId,
-        VehicleNo:this.dateRangeForm.value.VehicleNo,
-        Status:'',
-        TripId:0,
-        CreatedBy:this.loginDetails.LoginType =='Client'?this.loginDetails.UserId:0,
-      }
-      const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res:any)=>{
-       // console.log(res);
+  GetSupplierList(FromDate: any, ToDate: any) {
+    const currentDate = new Date();
+    let bodyData: ISupplierSelect = {
+      FromDate:
+        FromDate == null
+          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+          : FromDate,
+      ToDate:
+        ToDate == null
+          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+          : ToDate,
+      TenantId: this.loginDetails.TenantId,
+      VehicleNo: this.dateRangeForm.value.VehicleNo,
+      Status: '',
+      TripId: 0,
+      CreatedBy:
+        this.loginDetails.LoginType == 'Client' ? this.loginDetails.UserId : 0,
+    };
+    const categoryListService = this.supplierService
+      .GetSupplierData(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
         this.dataSource.data = res.SupplierDetails;
       });
-      this.subscriptions.push(categoryListService);
-    
+    this.subscriptions.push(categoryListService);
   }
-
 
   addSupplier() {
     const dialogRef = this.dialog.open(AddEditSupplierComponent, {
@@ -139,28 +148,27 @@ export class SupplierComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetSupplierList(null,null);
+        this.GetSupplierList(null, null);
       }
     });
   }
 
   editItem(element: any) {
-
     const dialogRef = this.dialog.open(AddEditSupplierComponent, {
-      width: "80%",
-      data:{
-        title:"Update Supplier",
-        buttonName:"Update",
-        value:element
+      width: '80%',
+      data: {
+        title: 'Update Supplier',
+        buttonName: 'Update',
+        value: element,
       },
-      disableClose:true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result:any)=>{
-      if(result){
-        this.GetSupplierList(null,null);
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetSupplierList(null, null);
       }
-    })
+    });
   }
 
   deleteItem(element: any) {}
@@ -181,23 +189,28 @@ export class SupplierComponent implements OnInit {
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
     this.dateRangeForm.controls['toDate'].setValue(null);
-    this.minToDate = event.value
+    this.minToDate = event.value;
   }
 
-  clearFilter(){
+  clearFilter() {
     this.dateRangeForm.controls['fromDate'].setValue(null);
     this.dateRangeForm.controls['toDate'].setValue(null);
     this.dataSource.data = this.dataSource.data;
   }
 
-  search(){
-
+  search() {
     const currentDate = new Date();
- 
-    const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
-    const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US')  ;
 
-    this.GetSupplierList(fromDate,toDate);
+    const fromDate =
+      this.dateRangeForm.value.fromDate == null
+        ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+        : formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
+    const toDate =
+      this.dateRangeForm.value.toDate == null
+        ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+        : formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US');
+
+    this.GetSupplierList(fromDate, toDate);
   }
 
   handleChange(event: any): void {
@@ -211,7 +224,7 @@ export class SupplierComponent implements OnInit {
     }
   }
 
-  setStatus(status:string, row:any){
+  setStatus(status: string, row: any) {
     console.log(row);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30%',
@@ -221,12 +234,11 @@ export class SupplierComponent implements OnInit {
           'text-danger': status === 'Rejected',
           'text-warning': status === 'Pending',
           'text-success': status === 'Approved'
-        }">${status}</b> ?`
-      }
+        }">${status}</b> ?`,
+      },
     });
-    
-    
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         row.status = status;
       }
@@ -234,63 +246,81 @@ export class SupplierComponent implements OnInit {
   }
 
   getTotalCost(columnName: string): number {
-    return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
+    return this.dataSource.filteredData.reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
   }
 
   async loadVehicleNumbers() {
     try {
-        const bodyData: IGetGrade = {
-            TenantId: this.loginDetails.TenantId
-        };
+      const bodyData: IGetGrade = {
+        TenantId: this.loginDetails.TenantId,
+      };
 
-        const res: any = await this.autocompleteService.GetVehicleNumbers(bodyData)
-            .pipe(takeUntil(this.destroy$))
-            .toPromise();
+      const res: any = await this.autocompleteService
+        .GetVehicleNumbers(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
-        this.vehicleNumbers = res.VehicleDetails;
-
-
+      this.vehicleNumbers = res.VehicleDetails;
     } catch (error) {
-        console.error('Error:', error);
-        this.toastr.error('Something went wrong.', 'ERROR');
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
     }
-}
+  }
 
- // Autocomplete function
- filterVehicleNumbers(value: string): any {
-  const filterValue = value.toLowerCase();
-  return this.vehicleNumbers.filter((x:any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
-}
+  // Autocomplete function
+  filterVehicleNumbers(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.vehicleNumbers.filter((x: any) =>
+      x?.VehicleNo?.toLowerCase()?.includes(filterValue)
+    );
+  }
 
-displayWithFn(value: string): string {
-  return value || '';
-}
+  displayWithFn(value: string): string {
+    return value || '';
+  }
 
-VehicleInput(value:string){
-  let newVal = value.toUpperCase();
-  this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
-}
-openImage(imageUrl:any){
-  const dialogRef = this.dialog.open(ImageViewerComponent, {
-    width:"80vw",
-    height:"95%",
-    disableClose:true,
-    data:{
-      title:"Image Viewer",
-      imageUrl:imageUrl
+  VehicleInput(value: string) {
+    let newVal = value.toUpperCase();
+    this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+  }
+  openImage(imageUrl: any) {
+    const dialogRef = this.dialog.open(ImageViewerComponent, {
+      width: '80vw',
+      height: '95%',
+      disableClose: true,
+      data: {
+        title: 'Image Viewer',
+        imageUrl: imageUrl,
+      },
+    });
+  }
+
+  GeTript() {
+    const gradeGetService = this.stgService.GetTrip().subscribe((res: any) => {
+      this.TripList = res.TripDetails;
+      this.dateRangeForm.controls['TripId'].setValue(this.TripList[0].TripId);
+    });
+
+    this.subscriptions.push(gradeGetService);
+  }
+
+  selectRow(row: any, index: number) {
+    this.selectedRowIndex = index; // Set the selected row index
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+        this.selectedRowIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      if (this.selectedRowIndex > 0) {
+        this.selectedRowIndex--;
+      }
     }
-  })
-}
-
-GeTript(){
-  
-
-  const gradeGetService = this.stgService.GetTrip().subscribe((res:any)=>{
-    this.TripList = res.TripDetails;
-    this.dateRangeForm.controls['TripId'].setValue(this.TripList[0].TripId);
-  });
-
-  this.subscriptions.push(gradeGetService);
-
-}
+  }
 }

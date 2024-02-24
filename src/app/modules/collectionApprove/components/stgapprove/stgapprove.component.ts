@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe, formatDate } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -74,6 +74,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   minToDate!: any;
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
+  selectedRowIndex: number = -1;
 
   constructor(
     private dialog: MatDialog,
@@ -146,6 +147,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     this.selection.clear();
     if (this.dateRangeForm.invalid) {
       this.dateRangeForm.markAllAsTouched();
+      this.toastr.error("Please fill the Mandatory fields !", "WARNING")
       return;
     }
 
@@ -362,4 +364,22 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
 
     this.subscriptions.push(gradeGetService);
   }
+
+  selectRow(row: any, index: number) {
+    this.selectedRowIndex = index; // Set the selected row index
+  }
+  
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+        this.selectedRowIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      if (this.selectedRowIndex > 0) {
+        this.selectedRowIndex--;
+      }
+    }
+  }
+
 }

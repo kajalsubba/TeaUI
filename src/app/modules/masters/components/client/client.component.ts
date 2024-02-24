@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,121 +21,131 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
-  styleUrls: ['./client.component.scss']
+  styleUrls: ['./client.component.scss'],
 })
 export class ClientComponent implements OnInit, AfterViewInit {
   private subscriptions: Subscription[] = [];
-  categoryList:any;
+  categoryList: any;
   private destroy$ = new Subject<void>();
-  displayedColumns: string[] = ['ClientId', 'ClientFirstName', 'ClientLastName', 'ClientAddress','CategoryName', 'ContactNo','EmailId','LoginStatus','actions'];
+  displayedColumns: string[] = [
+    'ClientId',
+    'ClientFirstName',
+    'ClientLastName',
+    'ClientAddress',
+    'CategoryName',
+    'ContactNo',
+    'EmailId',
+    'LoginStatus',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<any>();
-  columns: { columnDef: string, header: string }[] = [
+  columns: { columnDef: string; header: string }[] = [
     { columnDef: 'ClientId', header: 'Client ID' },
     { columnDef: 'ClientFirstName', header: 'First Name' },
-   // { columnDef: 'ClientMiddleName', header: 'Middle Name' },
+    // { columnDef: 'ClientMiddleName', header: 'Middle Name' },
     { columnDef: 'ClientLastName', header: 'Last Name' },
     { columnDef: 'ClientAddress', header: 'Client Address' },
-   // { columnDef: 'CategoryID', header: 'CategoryID' },
+    // { columnDef: 'CategoryID', header: 'CategoryID' },
     { columnDef: 'CategoryName', header: 'Category' },
     { columnDef: 'ContactNo', header: 'Contact No.' },
     { columnDef: 'EmailId', header: 'Email ID' },
-    { columnDef: 'LoginStatus', header: 'Client Login' }
+    { columnDef: 'LoginStatus', header: 'Client Login' },
   ];
-
 
   loginDetails: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  selectedRowIndex: number = -1;
 
   constructor(
-    private clientService:ClientService,
-    private dialog:MatDialog,
-    private helper:HelperService,
-    private categoryService:CategoryService,
-    private toastr:ToastrService
-
-  ){}
+    private clientService: ClientService,
+    private dialog: MatDialog,
+    private helper: HelperService,
+    private categoryService: CategoryService,
+    private toastr: ToastrService
+  ) {}
 
   ngAfterViewInit() {
-//    console.log(this.loginDetails);
+    //    console.log(this.loginDetails);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  
- async ngOnInit(){
-      this.loginDetails = this.helper.getItem('loginDetails');
-      this.getClientList();
-     await this.getCategoryList();
+
+  async ngOnInit() {
+    this.loginDetails = this.helper.getItem('loginDetails');
+    this.getClientList();
+    await this.getCategoryList();
   }
 
   ngOnDestroy(): void {
-      this.subscriptions.forEach((sub)=>{
-        sub.unsubscribe();
-      })
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
-  getClientList(){
-    let bodyData:IGetClient = {
-      TenantId:this.loginDetails.TenantId
-    }
-    const clientListService = this.clientService.getClient(bodyData).subscribe((res:any)=>{
-     // console.log(res);
-      this.dataSource.data = res.ClientDetails;
-    });
+  getClientList() {
+    let bodyData: IGetClient = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    const clientListService = this.clientService
+      .getClient(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.dataSource.data = res.ClientDetails;
+      });
     this.subscriptions.push(clientListService);
   }
 
-  addClient(){
+  addClient() {
     const dialogRef = this.dialog.open(AddEditClientComponent, {
-      width: "70%",
-      data:{
-        title:"Add Client",
-        buttonName:"Save"
+      width: '70%',
+      data: {
+        title: 'Add Client',
+        buttonName: 'Save',
       },
-      disableClose:true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result:any)=>{
-      if(result){
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
         this.getClientList();
       }
-    })
+    });
   }
   async getCategoryList() {
     try {
-        const categoryBody: IGetCategory = {
-            TenantId: this.loginDetails.TenantId
-        };
+      const categoryBody: IGetCategory = {
+        TenantId: this.loginDetails.TenantId,
+      };
 
-        const res: any = await this.categoryService.getCategory(categoryBody)
-            .pipe(takeUntil(this.destroy$))
-            .toPromise();
+      const res: any = await this.categoryService
+        .getCategory(categoryBody)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
-        this.categoryList = res.CategoryDetails;
-
-
+      this.categoryList = res.CategoryDetails;
     } catch (error) {
-        console.error('Error:', error);
-        this.toastr.error('Something went wrong.', 'ERROR');
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
     }
-}
+  }
 
   editItem(element: any): void {
     const dialogRef = this.dialog.open(AddEditClientComponent, {
-      width: "70%",
-      data:{
-        title:"Update Client",
-        buttonName:"Update",
-        value:element
+      width: '70%',
+      data: {
+        title: 'Update Client',
+        buttonName: 'Update',
+        value: element,
       },
-      disableClose:true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result:any)=>{
-      if(result){
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
         this.getClientList();
       }
-    })
+    });
   }
 
   deleteItem(element: any): void {
@@ -146,4 +162,20 @@ export class ClientComponent implements OnInit, AfterViewInit {
     }
   }
 
+  selectRow(row: any, index: number) {
+    this.selectedRowIndex = index; // Set the selected row index
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+        this.selectedRowIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      if (this.selectedRowIndex > 0) {
+        this.selectedRowIndex--;
+      }
+    }
+  }
 }

@@ -218,3 +218,7 @@ td:last-child{
 ::ng-deep tfoot{
   z-index: 991 !important;
 }
+
+.selected-row {
+  background-color: #cacaca; /* Change this to the desired background color */
+}

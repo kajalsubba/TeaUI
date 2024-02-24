@@ -97,6 +97,20 @@ addRole()
 
 editItem(e:any)
 {
+  const dialogRef = this.dialog.open(AddEditRoleComponent, {
+    width: "30%",
+    data:{
+      title:"Edit Role",
+      buttonName:"Update",
+      value:e
+    },
+    disableClose:true
+  });
 
+  dialogRef.afterClosed().subscribe((result:any)=>{
+    if(result){
+      this.GetRoleList();
+    }
+  })
 }
 }

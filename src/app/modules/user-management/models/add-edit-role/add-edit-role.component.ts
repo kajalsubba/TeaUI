@@ -37,7 +37,8 @@ export class AddEditRoleComponent implements OnInit, AfterViewInit {
       RoleDescription: ['']
     });
     if(this.dialogData.value){
-     // this.RoleForm.controls['categoryName'].setValue(this.dialogData.value.CategoryName);
+     this.RoleForm.controls['RoleName'].setValue(this.dialogData.value.RoleName);
+     this.RoleForm.controls['RoleDescription'].setValue(this.dialogData.value.RoleDescription);
     }
   }
 

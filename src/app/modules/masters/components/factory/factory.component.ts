@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -39,6 +45,7 @@ export class FactoryComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
+  selectedRowIndex: number = -1;
   /**
    *
    */
@@ -60,7 +67,7 @@ export class FactoryComponent implements OnInit, AfterViewInit {
   GetFactoryList() {
     let bodyData: IGetFactory = {
       TenantId: this.loginDetails.TenantId,
-      IsClientView:false
+      IsClientView: false,
     };
     const GetService = this.factoryService
       .GetFactory(bodyData)
@@ -107,5 +114,22 @@ export class FactoryComponent implements OnInit, AfterViewInit {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
+  }
+
+  selectRow(row: any, index: number) {
+    this.selectedRowIndex = index; // Set the selected row index
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+        this.selectedRowIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      if (this.selectedRowIndex > 0) {
+        this.selectedRowIndex--;
+      }
+    }
   }
 }
