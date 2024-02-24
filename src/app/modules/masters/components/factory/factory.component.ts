@@ -21,6 +21,7 @@ export class FactoryComponent implements OnInit, AfterViewInit {
     'FactoryAddress',
     'ContactNo',
     'EmailId',
+    'ClientView',
     'actions',
   ];
   dataSource = new MatTableDataSource<any>();
@@ -30,6 +31,7 @@ export class FactoryComponent implements OnInit, AfterViewInit {
     { columnDef: 'FactoryAddress', header: 'Address' },
     { columnDef: 'ContactNo', header: 'Contact No' },
     { columnDef: 'EmailId', header: 'Email' },
+    { columnDef: 'ClientView', header: 'Client View' },
   ];
 
   loginDetails: any;
@@ -58,6 +60,7 @@ export class FactoryComponent implements OnInit, AfterViewInit {
   GetFactoryList() {
     let bodyData: IGetFactory = {
       TenantId: this.loginDetails.TenantId,
+      IsClientView:false
     };
     const GetService = this.factoryService
       .GetFactory(bodyData)

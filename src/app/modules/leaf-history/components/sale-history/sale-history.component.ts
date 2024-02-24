@@ -179,6 +179,7 @@ export class SaleHistoryComponent {
     try {
       const bodyData: IGetFactory = {
         TenantId: this.loginDetails.TenantId,
+        IsClientView:false
       };
 
       const res: any = await this.autocompleteService

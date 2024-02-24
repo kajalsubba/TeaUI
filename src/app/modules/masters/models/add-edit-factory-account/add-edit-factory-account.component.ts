@@ -63,7 +63,8 @@ async  ngOnInit()
   async GetFactoryList() {
     try {
         const bodyData: IGetFactory = {
-            TenantId: this.loginDetails.TenantId
+            TenantId: this.loginDetails.TenantId,
+            IsClientView:false
         };
 
         const res: any = await this.factoryService.GetFactory(bodyData)

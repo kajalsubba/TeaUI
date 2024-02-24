@@ -132,7 +132,7 @@ export class SupplierComponent implements OnInit {
     const dialogRef = this.dialog.open(AddEditSupplierComponent, {
       width: '80%',
       data: {
-        title: 'Add New Supplier',
+        title: 'Leaf Entry Form',
         buttonName: 'Save',
       },
       disableClose: true,

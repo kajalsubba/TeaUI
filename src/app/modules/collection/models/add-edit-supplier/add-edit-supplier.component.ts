@@ -180,6 +180,7 @@ export class AddEditSupplierComponent implements OnInit {
     try {
       const bodyData: IGetFactory = {
         TenantId: this.loginDetails.TenantId,
+        IsClientView:this.loginDetails.LoginType =='Client'?true:false
       };
 
       const res: any = await this.autocompleteService

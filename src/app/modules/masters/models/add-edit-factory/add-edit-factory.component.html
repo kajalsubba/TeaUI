@@ -72,6 +72,12 @@
                             </div>
                       
                   
+                            <div class="form-group row mb-3">
+                                <label for="IsClientView" class="col-lg-5 col-form-label">Client View <span class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-slide-toggle formControlName="IsClientView">{{FactoryForm.value.IsClientView ? "Yes" : "No"}}</mat-slide-toggle>
+                                </div>
+                            </div>
                     </div>
                 </form>
             </div>

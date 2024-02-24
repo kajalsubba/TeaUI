@@ -69,7 +69,7 @@
           <div>
             <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
               <!-- Displayed columns -->
-              <<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+              <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
                 <td mat-cell *matCellDef="let row; let i = index;">
                   {{ row[column.columnDef] }}

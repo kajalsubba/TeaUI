@@ -206,7 +206,8 @@ export class AddEditStgComponent implements OnInit {
 }
   getFactoryDate(){
     let bodyData:IGetFactory = {
-      TenantId:this.loginDetails.TenantId
+      TenantId:this.loginDetails.TenantId,
+      IsClientView:false
     }
   }
 

@@ -6,9 +6,11 @@ export interface ISaveFactory {
   EmailId: string;
   TenantId: number;
   IsActive: boolean;
+  IsClientView:boolean;
   CreatedBy: number;
 }
 
 export interface IGetFactory {
   TenantId: number;
+  IsClientView:boolean;
 }

@@ -37,12 +37,7 @@
                 <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
               </form>
       
-              <!-- <a class="forgot-password-link text-end link" href="#">Forgot Password</a> -->
-  <!--     
-              <p class="signup-link text-center">
-                Version 1.0.0
-              </p>
-              <p class="copy-right">&copy; 2024 ALL RIGHTS RESERVED.</p> -->
+
             </div>
           </div>
   
@@ -59,17 +54,17 @@
               <div class="line m-1"></div>
               <form class="form" [formGroup]="ClientloginForm" (ngSubmit)="onClientLogin()">
                 <div class="form-group position-relative my-2">
-                  <label for="TenantId">Supplier</label>
-                  <mat-select aria-placeholder="--Select Category--" class="fromSelect" formControlName="TenantId">
+                  <label for="TenantId">Select Agent</label>
+                  <mat-select aria-placeholder="--Select Agent--" class="fromSelect" formControlName="TenantId">
                     <mat-option *ngFor="let item of TenantList" [value]="item.TenantId">
                       {{item.TenantName}}
                     </mat-option>
                   </mat-select>   <div *ngIf="ClientloginForm.get('TenantId')?.invalid && ClientloginForm.get('TenantId')?.touched" class="text-danger">
-                    Tenant is required.
+                    Agent is required.
                   </div>
                 </div>
                 <div class="form-group position-relative my-2">
-                  <label for="username">Email</label>
+                  <label for="username">User ID</label>
                   <input formControlName="userName" placeholder="Enter your username" name="username" id="username" type="text">
                   <div *ngIf="ClientloginForm.get('userName')?.invalid && ClientloginForm.get('userName')?.touched" class="text-danger">
                     Username is required.
@@ -86,22 +81,11 @@
       
                 <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
               </form>
-      
-              <!-- <a class="forgot-password-link text-end link" href="#">Forgot Password</a> -->
-      
-              <!-- <p class="signup-link text-center">
-                Version 1.0.0
-              </p>
-              <p class="copy-right">&copy; 2024 ALL RIGHTS RESERVED.</p> -->
             </div>
           </div>
-  
         </mat-tab>
       </mat-tab-group>
-      <!-- <p class="signup-link text-center">
-        Version 1.0.0
-      </p> -->
-    </div>
+     </div>
     <p class="copy-right">&copy; 2024 ALL RIGHTS RESERVED.</p>
     </div>
 

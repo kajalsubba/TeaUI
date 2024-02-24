@@ -37,6 +37,8 @@ export class AddEditFactoryComponent {
       FactoryAddress:[],
       ContactNo:[, Validators.required],
       EmailId: ['', Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)],
+      IsClientView:[true]
+
   
     });
     if(this.dialogData.value){
@@ -61,7 +63,8 @@ export class AddEditFactoryComponent {
         FactoryAddress:this.FactoryForm.value.FactoryAddress,
         EmailId:this.FactoryForm.value.EmailId,
         ContactNo:this.FactoryForm.value.ContactNo,
-        IsActive:true
+        IsActive:true,
+        IsClientView:this.FactoryForm.value.IsClientView,
       }
       const saveCategory = this.factoryService.SaveFactory(bodyData).subscribe((res:any)=>{
     //    console.log(res, "Save Response");
