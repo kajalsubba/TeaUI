@@ -34,3 +34,14 @@
 th.mat-sort-header-sorted {
     color: white;
 }
+
+th:last-child{
+    position: sticky;
+    right: 0;
+    z-index: 991 !important;
+  }
+  td:last-child{
+    position: sticky;
+    right: 0;
+    z-index: 990 !important;
+  }
