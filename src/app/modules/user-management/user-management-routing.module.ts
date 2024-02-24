@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserManagementComponent } from './user-management.component';
 import { UserComponent } from './components/user/user.component';
 import { RoleComponent } from './components/role/role.component';
+import { RolePermissionComponent } from './components/role-permission/role-permission.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -10,6 +11,7 @@ const routes: Routes = [
     {path:'', redirectTo: 'user', pathMatch: 'full'},
     {path:'user', component: UserComponent},
     {path:'role', component: RoleComponent},
+    {path:'role-permission', component: RolePermissionComponent},
   ]}
 ];
 

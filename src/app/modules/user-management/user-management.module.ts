@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AddEditRoleComponent } from './models/add-edit-role/add-edit-role.component';
+import { RolePermissionComponent } from './components/role-permission/role-permission.component';
 
 
 
@@ -25,7 +26,8 @@ import { AddEditRoleComponent } from './models/add-edit-role/add-edit-role.compo
     UserManagementComponent,
     UserComponent,
     RoleComponent,
-    AddEditRoleComponent
+    AddEditRoleComponent,
+    RolePermissionComponent
   ],
   imports: [
     CommonModule,
