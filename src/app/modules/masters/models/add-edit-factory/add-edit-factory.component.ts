@@ -46,6 +46,7 @@ export class AddEditFactoryComponent {
       this.FactoryForm.controls['FactoryAddress'].setValue(this.dialogData.value.FactoryAddress);
       this.FactoryForm.controls['ContactNo'].setValue(this.dialogData.value.ContactNo);
       this.FactoryForm.controls['EmailId'].setValue(this.dialogData.value.EmailId);
+      this.FactoryForm.controls['IsClientView'].setValue(this.dialogData.value.ClientView);
     }
   }
 

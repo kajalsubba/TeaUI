@@ -79,7 +79,7 @@
             </ul>
           </li>
 
-          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
+          <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">
               <a>
                 <i class="fa-solid fa-sliders"></i>
@@ -88,9 +88,10 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
-              <li routerLink="user-management/Permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
-              <li routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">Create User</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="user-management/Permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent'"  routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">Create User</a></li>
+              <li  routerLink="user-management/changepassword" routerLinkActive="active"><a class="sub-menu-title">Change Password</a></li>
 
             </ul>
           </li>
