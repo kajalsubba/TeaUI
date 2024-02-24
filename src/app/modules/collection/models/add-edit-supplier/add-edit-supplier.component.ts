@@ -85,7 +85,7 @@ export class AddEditSupplierComponent implements OnInit {
       this.supplierForm.controls['ClientName'].setValue(this.loginDetails.ClientName);
       this.supplierForm.controls['ClientId'].setValue(this.loginDetails.ClientId);
       this.supplierForm.controls['ClientName'].disable({ onlySelf: true });
-
+      this.supplierForm.controls['Rate'].disable({ onlySelf: true });
     }
   //  this.FilteredTranscationType = this.TranscationTypeList;
   }

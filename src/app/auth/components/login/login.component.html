@@ -59,12 +59,12 @@
               <div class="line m-1"></div>
               <form class="form" [formGroup]="ClientloginForm" (ngSubmit)="onClientLogin()">
                 <div class="form-group position-relative my-2">
-                  <label for="username">Supplier</label>
+                  <label for="TenantId">Supplier</label>
                   <mat-select aria-placeholder="--Select Category--" class="fromSelect" formControlName="TenantId">
                     <mat-option *ngFor="let item of TenantList" [value]="item.TenantId">
                       {{item.TenantName}}
                     </mat-option>
-                  </mat-select>   <div *ngIf="ClientloginForm.get('userName')?.invalid && ClientloginForm.get('userName')?.touched" class="text-danger">
+                  </mat-select>   <div *ngIf="ClientloginForm.get('TenantId')?.invalid && ClientloginForm.get('TenantId')?.touched" class="text-danger">
                     Tenant is required.
                   </div>
                 </div>

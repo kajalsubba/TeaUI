@@ -17,7 +17,7 @@
               <li  routerLink="dashboard" routerLinkActive="active"><a>Dashboard</a></li>
             </ul>
           </li>
-          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu" routerLinkActive="main-menu-active">
+          <li *ngIf="loginDetails.LoginType=='Agent'"  [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'Masters')">
               <a>
                 <i class="bx bxs-cylinder"></i>

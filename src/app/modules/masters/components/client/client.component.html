@@ -9,6 +9,14 @@
         </div>
         <div class="col-lg-4 offset-lg-2 my-2">
             <div class="top-container">
+              <div class="search-field px-2">
+                <mat-select placeholder="--Select Category--" class="fromSelect"
+                formControlName="CategoryId">
+                  <mat-option *ngFor="let status of categoryList" [value]="status.CategoryId">
+                      {{status.CategoryName}}
+                  </mat-option>
+                </mat-select>
+            </div>
                 <div class="search-field px-2">
                     <input type="text" placeholder="Search" class="form-control">
                     <i class="fa-solid fa-magnifying-glass"></i>

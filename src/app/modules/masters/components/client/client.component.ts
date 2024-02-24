@@ -2,12 +2,15 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ClientService } from '../../services/client.service';
 import { MatDialog } from '@angular/material/dialog';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetClient } from '../../interfaces/IClient';
 import { AddEditClientComponent } from '../../models/add-edit-client/add-edit-client.component';
+import { CategoryService } from '../../services/category.service';
+import { IGetCategory } from '../../interfaces/ICategory';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-client',
@@ -16,7 +19,8 @@ import { AddEditClientComponent } from '../../models/add-edit-client/add-edit-cl
 })
 export class ClientComponent implements OnInit, AfterViewInit {
   private subscriptions: Subscription[] = [];
-
+  categoryList:any;
+  private destroy$ = new Subject<void>();
   displayedColumns: string[] = ['ClientId', 'ClientFirstName', 'ClientLastName', 'ClientAddress','CategoryName', 'ContactNo','EmailId','LoginStatus','actions'];
   dataSource = new MatTableDataSource<any>();
   columns: { columnDef: string, header: string }[] = [
@@ -40,7 +44,10 @@ export class ClientComponent implements OnInit, AfterViewInit {
   constructor(
     private clientService:ClientService,
     private dialog:MatDialog,
-    private helper:HelperService
+    private helper:HelperService,
+    private categoryService:CategoryService,
+    private toastr:ToastrService
+
   ){}
 
   ngAfterViewInit() {
@@ -49,9 +56,10 @@ export class ClientComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
   
-  ngOnInit(): void {
+ async ngOnInit(){
       this.loginDetails = this.helper.getItem('loginDetails');
       this.getClientList();
+     await this.getCategoryList();
   }
 
   ngOnDestroy(): void {
@@ -87,6 +95,24 @@ export class ClientComponent implements OnInit, AfterViewInit {
       }
     })
   }
+  async getCategoryList() {
+    try {
+        const categoryBody: IGetCategory = {
+            TenantId: this.loginDetails.TenantId
+        };
+
+        const res: any = await this.categoryService.getCategory(categoryBody)
+            .pipe(takeUntil(this.destroy$))
+            .toPromise();
+
+        this.categoryList = res.CategoryDetails;
+
+
+    } catch (error) {
+        console.error('Error:', error);
+        this.toastr.error('Something went wrong.', 'ERROR');
+    }
+}
 
   editItem(element: any): void {
     const dialogRef = this.dialog.open(AddEditClientComponent, {

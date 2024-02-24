@@ -3,9 +3,7 @@ import { DatePipe, formatDate } from '@angular/common';
 import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
-import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-entry.component';
-import { IstgApprove } from '../../interfaces/istg-approve';
-import { MatTableDataSource, _MatTableDataSource } from '@angular/material/table';
+import { _MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,6 +17,8 @@ import { IStgSelect } from 'src/app/modules/collection/interfaces/istg';
 import { SupplierService } from 'src/app/modules/collection/services/supplier.service';
 import { SupplierapproveService } from '../../services/supplierapprove.service';
 import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
+import { IsupplierApprove } from '../../interfaces/isupplier-approve';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-supplierapprove',
@@ -106,7 +106,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     this.dateRangeForm.controls['VehicleId'].setValue(number?.VehicleId);
   }
 
-  GetStgList(FromDate: any, ToDate: any) {
+  GetSupplierList(FromDate: any, ToDate: any) {
     
     const currentDate = new Date();
     let bodyData: IStgSelect = {
@@ -151,7 +151,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    this.GetStgList(
+    this.GetSupplierList(
       formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US')
     );
@@ -167,69 +167,125 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
 
   setStatus(e: any) {}
 
-  approveEntry() {
+  // approveEntry() {
    
-    const selectedObjects: any[] = [];
-    const selectedObjects1: any[] = [];
-    var ApproveList: any[] = [];
+  //   const selectedObjects: any[] = [];
+  //   const selectedObjects1: any[] = [];
+  //   var ApproveList: any[] = [];
 
-     let totalChallanWeight = 0;
+  //    let totalChallanWeight = 0;
 
-    // Iterate through the selected items
-    this.selection.selected.forEach((selectedItem) => {
-      // Create the selected object based on the selected item
+  //   // Iterate through the selected items
+  //   this.selection.selected.forEach((selectedItem) => {
+  //     // Create the selected object based on the selected item
       
-      const selectedObject = {
-        IsApprove: true, // Set the IsApprove property to true
-        CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
-        Status: selectedItem.Status, // Assuming Status is present in your data
-      };
-      // Push the selected object to the array
-      selectedObjects.push(selectedObject);
-      // Calculate totals
+  //     const selectedObject = {
+  //       IsApprove: true, // Set the IsApprove property to true
+  //       CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
+  //       Status: selectedItem.Status, // Assuming Status is present in your data
+  //     };
+  //     // Push the selected object to the array
+  //     selectedObjects.push(selectedObject);
+  //     // Calculate totals
       
-      totalChallanWeight += selectedItem.ChallanWeight;
-    });
+  //     totalChallanWeight += selectedItem.ChallanWeight;
+  //   });
 
-    this.dataSource.data.forEach((selectedItem) => {
-      // Create the selected object based on the selected item
-      const selectedObject1 = {
-        IsApprove: false, // Set the IsApprove property to true
-        CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
-        Status: selectedItem.Status, // Assuming Status is present in your data
-      };
-      // Push the selected object to the array
-      selectedObjects1.push(selectedObject1);
-    });
-    let result = selectedObjects1.filter(
-      (o1) => !selectedObjects.some((o2) => o1.CollectionId === o2.CollectionId)
-    );
-    ApproveList = [...selectedObjects, ...result];
+  //   this.dataSource.data.forEach((selectedItem) => {
+  //     // Create the selected object based on the selected item
+  //     const selectedObject1 = {
+  //       IsApprove: false, // Set the IsApprove property to true
+  //       CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
+  //       Status: selectedItem.Status, // Assuming Status is present in your data
+  //     };
+  //     // Push the selected object to the array
+  //     selectedObjects1.push(selectedObject1);
+  //   });
+  //   let result = selectedObjects1.filter(
+  //     (o1) => !selectedObjects.some((o2) => o1.CollectionId === o2.CollectionId)
+  //   );
+  //   ApproveList = [...selectedObjects, ...result];
 
-    // Log the array of selected objects
+  //   // Log the array of selected objects
 
-    // Create the data object to be saved
-    let data: IstgApprove = {
-      TotalFirstWeight: 0,
-      TotalWetLeaf: 0,
-      TotalLongLeaf: 0,
-      TotalDeduction: 0,
-      TotalFinalWeight: totalChallanWeight,
-      TenantId: this.loginDetails.TenantId,
-      CreatedBy: this.loginDetails.UserId,
-      ApproveList: ApproveList,
-    };
+  //   // Create the data object to be saved
+  //   // let data: IsupplierApprove = {
+  //   //   TotalFirstWeight: 0,
+  //   //   TotalWetLeaf: 0,
+  //   //   TotalLongLeaf: 0,
+  //   //   TotalDeduction: 0,
+  //   //   TotalFinalWeight: totalChallanWeight,
+  //   //   TenantId: this.loginDetails.TenantId,
+  //   //   CreatedBy: this.loginDetails.UserId,
+  //   //   ApproveList: ApproveList,
+  //   // };
 
 
-    // Perform any additional actions with the data object as needed
-    if (this.dataSource.data.length > 0) {
+  //   // Perform any additional actions with the data object as needed
+  //   if (this.dataSource.data.length > 0) {
 
-    // console.log(selectedObjects.length, "Data to save");
-     this.SaveStgtData(data,selectedObjects);
+  //   // console.log(selectedObjects.length, "Data to save");
+  // //   this.SaveApproveData(data,selectedObjects);
+  //   }
+  // }
+
+ 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
+  RejectClick(row:any)
+  {
+    this.SaveFuntion(row,'Reject');
+  }
 
-  SaveStgtData(clientBody: IstgApprove,selectedObject:any) {
+  ApproveClick(row:any)
+  {
+    this.SaveFuntion(row,'Approve');
+  }
+
+
+  SaveFuntion(row:any,saleStatus:any)
+  {
+    let data: IsupplierApprove = {
+      CollectionId:row.CollectionId,
+    SaleStatus:saleStatus,
+    CollectionDate: formatDate(row.CollDate, 'yyyy-MM-dd', 'en-US'),
+    AccountId:row.AccountId,
+    VehicleId:row.VehicleId,
+    FineLeaf:row.FineLeaf,
+    ChallanWeight:row.ChallanWeight,
+    SaleTypeId:2,
+    TenantId:this.loginDetails.TenantId,
+    CreatedBy:this.loginDetails.UserId
+    };
+
+   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '30vw',
+        height: '20%',
+        minWidth:'25vw',
+        disableClose: true,
+        data: {
+          title: 'Do you want to Confirm !',
+          data: data,
+     
+        },
+      });
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result) {
+          this.SaveApproveData(data);
+        
+
+        }
+      });
+
+
+  }
+  SaveApproveData(clientBody: IsupplierApprove) {
     this.supplierApproveService
       .SaveSupplierApprove(clientBody)
       .pipe(
@@ -242,21 +298,13 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
       )
       .subscribe((res: any) => {
 
-        if (selectedObject.length > 0) {
-         this.saleEntry(res, this.selection.selected);
-        }
+        this.toastr.success(res.Message, "SUCCESS");
+        this.GetSupplierList( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), 
+        formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
      
       });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
 
   async loadVehicleNumbers() {
     try {
@@ -325,33 +373,33 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     );
   }
 
-  saleEntry(response: any, approveData: any) {
-    const dialogRef = this.dialog.open(SaleEntryComponent, {
-      width: '90vw',
-      height: '95%',
-      minWidth:'90vw',
-      disableClose: true,
-      data: {
-        title: 'Sale Entry Form-SUPPLIER',
-        approveId: response.Id,
-        approveData: approveData,
-        VehicleNo: this.dateRangeForm.value.VehicleNo,
-        VehicleId: this.dateRangeForm.value.VehicleId,
-        CollectionDate: this.dateRangeForm.value.fromDate,
-        FactoryName:this.selection?.selected[0]?.FactoryName,
-        FactoryId:this.selection?.selected[0]?.FactoryId,
-        AccountId:this.selection?.selected[0]?.AccountId,
-        ChallanWeight:this.selection?.selected[0]?.ChallanWeight,
-        saleTypeId: 2,
-      },
-    });
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.GetStgList(   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
-        this.selection = new SelectionModel<any>(true, []);
-      }
-    });
-  }
+  // saleEntry(response: any, approveData: any) {
+  //   const dialogRef = this.dialog.open(SaleEntryComponent, {
+  //     width: '90vw',
+  //     height: '95%',
+  //     minWidth:'90vw',
+  //     disableClose: true,
+  //     data: {
+  //       title: 'Sale Entry Form-SUPPLIER',
+  //       approveId: response.Id,
+  //       approveData: approveData,
+  //       VehicleNo: this.dateRangeForm.value.VehicleNo,
+  //       VehicleId: this.dateRangeForm.value.VehicleId,
+  //       CollectionDate: this.dateRangeForm.value.fromDate,
+  //       FactoryName:this.selection?.selected[0]?.FactoryName,
+  //       FactoryId:this.selection?.selected[0]?.FactoryId,
+  //       AccountId:this.selection?.selected[0]?.AccountId,
+  //       ChallanWeight:this.selection?.selected[0]?.ChallanWeight,
+  //       saleTypeId: 2,
+  //     },
+  //   });
+  //   dialogRef.afterClosed().subscribe((result: any) => {
+  //     if (result) {
+  //       this.GetStgList(   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
+  //       this.selection = new SelectionModel<any>(true, []);
+  //     }
+  //   });
+  // }
 
   GeTript() {
     const gradeGetService = this.stgService.GetTrip().subscribe((res: any) => {
