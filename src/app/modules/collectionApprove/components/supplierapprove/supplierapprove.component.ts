@@ -107,7 +107,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
   }
 
   GetSupplierList(FromDate: any, ToDate: any) {
-    
+    this.selection.clear()
     const currentDate = new Date();
     let bodyData: IStgSelect = {
       FromDate:
@@ -120,7 +120,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
           : FromDate,
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
-      Status: '',
+      Status: 'Pending',
       TripId:this.dateRangeForm.value.TripId,
       CreatedBy:0
     };
