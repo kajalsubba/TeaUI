@@ -284,5 +284,10 @@ app-login .mat-mdc-tab-labels{
 }
 
 .selected-row {
-  background-color: #cacaca; /* Change this to the desired background color */
+  background-color: #ffd642 !important; /* Change this to the desired background color */
+}
+
+td.reject-row{
+  background-color: #e24454 !important;
+  color: #fff !important;
 }

@@ -19,6 +19,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AddEditRoleComponent } from './models/add-edit-role/add-edit-role.component';
 import { RolePermissionComponent } from './components/role-permission/role-permission.component';
 import { AddEditUserComponent } from './models/add-edit-user/add-edit-user.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 
@@ -45,7 +46,8 @@ import { AddEditUserComponent } from './models/add-edit-user/add-edit-user.compo
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatCheckboxModule
   ],
   providers: [ApiService]
 })

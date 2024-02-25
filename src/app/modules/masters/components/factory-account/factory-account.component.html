@@ -10,7 +10,7 @@
         <div class="col-lg-4 offset-lg-2 my-2">
             <div class="top-container">
                 <div class="search-field px-2">
-                    <input type="text" placeholder="Search" class="form-control">
+                    <input (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
                 <div class="add-button">

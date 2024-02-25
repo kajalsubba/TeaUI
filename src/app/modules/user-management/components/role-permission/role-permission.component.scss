@@ -1,0 +1,20 @@
+.table-container{
+    height: calc(100vh - 200px);
+    overflow: auto;
+    box-shadow: var(--soft-box-shadow);
+}
+
+thead{
+    position: sticky;
+    top: 0;
+    tr{
+        th{
+            background-color: var(--primary-color) !important;
+            color: #fff;
+        }
+    }
+}
+
+.form-check-inline{
+    transform: scale(1.5);
+}

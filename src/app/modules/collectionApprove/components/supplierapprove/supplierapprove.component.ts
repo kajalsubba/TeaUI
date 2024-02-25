@@ -270,7 +270,8 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
         minWidth:'25vw',
         disableClose: true,
         data: {
-          title: 'Do you want to Confirm !',
+          title: 'Confirm Action',
+          message: 'Do you want to Confirm !',
           data: data,
      
         },

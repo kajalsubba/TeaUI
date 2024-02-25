@@ -14,6 +14,10 @@ export class RoleService {
     return this.apiService.post('Admin/GetRole', Body);
   }
 
+  GetRolePermission(Body:IGetRole): Observable<any> {
+    return this.apiService.post('Admin/GetRolePermission', Body);
+  }
+
   CreateRole(Body:ISaveRole): Observable<any> {
     return this.apiService.post('Admin/CreateRole', Body);
   }
