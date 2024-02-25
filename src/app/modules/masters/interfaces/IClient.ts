@@ -15,5 +15,6 @@ export interface ISaveClient {
 
 export interface IGetClient {
   TenantId:number;
+  Category:string;
 }
 

@@ -1,18 +1,18 @@
 <div class="container-fluid mt-2">
     <div class="row">
         <div class="col-lg-12 my-2">
-            <div class="top-container">
+            <form [formGroup]="ClientForm"  class="top-container">
               <div class="col-lg-2 position-relative my-2">
                 <mat-select placeholder="--Select Category--" class="fromSelect"
                 formControlName="CategoryId">
-                  <mat-option *ngFor="let status of categoryList" [value]="status.CategoryId">
+                  <mat-option *ngFor="let status of categoryList" [value]="status.CategoryName">
                       {{status.CategoryName}}
                   </mat-option>
                 </mat-select>
               </div>
               <div class="col-lg-2 text-center">
                 <div class="add-button">
-                  <button class="btn btn-color">Search</button>
+                  <button (click)="ClientSearch()" class="btn btn-color">Search</button>
               </div>
               </div>
                 <div class="col-lg-3 offset-lg-5 d-flex align-items-center">
@@ -24,7 +24,7 @@
                     <button (click)="addClient()" class="btn btn-color">Create Client</button>
                 </div>
                 </div>
-            </div>
+              </form>
         </div>
         <hr>
         <div class="col-lg-12">

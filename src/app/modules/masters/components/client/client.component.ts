@@ -17,6 +17,7 @@ import { AddEditClientComponent } from '../../models/add-edit-client/add-edit-cl
 import { CategoryService } from '../../services/category.service';
 import { IGetCategory } from '../../interfaces/ICategory';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-client',
@@ -52,6 +53,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
     { columnDef: 'LoginStatus', header: 'Client Login' },
   ];
 
+  ClientForm!:FormGroup;
   loginDetails: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -62,7 +64,9 @@ export class ClientComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private helper: HelperService,
     private categoryService: CategoryService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private fb:FormBuilder,
+
   ) {}
 
   ngAfterViewInit() {
@@ -73,7 +77,10 @@ export class ClientComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
-    this.getClientList();
+    this.ClientForm = this.fb.group({
+      CategoryId: [''],
+    })
+    this.getClientList('');
     await this.getCategoryList();
   }
 
@@ -83,9 +90,10 @@ export class ClientComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getClientList() {
+  getClientList(category?:any) {
     let bodyData: IGetClient = {
       TenantId: this.loginDetails.TenantId,
+      Category:category
     };
     const clientListService = this.clientService
       .getClient(bodyData)
@@ -95,7 +103,10 @@ export class ClientComponent implements OnInit, AfterViewInit {
       });
     this.subscriptions.push(clientListService);
   }
-
+  ClientSearch()
+  {
+    this.getClientList(this.ClientForm.value.CategoryId); 
+  }
   addClient() {
     const dialogRef = this.dialog.open(AddEditClientComponent, {
       width: '70%',
