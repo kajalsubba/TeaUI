@@ -25,16 +25,15 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group row my-2 d-flex align-items-center">
-                                <label for="UserMiddleName" class="col-lg-5 col-form-label">Middle Name <span
-                                        class="text-danger">*</span></label>
+                                <label for="UserMiddleName" class="col-lg-5 col-form-label">Middle Name </label>
                                 <div class="col-lg-7 position-relative my-2">
                                     <input type="text" class="form-control" id="UserMiddleName"
                                         placeholder="Enter Middle Name " formControlName="UserMiddleName">
-                                    <span
+                                    <!-- <span
                                         *ngIf="UserForm.get('UserMiddleName')?.hasError('required') && UserForm.get('UserMiddleName')?.touched"
                                         class="text-danger validation-message">
                                         Middle Name is required.
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
@@ -55,16 +54,15 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group row my-2 d-flex align-items-center">
-                                <label for="UserEmail" class="col-lg-5 col-form-label">Email <span
-                                        class="text-danger">*</span></label>
+                                <label for="UserEmail" class="col-lg-5 col-form-label">Email </label>
                                 <div class="col-lg-7 position-relative my-2">
                                     <input type="email" class="form-control" id="UserEmail" placeholder="Enter Email"
                                         formControlName="UserEmail">
-                                    <span
+                                    <!-- <span
                                         *ngIf="UserForm.get('UserEmail')?.hasError('required') && UserForm.get('UserEmail')?.touched"
                                         class="text-danger validation-message">
                                         Email is required.
-                                    </span>
+                                    </span> -->
                                     <span
                                         *ngIf="UserForm.get('UserEmail')?.hasError('pattern') && UserForm.get('UserEmail')?.touched"
                                         class="text-danger validation-message">

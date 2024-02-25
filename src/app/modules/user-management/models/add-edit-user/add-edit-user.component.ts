@@ -6,6 +6,8 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { RoleService } from '../../services/role.service';
 import { IGetRole } from '../../interfaces/irole';
 import { Subscription } from 'rxjs';
+import { IUserSave } from '../../interfaces/iuser';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -26,7 +28,8 @@ export class AddEditUserComponent {
     private formBuilder: FormBuilder,
     private roleService: RoleService,
     private helper: HelperService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private userService:UserService
   ) {}
 
   ngAfterViewInit(): void {}
@@ -36,11 +39,11 @@ export class AddEditUserComponent {
     this.GetRoleList();
     this.UserForm = this.formBuilder.group({
       UserFirstName: ['', Validators.required],
-      UserMiddleName: ['', Validators.required],
+      UserMiddleName: [''],
       UserLastName: ['', Validators.required],
       UserEmail: [
         '',
-        [Validators.required, Validators.pattern(this.emailPattern)],
+        [ Validators.pattern(this.emailPattern)],
       ],
       ContactNo: [
         '',
@@ -86,6 +89,33 @@ export class AddEditUserComponent {
       this.UserForm.markAllAsTouched();
       return;
     } else {
-    }
+
+ 
+        let bodyData:IUserSave = {
+          UserId :this.dialogData?.value?.UserId? this.dialogData?.value?.UserId : 0,
+          LoginUserName: this.UserForm.value.LoginUserName,
+          UserFirstName: this.UserForm.value.UserFirstName,
+          UserMiddleName: this.UserForm.value.UserMiddleName,
+          UserLastName: this.UserForm.value.UserLastName,
+          UserEmail: this.UserForm.value.UserEmail,
+          ContactNo: this.UserForm.value.ContactNo,
+          Password: this.UserForm.value.Password,
+          UserRoleId: this.UserForm.value.UserRoleId,
+          IsActive: this.UserForm.value.IsActive,
+          TenantId:this.loginDetails.TenantId,
+          CreatedBy:this.loginDetails.UserId,
+     
+       
+        }
+        const saveCategory = this.userService.SaveUser(bodyData).subscribe((res:any)=>{
+              if(res.Id == 0){
+            this.toastr.error(res.Message, "Error");
+          }else{
+            this.toastr.success(res.Message, "SUCCESS");
+          }
+          this.dialogRef.close(true)
+        })
+      }
+    
   }
 }
