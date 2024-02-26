@@ -64,6 +64,22 @@
             </ul>
           </li>
 
+          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'RateFix'" class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event, 'RateFix')">
+              <a>
+                <i class='bx bx-check-shield' ></i>
+                <span class="link_name">Rate Fix</span>
+              </a>
+              <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+              <li routerLink="RateFix/stgRateFix" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+              <li routerLink="RateFix/supplierRateFix" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
+              <li routerLink="RateFix/saleRateFix" routerLinkActive="active"><a class="sub-menu-title">Sale</a></li>
+           
+            </ul>
+          </li>
+
           <li [class.showMenu]="currentOpenMenu === 'LeafHistory'" class="main-menu" routerLinkActive="main-menu-active">
             <div class="iocn-link" (click)="toggleMenu($event, 'LeafHistory')">
               <a>
