@@ -55,6 +55,16 @@ export class AddEditUserComponent {
       IsActive: [true, Validators.required],
     });
     if (this.dialogData.value) {
+
+      this.UserForm.controls['UserFirstName'].setValue(this.dialogData.value.RoleName);
+      this.UserForm.controls['UserMiddleName'].setValue(this.dialogData.value.UserMiddleName);
+
+      this.UserForm.controls['UserLastName'].setValue(this.dialogData.value.UserLastName);
+      this.UserForm.controls['UserEmail'].setValue(this.dialogData.value.UserEmail);
+      this.UserForm.controls['ContactNo'].setValue(this.dialogData.value.ContactNo);
+      this.UserForm.controls['LoginUserName'].setValue(this.dialogData.value.LoginUserName);
+      this.UserForm.controls['UserRoleId'].setValue(this.dialogData.value.UserRoleId);
+      this.UserForm.controls['IsActive'].setValue(this.dialogData.value.IsActive);
     }
   }
 
