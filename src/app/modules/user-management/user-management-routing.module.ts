@@ -4,6 +4,7 @@ import { UserManagementComponent } from './user-management.component';
 import { UserComponent } from './components/user/user.component';
 import { RoleComponent } from './components/role/role.component';
 import { RolePermissionComponent } from './components/role-permission/role-permission.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -12,6 +13,7 @@ const routes: Routes = [
     {path:'user', component: UserComponent},
     {path:'role', component: RoleComponent},
     {path:'role-permission', component: RolePermissionComponent},
+    {path:'change-password', component: ChangePasswordComponent},
   ]}
 ];
 

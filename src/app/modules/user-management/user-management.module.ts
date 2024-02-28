@@ -20,6 +20,7 @@ import { AddEditRoleComponent } from './models/add-edit-role/add-edit-role.compo
 import { RolePermissionComponent } from './components/role-permission/role-permission.component';
 import { AddEditUserComponent } from './models/add-edit-user/add-edit-user.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 
@@ -30,7 +31,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     RoleComponent,
     AddEditRoleComponent,
     RolePermissionComponent,
-    AddEditUserComponent
+    AddEditUserComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
