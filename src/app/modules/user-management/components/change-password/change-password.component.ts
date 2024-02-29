@@ -25,16 +25,22 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const password = this.changeForm.controls['Password'].value;
+    // Check if this.changeForm is defined
+    if (!this.changeForm) {
+      return null;
+    }
+  
+    const password = this.changeForm.value.Password;
     const confirmPassword = control.value;
     if (password !== confirmPassword) {
       return { 'passwordMismatch': true };
     }
     return null;
   }
+  
 
   get confirmPasswordControl() {
-    return this.changeForm.get('ConfirmPassword');
+    return this.changeForm.value.ConfirmPassword;
   }
 
   onSubmit(): void {
@@ -43,6 +49,7 @@ export class ChangePasswordComponent implements OnInit {
       console.log("Form submitted successfully!");
     } else {
       // Form is invalid, handle accordingly
+      this.changeForm.markAllAsTouched()
       console.log("Form is invalid!");
     }
   }
