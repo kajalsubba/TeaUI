@@ -64,8 +64,8 @@
             </ul>
           </li>
 
-          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'RateFix'" class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event, 'RateFix')">
+          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'rate-fix'" class="main-menu" routerLinkActive="main-menu-active">
+            <div class="iocn-link" (click)="toggleMenu($event, 'rate-fix')">
               <a>
                 <i class='bx bx-check-shield' ></i>
                 <span class="link_name">Rate Fix</span>
@@ -73,10 +73,9 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li routerLink="RateFix/stgRateFix" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
-              <li routerLink="RateFix/supplierRateFix" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
-              <li routerLink="RateFix/saleRateFix" routerLinkActive="active"><a class="sub-menu-title">Sale</a></li>
-           
+              <li routerLink="rate-fix/stg-rate-fix" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+              <li routerLink="rate-fix/supplier-rate-fix" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
+              <li routerLink="rate-fix/sale-rate-fix" routerLinkActive="active"><a class="sub-menu-title">Sale</a></li>
             </ul>
           </li>
 

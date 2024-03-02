@@ -33,10 +33,7 @@ export const MY_FORMATS = {
 
 @NgModule({
   declarations: [
-    AppComponent,
-    // StgapproveComponent,
-    // StagapproveComponent,
-    // SupplierapproveComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
