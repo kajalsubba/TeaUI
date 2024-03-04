@@ -136,7 +136,7 @@ export class SupplierRateFixComponent implements OnInit {
 
   getTotalCost(columnName: string): number {
     return this.dataSource.filteredData.reduce(
-      (acc, curr) => acc + curr[columnName],
+      (acc, curr) => +acc + (+curr[columnName]),
       0
     );
   }

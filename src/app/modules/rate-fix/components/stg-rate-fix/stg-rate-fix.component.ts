@@ -276,7 +276,6 @@ export class StgRateFixComponent implements OnInit {
     console.log(data,'FixaData')
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30vw',
-      height: '30%',
       minWidth:'25vw',
       disableClose: true,
       data: {
