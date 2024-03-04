@@ -154,6 +154,10 @@ export class StgRateFixComponent implements OnInit {
       .GetGrade(data)
       .subscribe((res: any) => {
         this.GradeList = res.GradeDetails;
+        this.GradeList.push({
+          GradeId:0,
+          GradeName:"All"
+        })
       });
 
     this.subscriptions.push(gradeGetService);
