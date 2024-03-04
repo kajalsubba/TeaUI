@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -14,6 +14,8 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { ClientService } from 'src/app/modules/masters/services/client.service';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
+import { StgRateFixService } from '../../services/stg-rate-fix.service';
+import { ISaveStgRate, IStgRateFix } from '../../interfaces/istg-rate-fix';
 
 @Component({
   selector: 'app-stg-rate-fix',
@@ -22,40 +24,38 @@ import { GradeService } from 'src/app/modules/masters/services/grade.service';
 })
 export class StgRateFixComponent implements OnInit {
   displayedColumns: string[] = [
+    'CollectionId',
     'CollectionDate',
     'VehicleNo',
     'ClientName',
     'FirstWeight',
     'WetLeaf',
-    'WetLeafKg',
     'LongLeaf',
-    'LongLeafKg',
     'Deduction',
     'FinalWeight',
     'GradeName',
     'Rate',
     'GrossAmount',
-    'Remarks',
-    'TripName',
-    'Status',
+    'Remarks'
+
   ];
 
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    // { columnDef: 'CollectionDate', header: 'Collection Date' },
-    { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
+     { columnDef: 'CollectionId', header: 'CollectionId ' },
+    { columnDef: 'CollectionDate', header: 'Collection Date' },
+    { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'ClientName', header: 'Client Name' },
+    { columnDef: 'FirstWeight', header: 'First Weight ' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-    // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-    // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
-    //  { columnDef: 'Grade', header: 'Grade' },
-    { columnDef: 'GradeName', header: 'Grade' },
-    { columnDef: 'Rate', header: 'Rate' },
+    { columnDef: 'Deduction', header: 'Deduction (KG)' },
+    { columnDef: 'FinalWeight', header: 'Final Weight (KG)' },
+     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
+    { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Remarks', header: 'Remarks' },
-    { columnDef: 'TripName', header: 'Trip' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -78,7 +78,8 @@ export class StgRateFixComponent implements OnInit {
     private datePipe: DatePipe,
     private gradeService: GradeService,
     private autoCompleteService: AutoCompleteService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private rateFixService:StgRateFixService
   ) {}
 
   async ngOnInit() {
@@ -86,8 +87,8 @@ export class StgRateFixComponent implements OnInit {
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      GradeId: [''],
-      ClientId: [''],
+      GradeId: [0],
+      ClientId: [0],
       ClientName: [''],
       Rate: [''],
     });
@@ -172,12 +173,33 @@ export class StgRateFixComponent implements OnInit {
   selectClient(client: any) {
     this.dateRangeForm.controls['ClientId'].setValue(client?.ClientId);
   }
+  Search()
+  {
+    this.GetStgData(this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'),this.dateRangeForm.value.toDate.format('yyyy-MM-DD'));
+  }
+
+  GetStgData(FromDate:any,ToDate:any){
+    const currentDate = new Date();
+    let bodyData:IStgRateFix = {
+      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
+      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
+      TenantId:this.loginDetails.TenantId,
+      ClientId:this.dateRangeForm.value.ClientId,
+      GradeId: this.dateRangeForm.value.GradeId
+   
+    }
+    const categoryListService = this.rateFixService.GetStgRateFixData(bodyData).subscribe((res:any)=>{
+     // console.log(res);
+      this.dataSource.data = res.StgRateData;
+    });
+    this.subscriptions.push(categoryListService);
+  }
 
   async loadClientNames() {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: 'Supplier',
+        Category: 'STG',
       };
 
       const res: any = await this.autoCompleteService
@@ -207,5 +229,38 @@ export class StgRateFixComponent implements OnInit {
         this.selectedRowIndex--;
       }
     }
+  }
+
+  RateAssign()
+  {
+    this.dataSource.data.forEach((keys:any,val:any) => {
+      keys.Rate=this.dateRangeForm.value.Rate
+     keys.GrossAmount=Number(keys.FinalWeight*this.dateRangeForm.value.Rate).toFixed(2)
+    });
+  }
+  FixRate()
+  {
+    const rateObjects: any[] = [];
+    this.dataSource.data.forEach((selectedItem) => {
+      // Create the selected object based on the selected item
+      
+      const selectedObject = {
+        CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
+        Rate: selectedItem.Rate, // Assuming Status is present in your data
+      };
+      // Push the selected object to the array
+      rateObjects.push(selectedObject);
+      // Calculate totals
+    
+    });
+
+    let data: ISaveStgRate = {
+      
+      TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.UserId,
+      RateList: rateObjects,
+    };
+
+    console.log(data,'FixaData')
   }
 }
