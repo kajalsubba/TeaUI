@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
@@ -176,6 +176,7 @@ export class StgRateFixComponent implements OnInit {
   Search()
   {
     this.GetStgData(this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'),this.dateRangeForm.value.toDate.format('yyyy-MM-DD'));
+ 
   }
 
   GetStgData(FromDate:any,ToDate:any){
@@ -258,9 +259,26 @@ export class StgRateFixComponent implements OnInit {
       
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
-      RateList: rateObjects,
+      RateData: rateObjects,
     };
 
     console.log(data,'FixaData')
+
+    this.rateFixService
+    .SavetgRateFixData(data)
+    .pipe(
+      takeUntil(this.destroy$),
+      catchError((error) => {
+        console.error('Error:', error);
+        this.toastr.error('An error occurred', 'ERROR');
+        throw error;
+      })
+    )
+    .subscribe((res: any) => {
+      
+      this.toastr.success(res.Message, "SUCCESS");
+      this.GetStgData(this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'),this.dateRangeForm.value.toDate.format('yyyy-MM-DD'));
+ 
+    });
   }
 }

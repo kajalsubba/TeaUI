@@ -8,7 +8,7 @@ export interface IStgRateFix {
 
 export interface ISaveStgRate
 {
-    RateList:IRateList[];
+    RateData:IRateList[];
     TenantId: any;
     CreatedBy: any;
 }
