@@ -163,6 +163,11 @@ export class StgRateFixComponent implements OnInit {
     this.subscriptions.push(gradeGetService);
   }
   filterClientNames(value: string): any[] {
+    if (value=='')
+    {
+      this.dateRangeForm.controls['ClientId'].reset();
+    }
+
     const filterValue = value.toLowerCase();
     // console.log(this.ClientNames.filter((number:any) => number.toLowerCase().includes(filterValue)),'Clinet');
     return this.ClientNames.filter((x: any) =>
@@ -175,6 +180,7 @@ export class StgRateFixComponent implements OnInit {
   }
 
   selectClient(client: any) {
+  
     this.dateRangeForm.controls['ClientId'].setValue(client?.ClientId);
   }
   Search()
