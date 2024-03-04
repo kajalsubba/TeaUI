@@ -16,6 +16,7 @@ import { ClientService } from 'src/app/modules/masters/services/client.service';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
 import { StgRateFixService } from '../../services/stg-rate-fix.service';
 import { ISaveStgRate, IStgRateFix } from '../../interfaces/istg-rate-fix';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-stg-rate-fix',
@@ -273,7 +274,31 @@ export class StgRateFixComponent implements OnInit {
     };
 
     console.log(data,'FixaData')
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '30vw',
+      height: '30%',
+      minWidth:'25vw',
+      disableClose: true,
+      data: {
+        title: 'Confirm Action',
+        message: 'Do you want to Confirm !',
+        data: data,
+   
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.SaveStgRateFixData(data);
+      
 
+      }
+    });
+
+   
+  }
+
+  SaveStgRateFixData(data:any)
+  {
     this.rateFixService
     .SavetgRateFixData(data)
     .pipe(
