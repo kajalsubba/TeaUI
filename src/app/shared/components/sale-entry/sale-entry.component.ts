@@ -22,7 +22,7 @@ import {
 } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
-import { IsaleSave } from 'src/app/modules/collectionApprove/interfaces/isale-save';
+import { IStgSaleSave, IsaleSave } from 'src/app/modules/collectionApprove/interfaces/isale-save';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
@@ -110,7 +110,7 @@ export class SaleEntryComponent implements OnInit {
       SaleTypeId: [],
     });
 
-    console.log(this.data, 'data');
+ 
     this.saleEntryForm.controls['ChallanWeight'].valueChanges.subscribe(() => {
       this.calculateGrossAmount();
     });
@@ -123,12 +123,10 @@ export class SaleEntryComponent implements OnInit {
       this.calculateGrossAmount();
     });
 
-    console.log('A');
-
-    await this.loadVehicleNumbers();
+     await this.loadVehicleNumbers();
     await this.GetFactoryList();
     await this.GetFactoryAccountList();
-    console.log('B');
+
     this.saleEntryForm.controls['FieldCollectionWeight'].setValue(
       this.getTotalCost('FinalWeight')
     );
@@ -189,19 +187,22 @@ export class SaleEntryComponent implements OnInit {
     }
   }
   SaleEntry() {
-    // console.log('a')
-    // await this.GetFactoryList();
-    // await this.GetFactoryAccountList();
-    // console.log('b')
+   
     if (this.saleEntryForm.invalid) {
       this.saleEntryForm.markAllAsTouched();
       return;
     }
     // Create the data object to be saved
-    let data: IsaleSave = {
-      SaleId: 0,
-      ApproveId: this.data.approveId,
-      SaleDate: formatDate(
+    let data: IStgSaleSave = {
+
+      TotalFirstWeight:this.data.stgData.TotalFirstWeight,
+      TotalWetLeaf: this.data.stgData.TotalWetLeaf,
+      TotalLongLeaf: this.data.stgData.TotalLongLeaf,
+      TotalDeduction: this.data.stgData.TotalDeduction,
+      TotalFinalWeight: this.data.stgData.TotalFinalWeight,
+ 
+      ApproveList: this.data.stgData.ApproveList,
+         SaleDate: formatDate(
         this.saleEntryForm.value.SaleDate,
         'yyyy-MM-dd',
         'en-US'
@@ -220,12 +221,13 @@ export class SaleEntryComponent implements OnInit {
       CreatedBy: this.loginDetails.UserId,
     };
 
-    this.SaveSaleData(data);
+    console.log(data,'sale data');
+   this.SaveSaleData(data);
   }
 
-  SaveSaleData(clientBody: IsaleSave) {
+  SaveSaleData(clientBody: IStgSaleSave) {
     this.stgapproveService
-      .SaveSale(clientBody)
+      .SaveStgSaleData(clientBody)
       .pipe(
         takeUntil(this.destroy$),
         catchError((error) => {

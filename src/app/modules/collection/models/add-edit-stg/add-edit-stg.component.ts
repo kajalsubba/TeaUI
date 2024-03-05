@@ -71,7 +71,7 @@ export class AddEditStgComponent implements OnInit {
       this.GeTript();
 
       if (this.dialogData.value) {
-        console.log(this.dialogData,'this.dialogData');
+        //console.log(this.dialogData,'this.dialogData');
         
         this.stgForm.controls['CollectionDate'].setValue(new Date(this.dialogData.value.CollDate));
    //   this.stgForm.get('date').patchValue(new Date('2/14/2021')));
@@ -93,7 +93,7 @@ export class AddEditStgComponent implements OnInit {
   }
 
   FirstWeightInput(value: any) {
-    console.log(value);
+    //console.log(value);
     this.CalculateFinalWeight();
   }
   
@@ -177,6 +177,7 @@ export class AddEditStgComponent implements OnInit {
       }
       this.SaveStgtData(data);
 
+
   }
 
 
@@ -213,9 +214,7 @@ export class AddEditStgComponent implements OnInit {
 
   CleanFormControl()
   {
-   // const controlNames = ['ClientId', 'FirstWeight','WetLeaf'];
-   // controlNames.map((value: string) => this.stgForm.get(value).setValue(null));
-     
+
       // this.stgForm.reset();
       this.stgForm.controls['ClientName'].reset()
        this.stgForm.controls['ClientId'].reset()
@@ -228,6 +227,7 @@ export class AddEditStgComponent implements OnInit {
       this.stgForm.controls['Remarks'].reset()
       this.stgForm.controls['GradeId'].reset()
   }
+
   async loadVehicleNumbers() {
     try {
         const bodyData: IGetGrade = {
@@ -282,8 +282,8 @@ export class AddEditStgComponent implements OnInit {
 
   // Autocomplete function
   filterClientNames(value: string): any[] {
+
     const filterValue = value.toLowerCase();
-   // console.log(this.ClientNames.filter((number:any) => number.toLowerCase().includes(filterValue)),'Clinet');
     return this.ClientNames.filter((x:any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
   }
 
@@ -327,6 +327,12 @@ export class AddEditStgComponent implements OnInit {
 }
 
 selectClient(client: any) {
+  if (client=='')
+  {
+    this.stgForm.controls['ClientId'].reset();
+  }
+console.log(client.ClientId,'Client');
+
   this.stgForm.controls['ClientId'].setValue(client?.ClientId);
 }
 

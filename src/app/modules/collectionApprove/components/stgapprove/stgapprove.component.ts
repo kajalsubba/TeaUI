@@ -227,11 +227,11 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       ApproveList: ApproveList,
     };
 
-    //console.log(data, "Data to save");
-    //this.dataList=this.dataSource.data;
-    // Perform any additional actions with the data object as needed
+ 
     if (this.dataSource.data.length > 0) {
-      this.SaveStgtData(data);
+     // this.SaveStgtData(data);
+
+     this.saleEntry(data, this.selection.selected);
     }
   }
 
@@ -328,7 +328,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     );
   }
 
-  saleEntry(response: any, approveData: any) {
+  saleEntry(StgData: any, approveData: any) {
     const dialogRef = this.dialog.open(SaleEntryComponent, {
       width: '90vw',
       height: '95%',
@@ -336,7 +336,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       disableClose: true,
       data: {
         title: 'Sale Entry Form-STG',
-        approveId: response.Id,
+        stgData:StgData,
         approveData: approveData,
         VehicleNo: this.dateRangeForm.value.VehicleNo,
         VehicleId: this.dateRangeForm.value.VehicleId,
