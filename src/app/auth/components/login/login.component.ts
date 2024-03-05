@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
       const login = this.loginService.login(loginBody).subscribe((res: any) => {
           if(res.LoginDetails.length>0){
           this.helper.setItem('loginDetails', res.LoginDetails[0]);
+          this.helper.setItem('PermissionDetails', res.PermissionDetails);
           this.router.navigateByUrl('home')
         }
         else
@@ -82,6 +83,8 @@ export class LoginComponent implements OnInit {
       const login = this.loginService.Clientlogin(loginBody).subscribe((res: any) => {
           if(res.ClientLoginDetails.length>0){
           this.helper.setItem('loginDetails', res.ClientLoginDetails[0]);
+          this.helper.setItem('PermissionDetails', res.PermissionDetails);
+        //  this.helper.setItem('PermissionDetails', res.PermissionDetails[0]);
           this.router.navigateByUrl('home')
         }
         else

@@ -2,19 +2,22 @@
     <div class="col-lg-3">
         <form [formGroup]="rolePermissionForm">
             <div class="form-group row py-1">
-                <div class="col-lg-12 position-relative">
-                    <mat-select placeholder="--Select Role--" class="fromSelect"
+                <div class="col-lg-12 position-relative" > <span class="text-danger">*</span>
+                    <mat-select placeholder="--Select Role--" class="fromSelect" (selectionChange)="onSelectionChange($event)"
                         formControlName="RoleId">
                         <mat-option *ngFor="let item of RoleList"
                             [value]="item.UserRoleId">{{item.RoleName}}</mat-option>
                     </mat-select>
+                    <span *ngIf="rolePermissionForm.get('RoleId')?.hasError('required') && rolePermissionForm.get('RoleId')?.touched" class="text-danger validation-message">
+                        Role Name is required.
+                     </span>  
                 </div>
             </div>
         </form>
     </div>
-    <div class="col-lg-2">
-        <button class="btn btn-color ms-2">Search</button> 
-    </div>
+    <!-- <div class="col-lg-2">
+        <button (click)="GetRolePermission()" class="btn btn-color ms-2">Search</button> 
+    </div> -->
 </div>
 
 <div class="row m-2">
@@ -86,6 +89,6 @@
             </table>
             
         </div>
-        <button (click)="updateMenuAccess()" class="btn btn-color mt-2">Update</button> 
+        <button (click)="updateMenuAccess()" class="btn btn-color mt-2">Add Permission</button> 
     </div>
 </div>

@@ -26,12 +26,12 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li routerLink="master/company" routerLinkActive="active"><a class="sub-menu-title">Company Setup</a></li>
-              <li routerLink="master/category" routerLinkActive="active"><a class="sub-menu-title">Client Category</a></li>
-              <li routerLink="master/client" routerLinkActive="active"><a class="sub-menu-title">Client</a></li>
-              <li routerLink="master/grade" routerLinkActive="active"><a class="sub-menu-title">Leaf Grade</a></li>
-              <li routerLink="master/factory" routerLinkActive="active"><a class="sub-menu-title">Factory</a></li>
-              <li routerLink="master/factory-account" routerLinkActive="active"><a class="sub-menu-title">Factory Account</a></li>
+              <li routerLink="master/company" routerLinkActive="active" *ngIf="PermissionDetails[0].ModuleId==2 && PermissionDetails[0].HideModule==false" ><a class="sub-menu-title">Company Setup</a></li>
+              <li routerLink="master/category" routerLinkActive="active" *ngIf="PermissionDetails[1].ModuleId==3 && PermissionDetails[1].HideModule==false"><a class="sub-menu-title">Client Category</a></li>
+              <li routerLink="master/client" routerLinkActive="active" *ngIf="PermissionDetails[2].ModuleId==4 && PermissionDetails[2].HideModule==false"><a class="sub-menu-title">Client</a></li>
+              <li routerLink="master/grade" routerLinkActive="active" *ngIf="PermissionDetails[3].ModuleId==5 && PermissionDetails[3].HideModule==false"><a class="sub-menu-title">Leaf Grade</a></li>
+              <li routerLink="master/factory" routerLinkActive="active" *ngIf="PermissionDetails[4].ModuleId==6 && PermissionDetails[4].HideModule==false"><a class="sub-menu-title">Factory</a></li>
+              <li routerLink="master/factory-account" routerLinkActive="active" *ngIf="PermissionDetails[5].ModuleId==7 && PermissionDetails[5].HideModule==false"><a class="sub-menu-title">Factory Account</a></li>
             </ul>
           </li>
           
@@ -45,8 +45,9 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="leafEntry/stg" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
-              <li routerLink="leafEntry/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[6].ModuleId==9 && PermissionDetails[6].HideModule==false"  routerLink="leafEntry/stg" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+             
+              <li *ngIf="loginDetails.LoginType!='Agent' ?true: PermissionDetails[7].ModuleId==10 && PermissionDetails[7].HideModule==false"  routerLink="leafEntry/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
             </ul>
           </li>
           
@@ -59,8 +60,8 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li routerLink="LeafApprove/stgapprove" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
-              <li routerLink="LeafApprove/supplierapprove" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
+              <li  *ngIf="PermissionDetails[8].ModuleId==12 && PermissionDetails[8].HideModule==false"  routerLink="LeafApprove/stgapprove" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+              <li  *ngIf="PermissionDetails[9].ModuleId==13 && PermissionDetails[9].HideModule==false"  routerLink="LeafApprove/supplierapprove" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
             </ul>
           </li>
 
@@ -103,8 +104,8 @@
               <i class='bx bxs-chevron-down arrow'></i>
             </div>
             <ul class="sub-menu">
-              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
-              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[16].ModuleId==19 && PermissionDetails[16].HideModule==false" routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
+              <li *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[17].ModuleId==20 && PermissionDetails[17].HideModule==false" routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
               <li *ngIf="loginDetails.LoginType=='Agent'"  routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">Create User</a></li>
               <li  routerLink="user-management/change-password" routerLinkActive="active"><a class="sub-menu-title">Change Password</a></li>
 

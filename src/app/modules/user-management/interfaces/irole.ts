@@ -9,4 +9,5 @@ export interface ISaveRole {
 export interface IGetRole {
 
     TenantId:any;
+   
 }

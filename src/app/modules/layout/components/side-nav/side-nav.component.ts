@@ -11,7 +11,7 @@ export class SideNavComponent {
   panelOpenState = false;
   currentOpenMenu: string | null = null;
   loginDetails:any;
-
+  PermissionDetails:any;
   /**
    *
    */
@@ -21,6 +21,9 @@ export class SideNavComponent {
   
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
+this.PermissionDetails=this.helper.getItem('PermissionDetails');
+    console.log(this.PermissionDetails,'permission');
+    
  
   }
 
