@@ -106,6 +106,9 @@
             <ul class="sub-menu">
               <li *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[16].ModuleId==19 && PermissionDetails[16].HideModule==false" routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
               <li *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[17].ModuleId==20 && PermissionDetails[17].HideModule==false" routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
+             
+              <!-- <li routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
+             -->
               <li *ngIf="loginDetails.LoginType=='Agent'"  routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">Create User</a></li>
               <li  routerLink="user-management/change-password" routerLinkActive="active"><a class="sub-menu-title">Change Password</a></li>
 

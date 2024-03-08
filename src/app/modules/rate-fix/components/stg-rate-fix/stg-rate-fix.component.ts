@@ -25,16 +25,17 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
 })
 export class StgRateFixComponent implements OnInit {
   displayedColumns: string[] = [
-    'CollectionId',
+  //  'CollectionId',
     'CollectionDate',
-    'VehicleNo',
-    'ClientName',
-    'FirstWeight',
-    'WetLeaf',
-    'LongLeaf',
-    'Deduction',
-    'FinalWeight',
     'GradeName',
+ //   'VehicleNo',
+    'ClientName',
+  //  'FirstWeight',
+  //  'WetLeaf',
+   // 'LongLeaf',
+   // 'Deduction',
+    'FinalWeight',
+
     'Rate',
     'GrossAmount',
     'Remarks'
@@ -44,18 +45,19 @@ export class StgRateFixComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-     { columnDef: 'CollectionId', header: 'CollectionId ' },
-    { columnDef: 'CollectionDate', header: 'Collection Date' },
-    { columnDef: 'VehicleNo', header: 'Vehicle No' },
+   //  { columnDef: 'CollectionId', header: 'CollectionId ' },
+   // { columnDef: 'CollectionDate', header: 'Collection Date' },
+    { columnDef: 'GradeName', header: 'Grade' },
+
+    //{ columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'FirstWeight', header: 'First Weight ' },
-    { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-    { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-    { columnDef: 'Deduction', header: 'Deduction (KG)' },
-    { columnDef: 'FinalWeight', header: 'Final Weight (KG)' },
+    //{ columnDef: 'FirstWeight', header: 'First Weight ' },
+   // { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
+   // { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
+   // { columnDef: 'Deduction', header: 'Deduction (KG)' },
+  //  { columnDef: 'FinalWeight', header: 'Final Weight (KG)' },
      { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
-    { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Remarks', header: 'Remarks' },
   ];
 

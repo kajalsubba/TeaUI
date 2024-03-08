@@ -89,11 +89,11 @@
                     <div class="col-lg-4">
                         <div class="form-group row mb-3">
                             <div class="col-lg-6 position-relative d-grid">
-                                <button (click)="RateAssign()" class="btn btn-color">Add Rate</button>
+                                <button (click)="RateAssign()" class="btn btn-color">Insert</button>
                             </div>
                           
                             <div class="col-lg-6 position-relative d-grid">
-                                <button (click)="FixRate()" class="btn btn-color">Fix Rate</button>
+                                <button (click)="FixRate()" class="btn btn-color">Fix</button>
                             </div>
                         </div>
                     </div>
@@ -117,20 +117,20 @@
                         </ng-container>
 
                         <!-- Collection Date -->
-                        <!-- <ng-container matColumnDef="CollectionDate">
+                        <ng-container matColumnDef="CollectionDate">
                             <th mat-header-cell *matHeaderCellDef> Collection Date </th>
                             <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
                             <td class="footer-total total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
-                        </ng-container> -->
+                        </ng-container>
 
                         <!-- First Weight -->
-                        <!-- <ng-container matColumnDef="FirstWeight">
-                            <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FirstWeight}} KG </td>
+                        <ng-container matColumnDef="FinalWeight">
+                            <th mat-header-cell *matHeaderCellDef> Final Weight( KG ) </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                                <b>{{ getTotalCost('FirstWeight') }} KG</b>
+                                <b>{{ getTotalCost('FinalWeight') }} KG</b>
                             </td>
-                        </ng-container> -->
+                        </ng-container>
                         <!-- WetLeaf -->
                         <!-- <ng-container matColumnDef="WetLeafKg">
                             <th mat-header-cell *matHeaderCellDef> Wet Leaf ( KG ) </th>
