@@ -159,13 +159,16 @@
                         </ng-container> -->
 
                         <!-- Final Weight -->
-                        <!-- <ng-container matColumnDef="GrossAmount">
-                            <th mat-header-cell *matHeaderCellDef> Gross Amount</th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.GrossAmount}} </td>
-                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{
-                                    getTotalCost('GrossAmount') }}</b>
+                        <ng-container matColumnDef="GrossAmount">
+                            <th mat-header-cell *matHeaderCellDef> Gross Amount <i
+                                    class="fa-solid fa-indian-rupee-sign"></i> </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row"> <i
+                                    class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') }}</b>
                             </td>
-                        </ng-container> -->
+                        </ng-container>
+
 
                         <!-- Status column -->
                         <!-- <ng-container matColumnDef="Status">

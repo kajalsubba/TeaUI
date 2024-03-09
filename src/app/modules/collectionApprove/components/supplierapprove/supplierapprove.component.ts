@@ -100,7 +100,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     // this.dataSource.data = this.dummyData;
     await this.loadVehicleNumbers( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     this.GeTript();
-    // this.GetStgList(null,null);
+     this.GetSupplierList(null,null);
   }
 
   selectVehicle(number: any) {

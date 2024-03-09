@@ -57,7 +57,7 @@ export class StgRateFixComponent implements OnInit {
    // { columnDef: 'Deduction', header: 'Deduction (KG)' },
   //  { columnDef: 'FinalWeight', header: 'Final Weight (KG)' },
      { columnDef: 'Rate', header: 'Rate' },
-    { columnDef: 'GrossAmount', header: 'Gross Amount' },
+   //{ columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
   ];
 
@@ -262,8 +262,9 @@ export class StgRateFixComponent implements OnInit {
   {
     this.dataSource.data.forEach((keys:any,val:any) => {
       keys.Rate=this.dateRangeForm.value.Rate
-     keys.GrossAmount=Number(keys.FinalWeight*this.dateRangeForm.value.Rate).toFixed(2)
+     keys.GrossAmount=Number(keys.FinalWeight*this.dateRangeForm.value.Rate)
     });
+    this.dateRangeForm.controls["Rate"].reset();
   }
   FixRate()
   {

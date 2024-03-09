@@ -283,6 +283,7 @@ export class SaleRateFixComponent implements OnInit {
       this.accountNames=[];
       this.dateRangeForm.controls['AccountName'].reset();
       this.dateRangeForm.controls['AccountId'].reset();
+      this.dateRangeForm.controls["FineLeaf"].reset();
 
     }
    
@@ -332,6 +333,7 @@ export class SaleRateFixComponent implements OnInit {
       this.dateRangeForm.controls["AccountName"].reset();
       this.dateRangeForm.controls["Rate"].reset();
       this.dateRangeForm.controls["Incentive"].reset();
+      this.dateRangeForm.controls["FineLeaf"].reset();
 }
 
 RateAssign()
@@ -344,6 +346,9 @@ RateAssign()
      keys.FinalAmount=Number(Number(keys.ChallanWeight*this.dateRangeForm.value.Rate)+Number(keys.ChallanWeight*this.dateRangeForm.value.Incentive)).toFixed(2)
 
     });
+    this.dateRangeForm.controls["Rate"].reset();
+    this.dateRangeForm.controls["Incentive"].reset();
+    this.dateRangeForm.controls["FineLeaf"].reset();
   }
 
   FixRate()

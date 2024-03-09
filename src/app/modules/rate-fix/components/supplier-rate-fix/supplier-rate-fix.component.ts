@@ -333,6 +333,7 @@ export class SupplierRateFixComponent implements OnInit {
       keys.Rate=this.dateRangeForm.value.Rate
      keys.GrossAmount=Number(keys.ChallanWeight*this.dateRangeForm.value.Rate).toFixed(2)
     });
+    this.dateRangeForm.controls["Rate"].reset();
   }
 
   FixRate()
