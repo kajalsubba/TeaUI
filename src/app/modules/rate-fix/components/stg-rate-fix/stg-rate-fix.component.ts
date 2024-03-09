@@ -99,6 +99,18 @@ export class StgRateFixComponent implements OnInit {
     this.GetGrade();
   }
 
+  onSelectionChange(e:any)
+  {
+ this.clearform()
+  }
+  clearform()
+  {
+
+  this.dateRangeForm.controls["ClientId"].reset();
+  this.dateRangeForm.controls["ClientName"].reset();
+  this.dateRangeForm.controls["Rate"].reset();
+}
+  
   ngAfterViewInit() {
     console.log(this.loginDetails);
 
@@ -313,6 +325,7 @@ export class StgRateFixComponent implements OnInit {
     .subscribe((res: any) => {
       
       this.toastr.success(res.Message, "SUCCESS");
+      this.clearform();
       this.GetStgData(this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'),this.dateRangeForm.value.toDate.format('yyyy-MM-DD'));
  
     });
