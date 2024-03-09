@@ -59,11 +59,11 @@ export class AddEditSupplierComponent implements OnInit {
     this.supplierForm = this.fb.group({
       CollectionDate: [new Date()],
       ClientName: ['', Validators.required],
-      ClientId: [null],
+      ClientId: [0,Validators.required],
      // BuyerName: ['', Validators.required],
       AccountName: ['', Validators.required],
       FactoryName: ['', Validators.required],
-      AccountId: [null],
+      AccountId: [0,Validators.required],
     //  TransactionType: ['', Validators.required],
       VehicleNo: ['', Validators.required],
       FineLeaf: [null],
