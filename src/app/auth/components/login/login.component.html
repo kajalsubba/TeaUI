@@ -18,7 +18,7 @@
               </div>
               <div class="line m-1"></div>
               <div *ngIf="adminLoginFail" class="alert alert-danger fail-alert mb-0 p-0 py-1 text-center">
-                Login Failed! <i (click)="closeAlert('Admin')" class="fa-solid fa-xmark"></i>
+                User Id or Password is incorrect ! <i (click)="closeAlert('Admin')" class="fa-solid fa-xmark"></i>
               </div>
               <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
                 <div class="form-group position-relative my-2">
@@ -61,7 +61,7 @@
               </div>
               <div class="line m-1"></div>
               <div *ngIf="clientLoginFail" class="alert alert-danger fail-alert mb-0 p-0 py-1 text-center">
-                Login Failed! <i (click)="closeAlert('client')" class="fa-solid fa-xmark"></i>
+                User Id or Password is incorrect ! <i (click)="closeAlert('client')" class="fa-solid fa-xmark"></i>
               </div>
               <form class="form" [formGroup]="ClientloginForm" (ngSubmit)="onClientLogin()">
                 <div class="form-group position-relative my-2">
