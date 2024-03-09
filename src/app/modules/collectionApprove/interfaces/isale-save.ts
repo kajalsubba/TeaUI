@@ -13,6 +13,7 @@ export interface IsaleSave {
     GrossAmount: any; 
     Remarks: any; 
     SaleTypeId: any; 
+    DirectSale:any;
     TenantId: any; 
     CreatedBy: any; 
 }
@@ -31,26 +32,25 @@ export interface IGetSale
 export interface IStgSaleSave
 {
     TotalFirstWeight: any;
-TotalWetLeaf: any;
-TotalLongLeaf:any;
-TotalDeduction:any;
-TotalFinalWeight: any;
+    TotalWetLeaf: any;
+    TotalLongLeaf:any;
+    TotalDeduction:any;
+    TotalFinalWeight: any;
+    SaleDate: any; 
+    AccountId: any; 
+    VehicleId: any; 
+    FieldCollectionWeight: any; 
+    FineLeaf: any; 
+    ChallanWeight: any; 
+    Rate: any; 
+    Incentive: any; 
+    GrossAmount: any; 
+    Remarks: any; 
+    SaleTypeId: any;
 
-SaleDate: any; 
-AccountId: any; 
-VehicleId: any; 
-FieldCollectionWeight: any; 
-FineLeaf: any; 
-ChallanWeight: any; 
-Rate: any; 
-Incentive: any; 
-GrossAmount: any; 
-Remarks: any; 
-SaleTypeId: any;
-
-TenantId: any;
-CreatedBy: any;
-ApproveList:ICollectionList[]
+    TenantId: any;
+    CreatedBy: any;
+    ApproveList:ICollectionList[]
 }
 
 export interface ICollectionList

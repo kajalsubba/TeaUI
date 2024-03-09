@@ -17,11 +17,11 @@ export class StgApproveService {
 
 
   SaveSale(clientBody:IsaleSave): Observable<string[]> {
-    return this.apiService.post('Collection/SaveSale', clientBody);
+    return this.apiService.post('Sale/SaveSale', clientBody);
   }
 
   GetSaleDetails(clientBody:IGetSale): Observable<string[]> {
-    return this.apiService.post('Collection/GetSaleDetails', clientBody);
+    return this.apiService.post('Sale/GetSaleDetails', clientBody);
   }
 
   GetSaleType(): Observable<string[]> {
