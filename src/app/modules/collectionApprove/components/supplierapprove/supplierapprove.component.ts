@@ -19,6 +19,7 @@ import { SupplierapproveService } from '../../services/supplierapprove.service';
 import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
 import { IsupplierApprove } from '../../interfaces/isupplier-approve';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-supplierapprove',
@@ -159,7 +160,11 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
 
   clearFilter() {}
 
-  fromDateChange(e: any) {}
+  fromDateChange(event: MatDatepickerInputEvent<Date>) {
+  
+   // alert(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
+
+  }
 
   editItem(e: any) {}
 
