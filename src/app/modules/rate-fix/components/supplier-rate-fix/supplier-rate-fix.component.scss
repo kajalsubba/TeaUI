@@ -1,5 +1,5 @@
 .table-container {
-  height: calc(100vh - 210px);
+  height: calc(100vh - 260px);
   overflow: auto;
   box-shadow: var(--soft-box-shadow);
 }
@@ -170,19 +170,15 @@ th.mat-sort-header-sorted {
 .footer-total {
   text-wrap: nowrap;
   text-align: center;
-  background-color: #84d3b6;
-  border: 1px solid gray;
+//   background-color: #84d3b6;
+//   border: 1px solid gray;
 }
 
-.weight-column {
-  background-color: #84d3b6;
-  border: 1px solid gray;
-}
 
 .table-footer {
   // box-shadow: 0px 0px 2px;
   z-index: 991 !important;
-  border: 1px solid gray;
+//   border: 1px solid gray;
   height: 35px;
 }
 

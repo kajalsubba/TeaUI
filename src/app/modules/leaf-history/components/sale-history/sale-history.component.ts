@@ -206,7 +206,7 @@ export class SaleHistoryComponent {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.AccountList = res.AccountDetails;
+      this.accountNames = res.AccountDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');

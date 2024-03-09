@@ -17,30 +17,38 @@
                 <i class="fa-brands fa-pagelines"></i> Tea Agent Portal
               </div>
               <div class="line m-1"></div>
+              <div *ngIf="adminLoginFail" class="alert alert-danger fail-alert mb-0 p-0 py-1 text-center">
+                Login Failed! <i (click)="closeAlert('Admin')" class="fa-solid fa-xmark"></i>
+              </div>
               <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
                 <div class="form-group position-relative my-2">
                   <label for="username">Username</label>
-                  <input formControlName="userName" placeholder="Enter your username" name="username" id="username" type="text">
-                  <div *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched" class="text-danger">
+                  <input formControlName="userName" placeholder="Enter your username" name="username" id="username"
+                    type="text">
+                  <div *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
+                    class="text-danger">
                     Username is required.
                   </div>
                 </div>
-      
+
                 <div class="form-group position-relative my-2">
                   <label for="password">Password</label>
-                  <input formControlName="password" name="password" placeholder="Enter your password" id="password" type="password">
-                  <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
+                  <input formControlName="password" name="password" placeholder="Enter your password" id="password"
+                    type="password">
+                  <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                    class="text-danger">
                     Password is required.
                   </div>
                 </div>
-      
-                <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
+
+                <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i
+                    class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
               </form>
-      
+
 
             </div>
           </div>
-  
+
         </mat-tab>
         <mat-tab label="Client Login">
           <div class="col-lg-12 col-md-12 mt-2 col-sm-12 d-flex justify-content-center">
@@ -52,6 +60,9 @@
                 <i class="fa-brands fa-pagelines"></i> Tea Agent Portal
               </div>
               <div class="line m-1"></div>
+              <div *ngIf="clientLoginFail" class="alert alert-danger fail-alert mb-0 p-0 py-1 text-center">
+                Login Failed! <i (click)="closeAlert('client')" class="fa-solid fa-xmark"></i>
+              </div>
               <form class="form" [formGroup]="ClientloginForm" (ngSubmit)="onClientLogin()">
                 <div class="form-group position-relative my-2">
                   <label for="TenantId">Select Agent</label>
@@ -59,37 +70,43 @@
                     <mat-option *ngFor="let item of TenantList" [value]="item.TenantId">
                       {{item.TenantName}}
                     </mat-option>
-                  </mat-select>   <div *ngIf="ClientloginForm.get('TenantId')?.invalid && ClientloginForm.get('TenantId')?.touched" class="text-danger">
+                  </mat-select>
+                  <div *ngIf="ClientloginForm.get('TenantId')?.invalid && ClientloginForm.get('TenantId')?.touched"
+                    class="text-danger">
                     Agent is required.
                   </div>
                 </div>
                 <div class="form-group position-relative my-2">
                   <label for="username">User ID</label>
-                  <input formControlName="userName" placeholder="Enter your username" name="username" id="username" type="text">
-                  <div *ngIf="ClientloginForm.get('userName')?.invalid && ClientloginForm.get('userName')?.touched" class="text-danger">
+                  <input formControlName="userName" placeholder="Enter your username" name="username" id="username"
+                    type="text">
+                  <div *ngIf="ClientloginForm.get('userName')?.invalid && ClientloginForm.get('userName')?.touched"
+                    class="text-danger">
                     Username is required.
                   </div>
                 </div>
-      
+
                 <div class="form-group position-relative my-2">
                   <label for="password">Password</label>
-                  <input formControlName="password" name="password" placeholder="Enter your password" id="password" type="password">
-                  <div *ngIf="ClientloginForm.get('password')?.invalid && ClientloginForm.get('password')?.touched" class="text-danger">
+                  <input formControlName="password" name="password" placeholder="Enter your password" id="password"
+                    type="password">
+                  <div *ngIf="ClientloginForm.get('password')?.invalid && ClientloginForm.get('password')?.touched"
+                    class="text-danger">
                     Password is required.
                   </div>
                 </div>
-      
-                <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
+
+                <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i
+                    class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
               </form>
             </div>
           </div>
         </mat-tab>
       </mat-tab-group>
-     </div>
-    <p class="copy-right">&copy; 2024 ALL RIGHTS RESERVED.</p>
     </div>
-
-
-
+    <p class="copy-right">&copy; 2024 ALL RIGHTS RESERVED.</p>
   </div>
-  
+
+
+
+</div>

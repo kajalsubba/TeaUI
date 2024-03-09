@@ -43,7 +43,7 @@
                                     <!-- Validation message -->
                                     <span
                                         *ngIf="supplierForm.get('ClientName')?.hasError('required') && supplierForm.get('ClientName')?.touched"
-                                        class="text-danger d-block validation-message">
+                                        class="ps-2 text-danger d-block validation-message">
                                         Client Name is required.
                                     </span>
                                 </div>
@@ -70,7 +70,7 @@
                                     <!-- Validation message -->
                                     <span
                                         *ngIf="supplierForm.get('VehicleNo')?.hasError('required') && supplierForm.get('VehicleNo')?.touched"
-                                        class="text-danger d-block validation-message">
+                                        class=" ps-2 text-danger d-block validation-message">
                                         Vehicle No. is required.
                                     </span>
                                 </div>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="row">
                           <div class="col-lg-4">
-                            <div class="form-group row py-1">
+                            <div class="form-group row py-1 mb-3">
                                 <label for="Factory" class="col-lg-5 col-form-label">Factory Name</label>
                                 <div class="col-lg-7 position-relative">
                                     <mat-select placeholder="--Select Factory--" class="fromSelect"
@@ -92,7 +92,7 @@
                                     </mat-select>
                                     <span
                                         *ngIf="supplierForm.get('FactoryName')?.hasError('required') && supplierForm.get('FactoryName')?.touched"
-                                        class="text-danger d-block validation-message">
+                                        class="text-danger ps-2 d-block validation-message">
                                         Factory Name is required.
                                     </span>
                                 </div>
@@ -117,7 +117,7 @@
                                     <!-- Validation message -->
                                     <span
                                         *ngIf="supplierForm.get('AccountName')?.hasError('required') && supplierForm.get('AccountName')?.touched"
-                                        class="text-danger d-block validation-message">
+                                        class="ps-2 text-danger d-block validation-message">
                                         Account Name is required.
                                     </span>
                                 </div>
@@ -156,7 +156,7 @@
                                     <!-- Validation message -->
                                     <span
                                         *ngIf="supplierForm.get('ChallanWeight')?.hasError('required') && supplierForm.get('ChallanWeight')?.touched"
-                                        class="text-danger d-block validation-message">
+                                        class="ps-2 text-danger d-block validation-message">
                                         ChallanWeight is required.
                                     </span>
                                 </div>
@@ -214,7 +214,7 @@
                                         </mat-option>
                                     </mat-select>
                                     <span *ngIf="supplierForm.get('TripId')?.hasError('required') && supplierForm.get('TripId')?.touched"
-                                        class="text-danger d-block validation-message">
+                                        class="ps-2 text-danger d-block validation-message">
                                         Trip is required.
                                     </span>
                                 </div>
@@ -236,15 +236,15 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7">
                                     <div class="row">
-                                        <div class="col-lg-10">
+                                        <div class="col-lg-10 position-relative">
                                             <input type="file" class="form-control" id="imageUpload" accept="image/*"
                                                 (change)="onFileSelected($event)" formControlName="ChallanImage">
+                                                <span
+                                                *ngIf="supplierForm.get('ChallanImage')?.hasError('required') && supplierForm.get('ChallanImage')?.touched"
+                                                class="ps-2 text-danger d-block validation-message">
+                                                Challan Copy is required.
+                                                </span>
                                         </div>
-                                        <span
-                                        *ngIf="supplierForm.get('ChallanImage')?.hasError('required') && supplierForm.get('ChallanImage')?.touched"
-                                        class="text-danger d-block validation-message">
-                                        Challan Copy is required.
-                                        </span>
                                         <div class="col-lg-2">
                                             <!-- Image preview container -->
                                             <div class="image-preview mx-2 w-100" *ngIf="imageUrl">

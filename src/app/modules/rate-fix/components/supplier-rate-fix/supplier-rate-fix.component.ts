@@ -11,6 +11,8 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
+import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { ClientService } from 'src/app/modules/masters/services/client.service';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
@@ -67,6 +69,9 @@ export class SupplierRateFixComponent implements OnInit {
   selectedRowIndex: number = -1;
   ClientList: any[] = [];
   ClientNames: any[] = [];
+  factoryNames: any[]=[];
+  AccountList: any[]=[];
+  accountNames: any[]=[];
 
   constructor(
     private dialog: MatDialog,
@@ -86,8 +91,14 @@ export class SupplierRateFixComponent implements OnInit {
       ClientId: [''],
       ClientName: [''],
       Rate: [''],
+      AccountName:[''],
+      AccountId:[''],
+      FactoryName:[''],
+      FactoryId:[''],
     });
     await this.loadClientNames();
+    await this.loadAccountNames();
+    await this.loadFactoryNames();
     this.GetGrade();
   }
 
@@ -160,6 +171,67 @@ export class SupplierRateFixComponent implements OnInit {
       x?.ClientName?.toLowerCase()?.includes(filterValue)
     );
   }
+
+  async loadFactoryNames() {
+    try {
+      const bodyData: IGetFactory = {
+        TenantId: this.loginDetails.TenantId,
+        IsClientView:false
+      };
+
+      const res: any = await this.autoCompleteService
+        .GetFactoryNames(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.factoryNames = res.FactoryDetails;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+  async loadAccountNames() {
+    try {
+      const bodyData: IGetFactoryAccount = {
+        TenantId: this.loginDetails.TenantId,
+      };
+
+      const res: any = await this.autoCompleteService
+        .GetAccountNames(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.accountNames = res.AccountDetails;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+  selectFactory(factory: any) {
+    this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
+    // this.accountNames =   this.AccountList.filter((x:any)=> x.FactoryId==factory.FactoryId)
+  }
+
+  selectAccount(account: any) {
+    this.dateRangeForm.controls['AccountId'].setValue(account?.AccountId);
+  }
+
+  filterFactoryNames(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.factoryNames.filter((x: any) =>
+      x?.FactoryName?.toLowerCase()?.includes(filterValue)
+    );
+  }
+
+  filterAccountNames(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.accountNames.filter((x: any) =>
+      x?.AccountName?.toLowerCase()?.includes(filterValue)
+    );
+  }
+
 
   displayWithFn(value: string): string {
     return value || '';

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { IClientLogin, ILogin } from '../../interfaces/ilogin';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +14,17 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  ClientloginForm!:FormGroup;
+  ClientloginForm!: FormGroup;
   private subscription: Subscription[] = [];
-  TenantList:any=[];
+  TenantList: any = [];
+  adminLoginFail: boolean = false;
+  clientLoginFail: boolean = false;
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
     private helper: HelperService,
-    private router:Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +34,7 @@ export class LoginComponent implements OnInit {
     });
 
     this.ClientloginForm = this.fb.group({
-      TenantId:['', Validators.required],
+      TenantId: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
     });
@@ -38,6 +42,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
+    this.adminLoginFail = false;
     //console.log(this.loginForm);
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
@@ -48,29 +53,28 @@ export class LoginComponent implements OnInit {
         Password: this.loginForm.value.password,
       };
       const login = this.loginService.login(loginBody).subscribe((res: any) => {
-          if(res.LoginDetails.length>0){
+        if (res.LoginDetails.length > 0) {
+          this.adminLoginFail = false;
           this.helper.setItem('loginDetails', res.LoginDetails[0]);
           this.helper.setItem('PermissionDetails', res.PermissionDetails);
-          this.router.navigateByUrl('home')
-        }
-        else
-        {
-          alert('Login is failed')
+          this.router.navigateByUrl('home');
+        } else {
+          this.adminLoginFail = true;
+          // this.toastr.error("Login is failed", "ERROR")
+          // alert('Login is failed')
         }
       });
     }
   }
-  GetTenant(){
-  
-    const dataService = this.loginService.GetTenant().subscribe((res:any)=>{
+  GetTenant() {
+    const dataService = this.loginService.GetTenant().subscribe((res: any) => {
       console.log(res);
-      this.TenantList= res.TenantDetails;
+      this.TenantList = res.TenantDetails;
     });
-   
   }
 
-  onClientLogin()
-  {
+  onClientLogin() {
+    this.clientLoginFail = false;
     if (this.ClientloginForm.invalid) {
       this.ClientloginForm.markAllAsTouched();
       return;
@@ -78,20 +82,33 @@ export class LoginComponent implements OnInit {
       let loginBody: IClientLogin = {
         UserId: this.ClientloginForm.value.userName,
         Password: this.ClientloginForm.value.password,
-        TenantId:this.ClientloginForm.value.TenantId,
+        TenantId: this.ClientloginForm.value.TenantId,
       };
-      const login = this.loginService.Clientlogin(loginBody).subscribe((res: any) => {
-          if(res.ClientLoginDetails.length>0){
-          this.helper.setItem('loginDetails', res.ClientLoginDetails[0]);
-          this.helper.setItem('PermissionDetails', res.PermissionDetails);
-        //  this.helper.setItem('PermissionDetails', res.PermissionDetails[0]);
-          this.router.navigateByUrl('home')
-        }
-        else
-        {
-          alert('Login is failed')
-        }
-      });
+      const login = this.loginService
+        .Clientlogin(loginBody)
+        .subscribe((res: any) => {
+          if (res.ClientLoginDetails.length > 0) {
+            this.clientLoginFail = false;
+            this.helper.setItem('loginDetails', res.ClientLoginDetails[0]);
+            this.helper.setItem('PermissionDetails', res.PermissionDetails);
+            //  this.helper.setItem('PermissionDetails', res.PermissionDetails[0]);
+            this.router.navigateByUrl('home');
+          } else {
+            this.clientLoginFail = true;
+            // alert('Login is failed');
+            // this.toastr.error("Login is failed", "ERROR")
+          }
+        });
     }
   }
+
+  closeAlert(type:string){
+    if(type == 'Client'){
+      this.clientLoginFail = false;
+    }
+    if(type == 'Admin'){
+      this.adminLoginFail = false;
+    }
+  }
+
 }
