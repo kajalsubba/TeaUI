@@ -17,7 +17,7 @@ import { IStgSelect } from 'src/app/modules/collection/interfaces/istg';
 import { SupplierService } from 'src/app/modules/collection/services/supplier.service';
 import { SupplierapproveService } from '../../services/supplierapprove.service';
 import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
-import { IsupplierApprove } from '../../interfaces/isupplier-approve';
+import { ISupplierVehicle, IsupplierApprove } from '../../interfaces/isupplier-approve';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
@@ -82,7 +82,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
-    private autocompleteService: AutoCompleteService,
+   // private autocompleteService: AutoCompleteService,
     private supplierService: SupplierService,
     private stgService:StgService,
     private stgapproveService: StgApproveService,
@@ -98,7 +98,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
       TripId:[null]
     });
     // this.dataSource.data = this.dummyData;
-    await this.loadVehicleNumbers();
+    await this.loadVehicleNumbers( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     this.GeTript();
     // this.GetStgList(null,null);
   }
@@ -160,8 +160,9 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
 
   clearFilter() {}
 
-  fromDateChange(event: MatDatepickerInputEvent<Date>) {
+ async fromDateChange(event: MatDatepickerInputEvent<Date>) {
   
+  await  this.loadVehicleNumbers(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
    // alert(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
 
   }
@@ -172,67 +173,6 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
 
   setStatus(e: any) {}
 
-  // approveEntry() {
-   
-  //   const selectedObjects: any[] = [];
-  //   const selectedObjects1: any[] = [];
-  //   var ApproveList: any[] = [];
-
-  //    let totalChallanWeight = 0;
-
-  //   // Iterate through the selected items
-  //   this.selection.selected.forEach((selectedItem) => {
-  //     // Create the selected object based on the selected item
-      
-  //     const selectedObject = {
-  //       IsApprove: true, // Set the IsApprove property to true
-  //       CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
-  //       Status: selectedItem.Status, // Assuming Status is present in your data
-  //     };
-  //     // Push the selected object to the array
-  //     selectedObjects.push(selectedObject);
-  //     // Calculate totals
-      
-  //     totalChallanWeight += selectedItem.ChallanWeight;
-  //   });
-
-  //   this.dataSource.data.forEach((selectedItem) => {
-  //     // Create the selected object based on the selected item
-  //     const selectedObject1 = {
-  //       IsApprove: false, // Set the IsApprove property to true
-  //       CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
-  //       Status: selectedItem.Status, // Assuming Status is present in your data
-  //     };
-  //     // Push the selected object to the array
-  //     selectedObjects1.push(selectedObject1);
-  //   });
-  //   let result = selectedObjects1.filter(
-  //     (o1) => !selectedObjects.some((o2) => o1.CollectionId === o2.CollectionId)
-  //   );
-  //   ApproveList = [...selectedObjects, ...result];
-
-  //   // Log the array of selected objects
-
-  //   // Create the data object to be saved
-  //   // let data: IsupplierApprove = {
-  //   //   TotalFirstWeight: 0,
-  //   //   TotalWetLeaf: 0,
-  //   //   TotalLongLeaf: 0,
-  //   //   TotalDeduction: 0,
-  //   //   TotalFinalWeight: totalChallanWeight,
-  //   //   TenantId: this.loginDetails.TenantId,
-  //   //   CreatedBy: this.loginDetails.UserId,
-  //   //   ApproveList: ApproveList,
-  //   // };
-
-
-  //   // Perform any additional actions with the data object as needed
-  //   if (this.dataSource.data.length > 0) {
-
-  //   // console.log(selectedObjects.length, "Data to save");
-  // //   this.SaveApproveData(data,selectedObjects);
-  //   }
-  // }
 
  
   applyFilter(event: Event) {
@@ -312,18 +252,19 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
   }
 
 
-  async loadVehicleNumbers() {
+  async loadVehicleNumbers(CollectionDate:any) {
     try {
-      const bodyData: IGetGrade = {
+      const bodyData: ISupplierVehicle = {
+        FromDate:CollectionDate,
         TenantId: this.loginDetails.TenantId,
       };
 
-      const res: any = await this.autocompleteService
+      const res: any = await this.supplierApproveService
         .GetVehicleNumbers(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.vehicleNumbers = res.VehicleDetails;
+      this.vehicleNumbers = res.SupplierVehicleData;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');

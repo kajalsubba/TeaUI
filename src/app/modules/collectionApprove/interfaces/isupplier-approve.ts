@@ -10,3 +10,9 @@ export interface IsupplierApprove {
     TenantId:any;
     CreatedBy: any;
 }
+
+export interface ISupplierVehicle
+{
+    FromDate: any;
+    TenantId:any;
+}
