@@ -22,7 +22,7 @@
                     </div>
                     <div class="position-relative col-lg-2">
                         <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
-                            formControlName="FactoryName" [matAutocomplete]="factoryAuto">
+                            formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onInputChange($event)">
                         <!-- Autocomplete options -->
                         <mat-autocomplete #factoryAuto="matAutocomplete" [displayWith]="displayWithFn">
                             <mat-option *ngFor="let factory of filterFactoryNames(factoryName.value)"
@@ -47,14 +47,14 @@
                           type="text"
                           class="form-control"
                           id="FineLeaf"
-                          placeholder="Enter Fine Leaf"
+                          placeholder="Fine Leaf (10-30)"
                           formControlName="FineLeaf"
                         >
                     </div>
                     <div class="col-lg-2">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative d-grid">
-                                <button class="btn btn-color">Search</button>
+                                <button (click)="Search()" class="btn btn-color">Search</button>
                             </div>
                         </div>
                     </div>
@@ -66,6 +66,7 @@
                                 <input #Rate type="number" class="form-control" id="Rate" placeholder="Rate"
                                     formControlName="Rate">
                                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                             
                                 <!-- Validation message -->
                                 <span
                                     *ngIf="dateRangeForm.get('Rate')?.hasError('required') && dateRangeForm.get('Rate')?.touched"
@@ -76,25 +77,30 @@
                         </div>
                     </div>
                     <div class="col-lg-2">
-                        <input
-                          type="text"
+                        <!-- <input
+                          type="number"
                           class="form-control"
                           id="Incentive"
-                          placeholder="Enter Insentive"
+                          placeholder="Insentive"
                           formControlName="Incentive"
-                        >
+                        > -->
+                        <input #Rate type="number" class="form-control" id="Incentive" placeholder="Insentive"
+                        formControlName="Incentive">
+                    <!-- <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span> -->
+                 
+                                      
                     </div>
                     <div class="col-lg-2">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative d-grid">
-                                <button class="btn btn-color">Insert</button>
+                                <button  (click)="RateAssign()"  class="btn btn-color">Insert</button>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative d-grid">
-                                <button class="btn btn-color">Fix</button>
+                                <button (click)="FixRate()" class="btn btn-color">Fix</button>
                             </div>
                         </div>
                     </div>
@@ -126,13 +132,13 @@
 
 
                         <!-- Long FieldWeight -->
-                        <ng-container matColumnDef="FieldWeight">
+                        <!-- <ng-container matColumnDef="FieldWeight">
                             <th mat-header-cell *matHeaderCellDef> Field Weight ( KG ) </th>
                             <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FieldWeight}} KG </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
                                 <b>{{ getTotalCost('FieldWeight') }} KG</b>
                             </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <!-- ChallanWeight -->
                         <ng-container matColumnDef="ChallanWeight">
@@ -145,20 +151,20 @@
 
 
                         <!-- Gross Amount -->
-                        <ng-container matColumnDef="GrossAmount">
+                        <!-- <ng-container matColumnDef="GrossAmount">
                             <th mat-header-cell *matHeaderCellDef> Gross Amount</th>
                             <td class="weight-column" mat-cell *matCellDef="let row"> {{row.GrossAmount}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{
                                     getTotalCost('GrossAmount') }} </b> </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <!-- Incetive Amount -->
-                        <ng-container matColumnDef="IncentiveAmount">
+                        <!-- <ng-container matColumnDef="IncentiveAmount">
                             <th mat-header-cell *matHeaderCellDef> Insentive Amount</th>
                             <td class="weight-column" mat-cell *matCellDef="let row"> {{row.IncentiveAmount}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{
                                     getTotalCost('IncentiveAmount') }} </b> </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <!-- Final Amount  -->
                         <ng-container matColumnDef="FinalAmount">
@@ -168,7 +174,7 @@
                                     getTotalCost('FinalAmount') }} </b> </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="Status">
+                        <!-- <ng-container matColumnDef="Status">
                             <th mat-header-cell *matHeaderCellDef>Status</th>
                             <td mat-cell *matCellDef="let row">
                                 <div class="statusBtn">
@@ -178,7 +184,7 @@
                                 </div>
                             </td>
                             <td mat-footer-cell *matFooterCellDef></td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"

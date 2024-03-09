@@ -200,7 +200,8 @@ export class StgRateFixComponent implements OnInit {
   }
   Search()
   {
-    this.GetStgData(this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'),this.dateRangeForm.value.toDate.format('yyyy-MM-DD'));
+   
+    this.GetStgData( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
  
   }
 

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
@@ -16,6 +16,9 @@ import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryA
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { ClientService } from 'src/app/modules/masters/services/client.service';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
+import { ISaveSaleRate, IsaleRateFix } from '../../interfaces/isale-rate-fix';
+import { SaleRateFixService } from '../../services/sale-rate-fix.service';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-sale-rate-fix',
@@ -24,12 +27,12 @@ import { GradeService } from 'src/app/modules/masters/services/grade.service';
 })
 export class SaleRateFixComponent implements OnInit {
   displayedColumns: string[] = [
-    'SaleId',
+  //  'SaleId',
     'SaleDate',
     'FactoryName',
     'AccountName',
-    'VehicleNo',
-    'FieldWeight',
+  //  'VehicleNo',
+   // 'FieldWeight',
     'FineLeaf',
     'ChallanWeight',
     'Rate',
@@ -37,8 +40,8 @@ export class SaleRateFixComponent implements OnInit {
     'Incentive',
     'IncentiveAmount',
     'FinalAmount',
-    'Remarks',
-    'TypeName',
+   // 'Remarks',
+    //'TypeName',
   ];
 
   dataSource = new MatTableDataSource<any>();
@@ -48,14 +51,15 @@ export class SaleRateFixComponent implements OnInit {
     //   { columnDef: 'SaleDate', header: 'Sale Date' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'AccountName', header: 'Account Name' },
-    { columnDef: 'VehicleNo', header: 'Vehicle No' },
+  
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
     { columnDef: 'Rate', header: 'Rate' },
+   { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Incentive', header: 'Incentive' },
-    // { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
+     { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
     //  { columnDef: 'FinalAmount', header: 'Final Amount' },
-    { columnDef: 'Remarks', header: 'Remarks' },
-    { columnDef: 'TypeName', header: 'Sale Type' },
+    //{ columnDef: 'Remarks', header: 'Remarks' },
+   // { columnDef: 'TypeName', header: 'Sale Type' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -81,7 +85,8 @@ export class SaleRateFixComponent implements OnInit {
     private datePipe: DatePipe,
     private gradeService: GradeService,
     private autoCompleteService: AutoCompleteService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private rateFixService:SaleRateFixService
   ) {}
 
   async ngOnInit() {
@@ -89,20 +94,20 @@ export class SaleRateFixComponent implements OnInit {
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      ClientId: [''],
-      ClientName: [''],
+      // ClientId: [0],
+      // ClientName: [''],
       Rate: [''],
       FineLeaf:[''],
       Incentive:[''],
       FactoryName: [''],
-      FactoryId: [''],
+      FactoryId: [0],
       AccountName: [''],
-      AccountId: [''],
+      AccountId: [0],
     });
-    await this.loadClientNames();
+ //   await this.loadClientNames();
     await this.loadAccountNames();
     await this.loadFactoryNames();
-    this.GetGrade();
+   // this.GetGrade();
   }
 
   ngAfterViewInit() {
@@ -130,6 +135,26 @@ export class SaleRateFixComponent implements OnInit {
     this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
+
+  
+  GetSaleData(FromDate:any,ToDate:any){
+    const currentDate = new Date();
+    let bodyData:IsaleRateFix = {
+      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
+      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
+      TenantId:this.loginDetails.TenantId,
+      FactoryId: this.dateRangeForm.value.FactoryName==''?0:this.dateRangeForm.value.FactoryId,
+      AccountId:this.dateRangeForm.value.AccountName==''?0:this.dateRangeForm.value.AccountId,
+      FineLeaf:this.dateRangeForm.value.FineLeaf
+   
+    }
+    const categoryListService = this.rateFixService.GetSaleRateFixData(bodyData).subscribe((res:any)=>{
+     // console.log(res);
+      this.dataSource.data = res.SaleRateData;
+    });
+    this.subscriptions.push(categoryListService);
+  }
+
 
   clearFilter() {
     this.dateRangeForm.controls['fromDate'].setValue(null);
@@ -182,6 +207,11 @@ export class SaleRateFixComponent implements OnInit {
   selectClient(client: any) {
     this.dateRangeForm.controls['ClientId'].setValue(client?.ClientId);
   }
+  Search()
+  {
+    this.GetSaleData( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+ 
+  }
 
   async loadClientNames() {
     try {
@@ -232,7 +262,7 @@ export class SaleRateFixComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.accountNames = res.AccountDetails;
+      this.AccountList = res.AccountDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -242,6 +272,20 @@ export class SaleRateFixComponent implements OnInit {
   selectFactory(factory: any) {
     this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
     this.accountNames=   this.AccountList.filter((x:any)=> x.FactoryId==factory.FactoryId)
+  }
+
+  onInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Do something when input changes
+    console.log(input.value,'presss');
+    if(input.value=='')
+    {
+      this.accountNames=[];
+      this.dateRangeForm.controls['AccountName'].reset();
+      this.dateRangeForm.controls['AccountId'].reset();
+
+    }
+   
   }
 
   selectAccount(account: any) {
@@ -278,4 +322,94 @@ export class SaleRateFixComponent implements OnInit {
       }
     }
   }
+
+  clearform()
+{
+
+      this.dateRangeForm.controls["FactoryId"].reset();
+      this.dateRangeForm.controls["FactoryName"].reset();
+      this.dateRangeForm.controls["AccountId"].reset();
+      this.dateRangeForm.controls["AccountName"].reset();
+      this.dateRangeForm.controls["Rate"].reset();
+      this.dateRangeForm.controls["Incentive"].reset();
+}
+
+RateAssign()
+  {
+    this.dataSource.data.forEach((keys:any,val:any) => {
+      keys.Rate=this.dateRangeForm.value.Rate==''?0:this.dateRangeForm.value.Rate,
+     keys.GrossAmount=Number(keys.ChallanWeight*this.dateRangeForm.value.Rate).toFixed(2),
+     keys.Incentive=this.dateRangeForm.value.Incentive==''?0:this.dateRangeForm.value.Incentive,
+     keys.IncentiveAmount=Number(keys.ChallanWeight*this.dateRangeForm.value.Incentive).toFixed(2),
+     keys.FinalAmount=Number(Number(keys.ChallanWeight*this.dateRangeForm.value.Rate)+Number(keys.ChallanWeight*this.dateRangeForm.value.Incentive)).toFixed(2)
+
+    });
+  }
+
+  FixRate()
+  {
+
+    const rateObjects: any[] = [];
+    this.dataSource.data.forEach((selectedItem) => {
+      // Create the selected object based on the selected item
+      
+      const selectedObject = {
+        SaleId: selectedItem.SaleId, // Assuming CollectionId is present in your data
+        Rate: selectedItem.Rate, // Assuming Status is present in your data
+        Incentive: selectedItem.Incentive
+      };
+      // Push the selected object to the array
+      rateObjects.push(selectedObject);
+      // Calculate totals
+    
+    });
+
+    let data: ISaveSaleRate = {
+      
+      TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.UserId,
+      RateData: rateObjects,
+    };
+
+    console.log(data,'FixaData')
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '30vw',
+      minWidth:'25vw',
+      disableClose: true,
+      data: {
+        title: 'Confirm Action',
+        message: 'Do you want to Confirm !',
+        data: data,
+   
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.SaveRateFixData(data);
+      
+
+      }
+    });
+  }
+
+  SaveRateFixData(data:any)
+  {
+    this.rateFixService
+    .SaveSaleRateFixData(data)
+    .pipe(
+      takeUntil(this.destroy$),
+      catchError((error) => {
+        console.error('Error:', error);
+        this.toastr.error('An error occurred', 'ERROR');
+        throw error;
+      })
+    )
+    .subscribe((res: any) => {
+      
+      this.toastr.success(res.Message, "SUCCESS");
+      this.clearform();
+      this.GetSaleData( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+ 
+    });
+}
 }
