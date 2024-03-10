@@ -16,6 +16,7 @@ import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { IstgApprove } from '../../interfaces/istg-approve';
 import { StgApproveService } from '../../services/stg-approve.service';
 import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-entry.component';
+import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-stgapprove',
@@ -75,6 +76,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
   selectedRowIndex: number = -1;
+  CollectionDates:any[]=[];
 
   constructor(
     private dialog: MatDialog,
@@ -98,11 +100,23 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     // this.dataSource.data = this.dummyData;
     await this.loadVehicleNumbers();
     this.GeTript();
+    this.getPendingCollectionDates();
     // this.GetStgList(null,null);
   }
 
   selectVehicle(number: any) {
     this.dateRangeForm.controls['VehicleId'].setValue(number?.VehicleId);
+  }
+
+  getPendingCollectionDates(){
+    let data = {
+      TenantId: this.loginDetails.TenantId,
+    }
+
+    const getPendingCollectionDate = this.stgapproveService.GetStgPendingDate(data).subscribe((res:any)=>{
+      this.CollectionDates = res.PendingDate;
+    });
+    this.subscriptions.push(getPendingCollectionDate)
   }
 
   GetStgList(FromDate: any, ToDate: any) {
@@ -381,5 +395,11 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  dateClass: MatCalendarCellClassFunction<Date> = (cellDate) => {
+    const cellDateISOString = cellDate.toISOString().split('T')[0];
+    const isPendingDate = this.CollectionDates.some(item => item.CollectionDate === cellDateISOString);
+    return isPendingDate ? 'highlight-date' : '';
+  };
 
 }
