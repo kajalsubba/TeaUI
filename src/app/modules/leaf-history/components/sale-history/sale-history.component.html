@@ -172,6 +172,9 @@
                         [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
                 </tr>
               <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell text-center" attr.colspan="{{displayedColumns.length + 1}}">No data</td>
+              </tr>
             </table>
           </div>
         </div>
