@@ -108,6 +108,7 @@ input[type="text"],input[type="email"],input[type="number"],input[type="password
 .form-group input:read-only {
   background-color: #e7e7e7;
   box-shadow: none;
+  border: 1px solid gray;
 }
 
 .mat-date-range-input-inner{
