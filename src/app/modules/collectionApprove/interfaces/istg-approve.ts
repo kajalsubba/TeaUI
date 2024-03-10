@@ -15,3 +15,9 @@ export interface ICollectionList
     CollectionId: any;
     Status:any;
 }
+export interface IStgVehicle
+{
+    FromDate: any;
+    TenantId:any;
+}
+

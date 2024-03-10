@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IstgApprove } from '../interfaces/istg-approve';
+import { IStgVehicle, IstgApprove } from '../interfaces/istg-approve';
 import { Observable } from 'rxjs';
 import { IGetSale, IStgPendingDate, IStgSaleSave, IsaleSave } from '../interfaces/isale-save';
 
@@ -35,6 +35,8 @@ export class StgApproveService {
   SaveStgSaleData(clientBody:IStgSaleSave): Observable<string[]> {
     return this.apiService.post('Collection/SaveStgSale', clientBody);
   }
-
+  GetStgVehicle(clientBody:IStgVehicle): Observable<string[]> {
+    return this.apiService.post('Collection/GetStgVehicleData', clientBody);
+  }
 
 }

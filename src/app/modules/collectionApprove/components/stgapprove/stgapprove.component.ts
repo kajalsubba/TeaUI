@@ -13,7 +13,7 @@ import { IStgSelect } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
-import { IstgApprove } from '../../interfaces/istg-approve';
+import { IStgVehicle, IstgApprove } from '../../interfaces/istg-approve';
 import { StgApproveService } from '../../services/stg-approve.service';
 import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-entry.component';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
@@ -76,7 +76,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
   selectedRowIndex: number = -1;
-  CollectionDates:any[]=[];
+  CollectionDates: any[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -87,7 +87,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     private autocompleteService: AutoCompleteService,
     private stgService: StgService,
     private stgapproveService: StgApproveService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -95,10 +95,10 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       fromDate: [new Date(), Validators.required],
       VehicleNo: ['', Validators.required],
       VehicleId: [''],
-      TripId:[null]
+      TripId: [null]
     });
     // this.dataSource.data = this.dummyData;
-    await this.loadVehicleNumbers();
+    await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     this.GeTript();
     this.getPendingCollectionDates();
     // this.GetStgList(null,null);
@@ -108,19 +108,22 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     this.dateRangeForm.controls['VehicleId'].setValue(number?.VehicleId);
   }
 
-  getPendingCollectionDates(){
+  getPendingCollectionDates() {
     let data = {
       TenantId: this.loginDetails.TenantId,
     }
 
-    const getPendingCollectionDate = this.stgapproveService.GetStgPendingDate(data).subscribe((res:any)=>{
+    const getPendingCollectionDate = this.stgapproveService.GetStgPendingDate(data).subscribe((res: any) => {
       this.CollectionDates = res.PendingDate;
+
+      console.log(this.CollectionDates, 'this.CollectionDates');
+
     });
     this.subscriptions.push(getPendingCollectionDate)
   }
 
   GetStgList(FromDate: any, ToDate: any) {
-    
+
     const currentDate = new Date();
     let bodyData: IStgSelect = {
       FromDate:
@@ -134,7 +137,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
-      TripId:this.dateRangeForm.value.TripId,
+      TripId: this.dateRangeForm.value.TripId,
       CreatedBy: 0,
     };
     const categoryListService = this.stgService
@@ -171,18 +174,21 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     );
   }
 
-  clearFilter() {}
+  clearFilter() { }
 
-  fromDateChange(e: any) {}
+  async fromDateChange(event: any) {
 
-  editItem(e: any) {}
+    await this.loadVehicleNumbers(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
+  }
 
-  deleteItem(e: any) {}
+  editItem(e: any) { }
 
-  setStatus(e: any) {}
+  deleteItem(e: any) { }
+
+  setStatus(e: any) { }
 
   approveEntry() {
-   
+
     const selectedObjects: any[] = [];
     const selectedObjects1: any[] = [];
     var ApproveList: any[] = [];
@@ -196,7 +202,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     // Iterate through the selected items
     this.selection.selected.forEach((selectedItem) => {
       // Create the selected object based on the selected item
-      
+
       const selectedObject = {
         IsApprove: true, // Set the IsApprove property to true
         CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
@@ -241,11 +247,11 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       ApproveList: ApproveList,
     };
 
- 
-    if (this.dataSource.data.length > 0) {
-     // this.SaveStgtData(data);
 
-     this.saleEntry(data, this.selection.selected);
+    if (this.dataSource.data.length > 0) {
+      // this.SaveStgtData(data);
+
+      this.saleEntry(data, this.selection.selected);
     }
   }
 
@@ -261,8 +267,8 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe((res: any) => {
-         this.saleEntry(res, this.selection.selected);
-     
+        this.saleEntry(res, this.selection.selected);
+
       });
   }
 
@@ -275,18 +281,19 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async loadVehicleNumbers() {
+  async loadVehicleNumbers(CollectionDate: any) {
     try {
-      const bodyData: IGetGrade = {
+      const bodyData: IStgVehicle = {
         TenantId: this.loginDetails.TenantId,
+        FromDate: CollectionDate
       };
 
-      const res: any = await this.autocompleteService
-        .GetVehicleNumbers(bodyData)
+      const res: any = await this.stgapproveService
+        .GetStgVehicle(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.vehicleNumbers = res.VehicleDetails;
+      this.vehicleNumbers = res.StgVehicleData;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -325,9 +332,8 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1
+      }`;
   }
 
   VehicleInput(value: string) {
@@ -346,25 +352,25 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(SaleEntryComponent, {
       width: '90vw',
       height: '95%',
-      minWidth:'90vw',
+      minWidth: '90vw',
       disableClose: true,
       data: {
         title: 'Sale Entry Form-STG',
-        stgData:StgData,
+        stgData: StgData,
         approveData: approveData,
         VehicleNo: this.dateRangeForm.value.VehicleNo,
         VehicleId: this.dateRangeForm.value.VehicleId,
         CollectionDate: this.dateRangeForm.value.fromDate,
-        FactoryName:this.selection.selected[0].FactoryName,
-        FactoryId:0,
-        AccountId:0,
-        ChallanWeight:0,
+        FactoryName: this.selection.selected[0].FactoryName,
+        FactoryId: 0,
+        AccountId: 0,
+        ChallanWeight: 0,
         saleTypeId: 1,
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetStgList(   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
+        this.GetStgList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
         this.selection = new SelectionModel<any>(true, []);
       }
     });
@@ -382,7 +388,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   selectRow(row: any, index: number) {
     this.selectedRowIndex = index; // Set the selected row index
   }
-  
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardNavigation(event: KeyboardEvent) {
     if (event.key === 'ArrowDown') {
@@ -398,6 +404,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
 
   dateClass: MatCalendarCellClassFunction<Date> = (cellDate) => {
     const cellDateISOString = cellDate.toISOString().split('T')[0];
+    console.log(cellDateISOString, 'cellDateISOString');
     const isPendingDate = this.CollectionDates.some(item => item.CollectionDate === cellDateISOString);
     return isPendingDate ? 'highlight-date' : '';
   };
