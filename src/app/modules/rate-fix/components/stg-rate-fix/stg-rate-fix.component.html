@@ -23,7 +23,8 @@
                     <div class="col-lg-2">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative">
-                                <mat-select placeholder="--Select Grade--" class="fromSelect" formControlName="GradeId" (selectionChange)="onSelectionChange($event)">
+                                <mat-select placeholder="--Select Grade--" class="fromSelect" formControlName="GradeId"
+                                    (selectionChange)="onSelectionChange($event)">
                                     <mat-option value="0">All Grade</mat-option>
                                     <mat-option *ngFor="let grade of GradeList" [value]="grade.GradeId">
                                         {{grade.GradeName}}
@@ -66,9 +67,9 @@
                             <div class="col-lg-12 position-relative d-grid">
                                 <button (click)="Search()" class="btn btn-color">Search</button>
                             </div>
-                          
+
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="row">
@@ -92,7 +93,7 @@
                             <div class="col-lg-6 position-relative d-grid">
                                 <button (click)="RateAssign()" class="btn btn-color">Insert</button>
                             </div>
-                          
+
                             <div class="col-lg-6 position-relative d-grid">
                                 <button (click)="FixRate()" class="btn btn-color">Fix</button>
                             </div>
@@ -122,6 +123,7 @@
                             <th mat-header-cell *matHeaderCellDef> Collection Date </th>
                             <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
                             <td class="footer-total total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+                        
                         </ng-container>
 
                         <!-- First Weight -->
@@ -183,7 +185,8 @@
                             </td>
                             <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container> -->
-
+                        <!-- No data row -->
+                       
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
