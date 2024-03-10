@@ -10,60 +10,67 @@
                 <div class="form-group row py-1">
                     <label for="CollectionDate" class="col-lg-4 col-form-label">Sale Date</label>
                     <div class="col-lg-8 position-relative">
-            
-                            <mat-form-field>
-                                <input formControlName="SaleDate" matInput [matDatepicker]="picker" placeholder="Select Date">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
+
+                        <mat-form-field>
+                            <input formControlName="SaleDate" matInput [matDatepicker]="picker"
+                                placeholder="Select Date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group row py-1">
                     <label for="Factory" class="col-lg-5 col-form-label">Factory Name <span
-                        class="text-danger">*</span></label>
+                            class="text-danger">*</span></label>
                     <div class="col-lg-7 position-relative">
-                        <mat-select placeholder="--Select Factory--" class="fromSelect" formControlName="FactoryName"  (selectionChange)="SelectFactory($event.value)">
-                            <input #buyer (input)="filterBuyers(buyer.value)" type="text" class="form-control inset-shadow" placeholder="Search Buyer">
-                            <mat-option *ngFor="let item of filteredFactory" [value]="item.FactoryId">{{item.FactoryName}}</mat-option>
+                        <mat-select placeholder="--Select Factory--" class="fromSelect" formControlName="FactoryName"
+                            (selectionChange)="SelectFactory($event.value)">
+                            <input #buyer (input)="filterBuyers(buyer.value)" type="text"
+                                class="form-control inset-shadow" placeholder="Search Buyer">
+                            <mat-option *ngFor="let item of filteredFactory"
+                                [value]="item.FactoryId">{{item.FactoryName}}</mat-option>
                         </mat-select>
                         <span
-                        *ngIf="saleEntryForm.get('FactoryName')?.hasError('required') && saleEntryForm.get('FactoryName')?.touched"
-                        class="text-danger d-block validation-message">
-                        Factory Name is required.
-                    </span>
+                            *ngIf="saleEntryForm.get('FactoryName')?.hasError('required') && saleEntryForm.get('FactoryName')?.touched"
+                            class="text-danger d-block validation-message">
+                            Factory Name is required.
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group row py-1">
                     <label for="account" class="col-lg-5 col-form-label">Account Name <span
-                        class="text-danger">*</span></label>
+                            class="text-danger">*</span></label>
                     <div class="col-lg-7 position-relative">
                         <mat-select placeholder="--Select Account--" class="fromSelect" formControlName="AccountId">
-                            <input #account (input)="filterAccounts(account.value)" type="text" class="form-control inset-shadow" placeholder="Search Account">
-                            <mat-option *ngFor="let account of filteredAccounts" [value]="account.AccountId">{{account.AccountName}}</mat-option>
+                            <input #account (input)="filterAccounts(account.value)" type="text"
+                                class="form-control inset-shadow" placeholder="Search Account">
+                            <mat-option *ngFor="let account of filteredAccounts"
+                                [value]="account.AccountId">{{account.AccountName}}</mat-option>
                         </mat-select>
                         <span
-                        *ngIf="saleEntryForm.get('AccountId')?.hasError('required') && saleEntryForm.get('AccountId')?.touched"
-                        class="text-danger d-block validation-message">
-                        Account Name  is required.
-                    </span>
+                            *ngIf="saleEntryForm.get('AccountId')?.hasError('required') && saleEntryForm.get('AccountId')?.touched"
+                            class="text-danger d-block validation-message">
+                            Account Name is required.
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="form-group row py-1">
                     <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
-                        class="text-danger">*</span></label>
+                            class="text-danger">*</span></label>
                     <div class="col-lg-7 d-grid position-relative">
-                        <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
-                            formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
+                        <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control"
+                            id="VehicleNo" placeholder="Vehicle No." formControlName="VehicleNo"
+                            [matAutocomplete]="vehicleAuto">
                         <!-- Autocomplete options -->
                         <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
-                            <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)" (onSelectionChange)="selectVehicle(number)"
-                                [value]="number.VehicleNo">
+                            <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                                (onSelectionChange)="selectVehicle(number)" [value]="number.VehicleNo">
                                 {{ number.VehicleNo }}
                             </mat-option>
                         </mat-autocomplete>
@@ -72,180 +79,197 @@
                 </div>
             </div>
         </div>
-    <div class="row border-box border-top-none">
-        <div class="col-lg-12">
-            <div class="table-container my-2">
-              <div>
-                <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
+        <div class="row border-box border-top-none">
+            <div class="col-lg-12">
+                <div class="table-container my-2">
+                    <div>
+                        <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
 
-                    <!-- Displayed columns -->
-                    <ng-container matColumnDef="serialNumber">
-                        <th mat-header-cell *matHeaderCellDef> S.No. </th>
-                        <td mat-cell *matCellDef="let row; let i = index;"> {{ i + 1 }} </td>
-                        <td mat-footer-cell *matFooterCellDef></td>
-                    </ng-container>
-                  <!-- Displayed columns -->
-                  <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-                    <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
-                    <td mat-cell *matCellDef="let row; let i = index;">
-                        {{ row[column.columnDef]  }}
-                      </td>
-                      <td mat-footer-cell *matFooterCellDef></td>                  
-                  </ng-container>
-      
-                  <!-- Collection Date -->
-                  <ng-container matColumnDef="CollectionDate">
-                    <th mat-header-cell *matHeaderCellDef> Collection Date </th>
-                    <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
-                    <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
-                  </ng-container>
-                  
-                  <!-- First Weight -->
-                  <ng-container matColumnDef="FirstWeight">
-                    <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
-                    <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FirstWeight}} KG </td>
-                    <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                      <b>{{ getTotalCost('FirstWeight') }} KG</b>
-                    </td>
-                  </ng-container>
-                      <!-- WetLeaf -->
-                      <ng-container matColumnDef="WetLeafKg">
-                        <th mat-header-cell *matHeaderCellDef> Wet Leaf ( KG ) </th>
-                        <td class="weight-column" mat-cell *matCellDef="let row"> {{row.WetLeafKg}} KG </td>
-                        <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                          <b>{{ getTotalCost('WetLeafKg') }} KG</b>
-                        </td>
-                      </ng-container>
-    
-                           <!-- Long Leaf -->
-                           <ng-container matColumnDef="LongLeafKg">
-                            <th mat-header-cell *matHeaderCellDef> Long Leaf ( KG ) </th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.LongLeafKg}} KG </td>
-                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                              <b>{{ getTotalCost('LongLeafKg') }} KG</b>
-                            </td>
-                          </ng-container>
-    
-                  <!-- Deduction -->
-                  <ng-container matColumnDef="Deduction">
-                    <th mat-header-cell *matHeaderCellDef> Deduction ( KG ) </th>
-                    <td class="weight-column" mat-cell *matCellDef="let row"> {{row.Deduction}} KG </td>
-                    <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('Deduction') }} KG</b> </td>
-                  </ng-container>
-    
-                  <!-- Final Weight -->
-                  <ng-container matColumnDef="FinalWeight">
-                    <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
-                    <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG</td>
-                    <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalWeight') }} KG</b> </td>
-                  </ng-container>
-    
-                  <!-- Status column -->
-                  <ng-container matColumnDef="Status">
-                    <th mat-header-cell *matHeaderCellDef>Status</th>
-                    <td mat-cell *matCellDef="let row">
-                        <div class="statusBtn">
-                          <span *ngIf="row.Status == 'Rejected'" class="btn-reject">Rejected</span>
-                          <span *ngIf="row.Status == 'Pending'" class="btn-pending">Pending</span>
-                          <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
-                        </div>
-                    </td>
-                    <td mat-footer-cell *matFooterCellDef></td>
-                  </ng-container>
-      
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
-                        [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
-                </tr>
-                  <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
-                </table>
-              </div>
-            </div>
-            <!-- <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator> -->
-            <div class="row">
-                <div class="col-lg-4 offset-lg-8">
-                    <div class="form-group row mb-1">
-                        <label for="FinalCollection" class="col-lg-5 col-form-label">Field Collection</label>
-                        <div class="col-lg-7 position-relative">
-                            <input #FieldCollection readonly type="number" formControlName="FieldCollectionWeight" class="form-control" placeholder="Field Collection">
+                            <!-- Displayed columns -->
+                            <ng-container matColumnDef="serialNumber">
+                                <th mat-header-cell *matHeaderCellDef> S.No. </th>
+                                <td mat-cell *matCellDef="let row; let i = index;"> {{ i + 1 }} </td>
+                                <td mat-footer-cell *matFooterCellDef></td>
+                            </ng-container>
+                            <!-- Displayed columns -->
+                            <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+                                <td mat-cell *matCellDef="let row; let i = index;">
+                                    {{ row[column.columnDef] }}
+                                </td>
+                                <td mat-footer-cell *matFooterCellDef></td>
+                            </ng-container>
+
+                            <!-- Collection Date -->
+                            <ng-container matColumnDef="CollectionDate">
+                                <th mat-header-cell *matHeaderCellDef> Collection Date </th>
+                                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
+                                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+                            </ng-container>
+
+                            <!-- First Weight -->
+                            <ng-container matColumnDef="FirstWeight">
+                                <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
+                                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FirstWeight}} KG </td>
+                                <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                    <b>{{ getTotalCost('FirstWeight') }} KG</b>
+                                </td>
+                            </ng-container>
+                            <!-- WetLeaf -->
+                            <ng-container matColumnDef="WetLeafKg">
+                                <th mat-header-cell *matHeaderCellDef> Wet Leaf ( KG ) </th>
+                                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.WetLeafKg}} KG </td>
+                                <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                    <b>{{ getTotalCost('WetLeafKg') }} KG</b>
+                                </td>
+                            </ng-container>
+
+                            <!-- Long Leaf -->
+                            <ng-container matColumnDef="LongLeafKg">
+                                <th mat-header-cell *matHeaderCellDef> Long Leaf ( KG ) </th>
+                                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.LongLeafKg}} KG </td>
+                                <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                    <b>{{ getTotalCost('LongLeafKg') }} KG</b>
+                                </td>
+                            </ng-container>
+
+                            <!-- Deduction -->
+                            <ng-container matColumnDef="Deduction">
+                                <th mat-header-cell *matHeaderCellDef> Deduction ( KG ) </th>
+                                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.Deduction}} KG </td>
+                                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{
+                                        getTotalCost('Deduction') }} KG</b> </td>
+                            </ng-container>
+
+                            <!-- Final Weight -->
+                            <ng-container matColumnDef="FinalWeight">
+                                <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
+                                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG</td>
+                                <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{
+                                        getTotalCost('FinalWeight') }} KG</b> </td>
+                            </ng-container>
+
+                            <!-- Status column -->
+                            <ng-container matColumnDef="Status">
+                                <th mat-header-cell *matHeaderCellDef>Status</th>
+                                <td mat-cell *matCellDef="let row">
+                                    <div class="statusBtn">
+                                        <span *ngIf="row.Status == 'Rejected'" class="btn-reject">Rejected</span>
+                                        <span *ngIf="row.Status == 'Pending'" class="btn-pending">Pending</span>
+                                        <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
+                                    </div>
+                                </td>
+                                <td mat-footer-cell *matFooterCellDef></td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+                                [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+                            </tr>
+                            <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true">
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator> -->
+                <div class="row">
+                    <div class="col-lg-4 offset-lg-8">
+                        <div class="form-group row mb-1">
+                            <label for="FinalCollection" class="col-lg-5 col-form-label">Field Collection</label>
+                            <div class="col-lg-7 position-relative">
+                                <input #FieldCollection readonly type="number" formControlName="FieldCollectionWeight"
+                                    class="form-control" placeholder="Field Collection">
                                 <span class="kg-text">KG</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-          </div>
-    </div>
-    <div class="row py-2 border-box border-top-none">
-      
-        <div class="col-lg-4">
-            <div class="form-group row mb-3">
-                <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf</label>
-                <div class="col-lg-7 position-relative">
-                    <input maxlength="2" (keypress)="restrictInput($event)" #FineLeaf type="text" formControlName="FineLeaf" class="form-control" placeholder="0 - 99">
-                    <span class="kg-text"><i class="fa-solid fa-percent"></i></span>
-                </div>
-            </div>
-            
         </div>
-        <div class="col-lg-4">
-            <div class="form-group row mb-3">
-                <label for="ChallanWeight" class="col-lg-5 col-form-label">Challan Weight <span
-                    class="text-danger">*</span></label>
-                <div class="col-lg-7 position-relative">
-                    <input (input)="ChallanWeightChange(ChallanWeight.value)" #ChallanWeight type="number" formControlName="ChallanWeight" class="form-control" placeholder="Channal Weight">
+        <div class="row py-2 border-box border-top-none">
+
+            <div class="col-lg-4">
+                <div class="form-group row mb-3">
+                    <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf</label>
+                    <div class="col-lg-7 position-relative">
+                        <input maxlength="2" (keypress)="restrictInput($event)" #FineLeaf type="text"
+                            formControlName="FineLeaf" class="form-control" placeholder="0 - 99">
+                        <span class="kg-text"><i class="fa-solid fa-percent"></i></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group row mb-3">
+                    <label for="ChallanWeight" class="col-lg-5 col-form-label">Challan Weight <span
+                            class="text-danger">*</span></label>
+                    <div class="col-lg-7 position-relative">
+                        <input (input)="ChallanWeightChange(ChallanWeight.value)" #ChallanWeight type="number"
+                            formControlName="ChallanWeight" class="form-control" placeholder="Channal Weight"
+                            (focusout)="onFocusOutEvent($event)">
                         <span class="kg-text">KG</span>
                         <span
-                        *ngIf="saleEntryForm.get('ChallanWeight')?.hasError('required') && saleEntryForm.get('ChallanWeight')?.touched"
-                        class="text-danger d-block validation-message">
-                        Challan Weight  is required.
-                    </span>
-                </div>
-             
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="form-group row mb-3">
-                <label for="Rate" class="col-lg-5 col-form-label">Rate</label>
-                <div class="col-lg-7 position-relative">
-                    <input (input)="RateChange(Rate.value)" #Rate type="number" formControlName="Rate" class="form-control" placeholder="Rate">
-                    <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
+                            *ngIf="saleEntryForm.get('ChallanWeight')?.hasError('required') && saleEntryForm.get('ChallanWeight')?.touched"
+                            class="text-danger d-block validation-message">
+                            Challan Weight is required.
+                        </span>
+                    </div>
+
                 </div>
             </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="form-group row mb-3">
-                <label for="Incentive" class="col-lg-5 col-form-label">Incentive</label>
-                <div class="col-lg-7 position-relative">
-                    <input (input)="IncentiveChange(Incentive.value)" #Incentive type="number" formControlName="Incentive" class="form-control" placeholder="Incentive">
+            <div class="col-lg-4">
+                <div class="form-group row mb-3">
+                    <label for="Rate" class="col-lg-5 col-form-label">Rate</label>
+                    <div class="col-lg-7 position-relative">
+                        <input (input)="RateChange(Rate.value)" #Rate type="number" formControlName="Rate"
+                            class="form-control" placeholder="Rate">
                         <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="form-group row mb-3">
-                <label for="GrossAmount" class="col-lg-5 col-form-label">Gross Amount</label>
-                <div class="col-lg-7 position-relative">
-                    <input #GrossAmount readonly type="number" formControlName="GrossAmount" class="form-control" placeholder="Gross Amount">
+            <div class="col-lg-4">
+                <div class="form-group row mb-3">
+                    <label for="Incentive" class="col-lg-5 col-form-label">Incentive</label>
+                    <div class="col-lg-7 position-relative">
+                        <input (input)="IncentiveChange(Incentive.value)" #Incentive type="number"
+                            formControlName="Incentive" class="form-control" placeholder="Incentive">
                         <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group row mb-3">
+                    <label for="GrossAmount" class="col-lg-5 col-form-label">Gross Amount</label>
+                    <div class="col-lg-7 position-relative">
+                        <input #GrossAmount readonly type="number" formControlName="GrossAmount" class="form-control"
+                            placeholder="Gross Amount">
+                        <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group row mb-3">
+                    <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>
+                    <div class="col-lg-7 position-relative">
+                        <input #Remarks type="text" formControlName="Remarks" class="form-control"
+                            placeholder="Remarks">
+                        <span
+                            *ngIf="saleEntryForm.get('Remarks')?.hasError('required') && saleEntryForm.get('Remarks')?.touched"
+                            class="text-danger d-block validation-message">
+                            Challan wgt. is less Field wgt.!
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 offset-lg-8">
+                <div class="row">
+                    <div class="col-lg-5"></div>
+                    <div class="col-lg-7 d-grid">
+                        <button class="btn-color" mat-raised-button cdkFocusInitial (click)="SaleEntry()"> <i
+                                class="fa-solid fa-indian-rupee-sign px-2"></i> Sale</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="form-group row mb-3">
-                <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>
-                <div class="col-lg-7 position-relative">
-                    <input #Remarks type="text" formControlName="Remarks" class="form-control" placeholder="Remarks">
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 offset-lg-8">
-            <div class="row">
-                <div class="col-lg-5"></div>
-                <div class="col-lg-7 d-grid">
-                    <button class="btn-color" mat-raised-button cdkFocusInitial (click)="SaleEntry()"> <i class="fa-solid fa-indian-rupee-sign px-2"></i> Sale</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+    </form>
 </mat-dialog-content>

@@ -50,7 +50,7 @@ export class SaleEntryComponent implements OnInit {
   displayedColumns: string[] = [
     'serialNumber',
     'CollectionDate',
-    'VehicleNo',
+  //  'VehicleNo',
     'ClientName',
     'FirstWeight',
     'WetLeaf',
@@ -64,7 +64,7 @@ export class SaleEntryComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
+  //  { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
 
@@ -84,7 +84,7 @@ export class SaleEntryComponent implements OnInit {
     private factoryService: FactoryService,
     private accountService: FactoryAccountService,
     private stgapproveService: StgApproveService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -110,7 +110,7 @@ export class SaleEntryComponent implements OnInit {
       SaleTypeId: [],
     });
 
- 
+
     this.saleEntryForm.controls['ChallanWeight'].valueChanges.subscribe(() => {
       this.calculateGrossAmount();
     });
@@ -123,7 +123,7 @@ export class SaleEntryComponent implements OnInit {
       this.calculateGrossAmount();
     });
 
-     await this.loadVehicleNumbers();
+    await this.loadVehicleNumbers();
     await this.GetFactoryList();
     await this.GetFactoryAccountList();
 
@@ -186,8 +186,28 @@ export class SaleEntryComponent implements OnInit {
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
+
+  onFocusOutEvent(event: any) {
+
+    console.log(event.target.value);
+
+    if (this.saleEntryForm.value.ChallanWeight < this.saleEntryForm.value.FieldCollectionWeight) {
+      this.setValidation('Remarks');
+    }
+    else {
+      this.clearEmailValidation('Remarks')
+
+    }
+
+  }
+
+  clearEmailValidation(controlName: string) {
+    this.saleEntryForm.get(controlName)?.clearValidators();
+    this.saleEntryForm.get(controlName)?.updateValueAndValidity();
+  }
+
   SaleEntry() {
-   
+
     if (this.saleEntryForm.invalid) {
       this.saleEntryForm.markAllAsTouched();
       return;
@@ -195,14 +215,14 @@ export class SaleEntryComponent implements OnInit {
     // Create the data object to be saved
     let data: IStgSaleSave = {
 
-      TotalFirstWeight:this.data.stgData.TotalFirstWeight,
+      TotalFirstWeight: this.data.stgData.TotalFirstWeight,
       TotalWetLeaf: this.data.stgData.TotalWetLeaf,
       TotalLongLeaf: this.data.stgData.TotalLongLeaf,
       TotalDeduction: this.data.stgData.TotalDeduction,
       TotalFinalWeight: this.data.stgData.TotalFinalWeight,
- 
+
       ApproveList: this.data.stgData.ApproveList,
-         SaleDate: formatDate(
+      SaleDate: formatDate(
         this.saleEntryForm.value.SaleDate,
         'yyyy-MM-dd',
         'en-US'
@@ -221,8 +241,7 @@ export class SaleEntryComponent implements OnInit {
       CreatedBy: this.loginDetails.UserId,
     };
 
-    console.log(data,'sale data');
-   this.SaveSaleData(data);
+    this.SaveSaleData(data);
   }
 
   SaveSaleData(clientBody: IStgSaleSave) {
@@ -241,6 +260,13 @@ export class SaleEntryComponent implements OnInit {
         this.toastr.success(res.Message, 'SUCCESS');
         this.dialogRef.close(true);
       });
+  }
+
+
+
+  setValidation(controlName: string) {
+    this.saleEntryForm.get(controlName)?.setValidators([Validators.required]);
+    this.saleEntryForm.get(controlName)?.updateValueAndValidity();
   }
 
   selectVehicle(number: any) {

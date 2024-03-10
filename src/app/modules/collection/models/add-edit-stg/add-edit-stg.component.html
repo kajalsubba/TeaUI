@@ -205,6 +205,11 @@
                                 <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>
                                 <div class="col-lg-7 position-relative">
                                     <textarea class="form-control" name="Remarks" id="Remarks" formControlName="Remarks"></textarea>
+                                    <span
+                                    *ngIf="stgForm.get('Remarks')?.hasError('required') && stgForm.get('Remarks')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Challan Weight is less than field collection! Please Enter reason.
+                                </span>
                                 </div>
                             </div>
                         </div>
