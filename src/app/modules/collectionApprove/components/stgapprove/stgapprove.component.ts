@@ -403,9 +403,9 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   }
 
   dateClass: MatCalendarCellClassFunction<Date> = (cellDate) => {
-    const cellDateISOString = cellDate.toISOString().split('T')[0];
+    const cellDateISOString = this.datePipe.transform(cellDate,"yyyy-MM-dd");
     console.log(cellDateISOString, 'cellDateISOString');
-    const isPendingDate = this.CollectionDates.some(item => item.CollectionDate === cellDateISOString);
+    const isPendingDate = this.CollectionDates.some(item => item.CollectionDate == cellDateISOString);
     return isPendingDate ? 'highlight-date' : '';
   };
 
