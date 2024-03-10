@@ -90,7 +90,7 @@ export class StgRateFixComponent implements OnInit {
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      GradeId: [0],
+      GradeId: [null],
       ClientId: [0],
       ClientName: [''],
       Rate: [''],
@@ -169,10 +169,10 @@ export class StgRateFixComponent implements OnInit {
       .GetGrade(data)
       .subscribe((res: any) => {
         this.GradeList = res.GradeDetails;
-        this.GradeList.push({
-          GradeId:0,
-          GradeName:"All"
-        })
+        // this.GradeList.push({
+        //   GradeId:0,
+        //   GradeName:"All"
+        // })
       });
 
     this.subscriptions.push(gradeGetService);

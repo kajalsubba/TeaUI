@@ -24,6 +24,7 @@
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative">
                                 <mat-select placeholder="--Select Grade--" class="fromSelect" formControlName="GradeId" (selectionChange)="onSelectionChange($event)">
+                                    <mat-option value="0">All Grade</mat-option>
                                     <mat-option *ngFor="let grade of GradeList" [value]="grade.GradeId">
                                         {{grade.GradeName}}
                                     </mat-option>
