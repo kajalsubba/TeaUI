@@ -294,6 +294,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         .toPromise();
 
       this.vehicleNumbers = res.StgVehicleData;
+      this.dateRangeForm.controls['VehicleNo'].reset();
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
