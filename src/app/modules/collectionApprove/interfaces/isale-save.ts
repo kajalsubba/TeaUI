@@ -60,3 +60,7 @@ export interface ICollectionList
     Status:any;
 }
 
+export interface IStgPendingDate
+{
+    TenantId: any;
+}

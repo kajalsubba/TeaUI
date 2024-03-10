@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
 import { IstgApprove } from '../interfaces/istg-approve';
 import { Observable } from 'rxjs';
-import { IGetSale, IStgSaleSave, IsaleSave } from '../interfaces/isale-save';
+import { IGetSale, IStgPendingDate, IStgSaleSave, IsaleSave } from '../interfaces/isale-save';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,10 @@ export class StgApproveService {
 
   GetSaleType(): Observable<string[]> {
     return this.apiService.get('Master/GetSaleType');
+  }
+
+  GetStgPendingDate(bodyData:IStgPendingDate): Observable<string[]> {
+    return this.apiService.post('Collection/GetStgPendingDate', bodyData);
   }
 
   SaveStgSaleData(clientBody:IStgSaleSave): Observable<string[]> {

@@ -1,0 +1,161 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <form [formGroup]="saleApproveForm">
+                <div class="row sale-approve-container mt-1 py-3">
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row py-1">
+                            <label for="CollectionDate" class="col-lg-5 col-form-label">Sale Date</label>
+                            <div class="col-lg-7 position-relative">
+
+                                <mat-form-field>
+                                    <input formControlName="SaleDate" matInput [matDatepicker]="picker"
+                                        placeholder="Select Date">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row py-1">
+                            <label for="Factory" class="col-lg-5 col-form-label">Factory Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-select placeholder="--Select Factory--" class="fromSelect"
+                                    formControlName="FactoryName" (selectionChange)="SelectFactory($event.value)">
+                                    <input #buyer (input)="filterBuyers(buyer.value)" type="text"
+                                        class="form-control inset-shadow" placeholder="Search Buyer">
+                                    <mat-option *ngFor="let item of filteredFactory"
+                                        [value]="item.FactoryId">{{item.FactoryName}}</mat-option>
+                                </mat-select>
+                                <span
+                                    *ngIf="saleApproveForm.get('FactoryName')?.hasError('required') && saleApproveForm.get('FactoryName')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Factory Name is required.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row py-1">
+                            <label for="account" class="col-lg-5 col-form-label">Account Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-select placeholder="--Select Account--" class="fromSelect"
+                                    formControlName="AccountId">
+                                    <input #account (input)="filterAccounts(account.value)" type="text"
+                                        class="form-control inset-shadow" placeholder="Search Account">
+                                    <mat-option *ngFor="let account of filteredAccounts"
+                                        [value]="account.AccountId">{{account.AccountName}}</mat-option>
+                                </mat-select>
+                                <span
+                                    *ngIf="saleApproveForm.get('AccountId')?.hasError('required') && saleApproveForm.get('AccountId')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Account Name is required.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row py-1">
+                            <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 d-grid position-relative">
+                                <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text"
+                                    class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                                    formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
+                                <!-- Autocomplete options -->
+                                <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                    <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                                        (onSelectionChange)="selectVehicle(number)" [value]="number.VehicleNo">
+                                        {{ number.VehicleNo }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row mb-3">
+                            <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf</label>
+                            <div class="col-lg-7 position-relative">
+                                <input maxlength="2" (keypress)="restrictInput($event)" #FineLeaf type="text"
+                                    formControlName="FineLeaf" class="form-control" placeholder="0 - 99">
+                                <span class="kg-text"><i class="fa-solid fa-percent"></i></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row mb-3">
+                            <label for="ChallanWeight" class="col-lg-5 col-form-label">Challan Weight <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <input (input)="ChallanWeightChange(ChallanWeight.value)" #ChallanWeight type="number"
+                                    formControlName="ChallanWeight" class="form-control" placeholder="Channal Weight">
+                                <span class="kg-text">KG</span>
+                                <span
+                                    *ngIf="saleApproveForm.get('ChallanWeight')?.hasError('required') && saleApproveForm.get('ChallanWeight')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Challan Weight is required.
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row mb-3">
+                            <label for="Rate" class="col-lg-5 col-form-label">Rate</label>
+                            <div class="col-lg-7 position-relative">
+                                <input (input)="RateChange(Rate.value)" #Rate type="number" formControlName="Rate"
+                                    class="form-control" placeholder="Rate">
+                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row mb-3">
+                            <label for="Incentive" class="col-lg-5 col-form-label">Incentive</label>
+                            <div class="col-lg-7 position-relative">
+                                <input (input)="IncentiveChange(Incentive.value)" #Incentive type="number"
+                                    formControlName="Incentive" class="form-control" placeholder="Incentive">
+                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row mb-3">
+                            <label for="GrossAmount" class="col-lg-5 col-form-label">Gross Amount</label>
+                            <div class="col-lg-7 position-relative">
+                                <input #GrossAmount readonly type="number" formControlName="GrossAmount"
+                                    class="form-control" placeholder="Gross Amount">
+                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign px-2"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 my-2">
+                        <div class="form-group row mb-3">
+                            <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>
+                            <div class="col-lg-7 position-relative">
+                                <input #Remarks type="text" formControlName="Remarks" class="form-control"
+                                    placeholder="Remarks">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 offset-lg-4">
+                        <div class="row">
+                            <!-- <div class="col-lg-5"></div> -->
+                            <div class="col-lg-12 d-grid">
+                                <button class="btn-color py-2" (click)="saleApprove()" mat-raised-button cdkFocusInitial> <i
+                                        class="fa-solid fa-indian-rupee-sign px-2"></i> Sale</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

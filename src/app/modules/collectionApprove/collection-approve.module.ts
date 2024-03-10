@@ -25,6 +25,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatSelectModule } from "@angular/material/select";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SupplierapproveComponent } from './components/supplierapprove/supplierapprove.component';
+import { SaleApproveComponent } from './components/sale-approve/sale-approve.component';
 
 export const MY_FORMATS = {
     parse: {
@@ -43,7 +44,8 @@ export const MY_FORMATS = {
     declarations: [
     CollectionApproveComponent,
       StgapproveComponent,
-      SupplierapproveComponent
+      SupplierapproveComponent,
+      SaleApproveComponent
      // AddEditStgComponent
     ],
     imports: [

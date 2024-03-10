@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CollectionApproveComponent } from './collection-approve.component';
 import { StgapproveComponent } from './components/stgapprove/stgapprove.component';
 import { SupplierapproveComponent } from './components/supplierapprove/supplierapprove.component';
+import { SaleApproveComponent } from './components/sale-approve/sale-approve.component';
 
 
 const routes: Routes = [
@@ -11,6 +12,7 @@ const routes: Routes = [
     {path:'', redirectTo: 'stgapprove', pathMatch: 'full'},
     {path:'stgapprove', component: StgapproveComponent},
    {path:'supplierapprove', component: SupplierapproveComponent},
+   {path:'sale-approve', component: SaleApproveComponent},
   ]}
 ];
 
