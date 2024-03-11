@@ -12,7 +12,7 @@ const routes: Routes = [
     {path:'', redirectTo: 'stgapprove', pathMatch: 'full'},
     {path:'stgapprove', component: StgapproveComponent},
    {path:'supplierapprove', component: SupplierapproveComponent},
-   {path:'sale-approve', component: SaleApproveComponent},
+   {path:'directsale', component: SaleApproveComponent},
   ]}
 ];
 

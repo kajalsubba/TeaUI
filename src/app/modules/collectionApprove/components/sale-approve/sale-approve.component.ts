@@ -1,33 +1,21 @@
 import { formatDate } from '@angular/common';
-import {
-  Component,
-  HostListener,
-  Inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, HostListener, Inject, OnInit, ViewChild, } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import {
-  Subject,
-  Subscription,
-  catchError,
-  map,
-  startWith,
-  takeUntil,
-} from 'rxjs';
+import { Subject, Subscription, catchError, map, startWith, takeUntil, } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
-import { IStgSaleSave, IsaleSave } from 'src/app/modules/collectionApprove/interfaces/isale-save';
+import { IDirectSale, IStgSaleSave, IsaleSave } from 'src/app/modules/collectionApprove/interfaces/isale-save';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { FactoryAccountService } from 'src/app/modules/masters/services/factory-account.service';
 import { FactoryService } from 'src/app/modules/masters/services/factory.service';
+import { SaleService } from '../../services/sale.service';
 
 @Component({
   selector: 'app-sale-approve',
@@ -81,8 +69,9 @@ export class SaleApproveComponent implements OnInit {
     private autocompleteService: AutoCompleteService,
     private factoryService: FactoryService,
     private accountService: FactoryAccountService,
-    private stgapproveService: StgApproveService
-  ) {}
+    private stgapproveService: StgApproveService,
+    private saleService: SaleService
+  ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -96,9 +85,7 @@ export class SaleApproveComponent implements OnInit {
       AccountId: ['', Validators.required],
       VehicleNo: [''],
       VehicleId: [],
-      //   AccountName:[''],
       FieldCollectionWeight: [0],
-      //   SaleDate:[new Date()],
       FineLeaf: [0],
       ChallanWeight: ['', Validators.required],
       Rate: [0],
@@ -108,7 +95,7 @@ export class SaleApproveComponent implements OnInit {
       SaleTypeId: [],
     });
 
- 
+
     this.saleApproveForm.controls['ChallanWeight'].valueChanges.subscribe(() => {
       this.calculateGrossAmount();
     });
@@ -121,7 +108,7 @@ export class SaleApproveComponent implements OnInit {
       this.calculateGrossAmount();
     });
 
-     await this.loadVehicleNumbers();
+    await this.loadVehicleNumbers();
     await this.GetFactoryList();
     await this.GetFactoryAccountList();
 
@@ -186,7 +173,7 @@ export class SaleApproveComponent implements OnInit {
         .toPromise();
 
       this.AccountList = res.AccountDetails;
-       this.filteredAccounts=res.AccountDetails;
+      this.filteredAccounts = res.AccountDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -279,10 +266,72 @@ export class SaleApproveComponent implements OnInit {
     }
   }
 
-  saleApprove(){
-    if(this.saleApproveForm.invalid){
+  saleApprove() {
+    if (this.saleApproveForm.invalid) {
       this.saleApproveForm.markAllAsTouched();
     }
+
+    let data: IDirectSale = {
+
+      SaleId: 0,
+      ApproveId: 0,
+      SaleDate: formatDate(
+        this.saleApproveForm.value.SaleDate,
+        'yyyy-MM-dd',
+        'en-US'
+      ),
+      AccountId: this.saleApproveForm.value.AccountId,
+      VehicleId: this.saleApproveForm.value.VehicleId,
+      FieldCollectionWeight: this.saleApproveForm.value.FieldCollectionWeight,
+      FineLeaf: this.saleApproveForm.value.FineLeaf,
+      ChallanWeight: this.saleApproveForm.value.ChallanWeight,
+      Rate: this.saleApproveForm.value.Rate,
+      Incentive: this.saleApproveForm.value.Incentive,
+      GrossAmount: this.saleApproveForm.value.GrossAmount,
+      Remarks: this.saleApproveForm.value.Remarks,
+      SaleTypeId: 1,
+      DirectSale: true,
+      TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.UserId,
+    };
+
+    this.SaveSaleData(data);
   }
+  SaveSaleData(clientBody: IDirectSale) {
+    this.saleService
+      .SaveDirectSale(clientBody)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          console.error('Error:', error);
+          this.toastr.error('An error occurred', 'ERROR');
+          throw error;
+        })
+      )
+      .subscribe((res: any) => {
+        this.toastr.success(res.Message, 'SUCCESS');
+        this.CleanFormControl()
+      });
+  }
+
+
+  CleanFormControl() {
+
+
+    this.saleApproveForm.controls['FactoryName'].reset()
+    this.saleApproveForm.controls['AccountId'].reset()
+    this.saleApproveForm.controls['VehicleNo'].reset()
+    this.saleApproveForm.controls['VehicleId'].reset()
+    this.saleApproveForm.controls['FineLeaf'].reset()
+    this.saleApproveForm.controls['ChallanWeight'].reset()
+    this.saleApproveForm.controls['Rate'].reset()
+    this.saleApproveForm.controls['Incentive'].reset()
+    this.saleApproveForm.controls['Remarks'].reset()
+    this.saleApproveForm.controls['GrossAmount'].reset()
+
+
+  }
+
+
 
 }

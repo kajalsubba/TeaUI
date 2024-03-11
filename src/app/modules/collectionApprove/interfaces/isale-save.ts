@@ -64,3 +64,22 @@ export interface IStgPendingDate
 {
     TenantId: any;
 }
+
+export interface IDirectSale {
+    SaleId: number;
+    ApproveId: number;
+    SaleDate: string;
+    AccountId: number;
+    VehicleId: number;
+    FieldCollectionWeight: number;
+    FineLeaf: number;
+    ChallanWeight: number;
+    Rate: number;
+    Incentive: number;
+    GrossAmount: number;
+    Remarks: string;
+    SaleTypeId: number;
+    DirectSale: boolean;
+    TenantId: number;
+    CreatedBy: number;
+  }

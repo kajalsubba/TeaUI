@@ -37,21 +37,21 @@ export class SupplierHistoryComponent {
     'Status',
     //'actions'
   ];
- 
+
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionId', header: 'Id ' },
     // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
-     { columnDef: 'ClientName', header: 'Client Name' },
-     { columnDef: 'VehicleNo', header: 'Vehicle No' },
-     { columnDef: 'FactoryName', header: 'Factory' },
-     { columnDef: 'AccountName', header: 'Account Name' },
-        { columnDef: 'FineLeaf', header: 'Fine Leaf' },
-     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
-     { columnDef: 'Rate', header: 'Rate' },
-     { columnDef: 'Remarks', header: 'Remark' },
-     { columnDef: 'TripName', header: 'TripName ' },
+    { columnDef: 'ClientName', header: 'Client Name' },
+    { columnDef: 'VehicleNo', header: 'Vehicle No' },
+    { columnDef: 'FactoryName', header: 'Factory' },
+    { columnDef: 'AccountName', header: 'Account Name' },
+    { columnDef: 'FineLeaf', header: 'Fine Leaf' },
+    // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
+    { columnDef: 'Rate', header: 'Rate' },
+    { columnDef: 'Remarks', header: 'Remark' },
+    { columnDef: 'TripName', header: 'TripName ' },
     // { columnDef: 'Status', header: 'Status ' }
   ];
 
@@ -61,8 +61,8 @@ export class SupplierHistoryComponent {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   minToDate!: any;
-  vehicleNumbers: any[]=[];
-  statusList:string[]=['All','Pending', 'Rejected','Approved']
+  vehicleNumbers: any[] = [];
+  statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
   selectedRowIndex: number = -1;
 
   private destroy$ = new Subject<void>();
@@ -70,24 +70,24 @@ export class SupplierHistoryComponent {
   constructor(
     private helper: HelperService,
     private datePipe: DatePipe,
-    private toastr:ToastrService,
+    private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
-    private fb:FormBuilder,
-    private stgService:StgService,
-    private supplierService:SupplierService
+    private fb: FormBuilder,
+    private stgService: StgService,
+    private supplierService: SupplierService
 
-  ) {   }
+  ) { }
 
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      VehicleNo:[''],
-      Status:['']
+      VehicleNo: [''],
+      Status: ['']
     });
     this.loadVehicleNumbers();
- 
+
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -103,33 +103,33 @@ export class SupplierHistoryComponent {
     this.minToDate = event.value
   }
 
-  GetSupplierList(FromDate:any,ToDate:any){
+  GetSupplierList(FromDate: any, ToDate: any) {
     const currentDate = new Date();
-    let bodyData:ISupplierSelect = {
-      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
-      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
-      TenantId:this.loginDetails.TenantId,
-      VehicleNo:this.dateRangeForm.value.VehicleNo,
-      Status: this.dateRangeForm.value.Status=='All'?'':this.dateRangeForm.value.Status,
-      TripId:0,
-      CreatedBy:this.loginDetails.LoginType =='Client'?this.loginDetails.UserId:0,
+    let bodyData: ISupplierSelect = {
+      FromDate: FromDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : FromDate,
+      ToDate: ToDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : ToDate,
+      TenantId: this.loginDetails.TenantId,
+      VehicleNo: this.dateRangeForm.value.VehicleNo,
+      Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
+      TripId: 0,
+      CreatedBy: this.loginDetails.LoginType == 'Client' ? this.loginDetails.UserId : 0,
     }
-    const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res:any)=>{
-     // console.log(res);
+    const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res: any) => {
+      // console.log(res);
       this.dataSource.data = res.SupplierDetails;
     });
     this.subscriptions.push(categoryListService);
   }
 
 
-  search(){
+  search() {
 
     // const currentDate = new Date();
- 
+
     // const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): this.dateRangeForm.value.fromDate.format('yyyy-MM-DD');
     // const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):  this.dateRangeForm.value.toDate.format('yyyy-MM-DD');
-  
-   this.GetSupplierList(     formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),  formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),);
+
+    this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),);
   }
   getTotalCost(columnName: string): number {
     return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
@@ -137,53 +137,53 @@ export class SupplierHistoryComponent {
 
   async loadVehicleNumbers() {
     try {
-        const bodyData: IGetGrade = {
-            TenantId: this.loginDetails.TenantId
-        };
+      const bodyData: IGetGrade = {
+        TenantId: this.loginDetails.TenantId
+      };
 
-        const res: any = await this.autocompleteService.GetVehicleNumbers(bodyData)
-            .pipe(takeUntil(this.destroy$))
-            .toPromise();
+      const res: any = await this.autocompleteService.GetVehicleNumbers(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
-        this.vehicleNumbers = res.VehicleDetails;
+      this.vehicleNumbers = res.VehicleDetails;
 
 
     } catch (error) {
-        console.error('Error:', error);
-        this.toastr.error('Something went wrong.', 'ERROR');
-    }
-}
-
- // Autocomplete function
- filterVehicleNumbers(value: string): any {
-  const filterValue = value.toLowerCase();
-  return this.vehicleNumbers.filter((x:any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
-}
-
-displayWithFn(value: string): string {
-  return value || '';
-}
-
-VehicleInput(value:string){
-  let newVal = value.toUpperCase();
-  this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
-}
-
-selectRow(row: any, index: number) {
-  this.selectedRowIndex = index; // Set the selected row index
-}
-
-@HostListener('document:keydown', ['$event'])
-handleKeyboardNavigation(event: KeyboardEvent) {
-  if (event.key === 'ArrowDown') {
-    if (this.selectedRowIndex < this.dataSource.data.length - 1) {
-      this.selectedRowIndex++;
-    }
-  } else if (event.key === 'ArrowUp') {
-    if (this.selectedRowIndex > 0) {
-      this.selectedRowIndex--;
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
-}
+
+  // Autocomplete function
+  filterVehicleNumbers(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.vehicleNumbers.filter((x: any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
+  }
+
+  displayWithFn(value: string): string {
+    return value || '';
+  }
+
+  VehicleInput(value: string) {
+    let newVal = value.toUpperCase();
+    this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+  }
+
+  selectRow(row: any, index: number) {
+    this.selectedRowIndex = index; // Set the selected row index
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+        this.selectedRowIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      if (this.selectedRowIndex > 0) {
+        this.selectedRowIndex--;
+      }
+    }
+  }
 
 }

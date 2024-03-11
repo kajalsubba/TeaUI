@@ -33,8 +33,8 @@ export class SaleHistoryComponent {
     'Rate',
     'GrossAmount',
     'Incentive',
-   'IncentiveAmount',
-   'FinalAmount',
+    'IncentiveAmount',
+    'FinalAmount',
     'Remarks',
     'TypeName',
     'actions',
@@ -65,12 +65,12 @@ export class SaleHistoryComponent {
   private subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  factoryNames: any[]=[];
-  accountNames: any[]=[];
-  AccountList:any=[];
-  saleTypeList:any;
+  factoryNames: any[] = [];
+  accountNames: any[] = [];
+  AccountList: any = [];
+  saleTypeList: any;
   selectedRowIndex: number = -1;
-  
+
 
   constructor(
     private helper: HelperService,
@@ -80,12 +80,7 @@ export class SaleHistoryComponent {
     private fb: FormBuilder,
     private saleService: StgApproveService
   ) {
-    // this.SaleForm = this.fb.group({
-    //   fromDate: [new Date(), Validators.required],
-    //   toDate: [new Date(), [Validators.required]],
-    //   VehicleNo: [''],
-    //   FactoryName:['']
-    // });
+ 
   }
 
   ngOnInit(): void {
@@ -94,13 +89,13 @@ export class SaleHistoryComponent {
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
       VehicleNo: [''],
-      FactoryName:[''],
-      FactoryId:[null],
-      AccountName:[''],
-      AccountId:[null],
-      SaleTypeId:[null]
+      FactoryName: [''],
+      FactoryId: [null],
+      AccountName: [''],
+      AccountId: [null],
+      SaleTypeId: [null]
     });
-    this.loadVehicleNumbers();
+  //  this.loadVehicleNumbers();
     this.loadFactoryNames();
     this.loadAccountNames();
     this.GetSaleType();
@@ -150,10 +145,10 @@ export class SaleHistoryComponent {
     );
   }
 
-  GetSaleType(){
-   
-    const services = this.saleService.GetSaleType().subscribe((res:any)=>{
-      this.saleTypeList= res.SaleTypes;
+  GetSaleType() {
+
+    const services = this.saleService.GetSaleType().subscribe((res: any) => {
+      this.saleTypeList = res.SaleTypes;
     });
     this.subscriptions.push(services);
   }
@@ -180,7 +175,7 @@ export class SaleHistoryComponent {
     try {
       const bodyData: IGetFactory = {
         TenantId: this.loginDetails.TenantId,
-        IsClientView:false
+        IsClientView: false
       };
 
       const res: any = await this.autocompleteService
@@ -206,7 +201,7 @@ export class SaleHistoryComponent {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.accountNames = res.AccountDetails;
+      this.AccountList = res.AccountDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -226,10 +221,10 @@ export class SaleHistoryComponent {
         ToDate == null
           ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
           : ToDate,
-          VehicleNo:this.SaleForm.value.VehicleNo,
-          FactoryId:this.SaleForm.value.FactoryId,
-          AccountId:this.SaleForm.value.AccountId,
-          SaleTypeId:this.SaleForm.value.SaleTypeId,
+      VehicleNo: this.SaleForm.value.VehicleNo,
+      FactoryId: this.SaleForm.value.FactoryId,
+      AccountId: this.SaleForm.value.AccountId,
+      SaleTypeId: this.SaleForm.value.SaleTypeId,
       TenantId: this.loginDetails.TenantId,
       //  VehicleNo:this.dateRangeForm.value.VehicleNo,
     };
@@ -240,6 +235,21 @@ export class SaleHistoryComponent {
         this.dataSource.data = res.SaleDetails;
       });
     this.subscriptions.push(categoryListService);
+  }
+
+  onInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Do something when input changes
+    console.log(input.value,'presss');
+    if(input.value=='')
+    {
+      this.accountNames=[];
+      this.SaleForm.controls['AccountName'].reset();
+      this.SaleForm.controls['AccountId'].reset();
+      this.SaleForm.controls["SaleTypeId"].reset();
+
+    }
+   
   }
 
   ngAfterViewInit() {
@@ -254,7 +264,7 @@ export class SaleHistoryComponent {
 
   selectFactory(factory: any) {
     this.SaleForm.controls['FactoryId'].setValue(factory?.FactoryId);
-    this.accountNames=   this.AccountList.filter((x:any)=> x.FactoryId==factory.FactoryId)
+    this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.FactoryId)
   }
 
   selectAccount(account: any) {
@@ -266,14 +276,14 @@ export class SaleHistoryComponent {
     this.minToDate = event.value;
   }
 
-  editItem(row: any) {}
+  editItem(row: any) { }
 
-  deleteItem(row: any) {}
+  deleteItem(row: any) { }
 
   selectRow(row: any, index: number) {
     this.selectedRowIndex = index; // Set the selected row index
   }
-  
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardNavigation(event: KeyboardEvent) {
     if (event.key === 'ArrowDown') {
