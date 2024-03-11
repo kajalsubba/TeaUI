@@ -334,7 +334,7 @@ export class AddEditSupplierComponent implements OnInit {
     }
     else {
       if (CollId.Id == 0) {
-        this.toastr.error(CollId.Message, "ERROR");
+        this.toastr.warning(CollId.Message, "Warning");
       }
       else {
         this.toastr.success(CollId.Message, "SUCCESS");

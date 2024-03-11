@@ -194,7 +194,7 @@ export class AddEditStgComponent implements OnInit {
       .subscribe((res: any) => {
         //console.log(res);
         if (res.Id == 0) {
-          this.toastr.error(res.Message, 'Error');
+          this.toastr.warning(res.Message, 'Warning');
         }
         else {
           this.toastr.success(res.Message, 'SUCCESS');
