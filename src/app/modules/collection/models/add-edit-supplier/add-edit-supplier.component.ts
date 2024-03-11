@@ -28,17 +28,17 @@ export class AddEditSupplierComponent implements OnInit {
   private destroy$ = new Subject<void>();
   loginDetails: any;
   accountNames: any[] = [];
-  AccountList:any=[];
+  AccountList: any = [];
   FilteredTranscationType: any[] = [];
   vehicleNumbers: any[] = [];
-  filteredFactory: any[]=[];
-  FactoryList: any[]=[];
-  statusList:string[]=['Pending', 'Rejected']
-  TripList:any[]=[];
+  filteredFactory: any[] = [];
+  FactoryList: any[] = [];
+  statusList: string[] = ['Pending', 'Rejected']
+  TripList: any[] = [];
   @ViewChild('CollectDate') CollDateInput!: ElementRef;
   @ViewChild('VehicleNo') VehicleNoInput!: ElementRef;
   private subscriptions: Subscription[] = [];
-  FileData:any;
+  FileData: any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     public dialogRef: MatDialogRef<AddEditSupplierComponent>,
@@ -47,65 +47,63 @@ export class AddEditSupplierComponent implements OnInit {
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
     private dialog: MatDialog,
-    private stgService:StgService,
+    private stgService: StgService,
     private datepipe: DatePipe,
-    private supplierService:SupplierService
-  ) {}
+    private supplierService: SupplierService
+  ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
 
-    
+
     this.supplierForm = this.fb.group({
       CollectionDate: [new Date()],
       ClientName: ['', Validators.required],
-      ClientId: [0,Validators.required],
-     // BuyerName: ['', Validators.required],
+      ClientId: [0, Validators.required],
+      // BuyerName: ['', Validators.required],
       AccountName: ['', Validators.required],
       FactoryName: ['', Validators.required],
-      AccountId: [0,Validators.required],
-    //  TransactionType: ['', Validators.required],
+      AccountId: [0, Validators.required],
+      //  TransactionType: ['', Validators.required],
       VehicleNo: ['', Validators.required],
       FineLeaf: [null],
       ChallanWeight: [0, Validators.required],
       Rate: [0],
       GrossAmount: [0],
-      Status:['Pending'],
-      TripId:['',Validators.required],
-      ChallanImage:['',this.loginDetails.LoginType =='Client'?Validators.required:''],
-      Remarks:[]
+      Status: ['Pending'],
+      TripId: ['', Validators.required],
+      ChallanImage: ['', this.loginDetails.LoginType == 'Client' ? Validators.required : ''],
+      Remarks: []
     });
     await this.loadClientNames();
     await this.loadFactoryNames();
     await this.loadAccountNames();
     await this.loadVehicleNumbers();
     this.GeTript();
-    if (this.loginDetails.LoginType =='Client')
-    {
+    if (this.loginDetails.LoginType == 'Client') {
       this.supplierForm.controls['ClientName'].setValue(this.loginDetails.ClientName);
       this.supplierForm.controls['ClientId'].setValue(this.loginDetails.ClientId);
       this.supplierForm.controls['ClientName'].disable({ onlySelf: true });
       this.supplierForm.controls['Rate'].disable({ onlySelf: true });
     }
-  //  this.FilteredTranscationType = this.TranscationTypeList;
+    //  this.FilteredTranscationType = this.TranscationTypeList;
   }
 
-  CleanFormControl()
-  {
-   
-    
-       this.supplierForm.controls['FactoryName'].reset()
-       this.supplierForm.controls['AccountId'].reset()
-       this.supplierForm.controls['AccountName'].reset()
-      this.supplierForm.controls['VehicleNo'].reset()
-      this.supplierForm.controls['FineLeaf'].reset()
+  CleanFormControl() {
 
-      this.supplierForm.controls['ChallanWeight'].reset()
-      this.supplierForm.controls['Rate'].reset()
 
-     this.supplierForm.controls['GrossAmount'].reset()
-     this.supplierForm.controls['Remarks'].reset()
-     this.supplierForm.controls['ChallanImage'].reset()
+    this.supplierForm.controls['FactoryName'].reset()
+    this.supplierForm.controls['AccountId'].reset()
+    this.supplierForm.controls['AccountName'].reset()
+    this.supplierForm.controls['VehicleNo'].reset()
+    this.supplierForm.controls['FineLeaf'].reset()
+
+    this.supplierForm.controls['ChallanWeight'].reset()
+    this.supplierForm.controls['Rate'].reset()
+
+    this.supplierForm.controls['GrossAmount'].reset()
+    this.supplierForm.controls['Remarks'].reset()
+    this.supplierForm.controls['ChallanImage'].reset()
   }
 
 
@@ -113,8 +111,8 @@ export class AddEditSupplierComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category:'Supplier'
-   
+        Category: 'Supplier'
+
       };
 
       const res: any = await this.autocompleteService
@@ -130,14 +128,14 @@ export class AddEditSupplierComponent implements OnInit {
   }
 
 
-  GeTript(){
-  
-    const gradeGetService = this.stgService.GetTrip().subscribe((res:any)=>{
+  GeTript() {
+
+    const gradeGetService = this.stgService.GetTrip().subscribe((res: any) => {
       this.TripList = res.TripDetails;
       this.supplierForm.controls['TripId'].setValue(this.TripList[0].TripId);
     });
 
-  
+
 
   }
   async loadAccountNames() {
@@ -180,7 +178,7 @@ export class AddEditSupplierComponent implements OnInit {
     try {
       const bodyData: IGetFactory = {
         TenantId: this.loginDetails.TenantId,
-        IsClientView:this.loginDetails.LoginType =='Client'?true:false
+        IsClientView: this.loginDetails.LoginType == 'Client' ? true : false
       };
 
       const res: any = await this.autocompleteService
@@ -194,17 +192,16 @@ export class AddEditSupplierComponent implements OnInit {
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
-  SelectFactory(e:any)
-{
+  SelectFactory(e: any) {
 
-  this.accountNames =   this.AccountList.filter((x:any)=> x.FactoryId==e)
-  
-}
+    this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == e)
 
-filterFactory(value: string) {
-  const filterValue = value.toLowerCase();
-  this.filteredFactory = this.FactoryList.filter((buyer:any) => buyer.FactoryName.toLowerCase().includes(filterValue));
-}
+  }
+
+  filterFactory(value: string) {
+    const filterValue = value.toLowerCase();
+    this.filteredFactory = this.FactoryList.filter((buyer: any) => buyer.FactoryName.toLowerCase().includes(filterValue));
+  }
 
   // Autocomplete function
   filterClientNames(value: string): any[] {
@@ -254,8 +251,8 @@ filterFactory(value: string) {
     this.supplierForm.controls['VehicleNo'].setValue(newVal);
   }
 
- 
-  FineLeafInput(value: any) {}
+
+  FineLeafInput(value: any) { }
 
   ChallanWeightInput(value: any) {
     this.calculateGrossAmount();
@@ -288,113 +285,115 @@ filterFactory(value: string) {
       this.imageUrl = e.target?.result;
     };
     reader.readAsDataURL(file);
-    this.FileData=file;
+    this.FileData = file;
   }
 
-  openImage(imageUrl:any){
+  openImage(imageUrl: any) {
     const dialogRef = this.dialog.open(ImageViewerComponent, {
-      width:"80vw",
-      height:"95%",
-      disableClose:true,
-      data:{
-        title:"Image Viewer",
-        imageUrl:imageUrl
+      width: "80vw",
+      height: "95%",
+      disableClose: true,
+      data: {
+        title: "Image Viewer",
+        imageUrl: imageUrl
       }
     })
   }
 
- async onSubmit() {
+  async onSubmit() {
 
-    if(this.supplierForm.invalid){
+    if (this.supplierForm.invalid) {
       this.supplierForm.markAllAsTouched();
       return;
     }
 
-      let data:ISupplier = {
-      CollectionId:this.dialogData?.value?.CollectionId? this.dialogData?.value?.CollectionId : 0,
-      CollectionDate:formatDate(this.supplierForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
-      VehicleNo:this.supplierForm.value.VehicleNo,
-      ClientId:this.supplierForm.value.ClientId,
-      AccountId:this.supplierForm.value.AccountId,
-      FineLeaf:this.supplierForm.value.FineLeaf,
-      ChallanWeight:this.supplierForm.value.ChallanWeight,
-      Rate:this.supplierForm.value.Rate,
-      GrossAmount:this.supplierForm.value.GrossAmount,
-      TripId:this.supplierForm.value.TripId,
+    let data: ISupplier = {
+      CollectionId: this.dialogData?.value?.CollectionId ? this.dialogData?.value?.CollectionId : 0,
+      CollectionDate: formatDate(this.supplierForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
+      VehicleNo: this.supplierForm.value.VehicleNo,
+      ClientId: this.supplierForm.value.ClientId,
+      AccountId: this.supplierForm.value.AccountId,
+      FineLeaf: this.supplierForm.value.FineLeaf,
+      ChallanWeight: this.supplierForm.value.ChallanWeight,
+      Rate: this.supplierForm.value.Rate,
+      GrossAmount: this.supplierForm.value.GrossAmount,
+      TripId: this.supplierForm.value.TripId,
 
       Remarks: this.supplierForm.value.Remarks,
-      Status:this.supplierForm.value.Status,
-      TenantId:this.loginDetails.TenantId,
-      CreatedBy:this.loginDetails.UserId
-      
-      }
-     
-   var CollId= await this.SaveSupplier(data);
+      Status: this.supplierForm.value.Status,
+      TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.UserId
 
-   if (this.loginDetails.LoginType =='Client')
-   {
-       
-    this.uploadChallan(CollId.Id)
-   }
-   else
-   {
-    this.toastr.success(CollId.Message, "SUCCESS");
-    this.CollDateInput.nativeElement.focus();
-    this.CleanFormControl();
-    this.supplierForm.controls['ClientName'].reset()
-    this.supplierForm.controls['ClientId'].reset()
-   }
-      
+    }
+
+    var CollId = await this.SaveSupplier(data);
+
+    if (this.loginDetails.LoginType == 'Client') {
+
+      this.uploadChallan(CollId.Id)
+    }
+    else {
+      if (CollId.Id == 0) {
+        this.toastr.error(CollId.Message, "ERROR");
+      }
+      else {
+        this.toastr.success(CollId.Message, "SUCCESS");
+      }
+      this.CollDateInput.nativeElement.focus();
+      this.CleanFormControl();
+      this.supplierForm.controls['ClientName'].reset()
+      this.supplierForm.controls['ClientId'].reset()
+    }
+
   }
 
- 
 
-  uploadChallan(CollectionId:any)
-  {
 
-    if(this.supplierForm.invalid){
+  uploadChallan(CollectionId: any) {
+
+    if (this.supplierForm.invalid) {
       this.supplierForm.markAllAsTouched();
       return;
     }
-    let bodyData:IUploadChallan = {
-     
-      TenantId:this.loginDetails.TenantId,
-      CollectionId:CollectionId
-   
+    let bodyData: IUploadChallan = {
+
+      TenantId: this.loginDetails.TenantId,
+      CollectionId: CollectionId
+
     }
-   
-      const saveCategory = this.supplierService.UploadChallan(bodyData,this.FileData).subscribe((res:any)=>{
-          this.toastr.success(res.Message, "SUCCESS");
-      
-          this.CleanFormControl();
-          this.imageUrl=null;
-          this.VehicleNoInput.nativeElement.focus();
-            
-      })
-    
+
+    const saveCategory = this.supplierService.UploadChallan(bodyData, this.FileData).subscribe((res: any) => {
+      this.toastr.success(res.Message, "SUCCESS");
+
+      this.CleanFormControl();
+      this.imageUrl = null;
+      this.VehicleNoInput.nativeElement.focus();
+
+    })
+
   }
 
-  async SaveSupplier(bodyData:ISupplier) {
+  async SaveSupplier(bodyData: ISupplier) {
     try {
-       
-        const res: any = await this.supplierService.SaveSupplier(bodyData)
-            .pipe(takeUntil(this.destroy$))
-            .toPromise();
 
-         //  this.toastr.success(res.Message, 'SUCCESS');
-         return res;
+      const res: any = await this.supplierService.SaveSupplier(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      //  this.toastr.success(res.Message, 'SUCCESS');
+      return res;
 
     } catch (error) {
-        console.error('Error:', error);
-        this.toastr.error('Something went wrong.', 'ERROR');
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
     }
-}
+  }
 
 
-ngOnDestroy(): void {
-  this.subscriptions.forEach((sub)=>{
-    sub.unsubscribe();
-  })
-  this.dialogRef.close(true);
-}
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    })
+    this.dialogRef.close(true);
+  }
 }

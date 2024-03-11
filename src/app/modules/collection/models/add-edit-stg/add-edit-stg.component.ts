@@ -193,7 +193,12 @@ export class AddEditStgComponent implements OnInit {
       )
       .subscribe((res: any) => {
         //console.log(res);
-        this.toastr.success(res.Message, 'SUCCESS');
+        if (res.Id == 0) {
+          this.toastr.error(res.Message, 'Error');
+        }
+        else {
+          this.toastr.success(res.Message, 'SUCCESS');
+        }
         if (this.dialogData.buttonName == "Update") {
           this.dialogRef.close(true);
         }
