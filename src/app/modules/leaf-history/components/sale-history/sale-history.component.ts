@@ -244,6 +244,8 @@ export class SaleHistoryComponent {
     if(input.value=='')
     {
       this.accountNames=[];
+      this.SaleForm.controls['FactoryId'].reset();
+      this.SaleForm.controls['FactoryName'].reset();
       this.SaleForm.controls['AccountName'].reset();
       this.SaleForm.controls['AccountId'].reset();
       this.SaleForm.controls["SaleTypeId"].reset();
