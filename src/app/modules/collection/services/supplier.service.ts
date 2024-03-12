@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
-import { ISupplier, ISupplierSelect, IUploadChallan } from '../interfaces/isupplier';
+import { IDefaultData, ISupplier, ISupplierSelect, IUploadChallan } from '../interfaces/isupplier';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -27,6 +27,10 @@ export class SupplierService {
 
   GetSupplierData(clientBody:ISupplierSelect): Observable<string[]> {
     return this.apiService.post('Collection/GetSupplierDetails', clientBody);
+  }
+
+  GetSupplierDefaultData(clientBody:IDefaultData): Observable<string[]> {
+    return this.apiService.post('Collection/GetSupplierDefaultData', clientBody);
   }
 
 }

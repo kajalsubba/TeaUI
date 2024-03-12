@@ -132,7 +132,7 @@ export class SupplierHistoryComponent {
     this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),);
   }
   getTotalCost(columnName: string): number {
-    return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
+    return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
   }
 
   async loadVehicleNumbers() {

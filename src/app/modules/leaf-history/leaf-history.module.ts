@@ -20,6 +20,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { SaleHistoryComponent } from './components/sale-history/sale-history.component';
+import { EditSaleComponent } from './models/edit-sale/edit-sale.component';
+import { AddStgComponent } from './models/add-stg/add-stg.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -38,7 +40,9 @@ export const MY_FORMATS = {
     LeafHistoryComponent,
     StgHistoryComponent,
     SupplierHistoryComponent,
-    SaleHistoryComponent
+    SaleHistoryComponent,
+    EditSaleComponent,
+    AddStgComponent
   ],
   imports: [
     CommonModule,

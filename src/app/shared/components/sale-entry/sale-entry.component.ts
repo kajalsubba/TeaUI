@@ -136,16 +136,19 @@ export class SaleEntryComponent implements OnInit {
     this.saleEntryForm.controls['SaleDate'].setValue(
       new Date(this.data.CollectionDate)
     );
-    if (this.data.saleTypeId == 2) {
-      this.saleEntryForm.controls['FactoryName'].setValue(this.data.FactoryId);
+    if (this.data.isEdit)  {
+      this.saleEntryForm.controls['SaleDate'].setValue(
+        new Date(this.data.stgData.CollectionDate)
+      );
+      this.saleEntryForm.controls['FactoryName'].setValue( this.data.stgData.FactoryId);
 
       this.filteredAccounts = this.AccountList.filter(
-        (x: any) => x.FactoryId == this.data.FactoryId
+        (x: any) => x.FactoryId ==  this.data.stgData.FactoryId
       );
-      this.saleEntryForm.controls['AccountId'].setValue(this.data.AccountId);
+      this.saleEntryForm.controls['AccountId'].setValue( this.data.stgData.AccountId);
 
       this.saleEntryForm.controls['ChallanWeight'].setValue(
-        this.data.ChallanWeight
+        this.data.stgData.ChallanWeight
       );
     }
   }
@@ -188,8 +191,6 @@ export class SaleEntryComponent implements OnInit {
   }
 
   onFocusOutEvent(event: any) {
-
-    console.log(event.target.value);
 
     if (this.saleEntryForm.value.ChallanWeight < this.saleEntryForm.value.FieldCollectionWeight) {
       this.setValidation('Remarks');

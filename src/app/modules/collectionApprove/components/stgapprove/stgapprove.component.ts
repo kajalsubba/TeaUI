@@ -255,22 +255,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     }
   }
 
-  SaveStgtData(clientBody: IstgApprove) {
-    this.stgapproveService
-      .SaveStgApprove(clientBody)
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError((error) => {
-          console.error('Error:', error);
-          this.toastr.error('An error occurred', 'ERROR');
-          throw error;
-        })
-      )
-      .subscribe((res: any) => {
-        this.saleEntry(res, this.selection.selected);
 
-      });
-  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -404,7 +389,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   }
 
   dateClass: MatCalendarCellClassFunction<Date> = (cellDate) => {
-    const cellDateISOString = this.datePipe.transform(cellDate,"yyyy-MM-dd");
+    const cellDateISOString = this.datePipe.transform(cellDate, "yyyy-MM-dd");
     console.log(cellDateISOString, 'cellDateISOString');
     const isPendingDate = this.CollectionDates.some(item => item.CollectionDate == cellDateISOString);
     return isPendingDate ? 'highlight-date' : '';

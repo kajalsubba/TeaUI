@@ -20,13 +20,14 @@ import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/ima
 import { ISupplierVehicle, IsupplierApprove } from '../../interfaces/isupplier-approve';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { IDefaultData } from 'src/app/modules/collection/interfaces/isupplier';
 
 @Component({
   selector: 'app-supplierapprove',
   templateUrl: './supplierapprove.component.html',
   styleUrls: ['./supplierapprove.component.scss']
 })
-export class SupplierapproveComponent implements OnInit,AfterViewInit {
+export class SupplierapproveComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     // 'select',
     'actions',
@@ -42,7 +43,7 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     'Remarks',
     'TripName',
     'Status',
-  
+
   ];
   //  dataList:any=[];
   dataSource = new _MatTableDataSource<any>();
@@ -53,11 +54,11 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
- 
+
     { columnDef: 'AccountName', header: 'Account Name' },
-   
+
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-  //  { columnDef: 'ChallanWeight', header: 'Challan Weight' },
+    //  { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
     // { columnDef: 'Status', header: 'Status' },
@@ -82,12 +83,12 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
-   // private autocompleteService: AutoCompleteService,
+    // private autocompleteService: AutoCompleteService,
     private supplierService: SupplierService,
-    private stgService:StgService,
+    private stgService: StgService,
     private stgapproveService: StgApproveService,
-    private supplierApproveService:SupplierapproveService 
-  ) {}
+    private supplierApproveService: SupplierapproveService
+  ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -95,16 +96,35 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
       fromDate: [new Date(), Validators.required],
       VehicleNo: [''],
       VehicleId: [''],
-      TripId:[null]
+      TripId: [null]
     });
-    // this.dataSource.data = this.dummyData;
-    await this.loadVehicleNumbers( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
+
+    await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     this.GeTript();
-     this.GetSupplierList(null,null);
+    this.GetSupplierDefaultList();
   }
 
   selectVehicle(number: any) {
     this.dateRangeForm.controls['VehicleId'].setValue(number?.VehicleId);
+  }
+
+  GetSupplierDefaultList() {
+    const currentDate = new Date();
+    let bodyData: IDefaultData = {
+
+      TenantId: this.loginDetails.TenantId,
+
+      CreatedBy: 0
+    };
+    const supplierService = this.supplierService
+      .GetSupplierDefaultData(bodyData)
+      .subscribe((res: any) => {
+        //  console.log(res,'approve');
+        //  const result=res.STGDetails.filter((x:any)=>x.Status=='Pending');
+        this.dataSource.data = res.SupplierDefaultData;
+        this.dataSource.data.forEach((row) => this.selection.select(row));
+      });
+    this.subscriptions.push(supplierService);
   }
 
   GetSupplierList(FromDate: any, ToDate: any) {
@@ -122,8 +142,8 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: 'Pending',
-      TripId:this.dateRangeForm.value.TripId,
-      CreatedBy:0
+      TripId: this.dateRangeForm.value.TripId,
+      CreatedBy: 0
     };
     const categoryListService = this.supplierService
       .GetSupplierData(bodyData)
@@ -158,23 +178,23 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     );
   }
 
-  clearFilter() {}
+  clearFilter() { }
 
- async fromDateChange(event: MatDatepickerInputEvent<Date>) {
-  
-  await  this.loadVehicleNumbers(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
-   // alert(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
+  async fromDateChange(event: MatDatepickerInputEvent<Date>) {
+
+    await this.loadVehicleNumbers(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
+    // alert(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
 
   }
 
-  editItem(e: any) {}
+  editItem(e: any) { }
 
-  deleteItem(e: any) {}
+  deleteItem(e: any) { }
 
-  setStatus(e: any) {}
+  setStatus(e: any) { }
 
 
- 
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -183,51 +203,48 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  RejectClick(row:any)
-  {
-    this.SaveFuntion(row,'Reject');
+  RejectClick(row: any) {
+    this.SaveFuntion(row, 'Reject');
   }
 
-  ApproveClick(row:any)
-  {
-    this.SaveFuntion(row,'Approve');
+  ApproveClick(row: any) {
+    this.SaveFuntion(row, 'Approve');
   }
 
 
-  SaveFuntion(row:any,saleStatus:any)
-  {
+  SaveFuntion(row: any, saleStatus: any) {
     let data: IsupplierApprove = {
-      CollectionId:row.CollectionId,
-    SaleStatus:saleStatus,
-    CollectionDate: formatDate(row.CollDate, 'yyyy-MM-dd', 'en-US'),
-    AccountId:row.AccountId,
-    VehicleId:row.VehicleId,
-    FineLeaf:row.FineLeaf,
-    ChallanWeight:row.ChallanWeight,
-    SaleTypeId:2,
-    TenantId:this.loginDetails.TenantId,
-    CreatedBy:this.loginDetails.UserId
+      CollectionId: row.CollectionId,
+      SaleStatus: saleStatus,
+      CollectionDate: formatDate(row.CollDate, 'yyyy-MM-dd', 'en-US'),
+      AccountId: row.AccountId,
+      VehicleId: row.VehicleId,
+      FineLeaf: row.FineLeaf,
+      ChallanWeight: row.ChallanWeight,
+      SaleTypeId: 2,
+      TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.UserId
     };
 
-   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        width: '30vw',
-        height: '20%',
-        minWidth:'25vw',
-        disableClose: true,
-        data: {
-          title: 'Confirm Action',
-          message: 'Do you want to Confirm !',
-          data: data,
-     
-        },
-      });
-      dialogRef.afterClosed().subscribe((result: any) => {
-        if (result) {
-          this.SaveApproveData(data);
-        
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '30vw',
+      height: '20%',
+      minWidth: '25vw',
+      disableClose: true,
+      data: {
+        title: 'Confirm Action',
+        message: 'Do you want to Confirm !',
+        data: data,
 
-        }
-      });
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.SaveApproveData(data);
+
+
+      }
+    });
 
 
   }
@@ -245,17 +262,17 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
       .subscribe((res: any) => {
 
         this.toastr.success(res.Message, "SUCCESS");
-        this.GetSupplierList( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), 
-        formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
-     
+        // this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        //   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
+        this.GetSupplierDefaultList();
       });
   }
 
 
-  async loadVehicleNumbers(CollectionDate:any) {
+  async loadVehicleNumbers(CollectionDate: any) {
     try {
       const bodyData: ISupplierVehicle = {
-        FromDate:CollectionDate,
+        FromDate: CollectionDate,
         TenantId: this.loginDetails.TenantId,
       };
 
@@ -303,9 +320,8 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-      row.position + 1
-    }`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1
+      }`;
   }
 
   VehicleInput(value: string) {
@@ -356,14 +372,14 @@ export class SupplierapproveComponent implements OnInit,AfterViewInit {
 
     this.subscriptions.push(gradeGetService);
   }
-  openImage(imageUrl:any){
+  openImage(imageUrl: any) {
     const dialogRef = this.dialog.open(ImageViewerComponent, {
-      width:"80vw",
-      height:"95%",
-      disableClose:true,
-      data:{
-        title:"Image Viewer",
-        imageUrl:imageUrl
+      width: "80vw",
+      height: "95%",
+      disableClose: true,
+      data: {
+        title: "Image Viewer",
+        imageUrl: imageUrl
       }
     })
   }

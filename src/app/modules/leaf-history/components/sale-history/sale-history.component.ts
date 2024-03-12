@@ -2,6 +2,7 @@ import { DatePipe, formatDate } from '@angular/common';
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +15,7 @@ import { StgApproveService } from 'src/app/modules/collectionApprove/services/st
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
+import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-entry.component';
 
 @Component({
   selector: 'app-sale-history',
@@ -78,7 +80,9 @@ export class SaleHistoryComponent {
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
     private fb: FormBuilder,
-    private saleService: StgApproveService
+    private saleService: StgApproveService,
+    private dialog: MatDialog,
+
   ) {
  
   }
@@ -278,9 +282,38 @@ export class SaleHistoryComponent {
     this.minToDate = event.value;
   }
 
-  editItem(row: any) { }
+  editItem(row: any) { 
 
-  deleteItem(row: any) { }
+
+    const dialogRef = this.dialog.open(SaleEntryComponent, {
+      width: '90vw',
+      height: '95%',
+      minWidth: '90vw',
+      disableClose: true,
+      data: {
+        title: 'Sale Edit Form-STG',
+        stgData: row,
+        approveData: null,
+        isEdit:true,
+        VehicleNo: row.VehicleNo,
+        VehicleId: row.VehicleId,
+        CollectionDate: row.CollectionDate,
+        FactoryName: row.FactoryName,
+        FactoryId:row.FactoryId,
+        AccountId: row.AccountId,
+        ChallanWeight: row.ChallanWeight,
+        saleTypeId: row.SaleTypeId,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.GetStgList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
+        // this.selection = new SelectionModel<any>(true, []);
+      }
+    });
+  }
+
+  addStgItem(row: any) { }
 
   selectRow(row: any, index: number) {
     this.selectedRowIndex = index; // Set the selected row index

@@ -30,3 +30,8 @@ export interface ISupplierSelect
     TripId:any;
     CreatedBy:any;
 }
+export interface IDefaultData
+{
+    CreatedBy: any;
+    TenantId: any;
+}

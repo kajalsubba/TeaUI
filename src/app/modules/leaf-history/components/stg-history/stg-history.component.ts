@@ -36,7 +36,7 @@ export class StgHistoryComponent {
     'Remarks',
     'Status',
   ];
- 
+
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
@@ -44,10 +44,10 @@ export class StgHistoryComponent {
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-   // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
+    // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-   // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
-  //  { columnDef: 'Grade', header: 'Grade' },
+    // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
+    //  { columnDef: 'Grade', header: 'Grade' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
@@ -60,8 +60,8 @@ export class StgHistoryComponent {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   minToDate!: any;
-  vehicleNumbers: any[]=[];
-  statusList:string[]=['All','Pending', 'Rejected','Approved']
+  vehicleNumbers: any[] = [];
+  statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
   selectedRowIndex: number = -1;
 
   private destroy$ = new Subject<void>();
@@ -69,32 +69,32 @@ export class StgHistoryComponent {
   constructor(
     private helper: HelperService,
     private datePipe: DatePipe,
-    private toastr:ToastrService,
+    private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
-    private fb:FormBuilder,
-    private stgService:StgService,
-  ) {}
+    private fb: FormBuilder,
+    private stgService: StgService,
+  ) { }
 
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      VehicleNo:[''],
-      Status:['']
+      VehicleNo: [''],
+      Status: ['']
     });
     this.loadVehicleNumbers();
- 
+
   }
 
   ngAfterViewInit() {
 
-    
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  deleteItem(element: any) {}
+  deleteItem(element: any) { }
 
   convertDate(date: any): string {
     const parsedDate = new Date(date);
@@ -115,35 +115,35 @@ export class StgHistoryComponent {
     this.minToDate = event.value
   }
 
-  clearFilter(){
+  clearFilter() {
     this.dateRangeForm.controls['fromDate'].setValue(null);
     this.dateRangeForm.controls['toDate'].setValue(null);
     this.dataSource.data = this.dataSource.data;
   }
 
-  search(){
+  search() {
 
     const currentDate = new Date();
- 
-    const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
-    const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US');
-  
-    this.GetStgList(fromDate,toDate);
+
+    const fromDate = this.dateRangeForm.value.fromDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
+    const toDate = this.dateRangeForm.value.toDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US');
+
+    this.GetStgList(fromDate, toDate);
   }
 
-  GetStgList(FromDate:any,ToDate:any){
+  GetStgList(FromDate: any, ToDate: any) {
     const currentDate = new Date();
-    let bodyData:IStgSelect = {
-      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
-      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
-      TenantId:this.loginDetails.TenantId,
-      VehicleNo:this.dateRangeForm.value.VehicleNo,
-      Status: this.dateRangeForm.value.Status=='All'?'':this.dateRangeForm.value.Status,
-      TripId:0,
-      CreatedBy:this.loginDetails.UserId,
+    let bodyData: IStgSelect = {
+      FromDate: FromDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : FromDate,
+      ToDate: ToDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : ToDate,
+      TenantId: this.loginDetails.TenantId,
+      VehicleNo: this.dateRangeForm.value.VehicleNo,
+      Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
+      TripId: 0,
+      CreatedBy: this.loginDetails.UserId,
     }
-    const categoryListService = this.stgService.GetStg(bodyData).subscribe((res:any)=>{
-     // console.log(res);
+    const categoryListService = this.stgService.GetStg(bodyData).subscribe((res: any) => {
+      // console.log(res);
       this.dataSource.data = res.STGDetails;
     });
     this.subscriptions.push(categoryListService);
@@ -161,59 +161,59 @@ export class StgHistoryComponent {
     }
   }
 
-  getTotalCost(columnName: string): number {
-    return this.dataSource.filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
+  getTotal(columnName: string): number {
+    return this.dataSource.filteredData.filter((x:any)=>x.Status!='Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
   }
 
   async loadVehicleNumbers() {
     try {
-        const bodyData: IGetGrade = {
-            TenantId: this.loginDetails.TenantId
-        };
+      const bodyData: IGetGrade = {
+        TenantId: this.loginDetails.TenantId
+      };
 
-        const res: any = await this.autocompleteService.GetVehicleNumbers(bodyData)
-            .pipe(takeUntil(this.destroy$))
-            .toPromise();
+      const res: any = await this.autocompleteService.GetVehicleNumbers(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
-        this.vehicleNumbers = res.VehicleDetails;
+      this.vehicleNumbers = res.VehicleDetails;
 
 
     } catch (error) {
-        console.error('Error:', error);
-        this.toastr.error('Something went wrong.', 'ERROR');
-    }
-}
-
- // Autocomplete function
- filterVehicleNumbers(value: string): any {
-  const filterValue = value.toLowerCase();
-  return this.vehicleNumbers.filter((x:any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
-}
-
-displayWithFn(value: string): string {
-  return value || '';
-}
-
-VehicleInput(value:string){
-  let newVal = value.toUpperCase();
-  this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
-}
-
-selectRow(row: any, index: number) {
-  this.selectedRowIndex = index; // Set the selected row index
-}
-
-@HostListener('document:keydown', ['$event'])
-handleKeyboardNavigation(event: KeyboardEvent) {
-  if (event.key === 'ArrowDown') {
-    if (this.selectedRowIndex < this.dataSource.data.length - 1) {
-      this.selectedRowIndex++;
-    }
-  } else if (event.key === 'ArrowUp') {
-    if (this.selectedRowIndex > 0) {
-      this.selectedRowIndex--;
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
-}
+
+  // Autocomplete function
+  filterVehicleNumbers(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.vehicleNumbers.filter((x: any) => x?.VehicleNo?.toLowerCase()?.includes(filterValue));
+  }
+
+  displayWithFn(value: string): string {
+    return value || '';
+  }
+
+  VehicleInput(value: string) {
+    let newVal = value.toUpperCase();
+    this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+  }
+
+  selectRow(row: any, index: number) {
+    this.selectedRowIndex = index; // Set the selected row index
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardNavigation(event: KeyboardEvent) {
+    if (event.key === 'ArrowDown') {
+      if (this.selectedRowIndex < this.dataSource.data.length - 1) {
+        this.selectedRowIndex++;
+      }
+    } else if (event.key === 'ArrowUp') {
+      if (this.selectedRowIndex > 0) {
+        this.selectedRowIndex--;
+      }
+    }
+  }
 
 }
