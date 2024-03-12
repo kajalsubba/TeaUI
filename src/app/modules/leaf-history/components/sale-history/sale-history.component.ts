@@ -226,9 +226,9 @@ export class SaleHistoryComponent {
           ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
           : ToDate,
       VehicleNo: this.SaleForm.value.VehicleNo,
-      FactoryId: this.SaleForm.value.FactoryId,
-      AccountId: this.SaleForm.value.AccountId,
-      SaleTypeId: this.SaleForm.value.SaleTypeId,
+      FactoryId: this.SaleForm.value.FactoryId??0,
+      AccountId: this.SaleForm.value.AccountId??0,
+      SaleTypeId: this.SaleForm.value.SaleTypeId??0,
       TenantId: this.loginDetails.TenantId,
       //  VehicleNo:this.dateRangeForm.value.VehicleNo,
     };
@@ -306,7 +306,7 @@ export class SaleHistoryComponent {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetSaleDeatils(formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
+        this.GetSaleDeatils(formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
         // this.selection = new SelectionModel<any>(true, []);
       }
     });
