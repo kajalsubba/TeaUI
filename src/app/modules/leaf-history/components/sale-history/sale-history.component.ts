@@ -84,7 +84,7 @@ export class SaleHistoryComponent {
     private dialog: MatDialog,
 
   ) {
- 
+
   }
 
   ngOnInit(): void {
@@ -99,7 +99,7 @@ export class SaleHistoryComponent {
       AccountId: [null],
       SaleTypeId: [null]
     });
-  //  this.loadVehicleNumbers();
+    //  this.loadVehicleNumbers();
     this.loadFactoryNames();
     this.loadAccountNames();
     this.GetSaleType();
@@ -244,10 +244,9 @@ export class SaleHistoryComponent {
   onInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
     // Do something when input changes
-    console.log(input.value,'presss');
-    if(input.value=='')
-    {
-      this.accountNames=[];
+    console.log(input.value, 'presss');
+    if (input.value == '') {
+      this.accountNames = [];
       this.SaleForm.controls['FactoryId'].reset();
       this.SaleForm.controls['FactoryName'].reset();
       this.SaleForm.controls['AccountName'].reset();
@@ -255,7 +254,7 @@ export class SaleHistoryComponent {
       this.SaleForm.controls["SaleTypeId"].reset();
 
     }
-   
+
   }
 
   ngAfterViewInit() {
@@ -282,7 +281,7 @@ export class SaleHistoryComponent {
     this.minToDate = event.value;
   }
 
-  editItem(row: any) { 
+  editItem(row: any) {
 
 
     const dialogRef = this.dialog.open(SaleEntryComponent, {
@@ -294,12 +293,12 @@ export class SaleHistoryComponent {
         title: 'Sale Edit Form-STG',
         stgData: row,
         approveData: null,
-        isEdit:true,
+        isEdit: true,
         VehicleNo: row.VehicleNo,
         VehicleId: row.VehicleId,
         CollectionDate: row.CollectionDate,
         FactoryName: row.FactoryName,
-        FactoryId:row.FactoryId,
+        FactoryId: row.FactoryId,
         AccountId: row.AccountId,
         ChallanWeight: row.ChallanWeight,
         saleTypeId: row.SaleTypeId,
@@ -307,7 +306,7 @@ export class SaleHistoryComponent {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        // this.GetStgList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
+        this.GetSaleDeatils(formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
         // this.selection = new SelectionModel<any>(true, []);
       }
     });

@@ -31,6 +31,7 @@ export interface IGetSale
 
 export interface IStgSaleSave
 {
+    SaleId:any;
     TotalFirstWeight: any;
     TotalWetLeaf: any;
     TotalLongLeaf:any;

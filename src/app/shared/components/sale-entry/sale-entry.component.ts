@@ -28,6 +28,8 @@ import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { FactoryAccountService } from 'src/app/modules/masters/services/factory-account.service';
 import { FactoryService } from 'src/app/modules/masters/services/factory.service';
+import { ISaleStg } from '../../interfaces/isale-stg';
+import { SaleService } from '../../services/sale.service';
 
 @Component({
   selector: 'app-sale-entry',
@@ -50,7 +52,7 @@ export class SaleEntryComponent implements OnInit {
   displayedColumns: string[] = [
     'serialNumber',
     'CollectionDate',
-  //  'VehicleNo',
+    //  'VehicleNo',
     'ClientName',
     'FirstWeight',
     'WetLeaf',
@@ -64,7 +66,7 @@ export class SaleEntryComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-  //  { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
+    //  { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
 
@@ -83,7 +85,8 @@ export class SaleEntryComponent implements OnInit {
     private autocompleteService: AutoCompleteService,
     private factoryService: FactoryService,
     private accountService: FactoryAccountService,
-    private stgapproveService: StgApproveService
+    private stgapproveService: StgApproveService,
+    private saleService: SaleService
   ) { }
 
   async ngOnInit() {
@@ -98,9 +101,7 @@ export class SaleEntryComponent implements OnInit {
       AccountId: ['', Validators.required],
       VehicleNo: [''],
       VehicleId: [],
-      //   AccountName:[''],
       FieldCollectionWeight: [0],
-      //   SaleDate:[new Date()],
       FineLeaf: [0],
       ChallanWeight: ['', Validators.required],
       Rate: [0],
@@ -136,19 +137,35 @@ export class SaleEntryComponent implements OnInit {
     this.saleEntryForm.controls['SaleDate'].setValue(
       new Date(this.data.CollectionDate)
     );
-    if (this.data.isEdit)  {
+    // this.saleEntryForm.controls['FactoryName'].setValue(this.data.stgData.FactoryId);
+
+    // this.filteredAccounts = this.AccountList.filter(
+    //   (x: any) => x.FactoryId == this.data.stgData.FactoryId
+    // );
+    // this.saleEntryForm.controls['AccountId'].setValue(this.data.stgData.AccountId);
+
+
+    if (this.data.isEdit) {
+      this.saleEntryForm.controls['SaleId'].setValue(this.data.stgData.SaleId);
       this.saleEntryForm.controls['SaleDate'].setValue(
         new Date(this.data.stgData.CollectionDate)
       );
-      this.saleEntryForm.controls['FactoryName'].setValue( this.data.stgData.FactoryId);
+      this.saleEntryForm.controls['FactoryName'].setValue(this.data.stgData.FactoryId);
 
       this.filteredAccounts = this.AccountList.filter(
-        (x: any) => x.FactoryId ==  this.data.stgData.FactoryId
+        (x: any) => x.FactoryId == this.data.stgData.FactoryId
       );
-      this.saleEntryForm.controls['AccountId'].setValue( this.data.stgData.AccountId);
+      this.saleEntryForm.controls['AccountId'].setValue(this.data.stgData.AccountId);
+      this.saleEntryForm.controls['ChallanWeight'].setValue(this.data.stgData.ChallanWeight);
+      this.saleEntryForm.controls['FineLeaf'].setValue(this.data.stgData.FineLeaf);
+      this.saleEntryForm.controls['Rate'].setValue(this.data.stgData.Rate);
+      this.saleEntryForm.controls['Incentive'].setValue(this.data.stgData.Incentive);
+      this.saleEntryForm.controls['GrossAmount'].setValue(this.data.stgData.GrossAmount);
+      this.saleEntryForm.controls['Remarks'].setValue(this.data.stgData.Remarks);
+      await this.GetSaleStgData(this.data.stgData.ApproveId);
 
-      this.saleEntryForm.controls['ChallanWeight'].setValue(
-        this.data.stgData.ChallanWeight
+      this.saleEntryForm.controls['FieldCollectionWeight'].setValue(
+        this.getTotalCost('FinalWeight')
       );
     }
   }
@@ -165,6 +182,25 @@ export class SaleEntryComponent implements OnInit {
         .toPromise();
 
       this.vehicleNumbers = res.VehicleDetails;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+  async GetSaleStgData(ApproveId: any) {
+    try {
+      const bodyData: ISaleStg = {
+        TenantId: this.loginDetails.TenantId,
+        ApproveId: ApproveId
+      };
+
+      const res: any = await this.saleService
+        .GetSaleStgData(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.dataSource.data = res.SaleStgData;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -215,14 +251,14 @@ export class SaleEntryComponent implements OnInit {
     }
     // Create the data object to be saved
     let data: IStgSaleSave = {
+      SaleId: this.data?.isEdit ? this.data.stgData.SaleId : 0,
+      TotalFirstWeight: this.data.stgData.TotalFirstWeight??0,
+      TotalWetLeaf: this.data.stgData.TotalWetLeaf??0,
+      TotalLongLeaf: this.data.stgData.TotalLongLeaf??0,
+      TotalDeduction: this.data.stgData.TotalDeduction??0,
+      TotalFinalWeight: this.data.stgData.TotalFinalWeight??0,
 
-      TotalFirstWeight: this.data.stgData.TotalFirstWeight,
-      TotalWetLeaf: this.data.stgData.TotalWetLeaf,
-      TotalLongLeaf: this.data.stgData.TotalLongLeaf,
-      TotalDeduction: this.data.stgData.TotalDeduction,
-      TotalFinalWeight: this.data.stgData.TotalFinalWeight,
-
-      ApproveList: this.data.stgData.ApproveList,
+      ApproveList: this.data.stgData.ApproveList??[],
       SaleDate: formatDate(
         this.saleEntryForm.value.SaleDate,
         'yyyy-MM-dd',
@@ -241,6 +277,7 @@ export class SaleEntryComponent implements OnInit {
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
     };
+    console.log(data, 'saleData');
 
     this.SaveSaleData(data);
   }

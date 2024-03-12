@@ -10,21 +10,21 @@ export class SideNavComponent {
   isExpanded: boolean = false;
   panelOpenState = false;
   currentOpenMenu: string | null = null;
-  loginDetails:any;
-  PermissionDetails:any;
+  loginDetails: any;
+  PermissionDetails: any;
   /**
    *
    */
   constructor(public helper: HelperService) {
-    
+
   }
-  
+
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
-this.PermissionDetails=this.helper.getItem('PermissionDetails');
-    console.log(this.PermissionDetails,'permission');
-    
- 
+    this.PermissionDetails = this.helper.getItem('PermissionDetails');
+   // console.log(this.PermissionDetails, 'permission');
+
+
   }
 
 
@@ -44,6 +44,6 @@ this.PermissionDetails=this.helper.getItem('PermissionDetails');
       }
     }
   }
-  
-  
+
+
 }

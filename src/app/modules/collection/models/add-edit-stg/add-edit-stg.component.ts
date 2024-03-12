@@ -147,10 +147,8 @@ export class AddEditStgComponent implements OnInit {
 
   onSubmit() {
 
-    // console.log(moment(this.stgForm.value.CollectionDate).format('YYYY-MM-DD'),'date');
-    //  const ConvertedDate = this.myDatepipe.transform(this.stgForm.value.CollectionDate, 'yyyy-MM-dd');
-    // console.log(formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),'date');
-    if (this.stgForm.invalid) {
+
+    if (this.stgForm.invalid || this.stgForm.value.ClientId==0) {
       this.stgForm.markAllAsTouched();
       return;
     }

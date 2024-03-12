@@ -145,7 +145,7 @@
             <ng-container matColumnDef="FinalAmount">
               <th mat-header-cell *matHeaderCellDef> Final Amount</th>
               <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalAmount}} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalAmount') }} </b>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalAmount').toFixed(2) }} </b>
               </td>
             </ng-container>
 
