@@ -121,7 +121,7 @@
                         <!-- Collection Date -->
                         <ng-container matColumnDef="CollectionDate">
                             <th mat-header-cell *matHeaderCellDef> Collection Date </th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
                             <td class="footer-total total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
                         
                         </ng-container>
@@ -129,7 +129,7 @@
                         <!-- First Weight -->
                         <ng-container matColumnDef="FinalWeight">
                             <th mat-header-cell *matHeaderCellDef> Final Weight( KG ) </th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG </td>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
                                 <b>{{ getTotalCost('FinalWeight') }} KG</b>
                             </td>
@@ -165,7 +165,7 @@
                         <ng-container matColumnDef="GrossAmount">
                             <th mat-header-cell *matHeaderCellDef> Gross Amount <i
                                     class="fa-solid fa-indian-rupee-sign"></i> </th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> <i
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> <i
                                     class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
                                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') }}</b>

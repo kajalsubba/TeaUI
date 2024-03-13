@@ -152,7 +152,7 @@ th.mat-sort-header-sorted {
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
   .btn-reject{
-      background-color: #dc3545;
+      background-color: #dc3545 !important;
       color: white;
       box-shadow: var(--soft-box-shadow);
   }

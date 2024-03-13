@@ -86,14 +86,14 @@
               <!-- Collection Date -->
               <ng-container matColumnDef="CollectionDate">
                 <th mat-header-cell *matHeaderCellDef> Collection Date  </th>
-                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
+                <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
               </ng-container>
   
               <!-- First Weight -->
               <ng-container matColumnDef="ChallanWeight">
                 <th mat-header-cell *matHeaderCellDef> Challan Weight(KG) </th>
-                <td class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
+                <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
                   <b>{{ getTotalCost('ChallanWeight') }} KG</b>
                 </td>
@@ -101,7 +101,7 @@
               <!-- WetLeaf -->
               <ng-container matColumnDef="GrossAmount">
                 <th mat-header-cell *matHeaderCellDef> Gross Amount <i class="fa-solid fa-indian-rupee-sign"></i> </th>
-                <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount}} </td>
+                <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount}} </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
                   <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') }}</b>
                 </td>

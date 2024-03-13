@@ -92,7 +92,7 @@
 
                  <ng-container matColumnDef="ChallanWeight">
                   <th mat-header-cell *matHeaderCellDef> Challan Weight( KG ) </th>
-                  <td class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
+                  <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
                   <td class="footer-total" mat-footer-cell *matFooterCellDef>
                     <b>{{ getTotalCost('ChallanWeight') }} KG</b>
                   </td>

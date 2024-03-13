@@ -126,7 +126,7 @@
                         <!-- Collection Date -->
                         <ng-container matColumnDef="SaleDate">
                             <th mat-header-cell *matHeaderCellDef> Sale Date </th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.SaleDate }} </td>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.SaleDate }} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
                         </ng-container>
 
@@ -143,7 +143,7 @@
                         <!-- ChallanWeight -->
                         <ng-container matColumnDef="ChallanWeight">
                             <th mat-header-cell *matHeaderCellDef> Challan Weight ( KG ) </th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
                                 <b>{{ getTotalCost('ChallanWeight') }} KG</b>
                             </td>
@@ -169,7 +169,7 @@
                         <!-- Final Amount  -->
                         <ng-container matColumnDef="FinalAmount">
                             <th mat-header-cell *matHeaderCellDef> Final Amount</th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalAmount}} </td>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalAmount}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{
                                     getTotalCost('FinalAmount') }} </b> </td>
                         </ng-container>

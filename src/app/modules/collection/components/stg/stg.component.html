@@ -86,14 +86,14 @@
             <!-- Collection Date -->
             <ng-container matColumnDef="CollectionDate">
               <th mat-header-cell *matHeaderCellDef> Collection Date </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
               <td class="footer-total total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
             </ng-container>
 
             <!-- First Weight -->
             <ng-container matColumnDef="FirstWeight">
               <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FirstWeight}} KG </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.FirstWeight}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('FirstWeight') }} KG</b>
               </td>
@@ -101,7 +101,7 @@
             <!-- WetLeaf -->
             <ng-container matColumnDef="WetLeafKg">
               <th mat-header-cell *matHeaderCellDef> Wet Leaf ( KG ) </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.WetLeafKg}} KG </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.WetLeafKg}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('WetLeafKg') }} KG</b>
               </td>
@@ -110,7 +110,7 @@
             <!-- Long Leaf -->
             <ng-container matColumnDef="LongLeafKg">
               <th mat-header-cell *matHeaderCellDef> Long Leaf ( KG ) </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.LongLeafKg}} KG </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.LongLeafKg}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('LongLeafKg') }} KG</b>
               </td>
@@ -119,7 +119,7 @@
             <!-- Deduction -->
             <ng-container matColumnDef="Deduction">
               <th mat-header-cell *matHeaderCellDef> Deduction ( KG ) </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.Deduction}} KG </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.Deduction}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('Deduction') }} KG</b>
               </td>
             </ng-container>
@@ -127,7 +127,7 @@
             <!-- Final Weight -->
             <ng-container matColumnDef="FinalWeight">
               <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG</td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG</td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalWeight') }} KG</b>
               </td>
             </ng-container>
