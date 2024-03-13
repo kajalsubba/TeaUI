@@ -166,7 +166,7 @@ export class SupplierComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetSupplierList(null, null);
+        this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
       }
     });
   }

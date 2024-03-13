@@ -163,7 +163,7 @@ export class StgComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetStgList(null, null);
+        this.GetStgList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
       }
     });
   }
