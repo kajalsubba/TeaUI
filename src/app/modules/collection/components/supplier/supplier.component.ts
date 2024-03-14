@@ -86,7 +86,7 @@ export class SupplierComponent implements OnInit {
     private fb: FormBuilder,
     private stgService: StgService,
     private supplierService: SupplierService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -148,7 +148,9 @@ export class SupplierComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetSupplierList(null, null);
+        //this.GetSupplierList(null, null);
+        this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+
       }
     });
   }
@@ -167,11 +169,12 @@ export class SupplierComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+
       }
     });
   }
 
-  deleteItem(element: any) {}
+  deleteItem(element: any) { }
 
   convertDate(date: any): string {
     const parsedDate = new Date(date);

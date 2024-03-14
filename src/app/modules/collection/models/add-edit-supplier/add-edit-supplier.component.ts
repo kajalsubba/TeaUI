@@ -55,16 +55,14 @@ export class AddEditSupplierComponent implements OnInit {
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
 
-
+    var dd = this.dialogData.value;
     this.supplierForm = this.fb.group({
       CollectionDate: [new Date()],
       ClientName: ['', Validators.required],
       ClientId: [0, Validators.required],
-      // BuyerName: ['', Validators.required],
       AccountName: ['', Validators.required],
       FactoryName: ['', Validators.required],
       AccountId: [0, Validators.required],
-      //  TransactionType: ['', Validators.required],
       VehicleNo: ['', Validators.required],
       FineLeaf: [null],
       ChallanWeight: [0, Validators.required],
@@ -72,14 +70,14 @@ export class AddEditSupplierComponent implements OnInit {
       GrossAmount: [0],
       Status: ['Pending'],
       TripId: ['', Validators.required],
-      ChallanImage: ['', this.loginDetails.LoginType == 'Client' ? Validators.required : ''],
+      ChallanImage: ['', this.loginDetails.LoginType == 'Client' && this.dialogData.value.imageUrl == '' ? Validators.required : ''],
       Remarks: []
     });
     await this.loadClientNames();
     await this.loadFactoryNames();
     await this.loadAccountNames();
     await this.loadVehicleNumbers();
-    this.GeTript();
+    await this.GeTript();
     if (this.loginDetails.LoginType == 'Client') {
       this.supplierForm.controls['ClientName'].setValue(this.loginDetails.ClientName);
       this.supplierForm.controls['ClientId'].setValue(this.loginDetails.ClientId);
@@ -87,6 +85,30 @@ export class AddEditSupplierComponent implements OnInit {
       this.supplierForm.controls['Rate'].disable({ onlySelf: true });
     }
     //  this.FilteredTranscationType = this.TranscationTypeList;
+
+    if (this.dialogData.value) {
+      this.supplierForm.controls['CollectionDate'].setValue(new Date(this.dialogData.value.CollDate));
+      this.supplierForm.controls['ClientName'].setValue(this.dialogData.value.ClientName);
+      this.supplierForm.controls['ClientId'].setValue(this.dialogData.value.ClientId);
+      this.supplierForm.controls['VehicleNo'].setValue(this.dialogData.value.VehicleNo);
+      this.supplierForm.controls['FactoryName'].setValue(this.dialogData.value.FactoryId);
+      this.supplierForm.controls['AccountName'].setValue(this.dialogData.value.AccountName);
+      this.supplierForm.controls['AccountId'].setValue(this.dialogData.value.AccountId);
+
+      this.supplierForm.controls['FineLeaf'].setValue(this.dialogData.value.FineLeaf);
+      this.supplierForm.controls['ChallanWeight'].setValue(this.dialogData.value.ChallanWeight);
+      this.supplierForm.controls['Rate'].setValue(this.dialogData.value.Rate);
+      this.supplierForm.controls['GrossAmount'].setValue(this.dialogData.value.GrossAmount);
+
+      this.supplierForm.controls['Remarks'].setValue(this.dialogData.value.Remarks);
+      this.supplierForm.controls['Status'].setValue(this.dialogData.value.Status);
+      console.log(this.dialogData.value.TripId, 'this.dialogData.value.TripId');
+
+      this.supplierForm.controls['TripId'].setValue(this.dialogData.value.TripId);
+      if (this.loginDetails.LoginType == 'Client') {
+        this.imageUrl = this.dialogData.value.imageUrl;
+      }
+    }
   }
 
   CleanFormControl() {
@@ -128,16 +150,31 @@ export class AddEditSupplierComponent implements OnInit {
   }
 
 
-  GeTript() {
+  async GeTript() {
+    try {
 
-    const gradeGetService = this.stgService.GetTrip().subscribe((res: any) => {
+      const res: any = await this.stgService
+        .GetTrip()
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
       this.TripList = res.TripDetails;
       this.supplierForm.controls['TripId'].setValue(this.TripList[0].TripId);
-    });
-
-
-
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
   }
+  // GeTript() {
+
+  //   const gradeGetService = this.stgService.GetTrip().subscribe((res: any) => {
+  //     this.TripList = res.TripDetails;
+  //     this.supplierForm.controls['TripId'].setValue(this.TripList[0].TripId);
+  //   });
+
+
+
+  // }
   async loadAccountNames() {
     try {
       const bodyData: IGetFactoryAccount = {
@@ -193,7 +230,8 @@ export class AddEditSupplierComponent implements OnInit {
     }
   }
   SelectFactory(e: any) {
-
+    this.supplierForm.controls['AccountName'].reset();
+    this.supplierForm.controls['AccountId'].reset();
     this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == e)
 
   }
@@ -302,7 +340,7 @@ export class AddEditSupplierComponent implements OnInit {
 
   async onSubmit() {
 
-    if (this.supplierForm.invalid) {
+    if (this.supplierForm.invalid || this.supplierForm.value.ClientId == 0) {
       this.supplierForm.markAllAsTouched();
       return;
     }
@@ -315,7 +353,7 @@ export class AddEditSupplierComponent implements OnInit {
       AccountId: this.supplierForm.value.AccountId,
       FineLeaf: this.supplierForm.value.FineLeaf,
       ChallanWeight: this.supplierForm.value.ChallanWeight,
-      Rate: this.supplierForm.value.Rate,
+      Rate: this.supplierForm.value.Rate ?? 0,
       GrossAmount: this.supplierForm.value.GrossAmount,
       TripId: this.supplierForm.value.TripId,
 
@@ -330,7 +368,21 @@ export class AddEditSupplierComponent implements OnInit {
 
     if (this.loginDetails.LoginType == 'Client') {
 
-      this.uploadChallan(CollId.Id)
+      // if (this.dialogData.value) { // for update 
+
+      //   if (this.dialogData.value.imageUrl!='' &&)
+      // }
+      if (this.FileData != undefined) {
+        this.uploadChallan(CollId.Id)
+      }
+      else {
+        if (CollId.Id == 0) {
+          this.toastr.warning(CollId.Message, "Warning");
+        }
+        else {
+          this.toastr.success(CollId.Message, "SUCCESS");
+        }
+      }
     }
     else {
       if (CollId.Id == 0) {
