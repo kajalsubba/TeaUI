@@ -1,135 +1,189 @@
-<div class="sidenav" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false" [style.width.px]="isExpanded ? 210 : 62">
-    <div [ngClass]="{'close': !isExpanded }" class="sidebar">
-        <div class="logo-details">
-          <!-- <i class='bx bxl-c-plus-plus'></i> -->
-          <i (click)="toggleWidth()" *ngIf="!isExpanded" class="fa-solid m-0 openCloseIcon fa-bars"></i>
-            <i (click)="toggleWidth()" *ngIf="isExpanded" class="fa-solid m-0 openCloseIcon fa-xmark"></i>
-          <!-- <span *ngIf="isExpanded" class="logo_name">Company</span> -->
-          
+<div class="sidenav" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false"
+  [style.width.px]="isExpanded ? 210 : 62">
+  <div [ngClass]="{'close': !isExpanded }" class="sidebar">
+    <div class="logo-details">
+      <!-- <i class='bx bxl-c-plus-plus'></i> -->
+      <i (click)="toggleWidth()" *ngIf="!isExpanded" class="fa-solid m-0 openCloseIcon fa-bars"></i>
+      <i (click)="toggleWidth()" *ngIf="isExpanded" class="fa-solid m-0 openCloseIcon fa-xmark"></i>
+      <!-- <span *ngIf="isExpanded" class="logo_name">Company</span> -->
+
+    </div>
+    <ul class="nav-links">
+      <li class="main-menu" routerLinkActive="main-menu-active">
+        <a routerLink="dashboard">
+          <i class='bx bx-grid-alt'></i>
+          <span class="link_name">Dashboard</span>
+        </a>
+        <ul *ngIf="!isExpanded" class="sub-menu blank">
+          <li routerLink="dashboard" routerLinkActive="active"><a>Dashboard</a></li>
+        </ul>
+      </li>
+      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu"
+        routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'Masters')">
+          <a>
+            <i class="bx bxs-cylinder"></i>
+            <span class="link_name">Masters</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
         </div>
-        <ul class="nav-links">
-          <li class="main-menu" routerLinkActive="main-menu-active">
-            <a routerLink="dashboard">
-              <i class='bx bx-grid-alt' ></i>
-              <span class="link_name">Dashboard</span>
-            </a>
-            <ul *ngIf="!isExpanded" class="sub-menu blank">
-              <li  routerLink="dashboard" routerLinkActive="active"><a>Dashboard</a></li>
-            </ul>
-          </li>
-          <li *ngIf="loginDetails.LoginType=='Agent'"  [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event, 'Masters')">
-              <a>
-                <i class="bx bxs-cylinder"></i>
-                <span class="link_name">Masters</span>
-              </a>
-              <i class='bx bxs-chevron-down arrow'></i>
-            </div>
-            <ul class="sub-menu">
-              <li routerLink="master/company" routerLinkActive="active" *ngIf="PermissionDetails[0].ModuleId==2 && PermissionDetails[0].HideModule==false" ><a class="sub-menu-title">Company Setup</a></li>
-              <li routerLink="master/category" routerLinkActive="active" *ngIf="PermissionDetails[1].ModuleId==3 && PermissionDetails[1].HideModule==false"><a class="sub-menu-title">Client Category</a></li>
-              <li routerLink="master/client" routerLinkActive="active" *ngIf="PermissionDetails[2].ModuleId==4 && PermissionDetails[2].HideModule==false"><a class="sub-menu-title">Client</a></li>
-              <li routerLink="master/grade" routerLinkActive="active" *ngIf="PermissionDetails[3].ModuleId==5 && PermissionDetails[3].HideModule==false"><a class="sub-menu-title">Leaf Grade</a></li>
-              <li routerLink="master/factory" routerLinkActive="active" *ngIf="PermissionDetails[4].ModuleId==6 && PermissionDetails[4].HideModule==false"><a class="sub-menu-title">Factory</a></li>
-              <li routerLink="master/factory-account" routerLinkActive="active" *ngIf="PermissionDetails[5].ModuleId==7 && PermissionDetails[5].HideModule==false"><a class="sub-menu-title">Factory Account</a></li>
-            </ul>
-          </li>
-          
+        <ul class="sub-menu">
+          <li routerLink="master/company" routerLinkActive="active"
+            *ngIf="PermissionDetails[0].ModuleId==2 && PermissionDetails[0].HideModule==false"><a
+              class="sub-menu-title">Company Setup</a></li>
+          <li routerLink="master/category" routerLinkActive="active"
+            *ngIf="PermissionDetails[1].ModuleId==3 && PermissionDetails[1].HideModule==false"><a
+              class="sub-menu-title">Client Category</a></li>
+          <li routerLink="master/client" routerLinkActive="active"
+            *ngIf="PermissionDetails[2].ModuleId==4 && PermissionDetails[2].HideModule==false"><a
+              class="sub-menu-title">Client</a></li>
+          <li routerLink="master/grade" routerLinkActive="active"
+            *ngIf="PermissionDetails[3].ModuleId==5 && PermissionDetails[3].HideModule==false"><a
+              class="sub-menu-title">Leaf Grade</a></li>
+          <li routerLink="master/factory" routerLinkActive="active"
+            *ngIf="PermissionDetails[4].ModuleId==6 && PermissionDetails[4].HideModule==false"><a
+              class="sub-menu-title">Factory</a></li>
+          <li routerLink="master/factory-account" routerLinkActive="active"
+            *ngIf="PermissionDetails[5].ModuleId==7 && PermissionDetails[5].HideModule==false"><a
+              class="sub-menu-title">Factory Account</a></li>
+        </ul>
+      </li>
 
-          <li [class.showMenu]="currentOpenMenu === 'LeafEntry'" class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event, 'LeafEntry')">
-              <a>
-                <i class='bx bx-list-ul' ></i>
-                <span class="link_name">Leaf Entry</span>
-              </a>
-              <i class='bx bxs-chevron-down arrow'></i>
-            </div>
-            <ul class="sub-menu">
-              <li *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[6].ModuleId==9 && PermissionDetails[6].HideModule==false"  routerLink="leafEntry/stg" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
-             
-              <li *ngIf="loginDetails.LoginType!='Agent' ?true: PermissionDetails[7].ModuleId==10 && PermissionDetails[7].HideModule==false"  routerLink="leafEntry/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
-            </ul>
-          </li>
-          
-          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'LeafApprove'" class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event, 'LeafApprove')">
-              <a>
-                <i class='bx bx-check-shield' ></i>
-                <span class="link_name">Leaf Approve</span>
-              </a>
-              <i class='bx bxs-chevron-down arrow'></i>
-            </div>
-            <ul class="sub-menu">
-              <li  *ngIf="PermissionDetails[8].ModuleId==12 && PermissionDetails[8].HideModule==false"  routerLink="LeafApprove/stgapprove" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
-              <li  *ngIf="PermissionDetails[9].ModuleId==13 && PermissionDetails[9].HideModule==false"  routerLink="LeafApprove/supplierapprove" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
-              <li routerLink="LeafApprove/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a></li>
-            </ul>
-          </li>
 
-          <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'rate-fix'" class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event, 'rate-fix')">
-              <a>
-                <i class='bx bx-check-shield' ></i>
-                <span class="link_name">Rate Fix</span>
-              </a>
-              <i class='bx bxs-chevron-down arrow'></i>
-            </div>
-            <ul class="sub-menu">
-              <li routerLink="rate-fix/stg-rate-fix" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
-              <li routerLink="rate-fix/supplier-rate-fix" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
-              <li routerLink="rate-fix/sale-rate-fix" routerLinkActive="active"><a class="sub-menu-title">Sale</a></li>
-            </ul>
-          </li>
+      <li [class.showMenu]="currentOpenMenu === 'LeafEntry'" class="main-menu" routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'LeafEntry')">
+          <a>
+            <i class='bx bx-list-ul'></i>
+            <span class="link_name">Leaf Entry</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li
+            *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[6].ModuleId==9 && PermissionDetails[6].HideModule==false"
+            routerLink="leafEntry/stg" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
 
-          <li [class.showMenu]="currentOpenMenu === 'LeafHistory'" class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event, 'LeafHistory')">
-              <a>
-                <i class='bx bx-history' ></i>
-                <span class="link_name">History</span>
-              </a>
-              <i class='bx bxs-chevron-down arrow'></i>
-            </div>
-            <ul class="sub-menu">
-              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/stg-history" routerLinkActive="active"><a class="sub-menu-title">STG History</a></li>
-              <li routerLink="LeafHistory/supplier-history" routerLinkActive="active"><a class="sub-menu-title">Supplier History</a></li>
-              <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/sale-history" routerLinkActive="active"><a class="sub-menu-title">Sale History</a></li>
-            </ul>
-          </li>
+          <li
+            *ngIf="loginDetails.LoginType!='Agent' ?true: PermissionDetails[7].ModuleId==10 && PermissionDetails[7].HideModule==false"
+            routerLink="leafEntry/supplier" routerLinkActive="active"><a class="sub-menu-title">Supplier</a></li>
+        </ul>
+      </li>
 
-          <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">
-              <a>
-                <i class="fa-solid fa-sliders"></i>
-                <span class="link_name">Settings</span>
-              </a>
-              <i class='bx bxs-chevron-down arrow'></i>
-            </div>
-            <ul class="sub-menu">
-              <li *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[16].ModuleId==19 && PermissionDetails[16].HideModule==false" routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
-              <li *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[17].ModuleId==20 && PermissionDetails[17].HideModule==false" routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
-             
-              <!-- <li routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
+      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'LeafApprove'" class="main-menu"
+        routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'LeafApprove')">
+          <a>
+            <i class='bx bx-check-shield'></i>
+            <span class="link_name">Leaf Approve</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li *ngIf="PermissionDetails[8].ModuleId==12 && PermissionDetails[8].HideModule==false"
+            routerLink="LeafApprove/stgapprove" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+          <li *ngIf="PermissionDetails[9].ModuleId==13 && PermissionDetails[9].HideModule==false"
+            routerLink="LeafApprove/supplierapprove" routerLinkActive="active"><a class="sub-menu-title">Supplier</a>
+          </li>
+          <li routerLink="LeafApprove/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a>
+          </li>
+        </ul>
+      </li>
+
+      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'rate-fix'" class="main-menu"
+        routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'rate-fix')">
+          <a>
+            <i class='bx bx-check-shield'></i>
+            <span class="link_name">Rate Fix</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li routerLink="rate-fix/stg-rate-fix" routerLinkActive="active"><a class="sub-menu-title">STG</a></li>
+          <li routerLink="rate-fix/supplier-rate-fix" routerLinkActive="active"><a class="sub-menu-title">Supplier</a>
+          </li>
+          <li routerLink="rate-fix/sale-rate-fix" routerLinkActive="active"><a class="sub-menu-title">Sale</a></li>
+        </ul>
+      </li>
+
+      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'Accounts'" class="main-menu"
+        routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'Accounts')">
+          <a>
+            <i class='bx bx-check-shield'></i>
+            <span class="link_name">Accounts</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li routerLink="Accounts/SeasonAdvance" routerLinkActive="active"><a class="sub-menu-title">Season Advance</a></li>
+          <li routerLink="Accounts/Payment" routerLinkActive="active"><a class="sub-menu-title">Payments</a>
+          </li>
+          <!-- <li routerLink="Accounts/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a> -->
+          <!-- </li> -->
+        </ul>
+      </li>
+
+      <li [class.showMenu]="currentOpenMenu === 'LeafHistory'" class="main-menu" routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'LeafHistory')">
+          <a>
+            <i class='bx bx-history'></i>
+            <span class="link_name">History</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/stg-history" routerLinkActive="active"><a
+              class="sub-menu-title">STG History</a></li>
+          <li routerLink="LeafHistory/supplier-history" routerLinkActive="active"><a class="sub-menu-title">Supplier
+              History</a></li>
+          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/sale-history" routerLinkActive="active"><a
+              class="sub-menu-title">Sale History</a></li>
+        </ul>
+      </li>
+
+      <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">
+          <a>
+            <i class="fa-solid fa-sliders"></i>
+            <span class="link_name">Settings</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li
+            *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[16].ModuleId==19 && PermissionDetails[16].HideModule==false"
+            routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
+          <li
+            *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[17].ModuleId==20 && PermissionDetails[17].HideModule==false"
+            routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role
+              Permission</a></li>
+
+          <!-- <li routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
              -->
-              <li *ngIf="loginDetails.LoginType=='Agent'"  routerLink="user-management/user" routerLinkActive="active"><a class="sub-menu-title">Create User</a></li>
-              <li  routerLink="user-management/change-password" routerLinkActive="active"><a class="sub-menu-title">Change Password</a></li>
+          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="user-management/user" routerLinkActive="active"><a
+              class="sub-menu-title">Create User</a></li>
+          <li routerLink="user-management/change-password" routerLinkActive="active"><a class="sub-menu-title">Change
+              Password</a></li>
 
-            </ul>
-          </li>
+        </ul>
+      </li>
 
-          <li *ngIf="loginDetails.TenantId==0" [class.showMenu]="currentOpenMenu === 'SuperAdmin'" class="main-menu" routerLinkActive="main-menu-active">
-            <div class="iocn-link" (click)="toggleMenu($event, 'SuperAdmin')">
-              <a>
-                <i class="bx bxs-cog"></i>
-                <span class="link_name">Super Admin</span>
-              </a>
-              <i class='bx bxs-chevron-down arrow'></i>
-            </div>
-            <ul class="sub-menu">
-              <li routerLink="super-admin/tenant" routerLinkActive="active"><a class="sub-menu-title">Tenant</a></li>
-              <li routerLink="super-admin/user" routerLinkActive="active"><a class="sub-menu-title">User</a></li>
-              <li routerLink="super-admin/role" routerLinkActive="active"><a class="sub-menu-title">Role</a></li>
-            </ul>
-          </li>
+      <li *ngIf="loginDetails.TenantId==0" [class.showMenu]="currentOpenMenu === 'SuperAdmin'" class="main-menu"
+        routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'SuperAdmin')">
+          <a>
+            <i class="bx bxs-cog"></i>
+            <span class="link_name">Super Admin</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li routerLink="super-admin/tenant" routerLinkActive="active"><a class="sub-menu-title">Tenant</a></li>
+          <li routerLink="super-admin/user" routerLinkActive="active"><a class="sub-menu-title">User</a></li>
+          <li routerLink="super-admin/role" routerLinkActive="active"><a class="sub-menu-title">Role</a></li>
+        </ul>
+      </li>
     </ul>
-      </div>
+  </div>
 </div>
