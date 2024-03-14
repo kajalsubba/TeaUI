@@ -25,6 +25,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
+import { PaymentTypeComponent } from './components/payment-type/payment-type.component';
+import { AddEditPaymentTypeComponent } from './models/add-edit-payment-type/add-edit-payment-type.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { MatSelectModule } from '@angular/material/select';
     AddEditFactoryComponent,
     AddEditFactoryAccountComponent,
     AddEditGradeComponent,
-    CompanyComponent
+    CompanyComponent,
+    PaymentTypeComponent,
+    AddEditPaymentTypeComponent
   ],
   imports: [
     CommonModule,

@@ -7,6 +7,7 @@ import { GradeComponent } from './components/grade/grade.component';
 import { FactoryComponent } from './components/factory/factory.component';
 import { FactoryAccountComponent } from './components/factory-account/factory-account.component';
 import { CompanyComponent } from './components/company/company.component';
+import { PaymentTypeComponent } from './components/payment-type/payment-type.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
     {path:'category', component: CategoryComponent},
     {path:'client', component: ClientComponent},
     {path:'grade', component: GradeComponent},
+    {path:'paymentType', component: PaymentTypeComponent},
     {path:'factory', component: FactoryComponent},
     {path:'factory-account', component: FactoryAccountComponent},
     {path:'company', component: CompanyComponent},
