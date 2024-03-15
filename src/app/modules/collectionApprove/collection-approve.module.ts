@@ -46,7 +46,6 @@ export const MY_FORMATS = {
       StgapproveComponent,
       SupplierapproveComponent,
       SaleApproveComponent
-     // AddEditStgComponent
     ],
     imports: [
       CommonModule,
