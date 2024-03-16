@@ -34,6 +34,7 @@ export class TopNavComponent implements OnInit {
     this.helper.setItem('isLoggedIn', false);
     this.helper.clear();
     this.router.navigateByUrl('login');
+    sessionStorage.clear();
   }
 
   formatCurrentRoute(): string {

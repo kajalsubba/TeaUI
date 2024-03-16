@@ -1,4 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
@@ -15,14 +16,19 @@ export class SideNavComponent {
   /**
    *
    */
-  constructor(public helper: HelperService) {
+  constructor(public helper: HelperService, private router: Router) {
 
   }
 
   ngOnInit(): void {
-    this.loginDetails = this.helper.getItem('loginDetails');
-    this.PermissionDetails = this.helper.getItem('PermissionDetails');
-   // console.log(this.PermissionDetails, 'permission');
+
+    if (this.helper.getItem('loginDetails') != null) {
+      this.loginDetails = this.helper.getItem('loginDetails');
+      this.PermissionDetails = this.helper.getItem('PermissionDetails');
+    }
+    else {
+      this.router.navigateByUrl('login');
+    }
 
 
   }
