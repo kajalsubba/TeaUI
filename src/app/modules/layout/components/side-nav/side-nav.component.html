@@ -40,8 +40,7 @@
           <li routerLink="master/grade" routerLinkActive="active"
             *ngIf="PermissionDetails[3].ModuleId==5 && PermissionDetails[3].HideModule==false"><a
               class="sub-menu-title">Leaf Grade</a></li>
-              <li routerLink="master/paymentType" routerLinkActive="active"><a
-                class="sub-menu-title">Payment Type</a></li>
+          <li routerLink="master/paymentType" routerLinkActive="active"><a class="sub-menu-title">Payment Type</a></li>
           <li routerLink="master/factory" routerLinkActive="active"
             *ngIf="PermissionDetails[4].ModuleId==6 && PermissionDetails[4].HideModule==false"><a
               class="sub-menu-title">Factory</a></li>
@@ -112,13 +111,14 @@
         routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Accounts')">
           <a>
-            <i class='bx bxs-user-account' ></i>
+            <i class='bx bxs-user-account'></i>
             <span class="link_name">Accounts</span>
           </a>
           <i class='bx bxs-chevron-down arrow'></i>
         </div>
         <ul class="sub-menu">
-          <li routerLink="Accounts/seasonAdvance" routerLinkActive="active"><a class="sub-menu-title">Season Advance</a></li>
+          <li routerLink="Accounts/seasonAdvance" routerLinkActive="active"><a class="sub-menu-title">Season Advance</a>
+          </li>
           <li routerLink="Accounts/payment" routerLinkActive="active"><a class="sub-menu-title">Payments</a>
           </li>
           <!-- <li routerLink="Accounts/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a> -->
@@ -141,6 +141,10 @@
               History</a></li>
           <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/sale-history" routerLinkActive="active"><a
               class="sub-menu-title">Sale History</a></li>
+          <li routerLink="LeafHistory/advance-history" routerLinkActive="active"><a class="sub-menu-title">Season
+              Advance History</a></li>
+          <li routerLink="LeafHistory/payment-history" routerLinkActive="active"><a class="sub-menu-title">Payment
+              History</a></li>
         </ul>
       </li>
 
