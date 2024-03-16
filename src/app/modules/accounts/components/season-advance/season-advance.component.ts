@@ -155,7 +155,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
           : ToDate,
       TenantId: this.loginDetails.TenantId,
       ClientCategory: this.SeasonAdvanceForm.value.CategoryName,
-      ClientId: this.SeasonAdvanceForm.value.ClientId
+      ClientId: this.SeasonAdvanceForm.value.ClientId??0
 
     };
     console.log(bodyData, 'bodyData bodyData');

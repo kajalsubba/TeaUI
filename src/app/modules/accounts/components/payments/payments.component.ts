@@ -203,6 +203,7 @@ export class PaymentsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
+        this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
 
       }
     });

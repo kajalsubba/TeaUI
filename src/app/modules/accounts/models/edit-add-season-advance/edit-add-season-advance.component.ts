@@ -179,4 +179,11 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
     this.addEditSeasonAdvance.controls['Amount'].reset()
 
   }
+  
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    })
+    this.dialogRef.close(true);
+  }
 }

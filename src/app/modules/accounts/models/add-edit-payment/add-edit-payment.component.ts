@@ -205,5 +205,12 @@ export class AddEditPaymentComponent implements OnInit {
     this.addEditPayment.controls['Narration'].reset()
 
   }
+  
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    })
+    this.dialogRef.close(true);
+  }
 
 }
