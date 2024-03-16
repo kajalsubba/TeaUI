@@ -14,6 +14,11 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { SeasonAdvanceService } from '../../services/season-advance.service';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
+import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
+import { CategoryService } from 'src/app/modules/masters/services/category.service';
+import { MatOptionSelectionChange } from '@angular/material/core';
+import { IGetPayment } from '../../interfaces/ipayment';
+import { PaymentService } from '../../services/payment.service';
 
 @Component({
   selector: 'app-payments',
@@ -23,8 +28,9 @@ import { StgApproveService } from 'src/app/modules/collectionApprove/services/st
 export class PaymentsComponent implements OnInit {
 
   displayedColumns: string[] = [
+    'EntryDate',
     'PaymentDate',
-    'ClientCategory',
+    'PaySource',
     'ClientName',
     'PaymentType',
     'Amount',
@@ -36,12 +42,13 @@ export class PaymentsComponent implements OnInit {
   dataSource = new _MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
+    { columnDef: 'EntryDate', header: 'Entry Date' },
     { columnDef: 'PaymentDate', header: 'Payment Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'ClientCategory', header: 'Client Category' },
+    { columnDef: 'PaySource', header: 'Pay Source' },
     { columnDef: 'PaymentType', header: 'Payment Type' },
     { columnDef: 'Narration', header: 'Narration' },
-  //  { columnDef: 'Amount', header: 'Amount' }
+    //  { columnDef: 'Amount', header: 'Amount' }
 
   ];
 
@@ -50,12 +57,12 @@ export class PaymentsComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
   loginDetails: any;
-  SeasonAdvanceForm!: FormGroup;
+  PaymentForm!: FormGroup;
   minToDate!: any;
   ClientNames: any[] = [];
   selectedRowIndex: number = -1;
-  saleTypeList: any[]=[];
-
+  // saleTypeList: any[]=[];
+  categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -63,39 +70,87 @@ export class PaymentsComponent implements OnInit {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
-    private advanceService: SeasonAdvanceService,
-    private saleService: StgApproveService,
-    // private stgService: StgService,
+    private categoryService: CategoryService,
+     private paymentService: PaymentService,
     //   private stgapproveService: StgApproveService,
     // private supplierApproveService: SupplierapproveService
   ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
-    this.SeasonAdvanceForm = this.fb.group({
+    this.PaymentForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
-      ClientId: [''],
+      ClientId: [0],
       ClientName: [''],
-      SaleTypeId: [''],
-
+      CategoryId: ['', Validators.required],
+      CategoryName: ['']
     });
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     await this.loadClientNames();
-    this.GetSaleType()
-    
-    // this.GetSupplierDefaultList();
+    this.getCategoryList()
+
   }
 
-  GetSaleType() {
+  GetPaymentData(FromDate: any, ToDate: any) {
+    const currentDate = new Date();
+    let bodyData: IGetPayment = {
+      FromDate:
+        FromDate == null
+          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+          : FromDate,
+      ToDate:
+        ToDate == null
+          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
+          : ToDate,
+      TenantId: this.loginDetails.TenantId,
+      ClientCategory: this.PaymentForm.value.CategoryName,
+      ClientId: this.PaymentForm.value.ClientId??0
 
-    const services = this.saleService.GetSaleType().subscribe((res: any) => {
-      this.saleTypeList = res.SaleTypes;
-    });
-    this.subscriptions.push(services);
+    };
+    console.log(bodyData, 'bodyData bodyData');
+
+    const categoryListService = this.paymentService
+      .GetPaymentData(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.dataSource.data = res.PaymentDetails;
+      });
+    this.subscriptions.push(categoryListService);
   }
 
+  async selectCategory(event: MatOptionSelectionChange, category: any) {
+
+    if (event.source.selected) {
+      this.PaymentForm.controls['ClientId'].reset();
+      this.PaymentForm.controls['ClientName'].reset();
+      this.PaymentForm.controls['CategoryName'].setValue(category?.CategoryName);
+      //   console.log(category.CategoryName, 'CategoryName');
+      await this.loadClientNames();
+    }
+
+  }
+
+
+  async getCategoryList() {
+    try {
+      const categoryBody: IGetCategory = {
+        TenantId: this.loginDetails.TenantId
+      };
+
+      const res: any = await this.categoryService.getCategory(categoryBody)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.categoryList = res.CategoryDetails.filter((x: any) => x.CategoryName != 'Both');
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
   displayWithFn(value: string): string {
     return value || '';
   }
@@ -104,7 +159,7 @@ export class PaymentsComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: ''
+        Category: this.PaymentForm.value.CategoryName
 
       };
 
@@ -154,14 +209,19 @@ export class PaymentsComponent implements OnInit {
   }
   selectClient(client: any) {
     if (client == '') {
-      this.SeasonAdvanceForm.controls['ClientId'].reset();
+      this.PaymentForm.controls['ClientId'].reset();
     }
     console.log(client.ClientId, 'Client');
 
-    this.SeasonAdvanceForm.controls['ClientId'].setValue(client?.ClientId);
+    this.PaymentForm.controls['ClientId'].setValue(client?.ClientId);
   }
 
   search() {
+    if (this.PaymentForm.invalid) {
+      this.PaymentForm.markAllAsTouched();
+      return;
+    }
+    this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
 
 
   }
@@ -177,7 +237,7 @@ export class PaymentsComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.SeasonAdvanceForm.controls['toDate'].setValue(null);
+    this.PaymentForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -192,8 +252,7 @@ export class PaymentsComponent implements OnInit {
       }
     }
   }
-  editItem(e:any)
-  {
+  editItem(e: any) {
 
   }
 

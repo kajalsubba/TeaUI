@@ -8,93 +8,104 @@
             <div class="col-lg-12">
                 <form [formGroup]="addEditPayment">
                     <div class="row">
-                 
-                            <div class="form-group row mb-3">
-                                <label for="PaymentDate" class="col-lg-5 col-form-label">Payment Date <span class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                    <mat-form-field>
-                                        <input class="date-select" readonly matInput [matDatepicker]="picker"
-                                          placeholder="PaymentDate" formControlName="PaymentDate">
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker></mat-datepicker>
-                                      </mat-form-field>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-3">
-                                <label for="ClientCategory" class="col-lg-5 col-form-label">Client Category <span class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                    <mat-select placeholder="--Client Category--" class="fromSelect" formControlName="ClientCategory">
-                                        <mat-option *ngFor="let sale of clientCategoryList" [value]="sale.SaleTypeId">
-                                          {{sale.TypeName}}
-                                        </mat-option>
-                                      </mat-select>
-                                      <span *ngIf="addEditPayment.get('ClientCategory')?.hasError('required') && addEditPayment.get('ClientCategory')?.touched"
-                                        class="text-danger d-block validation-message">
-                                        Category is required.
-                                      </span>
-                                </div>
-                            </div>
 
-                            <div class="form-group row mb-3">
-                                <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                        <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
-                                        formControlName="ClientName" [matAutocomplete]="clientAuto">
-                                
-                                    <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
-                                        <mat-option *ngFor="let client of filterClientNames(clientName.value)"
-                                            [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
-                                            {{ client?.ClientName }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </div>
+                        <div class="form-group row mb-3">
+                            <label for="PaymentDate" class="col-lg-5 col-form-label">Payment Date <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-form-field>
+                                    <input #PaymentDate class="date-select" readonly matInput [matDatepicker]="picker"
+                                        placeholder="PaymentDate" formControlName="PaymentDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
                             </div>
-
-                            <div class="form-group row mb-3">
-                                <label for="PaymentType" class="col-lg-5 col-form-label">Payment Type <span class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                    <mat-select placeholder="--Payment Type--" class="fromSelect" formControlName="PaymentType">
-                                        <mat-option value="0">Type 1</mat-option>
-                                        <mat-option value="1">Type 2</mat-option>
-                                        <mat-option value="2">Type 3</mat-option>
-                                      </mat-select>
-                                      <span *ngIf="addEditPayment.get('PaymentType')?.hasError('required') && addEditPayment.get('PaymentType')?.touched"
-                                        class="text-danger d-block validation-message">
-                                        Payment Type is required.
-                                      </span>
-                                </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label for="ClientCategory" class="col-lg-5 col-form-label">Client Category <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-select placeholder="--Client Category--" class="fromSelect"
+                                    formControlName="CategoryId">
+                                    <mat-option *ngFor="let category of categoryList" [value]="category.CategoryId"
+                                        (onSelectionChange)="selectCategory($event, category)">
+                                        {{category.CategoryName}}
+                                    </mat-option>
+                                </mat-select>
+                                <span
+                                    *ngIf="addEditPayment.get('CategoryId')?.hasError('required') && addEditPayment.get('CategoryId')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Category is required.
+                                </span>
                             </div>
+                        </div>
 
-                            <div class="form-group row mb-3">
-                                <label for="Amount" class="col-lg-5 col-form-label">Amount <span class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                        <input #Amount type="number" class="form-control" id="Amount" placeholder="Amount"
+                        <div class="form-group row mb-3">
+                            <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <input #clientName type="text" class="form-control" id="ClientName"
+                                    placeholder="Client Name" formControlName="ClientName"
+                                    [matAutocomplete]="clientAuto">
+
+                                <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                    <mat-option *ngFor="let client of filterClientNames(clientName.value)"
+                                        [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
+                                        {{ client?.ClientName }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <span
+                                    *ngIf="addEditPayment.get('ClientName')?.hasError('required') && addEditPayment.get('ClientName')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Client is required.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label for="PaymentType" class="col-lg-5 col-form-label">Payment Type <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-select placeholder="--Payment Type--" class="fromSelect"
+                                    formControlName="PaymentTypeId">
+                                    <mat-option *ngFor="let item of paymentTypeList" [value]="item.PaymentTypeId">
+                                        {{item.PaymentType}}
+                                    </mat-option>
+                                </mat-select>
+                                <span
+                                    *ngIf="addEditPayment.get('PaymentTypeId')?.hasError('required') && addEditPayment.get('PaymentTypeId')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Payment Type is required.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label for="Amount" class="col-lg-5 col-form-label">Amount <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <input #Amount type="number" class="form-control" id="Amount" placeholder="Amount"
                                     formControlName="Amount">
                                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                             
+
                                 <!-- Validation message -->
                                 <span
                                     *ngIf="addEditPayment.get('Amount')?.hasError('required') && addEditPayment.get('Amount')?.touched"
                                     class="text-danger d-block validation-message">
                                     Amount is required.
                                 </span>
-                                </div>
                             </div>
+                        </div>
 
-                            <div class="form-group row mb-3">
-                                <label for="Narration" class="col-lg-5 col-form-label">Narration <span class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                        <textarea #Narration type="text" class="form-control" id="Narration" placeholder="Narration"
-                                        formControlName="Narration"></textarea>
-                             
-                                <!-- Validation message -->
-                                <span
-                                    *ngIf="addEditPayment.get('Narration')?.hasError('required') && addEditPayment.get('Narration')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Narration is required.
-                                </span>
-                                </div>
+                        <div class="form-group row mb-3">
+                            <label for="Narration" class="col-lg-5 col-form-label">Narration </label>
+                            <div class="col-lg-7 position-relative">
+                                <textarea #Narration type="text" class="form-control" id="Narration"
+                                    placeholder="Narration" formControlName="Narration"></textarea>
+
+
                             </div>
+                        </div>
                     </div>
                 </form>
             </div>
