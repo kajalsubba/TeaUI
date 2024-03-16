@@ -27,10 +27,11 @@ export class AddEditPaymentComponent implements OnInit {
   minToDate!: Date | null;
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
-  categoryList: any[]=[];
-  paymentTypeList: any[]=[];
+  categoryList: any[] = [];
+  paymentTypeList: any[] = [];
   loginDetails: any;
   ClientNames: any[] = [];
+  clientList: any[] = [];
   @ViewChild('PaymentDate') PaymentDateInput!: ElementRef;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
@@ -40,24 +41,25 @@ export class AddEditPaymentComponent implements OnInit {
     private helper: HelperService,
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
-    private paymentTypeService:PaymenttypeService,
-    private paymentService:PaymentService
+    private paymentTypeService: PaymenttypeService,
+    private paymentService: PaymentService
   ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.addEditPayment = this.fb.group({
       PaymentDate: [new Date(), Validators.required],
-      CategoryId: ['',Validators.required],
+      CategoryId: ['', Validators.required],
       CategoryName: [''],
       ClientId: [''],
-      ClientName: ['',Validators.required],
-      PaymentTypeId: ['',Validators.required],
-      Amount: ['',Validators.required],
+      ClientName: ['', Validators.required],
+      PaymentTypeId: ['', Validators.required],
+      Amount: ['', Validators.required],
       Narration: [''],
     });
-   await this.getPaymentType();
-   await this.getCategoryList();
+    await this.getPaymentType();
+    await this.getCategoryList();
+    await this.loadClientNames();
   }
 
   displayWithFn(value: string): string {
@@ -68,7 +70,7 @@ export class AddEditPaymentComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: this.addEditPayment.value.CategoryName
+        Category: ''
 
       };
 
@@ -76,7 +78,7 @@ export class AddEditPaymentComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.ClientNames = res.ClientDetails;
+      this.clientList = res.ClientDetails;
 
 
     } catch (error) {
@@ -95,7 +97,7 @@ export class AddEditPaymentComponent implements OnInit {
     if (client == '') {
       this.addEditPayment.controls['ClientId'].reset();
     }
-    console.log(client.ClientId, 'Client');
+    //console.log(client.ClientId, 'Client');
 
     this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
   }
@@ -103,7 +105,9 @@ export class AddEditPaymentComponent implements OnInit {
   async selectCategory(event: MatOptionSelectionChange, category: any) {
     if (event.source.selected) {
       this.addEditPayment.controls['CategoryName'].setValue(category.CategoryName);
-      await this.loadClientNames();
+      var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditPayment.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
+      this.ClientNames = dataList;
+      //await this.loadClientNames();
     }
 
   }
@@ -163,7 +167,7 @@ export class AddEditPaymentComponent implements OnInit {
 
     }
 
-    console.log(data,'add');
+    console.log(data, 'add');
     this.SaveData(data);
   }
 
@@ -178,7 +182,7 @@ export class AddEditPaymentComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-            if (res.Id == 0) {
+        if (res.Id == 0) {
           this.toastr.warning(res.Message, 'Warning');
         }
         else {
@@ -205,7 +209,7 @@ export class AddEditPaymentComponent implements OnInit {
     this.addEditPayment.controls['Narration'].reset()
 
   }
-  
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
