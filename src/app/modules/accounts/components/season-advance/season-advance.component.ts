@@ -13,6 +13,7 @@ import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { IGetseasonAdvance } from '../../interfaces/iseason-advance';
 import { SeasonAdvanceService } from '../../services/season-advance.service';
+import { EditAddSeasonAdvanceComponent } from '../../models/edit-add-season-advance/edit-add-season-advance.component';
 
 @Component({
   selector: 'app-season-advance',
@@ -141,7 +142,20 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
   }
 
   AddSeasonAdvance() {
-
+    const dialogRef = this.dialog.open(EditAddSeasonAdvanceComponent, {
+      width: '80%',
+      data: {
+        title: 'Add Season Advance Entry',
+        buttonName: 'Save',
+      },
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetSeasonAdvanceData(formatDate(this.SeasonAdvanceForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.SeasonAdvanceForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+   
+      }
+    });
   }
   selectClient(client: any) {
     if (client == '') {

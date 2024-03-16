@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IGetseasonAdvance } from '../interfaces/iseason-advance';
+import { IGetseasonAdvance, ISaveSeasonAdvance } from '../interfaces/iseason-advance';
 
 @Injectable({
   providedIn: 'root'
@@ -12,5 +12,9 @@ export class SeasonAdvanceService {
 
   GetSeasonAdvance(clientBody:IGetseasonAdvance): Observable<string[]> {
     return this.apiService.post('Accounts/GetSeasonAdvance', clientBody);
+  }
+
+  SaveSeasonAdvance(clientBody:ISaveSeasonAdvance): Observable<string[]> {
+    return this.apiService.post('Accounts/SaveSeasonAdvance', clientBody);
   }
 }

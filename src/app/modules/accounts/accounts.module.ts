@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { AccountsRoutingModule } from './accounts-routing.module';
+import { EditAddSeasonAdvanceComponent } from './models/edit-add-season-advance/edit-add-season-advance.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -35,6 +36,7 @@ export const MY_FORMATS = {
   declarations: [
     SeasonAdvanceComponent,
     PaymentsComponent,
+    EditAddSeasonAdvanceComponent,
 
   ],
   imports: [
