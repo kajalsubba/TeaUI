@@ -22,6 +22,8 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { SaleHistoryComponent } from './components/sale-history/sale-history.component';
 
 import { AddStgComponent } from './models/add-stg/add-stg.component';
+import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
+import { SeasonAdvanceHistoryComponent } from './components/season-advance-history/season-advance-history.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -41,7 +43,9 @@ export const MY_FORMATS = {
     StgHistoryComponent,
     SupplierHistoryComponent,
     SaleHistoryComponent,
-    AddStgComponent
+    AddStgComponent,
+    PaymentHistoryComponent,
+    SeasonAdvanceHistoryComponent
   ],
   imports: [
     CommonModule,
