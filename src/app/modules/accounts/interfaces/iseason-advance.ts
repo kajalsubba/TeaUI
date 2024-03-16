@@ -1,6 +1,7 @@
 export interface ISaveSeasonAdvance {
     SeasonAdvanceId: number;
-    AdvancedDate: string;
+    AdvancedDate: Date | string;
+    ClientCategory: string;
     ClientId: number;
     Amount: number;
     TenantId: number;
@@ -11,6 +12,8 @@ export interface IGetseasonAdvance {
     FromDate: string;
     ToDate: string;
     TenantId: number;
+    ClientId: number;
+    ClientCategory:string;
 }
 
 

@@ -14,7 +14,9 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { IGetseasonAdvance } from '../../interfaces/iseason-advance';
 import { SeasonAdvanceService } from '../../services/season-advance.service';
 import { EditAddSeasonAdvanceComponent } from '../../models/edit-add-season-advance/edit-add-season-advance.component';
-import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
+import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
+import { CategoryService } from 'src/app/modules/masters/services/category.service';
+import { MatOptionSelectionChange } from '@angular/material/core';
 
 @Component({
   selector: 'app-season-advance',
@@ -25,7 +27,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [
     'AdvancedDate',
-    'ClientCategory',
+    'PaySource',
     'ClientName',
     'Amount',
     'actions'
@@ -37,8 +39,8 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'AdvancedDate', header: 'Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'ClientCategory', header: 'Client Category' },
-  //  { columnDef: 'Amount', header: 'Amount' }
+    { columnDef: 'PaySource', header: 'Category' },
+    //  { columnDef: 'Amount', header: 'Amount' }
 
   ];
 
@@ -51,8 +53,8 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
   minToDate!: any;
   ClientNames: any[] = [];
   selectedRowIndex: number = -1;
-  saleTypeList: any[]=[];
-
+  // saleTypeList: any[]=[];
+  categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -61,7 +63,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
     private advanceService: SeasonAdvanceService,
-    private saleService: StgApproveService,
+    private categoryService: CategoryService
     // private stgService: StgService,
     //   private stgapproveService: StgApproveService,
     // private supplierApproveService: SupplierapproveService
@@ -72,27 +74,44 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     this.SeasonAdvanceForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
-      ClientId: [''],
+      ClientId: [0],
       ClientName: [''],
-      SaleTypeId: [''],
-
+      CategoryId: ['',Validators.required],
+      CategoryName: ['']
     });
 
-    //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
-    await this.loadClientNames();
-    this.GetSaleType()
-    
-    // this.GetSupplierDefaultList();
+    await this.getCategoryList()
   }
 
-  GetSaleType() {
+  async getCategoryList() {
+    try {
+      const categoryBody: IGetCategory = {
+        TenantId: this.loginDetails.TenantId
+      };
 
-    const services = this.saleService.GetSaleType().subscribe((res: any) => {
-      this.saleTypeList = res.SaleTypes;
-    });
-    this.subscriptions.push(services);
+      const res: any = await this.categoryService.getCategory(categoryBody)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.categoryList = res.CategoryDetails.filter((x: any) => x.CategoryName != 'Both');
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
   }
+  async selectCategory(event: MatOptionSelectionChange, category: any) {
 
+    if (event.source.selected) {
+      this.SeasonAdvanceForm.controls['ClientId'].reset();
+      this.SeasonAdvanceForm.controls['ClientName'].reset();
+      this.SeasonAdvanceForm.controls['CategoryName'].setValue(category?.CategoryName);
+      //   console.log(category.CategoryName, 'CategoryName');
+      await this.loadClientNames();
+    }
+
+  }
   displayWithFn(value: string): string {
     return value || '';
   }
@@ -101,7 +120,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: ''
+        Category: this.SeasonAdvanceForm.value.CategoryName
 
       };
 
@@ -134,9 +153,13 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
         ToDate == null
           ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
           : ToDate,
-      TenantId: this.loginDetails.TenantId
+      TenantId: this.loginDetails.TenantId,
+      ClientCategory: this.SeasonAdvanceForm.value.CategoryName,
+      ClientId: this.SeasonAdvanceForm.value.ClientId
 
     };
+    console.log(bodyData, 'bodyData bodyData');
+
     const categoryListService = this.advanceService
       .GetSeasonAdvance(bodyData)
       .subscribe((res: any) => {
@@ -169,7 +192,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.GetSeasonAdvanceData(formatDate(this.SeasonAdvanceForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.SeasonAdvanceForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
-   
+
       }
     });
   }
@@ -184,13 +207,12 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
 
   search() {
 
-    // if (this.SeasonAdvanceForm.invalid) {
-    //   this.SeasonAdvanceForm.markAllAsTouched();
-    //   return;
-    // }
-
+    if (this.SeasonAdvanceForm.invalid ) {
+      this.SeasonAdvanceForm.markAllAsTouched();
+      return;
+    }
     this.GetSeasonAdvanceData(formatDate(this.SeasonAdvanceForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.SeasonAdvanceForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
-   
+
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -219,8 +241,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
       }
     }
   }
-  editItem(e:any)
-  {
+  editItem(e: any) {
 
   }
 

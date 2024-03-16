@@ -13,7 +13,7 @@
                                 <label for="AdvancedDate" class="col-lg-5 col-form-label">Advanced Date <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
                                     <mat-form-field>
-                                        <input class="date-select" readonly matInput [matDatepicker]="picker"
+                                        <input  #AdvancedDate  class="date-select" readonly matInput [matDatepicker]="picker"
                                           placeholder="Advanced Date" formControlName="AdvancedDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
@@ -23,12 +23,12 @@
                             <div class="form-group row mb-3">
                                 <label for="ClientCategory" class="col-lg-5 col-form-label">Client Category <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <mat-select placeholder="--Client Category--" class="fromSelect" formControlName="ClientCategory">
-                                        <mat-option *ngFor="let sale of clientCategoryList" [value]="sale.SaleTypeId">
-                                          {{sale.TypeName}}
+                                    <mat-select placeholder="--Client Category--" class="fromSelect" formControlName="CategoryId">
+                                        <mat-option *ngFor="let category of categoryList" [value]="category.CategoryId"  (onSelectionChange)="selectCategory($event, category)">
+                                          {{category.CategoryName}}
                                         </mat-option>
                                       </mat-select>
-                                      <span *ngIf="addEditSeasonAdvance.get('ClientCategory')?.hasError('required') && addEditSeasonAdvance.get('ClientCategory')?.touched"
+                                      <span *ngIf="addEditSeasonAdvance.get('CategoryId')?.hasError('required') && addEditSeasonAdvance.get('CategoryId')?.touched"
                                         class="text-danger d-block validation-message">
                                         Category is required.
                                       </span>
@@ -47,6 +47,10 @@
                                             {{ client?.ClientName }}
                                         </mat-option>
                                     </mat-autocomplete>
+                                    <span *ngIf="addEditSeasonAdvance.get('ClientName')?.hasError('required') && addEditSeasonAdvance.get('ClientName')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Client is required.
+                                  </span>
                                 </div>
                             </div>
 
