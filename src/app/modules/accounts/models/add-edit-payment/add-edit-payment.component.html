@@ -6,15 +6,15 @@
     <div class="container my-3">
         <div class="row">
             <div class="col-lg-12">
-                <form [formGroup]="addEditSeasonAdvance">
+                <form [formGroup]="addEditPayment">
                     <div class="row">
                  
                             <div class="form-group row mb-3">
-                                <label for="AdvancedDate" class="col-lg-5 col-form-label">Advanced Date <span class="text-danger">*</span></label>
+                                <label for="PaymentDate" class="col-lg-5 col-form-label">Payment Date <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
                                     <mat-form-field>
                                         <input class="date-select" readonly matInput [matDatepicker]="picker"
-                                          placeholder="Advanced Date" formControlName="AdvancedDate">
+                                          placeholder="PaymentDate" formControlName="PaymentDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                       </mat-form-field>
@@ -28,7 +28,7 @@
                                           {{sale.TypeName}}
                                         </mat-option>
                                       </mat-select>
-                                      <span *ngIf="addEditSeasonAdvance.get('ClientCategory')?.hasError('required') && addEditSeasonAdvance.get('ClientCategory')?.touched"
+                                      <span *ngIf="addEditPayment.get('ClientCategory')?.hasError('required') && addEditPayment.get('ClientCategory')?.touched"
                                         class="text-danger d-block validation-message">
                                         Category is required.
                                       </span>
@@ -51,6 +51,21 @@
                             </div>
 
                             <div class="form-group row mb-3">
+                                <label for="PaymentType" class="col-lg-5 col-form-label">Payment Type <span class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select placeholder="--Payment Type--" class="fromSelect" formControlName="PaymentType">
+                                        <mat-option value="0">Type 1</mat-option>
+                                        <mat-option value="1">Type 2</mat-option>
+                                        <mat-option value="2">Type 3</mat-option>
+                                      </mat-select>
+                                      <span *ngIf="addEditPayment.get('PaymentType')?.hasError('required') && addEditPayment.get('PaymentType')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Payment Type is required.
+                                      </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
                                 <label for="Amount" class="col-lg-5 col-form-label">Amount <span class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
                                         <input #Amount type="number" class="form-control" id="Amount" placeholder="Amount"
@@ -59,9 +74,24 @@
                              
                                 <!-- Validation message -->
                                 <span
-                                    *ngIf="addEditSeasonAdvance.get('Amount')?.hasError('required') && addEditSeasonAdvance.get('Amount')?.touched"
+                                    *ngIf="addEditPayment.get('Amount')?.hasError('required') && addEditPayment.get('Amount')?.touched"
                                     class="text-danger d-block validation-message">
                                     Amount is required.
+                                </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                <label for="Narration" class="col-lg-5 col-form-label">Narration <span class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                        <textarea #Narration type="text" class="form-control" id="Narration" placeholder="Narration"
+                                        formControlName="Narration"></textarea>
+                             
+                                <!-- Validation message -->
+                                <span
+                                    *ngIf="addEditPayment.get('Narration')?.hasError('required') && addEditPayment.get('Narration')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Narration is required.
                                 </span>
                                 </div>
                             </div>

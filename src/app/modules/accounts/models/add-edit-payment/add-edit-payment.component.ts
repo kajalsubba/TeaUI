@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -10,13 +9,13 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
 
 @Component({
-  selector: 'app-edit-add-season-advance',
-  templateUrl: './edit-add-season-advance.component.html',
-  styleUrls: ['./edit-add-season-advance.component.scss']
+  selector: 'app-add-edit-payment',
+  templateUrl: './add-edit-payment.component.html',
+  styleUrls: ['./add-edit-payment.component.scss']
 })
-export class EditAddSeasonAdvanceComponent implements OnInit {
+export class AddEditPaymentComponent implements OnInit {
 
-  addEditSeasonAdvance!:FormGroup;
+  addEditPayment!:FormGroup;
   minToDate!: Date | null;
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
@@ -26,7 +25,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    public dialogRef: MatDialogRef<EditAddSeasonAdvanceComponent>,
+    public dialogRef: MatDialogRef<AddEditPaymentComponent>,
     private fb:FormBuilder,
     private saleService: StgApproveService,
     private helper: HelperService,
@@ -36,14 +35,17 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
-    this.addEditSeasonAdvance = this.fb.group({
-      AdvancedDate: [new Date(), Validators.required],
+    this.addEditPayment = this.fb.group({
+      PaymentDate: [new Date(), Validators.required],
       ClientCategory: [''],
       ClientId: [''],
+      ClientName: [''],
+      PaymentType: [''],
       Amount: [''],
+      Narration: [''],
     });
-    await this.loadClientNames()
-    this.GetClientCategory()
+    await this.loadClientNames();
+    this.GetClientCategory();
   }
 
   displayWithFn(value: string): string {
@@ -79,11 +81,11 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
 
   selectClient(client: any) {
     if (client == '') {
-      this.addEditSeasonAdvance.controls['ClientId'].reset();
+      this.addEditPayment.controls['ClientId'].reset();
     }
     console.log(client.ClientId, 'Client');
 
-    this.addEditSeasonAdvance.controls['ClientId'].setValue(client?.ClientId);
+    this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
   }
 
   GetClientCategory() {

@@ -19,6 +19,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { AccountsRoutingModule } from './accounts-routing.module';
 import { EditAddSeasonAdvanceComponent } from './models/edit-add-season-advance/edit-add-season-advance.component';
+import { AccountsComponent } from './accounts.component';
+import { AddEditPaymentComponent } from './models/add-edit-payment/add-edit-payment.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -37,7 +39,8 @@ export const MY_FORMATS = {
     SeasonAdvanceComponent,
     PaymentsComponent,
     EditAddSeasonAdvanceComponent,
-
+    AccountsComponent,
+    AddEditPaymentComponent
   ],
   imports: [
     CommonModule,

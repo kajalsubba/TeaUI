@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SeasonAdvanceComponent } from './components/season-advance/season-advance.component';
 import { PaymentsComponent } from './components/payments/payments.component';
+import { AccountsComponent } from './accounts.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '', pathMatch: 'full' },
-  {path:'', component: SeasonAdvanceComponent, children:[
+  {path:'', component: AccountsComponent, children:[
     {path:'', redirectTo: 'seasonAdvance', pathMatch: 'full'},
     {path:'seasonAdvance', component: SeasonAdvanceComponent},
     {path:'payment', component: PaymentsComponent},

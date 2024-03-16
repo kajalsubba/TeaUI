@@ -5,8 +5,8 @@
         <div class="col-lg-12">
           <form [formGroup]="SaleForm" class="d-flex">
             <div class="row">
-              <div class="col-lg-3 d-grid">
-                <mat-form-field>
+              <div class="col-lg-3 my-2">
+                <mat-form-field class="w-100">
                   <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
                     placeholder="From Date" formControlName="fromDate">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -14,8 +14,8 @@
                 </mat-form-field>
               </div>
 
-              <div class="col-lg-3 d-grid">
-                <mat-form-field>
+              <div class="col-lg-3 my-2">
+                <mat-form-field class="w-100" >
                   <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="SaleForm.value.fromDate"
                     placeholder="To Date" formControlName="toDate">
                   <mat-datepicker-toggle [disabled]="SaleForm.value.fromDate == null" matSuffix
@@ -34,7 +34,7 @@
                           </mat-option>
                       </mat-autocomplete>
                   </div> -->
-              <div class="position-relative col-lg-3 d-grid">
+              <div class="position-relative col-lg-3 my-2">
                 <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
                   formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onInputChange($event)">
                 <!-- Autocomplete options -->
@@ -45,7 +45,7 @@
                   </mat-option>
                 </mat-autocomplete>
               </div>
-              <div class="position-relative col-lg-3 d-grid my-2">
+              <div class="position-relative col-lg-3 my-2">
                 <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
                   formControlName="AccountName" [matAutocomplete]="accountAuto">
                 <!-- Autocomplete options -->
@@ -168,7 +168,7 @@
                   <i (click)="editItem(row)" matTooltip="Edit" matTooltipPosition="left"
                     class="fa-solid edit-delete-button fa-pen-to-square"></i>
                   <i  *ngIf="row.TypeName == 'STG'" (click)="addStgItem(row)" matTooltip="Add STG data" matTooltipPosition="right"
-                    class="fa-solid edit-delete-button fa-solid fa-eye"></i>
+                    class="fa-solid edit-delete-button fa-circle-plus"></i>
                 </div>
               </td>
               <td mat-footer-cell *matFooterCellDef> </td>
@@ -180,7 +180,7 @@
             </tr>
             <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
             <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell text-center" attr.colspan="{{displayedColumns.length + 1}}">Record is not found !</td>
+              <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is not found !</td>
             </tr>
           </table>
         </div>

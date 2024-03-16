@@ -31,6 +31,7 @@ export class TopNavComponent implements OnInit {
   }
 
   logout() {
+    this.helper.setItem('isLoggedIn', false);
     this.helper.clear();
     this.router.navigateByUrl('login');
   }

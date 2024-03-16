@@ -6,6 +6,7 @@ import { IClientLogin, ILogin } from '../../interfaces/ilogin';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private loginService: LoginService,
     private helper: HelperService,
+    private authService: AuthService,
     private router: Router,
     private toastr: ToastrService
   ) {}
@@ -39,6 +41,7 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
     });
     this.GetTenant();
+    this.authService.isLoggedIn = false;
   }
 
   onLogin() {
@@ -57,6 +60,8 @@ export class LoginComponent implements OnInit {
           this.adminLoginFail = false;
           this.helper.setItem('loginDetails', res.LoginDetails[0]);
           this.helper.setItem('PermissionDetails', res.PermissionDetails);
+          this.helper.setItem('isLoggedIn', true);
+          this.authService.isLoggedIn = true;
           this.router.navigateByUrl('home');
         } else {
           this.adminLoginFail = true;
@@ -91,6 +96,8 @@ export class LoginComponent implements OnInit {
             this.clientLoginFail = false;
             this.helper.setItem('loginDetails', res.ClientLoginDetails[0]);
             this.helper.setItem('PermissionDetails', res.PermissionDetails);
+            this.helper.setItem('isLoggedIn', true);
+            this.authService.isLoggedIn = true;
             //  this.helper.setItem('PermissionDetails', res.PermissionDetails[0]);
             this.router.navigateByUrl('home');
           } else {

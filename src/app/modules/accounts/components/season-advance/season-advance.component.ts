@@ -14,6 +14,7 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { IGetseasonAdvance } from '../../interfaces/iseason-advance';
 import { SeasonAdvanceService } from '../../services/season-advance.service';
 import { EditAddSeasonAdvanceComponent } from '../../models/edit-add-season-advance/edit-add-season-advance.component';
+import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
 
 @Component({
   selector: 'app-season-advance',
@@ -24,6 +25,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [
     'AdvancedDate',
+    'ClientCategory',
     'ClientName',
     'Amount',
     'actions'
@@ -35,6 +37,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'AdvancedDate', header: 'Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
+    { columnDef: 'ClientCategory', header: 'Client Category' },
   //  { columnDef: 'Amount', header: 'Amount' }
 
   ];
@@ -48,6 +51,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
   minToDate!: any;
   ClientNames: any[] = [];
   selectedRowIndex: number = -1;
+  saleTypeList: any[]=[];
 
   constructor(
     private dialog: MatDialog,
@@ -57,6 +61,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
     private advanceService: SeasonAdvanceService,
+    private saleService: StgApproveService,
     // private stgService: StgService,
     //   private stgapproveService: StgApproveService,
     // private supplierApproveService: SupplierapproveService
@@ -68,15 +73,26 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
       ClientId: [''],
-      ClientName: ['']
+      ClientName: [''],
+      SaleTypeId: [''],
 
     });
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     await this.loadClientNames();
+    this.GetSaleType()
     
     // this.GetSupplierDefaultList();
   }
+
+  GetSaleType() {
+
+    const services = this.saleService.GetSaleType().subscribe((res: any) => {
+      this.saleTypeList = res.SaleTypes;
+    });
+    this.subscriptions.push(services);
+  }
+
   displayWithFn(value: string): string {
     return value || '';
   }
@@ -143,7 +159,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
 
   AddSeasonAdvance() {
     const dialogRef = this.dialog.open(EditAddSeasonAdvanceComponent, {
-      width: '80%',
+      width: '30%',
       data: {
         title: 'Add Season Advance Entry',
         buttonName: 'Save',
