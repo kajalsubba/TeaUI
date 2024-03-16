@@ -27,7 +27,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
   @ViewChild('AdvancedDate') AdvancedDateInput!: ElementRef;
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
-  clientCategoryList: any;
+  clientList: any;
   loginDetails: any;
   ClientNames: any[] = [];
   categoryList: any[] = [];
@@ -46,13 +46,13 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.addEditSeasonAdvance = this.fb.group({
       AdvancedDate: [new Date(), Validators.required],
-      CategoryId: ['',Validators.required],
+      CategoryId: ['', Validators.required],
       CategoryName: [''],
-      ClientName: ['',Validators.required],
+      ClientName: ['', Validators.required],
       ClientId: [0],
-      Amount: ['',Validators.required],
+      Amount: ['', Validators.required],
     });
-    // await this.loadClientNames()
+    await this.loadClientNames()
     await this.getCategoryList()
   }
 
@@ -64,15 +64,15 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: this.addEditSeasonAdvance.value.CategoryName
-
+        //  Category: this.addEditSeasonAdvance.value.CategoryName
+        Category: ''
       };
 
       const res: any = await this.autocompleteService.GetClientNames(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.ClientNames = res.ClientDetails;
+      this.clientList = res.ClientDetails;
 
 
     } catch (error) {
@@ -99,7 +99,11 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
   async selectCategory(event: MatOptionSelectionChange, category: any) {
     if (event.source.selected) {
       this.addEditSeasonAdvance.controls['CategoryName'].setValue(category.CategoryName);
-      await this.loadClientNames();
+      var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditSeasonAdvance.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
+      this.ClientNames = dataList;
+      console.log(dataList, 'this.clientList');
+
+      // await this.loadClientNames();
     }
 
   }
@@ -179,7 +183,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
     this.addEditSeasonAdvance.controls['Amount'].reset()
 
   }
-  
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
