@@ -14,6 +14,7 @@ const routes: Routes = [
     {path:'LeafApprove', loadChildren: () => import('../collectionApprove/collection-approve.module').then(m => m.CollectionApproveModule)},
     {path:'rate-fix', loadChildren: () => import('../rate-fix/rate-fix.module').then(m => m.RateFixModule)},
     {path:'Accounts', loadChildren: () => import('../accounts/accounts.module').then(m => m.AccountsModule)},
+    {path:'Bill', loadChildren: () => import('../bill-generate/bill-generate.module').then(m => m.BillGenerateModule)},
     {path:'LeafHistory', loadChildren: () => import('../leaf-history/leaf-history.module').then(m => m.LeafHistoryModule)},
     {path:'user-management', loadChildren: () => import('../user-management/user-management.module').then(m => m.UserManagementModule)},
     {path:'super-admin', loadChildren: () => import('../super-admin/super-admin.module').then(m => m.SuperAdminModule)},
