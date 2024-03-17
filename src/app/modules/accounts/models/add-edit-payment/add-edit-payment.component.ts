@@ -107,7 +107,7 @@ export class AddEditPaymentComponent implements OnInit {
       this.addEditPayment.controls['CategoryName'].setValue(category.CategoryName);
       var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditPayment.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
       this.ClientNames = dataList;
-      //await this.loadClientNames();
+    
     }
 
   }

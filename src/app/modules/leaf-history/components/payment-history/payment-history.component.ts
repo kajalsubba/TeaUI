@@ -57,7 +57,7 @@ export class PaymentHistoryComponent implements OnInit {
   minToDate!: any;
   ClientNames: any[] = [];
   selectedRowIndex: number = -1;
-  // saleTypeList: any[]=[];
+  clientList: any[] = [];
   categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
@@ -67,7 +67,7 @@ export class PaymentHistoryComponent implements OnInit {
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
     private categoryService: CategoryService,
-     private paymentService: PaymentService,
+    private paymentService: PaymentService,
     //   private stgapproveService: StgApproveService,
     // private supplierApproveService: SupplierapproveService
   ) { }
@@ -85,7 +85,8 @@ export class PaymentHistoryComponent implements OnInit {
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     await this.loadClientNames();
-    this.getCategoryList()
+    await this.getCategoryList();
+    await this.loadClientNames();
 
   }
 
@@ -101,8 +102,8 @@ export class PaymentHistoryComponent implements OnInit {
           ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
           : ToDate,
       TenantId: this.loginDetails.TenantId,
-      ClientCategory: this.PaymentForm.value.CategoryName,
-      ClientId: this.PaymentForm.value.ClientId??0
+      ClientCategory: this.PaymentForm.value.CategoryName??'',
+      ClientId: this.PaymentForm.value.ClientId ?? 0
 
     };
     console.log(bodyData, 'bodyData bodyData');
@@ -122,8 +123,13 @@ export class PaymentHistoryComponent implements OnInit {
       this.PaymentForm.controls['ClientId'].reset();
       this.PaymentForm.controls['ClientName'].reset();
       this.PaymentForm.controls['CategoryName'].setValue(category?.CategoryName);
-      //   console.log(category.CategoryName, 'CategoryName');
-      await this.loadClientNames();
+      if (category == '') {
+        this.ClientNames = this.clientList;
+      }
+      else {
+        var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.PaymentForm.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
+        this.ClientNames = dataList;
+      }
     }
 
   }
@@ -155,7 +161,7 @@ export class PaymentHistoryComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: this.PaymentForm.value.CategoryName
+        Category: ''
 
       };
 
@@ -163,7 +169,7 @@ export class PaymentHistoryComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.ClientNames = res.ClientDetails;
+      this.clientList = res.ClientDetails;
 
 
     } catch (error) {

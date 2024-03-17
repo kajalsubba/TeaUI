@@ -50,8 +50,8 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
   SeasonAdvanceForm!: FormGroup;
   minToDate!: any;
   ClientNames: any[] = [];
+  clientList: any[] = [];
   selectedRowIndex: number = -1;
-  // saleTypeList: any[]=[];
   categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
@@ -74,11 +74,12 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
       toDate: [new Date(), Validators.required],
       ClientId: [0],
       ClientName: [''],
-      CategoryId: ['',Validators.required],
+      CategoryId: ['', Validators.required],
       CategoryName: ['']
     });
 
-    await this.getCategoryList()
+    await this.getCategoryList();
+    await this.loadClientNames();
   }
 
   async getCategoryList() {
@@ -105,8 +106,14 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
       this.SeasonAdvanceForm.controls['ClientId'].reset();
       this.SeasonAdvanceForm.controls['ClientName'].reset();
       this.SeasonAdvanceForm.controls['CategoryName'].setValue(category?.CategoryName);
-      //   console.log(category.CategoryName, 'CategoryName');
-      await this.loadClientNames();
+      if (category == '') {
+        this.ClientNames = this.clientList;
+      }
+      else {
+        var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.SeasonAdvanceForm.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
+        this.ClientNames = dataList;
+      }
+
     }
 
   }
@@ -118,7 +125,7 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: this.SeasonAdvanceForm.value.CategoryName
+        Category: ''
 
       };
 
@@ -126,7 +133,7 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.ClientNames = res.ClientDetails;
+      this.clientList = res.ClientDetails;
 
 
     } catch (error) {
@@ -152,8 +159,8 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
           ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
           : ToDate,
       TenantId: this.loginDetails.TenantId,
-      ClientCategory: this.SeasonAdvanceForm.value.CategoryName,
-      ClientId: this.SeasonAdvanceForm.value.ClientId??0
+      ClientCategory: this.SeasonAdvanceForm.value.CategoryName ?? '',
+      ClientId: this.SeasonAdvanceForm.value.ClientId ?? 0
 
     };
     console.log(bodyData, 'bodyData bodyData');
@@ -189,7 +196,7 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
 
   search() {
 
-    if (this.SeasonAdvanceForm.invalid ) {
+    if (this.SeasonAdvanceForm.invalid) {
       this.SeasonAdvanceForm.markAllAsTouched();
       return;
     }
