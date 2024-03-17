@@ -125,6 +125,24 @@
           <!-- </li> -->
         </ul>
       </li>
+      <li  [class.showMenu]="currentOpenMenu === 'Bill'" class="main-menu"
+        routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'Bill')">
+          <a>
+            <i class='bx bxs-user-account'></i>
+            <span class="link_name">Bill Generate</span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li routerLink="Bill/StgBill" routerLinkActive="active"><a class="sub-menu-title">STG</a>
+          </li>
+          <li routerLink="Bill/SuppilerBill" routerLinkActive="active"><a class="sub-menu-title">Supplier</a>
+          </li>
+          <!-- <li routerLink="Accounts/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a> -->
+          <!-- </li> -->
+        </ul>
+      </li>
 
       <li [class.showMenu]="currentOpenMenu === 'LeafHistory'" class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'LeafHistory')">
