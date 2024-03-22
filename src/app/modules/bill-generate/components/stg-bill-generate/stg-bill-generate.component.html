@@ -32,6 +32,12 @@
                       {{ client?.ClientName }}
                     </mat-option>
                   </mat-autocomplete>
+                       <!-- Validation message -->
+                <span
+                  *ngIf="StgBillForm.get('ClientName')?.hasError('required') && StgBillForm.get('ClientName')?.touched"
+                  class="text-danger d-block validation-message">
+                  Client is required.
+                </span>
                 </div>
               </div>
               <div class="col-lg-3 my-1">
@@ -239,8 +245,7 @@
           </div>
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="Incentive" class="col-lg-6 col-form-label">Incentive <span
-                  class="text-danger">*</span></label>
+              <label for="Incentive" class="col-lg-6 col-form-label">Incentive</label>
               <div class="col-lg-6 position-relative">
                 <input (input)="calculateFinalAmount()" #Incentive type="number" class="form-control"
                   id="Incentive" placeholder="Incentive" formControlName="Incentive">
@@ -257,8 +262,7 @@
           </div>
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="Transporting" class="col-lg-6 col-form-label">Transporting <span
-                  class="text-danger">*</span></label>
+              <label for="Transporting" class="col-lg-6 col-form-label">Transporting </label>
               <div class="col-lg-6 position-relative">
                 <input (input)="calculateFinalAmount()" #Transporting type="number" class="form-control"
                   id="Transporting" placeholder="Transporting" formControlName="Transporting">
@@ -275,8 +279,7 @@
           </div>
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="GreenLeafCess" class="col-lg-6 col-form-label">Green Leaf Cess <span
-                  class="text-danger">*</span></label>
+              <label for="GreenLeafCess" class="col-lg-6 col-form-label">Green Leaf Cess </label>
               <div class="col-lg-6 position-relative">
                 <input (input)="calculateFinalAmount()" #GreenLeafCess type="number" class="form-control" id="GreenLeafCess"
                   placeholder="Cess" formControlName="GreenLeafCess">
@@ -288,8 +291,7 @@
           </div>
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="FinalBillAmount" class="col-lg-6 col-form-label"> <b>Final Bill Amount</b> <span
-                  class="text-danger">*</span></label>
+              <label for="FinalBillAmount" class="col-lg-6 col-form-label"> <b>Final Bill Amount</b> </label>
               <div class="col-lg-6 position-relative">
                 <input formControlName="FinalBillAmount" readonly #FinalBillAmount type="number"
                   class="form-control final-amount" id="FinalBillAmount" placeholder="Final Amount">
@@ -300,8 +302,7 @@
 
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="LessSeasonAdv" class="col-lg-6 col-form-label">Less Season Adv. <span
-                  class="text-danger">*</span></label>
+              <label for="LessSeasonAdv" class="col-lg-6 col-form-label">Less Season Adv. </label>
               <div class="col-lg-6 position-relative">
                 <input (input)="calculateFinalAmount()" #LessSeasonAdv type="number" class="form-control"
                   id="LessSeasonAdv" placeholder="Less Season Adv." formControlName="LessSeasonAdv">

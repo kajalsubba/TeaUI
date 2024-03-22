@@ -94,7 +94,7 @@ export class StgBillGenerateComponent implements OnInit {
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
       ClientId: [0],
-      ClientName: ['']
+      ClientName: ['', Validators.required]
     });
     this.StgAmountForm = this.fb.group({
       SeasonAmount: [0],
@@ -130,17 +130,24 @@ export class StgBillGenerateComponent implements OnInit {
     const grossAmount: number = this.getTotal('GrossAmount');
     const finalWeight: number = this.getTotal('FinalWeight');
     const totalPayment: number = this.getTotalPayment('Amount');
-
+    const totalPaymentWithPreviusBalance: number = totalPayment + Number(this.StgAmountForm.controls['PreviousAmount'].value);
     const incentiveAmount: number = (this.StgAmountForm.controls['Incentive'].value || 0) * finalWeight;
     const transportingAmount: number = (this.StgAmountForm.controls['Transporting'].value || 0) * finalWeight;
     const cessAmount: number = (this.StgAmountForm.controls['GreenLeafCess'].value || 0) * finalWeight;
 
-    const finalAmount: number = grossAmount + incentiveAmount - (transportingAmount + cessAmount) - totalPayment;
+    const finalAmount: number = grossAmount + incentiveAmount - (transportingAmount + cessAmount) - totalPaymentWithPreviusBalance;
     const amountToPay: number = finalAmount - (this.StgAmountForm.controls['LessSeasonAdv'].value || 0);
 
     // Update the value of the final amount input field
     this.StgAmountForm.controls['FinalBillAmount'].setValue(finalAmount.toFixed(2));
     this.StgAmountForm.controls['AmountToPay'].setValue(amountToPay.toFixed(2));
+    if (finalAmount < 0) {
+      this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
+    }
+    else {
+      this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
+    }
+
   }
   convertDate(date: any): string {
     const parsedDate = new Date(date);
@@ -234,6 +241,10 @@ export class StgBillGenerateComponent implements OnInit {
   }
 
   search() {
+    if (this.StgBillForm.invalid) {
+      this.StgBillForm.markAllAsTouched();
+      return;
+    }
     this.cleanAmountController();
     this.GetStgBillData();
   }
@@ -320,6 +331,11 @@ export class StgBillGenerateComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   BillSave() {
+    if (this.StgAmountForm.invalid || this.StgAmountForm.value.ClientId == 0 || this.StgBillForm.invalid) {
+      this.StgAmountForm.markAllAsTouched();
+      this.StgBillForm.markAllAsTouched();
+      return;
+    }
     const StgObject: StgCollectionData[] = [];
     const PaymentObject: StgPaymentData[] = [];
     this.dataSource.data.forEach((selectedItem) => {

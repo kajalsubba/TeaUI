@@ -119,14 +119,13 @@
         <ul class="sub-menu">
           <li routerLink="Accounts/seasonAdvance" routerLinkActive="active"><a class="sub-menu-title">Season Advance</a>
           </li>
-          <li routerLink="Accounts/payment" routerLinkActive="active"><a class="sub-menu-title">Payments</a>
+          <li routerLink="Accounts/payment" routerLinkActive="active"><a class="sub-menu-title">Payment</a>
           </li>
           <!-- <li routerLink="Accounts/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a> -->
           <!-- </li> -->
         </ul>
       </li>
-      <li  [class.showMenu]="currentOpenMenu === 'Bill'" class="main-menu"
-        routerLinkActive="main-menu-active">
+      <li [class.showMenu]="currentOpenMenu === 'Bill'" class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Bill')">
           <a>
             <i class="fa-solid fa-file-invoice"></i>
@@ -165,7 +164,24 @@
               History</a></li>
         </ul>
       </li>
+      <li [class.showMenu]="currentOpenMenu === 'LeafSummary '" class="main-menu" routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'LeafSummary')">
+          <a>
+            <i class='bx bx-history'></i>
+            <span class="link_name">Summary </span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li routerLink="LeafSummary/stg-Summary" routerLinkActive="active"><a class="sub-menu-title">STG Summary</a>
+          </li>
+          <li routerLink="LeafSummary/supplier-Summary" routerLinkActive="active"><a class="sub-menu-title">Supplier
+              Summary</a></li>
+          <li routerLink="LeafSummary/sale-Summary" routerLinkActive="active"><a class="sub-menu-title">Sale Summary</a>
+          </li>
 
+        </ul>
+      </li>
       <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">
           <a>
