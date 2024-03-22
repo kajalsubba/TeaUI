@@ -154,11 +154,23 @@ export class StgRateFixComponent implements OnInit {
     }
   }
 
+  // getTotalCost(columnName: string): number {
+  //   return this.dataSource.filteredData.reduce(
+  //     (acc, curr) => acc + curr[columnName],
+  //     0
+  //   );
+  // }
+
   getTotalCost(columnName: string): number {
-    return this.dataSource.filteredData.reduce(
-      (acc, curr) => acc + curr[columnName],
-      0
-    );
+    if (!this.dataSource.filteredData || this.dataSource.filteredData.length === 0) {
+      return 0;
+    }
+  
+    const columnValues: number[] = this.dataSource.filteredData
+      .map(item => item[columnName])
+      .filter(value => typeof value === 'number');
+  
+    return columnValues.reduce((acc, curr) => acc + (curr as number), 0);
   }
 
   GetGrade() {
@@ -262,7 +274,7 @@ export class StgRateFixComponent implements OnInit {
   {
     this.dataSource.data.forEach((keys:any,val:any) => {
       keys.Rate=this.dateRangeForm.value.Rate
-     keys.GrossAmount=Number(keys.FinalWeight*this.dateRangeForm.value.Rate)
+     keys.GrossAmount=Number(keys.FinalWeight*this.dateRangeForm.value.Rate).toFixed(2)
     });
     this.dateRangeForm.controls["Rate"].reset();
   }

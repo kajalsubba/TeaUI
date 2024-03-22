@@ -117,22 +117,39 @@ export class PaymentHistoryComponent implements OnInit {
     this.subscriptions.push(categoryListService);
   }
 
+  // async selectCategory(event: MatOptionSelectionChange, category: any) {
+
+  //   if (event.source.selected) {
+  //     this.PaymentForm.controls['ClientId'].reset();
+  //     this.PaymentForm.controls['ClientName'].reset();
+  //     this.PaymentForm.controls['CategoryName'].setValue(category?.CategoryName);
+  //     if (category == '') {
+  //       this.ClientNames = this.clientList;
+  //     }
+  //     else {
+  //       var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.PaymentForm.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
+  //       this.ClientNames = dataList;
+  //     }
+  //   }
+
+  // }
   async selectCategory(event: MatOptionSelectionChange, category: any) {
-
     if (event.source.selected) {
-      this.PaymentForm.controls['ClientId'].reset();
-      this.PaymentForm.controls['ClientName'].reset();
-      this.PaymentForm.controls['CategoryName'].setValue(category?.CategoryName);
-      if (category == '') {
-        this.ClientNames = this.clientList;
-      }
-      else {
-        var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.PaymentForm.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
-        this.ClientNames = dataList;
-      }
-    }
+        this.PaymentForm.controls['ClientId'].reset();
+        this.PaymentForm.controls['ClientName'].reset();
+        this.PaymentForm.controls['CategoryName'].setValue(category?.CategoryName);
 
-  }
+        if (!category) {
+            this.ClientNames = this.clientList;
+        } else {
+            const dataList = this.clientList.filter((x: any) =>
+                x.CategoryName.toLowerCase() === this.PaymentForm.value.CategoryName.toLowerCase() ||
+                x.CategoryName.toLowerCase() === 'both'
+            );
+            this.ClientNames = dataList;
+        }
+    }
+}
 
 
   async getCategoryList() {

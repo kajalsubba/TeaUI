@@ -107,7 +107,7 @@ export class AddEditPaymentComponent implements OnInit {
       this.addEditPayment.controls['CategoryName'].setValue(category.CategoryName);
       var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditPayment.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
       this.ClientNames = dataList;
-    
+
     }
 
   }
@@ -131,24 +131,48 @@ export class AddEditPaymentComponent implements OnInit {
     }
   }
 
-  async getPaymentType() {
+  // async getPaymentType() {
+  //   try {
+  //     const categoryBody: IGetPaymentType = {
+  //       TenantId: this.loginDetails.TenantId
+  //     };
+
+  //     const res: any = await this.paymentTypeService.GetPaymentType(categoryBody)
+  //       .pipe(takeUntil(this.destroy$))
+  //       .toPromise();
+
+  //     this.paymentTypeList = res.PaymentTypeDetails.filter((x:any)=>x.PaymentType.toLowerCase()!='Bill A/C'.toLowerCase());
+
+
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     this.toastr.error('Something went wrong.', 'ERROR');
+  //   }
+  // }
+  async getPaymentType(): Promise<void> {
     try {
       const categoryBody: IGetPaymentType = {
         TenantId: this.loginDetails.TenantId
       };
 
-      const res: any = await this.paymentTypeService.GetPaymentType(categoryBody)
+      const res = await this.paymentTypeService.GetPaymentType(categoryBody)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.paymentTypeList = res.PaymentTypeDetails;
-
+      this.paymentTypeList = res.PaymentTypeDetails.filter((payment: any) =>
+        payment.PaymentType.toLowerCase() !== 'bill a/c'
+      );
 
     } catch (error) {
-      console.error('Error:', error);
-      this.toastr.error('Something went wrong.', 'ERROR');
+      this.handleError(error, 'Failed to fetch payment types');
     }
   }
+
+  private handleError(error: any, message: string): void {
+    console.error('Error:', error);
+    this.toastr.error(message, 'ERROR');
+  }
+
   onSubmit() {
     if (this.addEditPayment.invalid || this.addEditPayment.value.ClientId == 0) {
       this.addEditPayment.markAllAsTouched();

@@ -1,300 +1,340 @@
 <div class="container-fluid mt-2">
-    <div class="row">
-      <div class="col-lg-12 my-2 align-items-center">
-        <div class="row">
-          <div class="col-lg-8 ps-0">
-            <form [formGroup]="StgBillForm">
-              <div class="row border-color mx-2">
-                <div class="col-lg-3 my-1">
-                  <mat-form-field>
-                    <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
-                      placeholder="From Date"  [max]="currentDate" formControlName="fromDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                  </mat-form-field>
+  <div class="row">
+    <div class="col-lg-12 my-2 align-items-center">
+      <div class="row">
+        <div class="col-lg-8 ps-0">
+          <form [formGroup]="StgBillForm">
+            <div class="row border-color mx-2">
+              <div class="col-lg-3 my-1">
+                <mat-form-field>
+                  <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
+                    placeholder="From Date" [max]="currentDate" formControlName="fromDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 my-1">
+                <mat-form-field class="mx-2">
+                  <input readonly matInput [min]="minToDate" [max]="currentDate" [matDatepicker]="picker1"
+                    placeholder="To Date" formControlName="toDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 my-1">
+                <div class="position-relative">
+                  <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
+                    formControlName="ClientName" [matAutocomplete]="clientAuto">
+
+                  <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                    <mat-option *ngFor="let client of filterClientNames(clientName.value)" [value]="client?.ClientName"
+                      (onSelectionChange)="selectClient(client)">
+                      {{ client?.ClientName }}
+                    </mat-option>
+                  </mat-autocomplete>
                 </div>
-                <div class="col-lg-3 my-1">
-                  <mat-form-field class="mx-2">
-                    <input readonly matInput [min]="minToDate" [max]="currentDate" [matDatepicker]="picker1"
-                       placeholder="To Date" formControlName="toDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <div class="col-lg-3 my-1">
-                  <div class="position-relative">
-                    <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
-                      formControlName="ClientName" [matAutocomplete]="clientAuto">
-  
-                    <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
-                      <mat-option *ngFor="let client of filterClientNames(clientName.value)" [value]="client?.ClientName"
-                        (onSelectionChange)="selectClient(client)">
-                        {{ client?.ClientName }}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </div>
-                </div>
-                <div class="col-lg-3 my-1">
-                    <button (click)="search()" class="btn btn-color ms-2">Search</button>
-                  </div>
-                </div>
-            </form>
+              </div>
+              <div class="col-lg-3 my-1">
+                <button (click)="search()" class="btn btn-color ms-2">Search</button>
+              </div>
+            </div>
+          </form>
         </div>
-        <div class="col-lg-4 shadow-sm date-period d-flex justify-content-center align-items-center ">
-            <div class="row mx-2">
-                <div class="col-lg-12">
-                    <div>
-                        <span>For the period of : &nbsp;</span>
-                        <b>{{convertDate(StgBillForm.value.fromDate) + '&nbsp;to&nbsp;' + convertDate(StgBillForm.value.toDate)}}</b>
-                    </div>
-                </div>
+        <!-- <div class="col-lg-4 shadow-sm date-period d-flex justify-content-center align-items-center ">
+          <div class="row mx-2">
+            <div class="col-lg-12">
+              <div>
+                <span>For the period of : &nbsp;</span>
+                <b>{{convertDate(StgBillForm.value.fromDate) + '&nbsp;to&nbsp;' +
+                  convertDate(StgBillForm.value.toDate)}}</b>
+              </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
-      <hr>
-      <div class="col-lg-6">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="table-container">
-                    <div>
-                      <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
-                        <!-- Displayed columns -->
-                        <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-                          <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
-                          <td [ngClass]="{'reject-row': row.Status=='Rejected'}" mat-cell *matCellDef="let row; let i = index;">
-                            {{ row[column.columnDef] }}
-                          </td>
-                          <td mat-footer-cell *matFooterCellDef></td>
-                        </ng-container>
-          
-            
-                        <!-- Collection Date -->
-                        <ng-container matColumnDef="CollectionDate">
-                          <th mat-header-cell *matHeaderCellDef> Collection Date </th>
-                          <td class="weight-column" mat-cell
-                            *matCellDef="let row">{{row.CollectionDate}}</td>
-                          <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                            <b>Total Days : {{dataSource.data.length}} </b>
-                          </td>
-                        </ng-container>
-          
-                        <!-- Collection -->
-                        <ng-container matColumnDef="Collection">
-                          <th mat-header-cell *matHeaderCellDef> Collection </th>
-                          <td class="weight-column" mat-cell
-                            *matCellDef="let row">{{row.Collection.toFixed(2)}} KG</td>
-                          <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                            <b>{{ getTotal('Collection').toFixed(2) }} KG</b>
-                          </td>
-                        </ng-container>
-          
-                        <!-- Deduction -->
-                        <ng-container matColumnDef="Deduction">
-                          <th mat-header-cell *matHeaderCellDef> Deduction </th>
-                          <td class="weight-column" mat-cell
-                            *matCellDef="let row">{{row.Deduction.toFixed(2)}} KG</td>
-                          <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                            <b>{{ getTotal('Deduction').toFixed(2) }} KG</b>
-                          </td>
-                        </ng-container>
-          
-                        <!-- Final -->
-                        <ng-container matColumnDef="Final">
-                          <th mat-header-cell *matHeaderCellDef> Final </th>
-                          <td class="weight-column" mat-cell
-                            *matCellDef="let row">{{row.Final.toFixed(2)}} KG</td>
-                          <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                            <b>{{ getTotal('Final').toFixed(2) }} KG</b>
-                          </td>
-                        </ng-container>
-          
-                        <!-- Rate -->
-                        <ng-container matColumnDef="Rate">
-                          <th mat-header-cell *matHeaderCellDef> Rate </th>
-                          <td class="weight-column" mat-cell
-                            *matCellDef="let row">{{row.Rate.toFixed(2)}}</td>
-                          <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                            <b>{{ getRate('Rate').toFixed(2) }}</b>
-                          </td>
-                        </ng-container>
-          
-                        <!-- Amount -->
-                        <ng-container matColumnDef="Amount">
-                          <th mat-header-cell *matHeaderCellDef> Amount </th>
-                          <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                            *matCellDef="let row"> {{row.Amount.toFixed(2) }} Dr </td>
-                          <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                            <b>{{ getTotal('Amount').toFixed(2) }} Dr</b>
-                          </td>
-                        </ng-container>
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
-                          [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
-                        </tr>
-                        <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
-                        <tr class="mat-row" *matNoDataRow>
-                          <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is not
-                            found !</td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                  <!-- <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator> -->
-            </div>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="table-container">
-          <div>
-            <table matSort mat-table [dataSource]="paymentDataSource" (keydown)="handleKeyboardNavigation($event)">
-              <!-- Displayed columns -->
-              <ng-container *ngFor="let column of paymentColumns" [matColumnDef]="column.columnDef">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
-                <td [ngClass]="{'reject-row': row.Status=='Rejected'}" mat-cell *matCellDef="let row; let i = index;">
-                  {{ row[column.columnDef] }}
-                </td>
-                <td mat-footer-cell *matFooterCellDef></td>
-              </ng-container>
-  
-              <!-- Payment Date -->
-              <ng-container matColumnDef="PaymentDate">
-                <th mat-header-cell *matHeaderCellDef> Payment Date </th>
-                <td class="weight-column" mat-cell
-                  *matCellDef="let row"> {{row.PaymentDate }} </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b>Total : </b>
-                </td>
-              </ng-container>
+    </div>
+    <hr>
+    <div class="col-lg-6">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="table-container">
+            <div>
+              <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
+                <!-- Displayed columns -->
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                  <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+                  <td [ngClass]="{'reject-row': row.Status=='Rejected'}" mat-cell *matCellDef="let row; let i = index;">
+                    {{ row[column.columnDef] }}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
 
-              <!-- Amount -->
-              <ng-container matColumnDef="Amount">
+
+                <!-- Collection Date -->
+                <ng-container matColumnDef="CollectionDate">
+                  <th mat-header-cell *matHeaderCellDef> Collection Date </th>
+                  <td class="weight-column" mat-cell *matCellDef="let row">{{row.CollectionDate}}</td>
+                  <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                    <b>Total Days : {{dataSource.data.length}} </b>
+                  </td>
+                </ng-container>
+
+                <!-- Collection -->
+                <ng-container matColumnDef="FirstWeight">
+                  <th mat-header-cell *matHeaderCellDef> Collection </th>
+                  <td class="weight-column" mat-cell *matCellDef="let row">{{row.FirstWeight}} KG</td>
+                  <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                    <b>{{ getTotal('FirstWeight')}} KG</b>
+                  </td>
+                </ng-container>
+
+                <!-- Deduction -->
+                <ng-container matColumnDef="Deduction">
+                  <th mat-header-cell *matHeaderCellDef> Deduction </th>
+                  <td class="weight-column" mat-cell *matCellDef="let row">{{row.Deduction}} KG</td>
+                  <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                    <b>{{ getTotal('Deduction') }} KG</b>
+                  </td>
+                </ng-container>
+
+                <!-- Final -->
+                <ng-container matColumnDef="FinalWeight">
+                  <th mat-header-cell *matHeaderCellDef> Final </th>
+                  <td class="weight-column" mat-cell *matCellDef="let row">{{row.FinalWeight}} KG</td>
+                  <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                    <b>{{ getTotal('FinalWeight') }} KG</b>
+                  </td>
+                </ng-container>
+
+                <!-- Rate -->
+                <ng-container matColumnDef="Rate">
+                  <th mat-header-cell *matHeaderCellDef> Rate </th>
+                  <td class="weight-column" mat-cell *matCellDef="let row">{{row.Rate.toFixed(2)}}</td>
+                  <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                    <b>{{ getRate('Rate').toFixed(2) }}</b>
+                  </td>
+                </ng-container>
+
+                <!-- Amount -->
+                <ng-container matColumnDef="GrossAmount">
+                  <th mat-header-cell *matHeaderCellDef> Amount </th>
+                  <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                    *matCellDef="let row"> {{row.GrossAmount.toFixed(2) }} Dr </td>
+                  <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                    <b>{{ getTotal('GrossAmount').toFixed(2) }} Dr</b>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+                  [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+                </tr>
+                <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is
+                    not
+                    found !</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <!-- <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="table-container">
+        <div>
+          <table matSort mat-table [dataSource]="paymentDataSource" (keydown)="handleKeyboardNavigation($event)">
+            <!-- Displayed columns -->
+            <ng-container *ngFor="let column of paymentColumns" [matColumnDef]="column.columnDef">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" mat-cell *matCellDef="let row; let i = index;">
+                {{ row[column.columnDef] }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Payment Date -->
+            <ng-container matColumnDef="PaymentDate">
+              <th mat-header-cell *matHeaderCellDef> Payment Date </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.PaymentDate }} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>Total : </b>
+              </td>
+            </ng-container>
+
+            <!-- Amount -->
+            <!-- <ng-container matColumnDef="Amount">
                 <th mat-header-cell *matHeaderCellDef> Amount </th>
                 <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
                   *matCellDef="let row"> {{row.Amount.toFixed(2) }} Dr </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
                   <b>{{ getTotal('Amount').toFixed(2) }} Dr</b>
                 </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="paymentDisplayedColumns; sticky:true;"></tr>
-              <tr mat-row *matRowDef="let row; columns: paymentDisplayedColumns; let i = index;"
-                [class.selected-row]="i == selectedPaymentRowIndex" (click)="selectPaymentRow(row, i)">
-              </tr>
-              <tr class="table-footer" mat-footer-row *matFooterRowDef="paymentDisplayedColumns; sticky: true"></tr>
-              <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell text-center text-danger" attr.colspan="{{paymentDisplayedColumns.length + 1}}">Record is not
-                  found !</td>
-              </tr>
-            </table>
+              </ng-container> -->
+            <ng-container matColumnDef="Amount">
+              <th mat-header-cell *matHeaderCellDef> Amount </th>
+              <td class="weight-column" mat-cell *matCellDef="let row">{{row.Amount.toFixed(2)}}</td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>{{ getTotalPayment('Amount').toFixed(2) }}</b>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="paymentDisplayedColumns; sticky:true;"></tr>
+            <tr mat-row *matRowDef="let row; columns: paymentDisplayedColumns; let i = index;"
+              [class.selected-row]="i == selectedPaymentRowIndex" (click)="selectPaymentRow(row, i)">
+            </tr>
+            <tr class="table-footer" mat-footer-row *matFooterRowDef="paymentDisplayedColumns; sticky: true"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell text-center text-danger" attr.colspan="{{paymentDisplayedColumns.length + 1}}">Record
+                is not
+                found !</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator> -->
+    </div>
+  </div>
+
+  <form [formGroup]="StgAmountForm">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-8">
+        <div class="form-group row my-2">
+          <label for="PreviousAmount" class="col-lg-6 col-form-label"><b class="text-danger">Previous
+              Balance</b></label>
+          <div class="col-lg-6 position-relative">
+            <input formControlName="PreviousAmount" readonly #PreviousAmount type="number"
+              class="form-control text-danger final-amount" id="PreviousAmount" placeholder="Previous Balance">
+            <span class="kg-text"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
           </div>
         </div>
-        <!-- <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator> -->
-      </div>
-    </div>
-    
-    <form [formGroup]="StgAmountForm">
-    <div class="row">
-        <div class="col-lg-4 offset-lg-8">
-            <div class="form-group row my-2">
-                <label for="SeasonAmount" class="col-lg-6 col-form-label"><b class="text-danger">Standing Season Adv.</b></label>
-                <div class="col-lg-6 position-relative">
-                    <input formControlName="SeasonAmount" readonly #SeasonAmount type="number" class="form-control text-danger final-amount" id="SeasonAmount" placeholder="Season Amount">
-                    <span class="kg-text"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
-                </div>
-            </div>
+        <div class="form-group row my-2">
+          <label for="SeasonAmount" class="col-lg-6 col-form-label"><b class="text-danger">Standing Season
+              Adv.</b></label>
+          <div class="col-lg-6 position-relative">
+            <input formControlName="SeasonAmount" readonly #SeasonAmount type="number"
+              class="form-control text-danger final-amount" id="SeasonAmount" placeholder="Season Amount">
+            <span class="kg-text"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
+          </div>
         </div>
+      </div>
+
     </div>
     <div class="row mt-2">
-        <div class="col-lg-12">
-                <div class="row mx-1 shadow-sm p-2 border-color">
-                    <div class="col-lg-4">
-                        <div class="form-group row mb-3">
-                            <label for="TransactDate" class="col-lg-6 col-form-label">Transact Date <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-lg-6 position-relative">
-                                <mat-form-field>
-                                    <input readonly matInput [matDatepicker]="picker2"
-                                      placeholder="Transact Date" class="date-select"  [max]="currentDate" formControlName="TransactDate">
-                                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker2></mat-datepicker>
-                                  </mat-form-field>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group row mb-3">
-                            <label for="IncentiveAmount" class="col-lg-6 col-form-label">Incentive Amount <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-lg-6 position-relative">
-                                <input (input)="calculateFinalAmount()" #IncentiveAmount type="number" class="form-control" id="IncentiveAmount" placeholder="IncentiveAmount"
-                                    formControlName="IncentiveAmount">
-                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-        
-                                <!-- Validation message -->
-                                <span
-                                    *ngIf="StgAmountForm.get('IncentiveAmount')?.hasError('required') && StgAmountForm.get('IncentiveAmount')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Incentive Amount is required.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group row mb-3">
-                            <label for="TransportingAmount" class="col-lg-6 col-form-label">Transporting Amount <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-lg-6 position-relative">
-                                <input (input)="calculateFinalAmount()" #TransportAmount type="number" class="form-control" id="TransportingAmount" placeholder="TransportingAmount"
-                                    formControlName="TransportingAmount">
-                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-        
-                                <!-- Validation message -->
-                                <span
-                                    *ngIf="StgAmountForm.get('TransportingAmount')?.hasError('required') && StgAmountForm.get('TransportingAmount')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Transporting Amount is required.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group row mb-3">
-                            <label for="CessAmount" class="col-lg-6 col-form-label">Green Leaf Cess Amount <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-lg-6 position-relative">
-                                <input (input)="calculateFinalAmount()" #CessAmount type="number" class="form-control" id="CessAmount" placeholder="CessAmount"
-                                    formControlName="CessAmount">
-                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-        
-                                <!-- Validation message -->
-                                <span
-                                    *ngIf="StgAmountForm.get('CessAmount')?.hasError('required') && StgAmountForm.get('CessAmount')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Cess Amount is required.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group row mb-3">
-                            <label for="FinalAmount" class="col-lg-6 col-form-label"> <b>Final Bill Amount</b> <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-lg-6 position-relative">
-                                <input formControlName="FinalAmount" readonly #FinalAmount type="number" class="form-control final-amount" id="FinalAmount" placeholder="Final Amount">
-                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group row mb-3">
-                            <label for="FinalAmount" class="col-lg-6 col-form-label"></label>
-                            <div class="col-lg-6 d-grid position-relative">
-                                <button class="btn btn-color">Transmit</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div class="col-lg-12">
+        <div class="row mx-1 shadow-sm p-2 border-color">
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="BillDate" class="col-lg-6 col-form-label">Bill Date <span
+                  class="text-danger">*</span></label>
+              <div class="col-lg-6 position-relative">
+                <mat-form-field>
+                  <input readonly matInput [matDatepicker]="picker2" placeholder="Bill Date" class="date-select"
+                    [max]="currentDate" formControlName="BillDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="Incentive" class="col-lg-6 col-form-label">Incentive <span
+                  class="text-danger">*</span></label>
+              <div class="col-lg-6 position-relative">
+                <input (input)="calculateFinalAmount()" #Incentive type="number" class="form-control"
+                  id="Incentive" placeholder="Incentive" formControlName="Incentive">
+                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+
+                <!-- Validation message -->
+                <!-- <span
+                  *ngIf="StgAmountForm.get('Incentive')?.hasError('required') && StgAmountForm.get('Incentive')?.touched"
+                  class="text-danger d-block validation-message">
+                  Incentive Amount is required.
+                </span> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="Transporting" class="col-lg-6 col-form-label">Transporting <span
+                  class="text-danger">*</span></label>
+              <div class="col-lg-6 position-relative">
+                <input (input)="calculateFinalAmount()" #Transporting type="number" class="form-control"
+                  id="Transporting" placeholder="Transporting" formControlName="Transporting">
+                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+
+                <!-- Validation message -->
+                <!-- <span
+                  *ngIf="StgAmountForm.get('Transporting')?.hasError('required') && StgAmountForm.get('Transporting')?.touched"
+                  class="text-danger d-block validation-message">
+                  Transporting Amount is required.
+                </span> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="GreenLeafCess" class="col-lg-6 col-form-label">Green Leaf Cess <span
+                  class="text-danger">*</span></label>
+              <div class="col-lg-6 position-relative">
+                <input (input)="calculateFinalAmount()" #GreenLeafCess type="number" class="form-control" id="GreenLeafCess"
+                  placeholder="Cess" formControlName="GreenLeafCess">
+                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+
+             
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="FinalBillAmount" class="col-lg-6 col-form-label"> <b>Final Bill Amount</b> <span
+                  class="text-danger">*</span></label>
+              <div class="col-lg-6 position-relative">
+                <input formControlName="FinalBillAmount" readonly #FinalBillAmount type="number"
+                  class="form-control final-amount" id="FinalBillAmount" placeholder="Final Amount">
+                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="LessSeasonAdv" class="col-lg-6 col-form-label">Less Season Adv. <span
+                  class="text-danger">*</span></label>
+              <div class="col-lg-6 position-relative">
+                <input (input)="calculateFinalAmount()" #LessSeasonAdv type="number" class="form-control"
+                  id="LessSeasonAdv" placeholder="Less Season Adv." formControlName="LessSeasonAdv">
+                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="AmountToPay" class="col-lg-6 col-form-label">Amount To Pay <span
+                  class="text-danger">*</span></label>
+              <div class="col-lg-6 position-relative">
+                <input readonly #AmountToPay type="number" class="form-control"
+                  id="AmountToPay" placeholder="AmountToPay" formControlName="AmountToPay">
+                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="FinalAmount" class="col-lg-6 col-form-label"></label>
+              <div class="col-lg-6 d-grid position-relative">
+                <button (click)="BillSave()" class="btn btn-color">Submit</button>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    </form>
-  </div>
+  </form>
+</div>

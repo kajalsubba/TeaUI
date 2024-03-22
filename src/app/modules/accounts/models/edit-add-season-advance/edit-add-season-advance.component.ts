@@ -91,6 +91,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
     if (client == '') {
       this.addEditSeasonAdvance.controls['ClientId'].reset();
     }
+    console.log(client, 'client?.ClientId');
 
     this.addEditSeasonAdvance.controls['ClientId'].setValue(client?.ClientId);
   }
@@ -179,7 +180,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
 
     this.addEditSeasonAdvance.controls['ClientName'].reset()
     this.addEditSeasonAdvance.controls['ClientId'].reset()
-    this.addEditSeasonAdvance.controls['CategoryId'].reset()
+  //  this.addEditSeasonAdvance.controls['CategoryId'].reset()
     this.addEditSeasonAdvance.controls['Amount'].reset()
 
   }

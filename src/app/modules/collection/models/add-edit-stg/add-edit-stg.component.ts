@@ -214,20 +214,39 @@ export class AddEditStgComponent implements OnInit {
     }
   }
 
-  CleanFormControl() {
+  // CleanFormControl() {
 
-    // this.stgForm.reset();
-    this.stgForm.controls['ClientName'].reset()
-    this.stgForm.controls['ClientId'].reset()
-    this.stgForm.controls['FirstWeight'].reset()
-    this.stgForm.controls['WetLeaf'].reset()
-    this.stgForm.controls['LongLeaf'].reset()
-    this.stgForm.controls['Deduction'].reset()
-    this.stgForm.controls['FinalWeight'].reset()
-    this.stgForm.controls['Rate'].reset()
-    this.stgForm.controls['Remarks'].reset()
-    this.stgForm.controls['GradeId'].reset()
+  //   // this.stgForm.reset();
+  //   this.stgForm.controls['ClientName'].reset()
+  //   this.stgForm.controls['ClientId'].reset()
+  //   this.stgForm.controls['FirstWeight'].reset()
+  //   this.stgForm.controls['WetLeaf'].reset()
+  //   this.stgForm.controls['LongLeaf'].reset()
+  //   this.stgForm.controls['Deduction'].reset()
+  //   this.stgForm.controls['FinalWeight'].reset()
+  //   this.stgForm.controls['Rate'].reset()
+  //   this.stgForm.controls['Remarks'].reset()
+  //   this.stgForm.controls['GradeId'].reset()
+  // }
+  CleanFormControl() {
+    const formControls = [
+      'ClientName',
+      'ClientId',
+      'FirstWeight',
+      'WetLeaf',
+      'LongLeaf',
+      'Deduction',
+      'FinalWeight',
+      'Rate',
+      'Remarks',
+      'GradeId'
+    ];
+  
+    formControls.forEach(control => {
+      this.stgForm.controls[control].reset();
+    });
   }
+  
 
   async loadVehicleNumbers() {
     try {

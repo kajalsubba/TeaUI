@@ -166,26 +166,14 @@
                             <th mat-header-cell *matHeaderCellDef> Gross Amount <i
                                     class="fa-solid fa-indian-rupee-sign"></i> </th>
                             <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> <i
-                                    class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount}} </td>
+                                    class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount}}</td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
                                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') }}</b>
                             </td>
                         </ng-container>
 
 
-                        <!-- Status column -->
-                        <!-- <ng-container matColumnDef="Status">
-                            <th mat-header-cell *matHeaderCellDef>Status</th>
-                            <td mat-cell *matCellDef="let row">
-                                <div class="statusBtn">
-                                    <span *ngIf="row.Status == 'Rejected'" class="btn-reject">Rejected</span>
-                                    <span *ngIf="row.Status == 'Pending'" class="btn-pending">Pending</span>
-                                    <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
-                                </div>
-                            </td>
-                            <td mat-footer-cell *matFooterCellDef></td>
-                        </ng-container> -->
-                        <!-- No data row -->
+                       
                        
 
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>

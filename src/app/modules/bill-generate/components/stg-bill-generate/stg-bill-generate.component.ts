@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -11,6 +11,8 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
+import { StgBillService } from '../../services/stg-bill.service';
+import { IGetStgBill, SaveStgBill, StgCollectionData, StgPaymentData } from '../../interfaces/iget-stg-bill';
 
 @Component({
   selector: 'app-stg-bill-generate',
@@ -21,52 +23,18 @@ export class StgBillGenerateComponent implements OnInit {
 
   displayedColumns: string[] = [
     'CollectionDate',
-    'Grade',
-    'Collection',
+    'GradeName',
+    'FirstWeight',
     'Deduction',
-    'Final',
+    'FinalWeight',
     'Rate',
-    'Amount'
+    'GrossAmount'
 
   ];
-  dummyData = [
-    { 
-      CollectionDate: '2024-03-16',
-      Grade: 'A',
-      Collection: 100,
-      Deduction: 10,
-      Final: 90,
-      Rate: 5,
-      Amount: 450
-    },
-    { 
-      CollectionDate: '2024-03-17',
-      Grade: 'B',
-      Collection: 120,
-      Deduction: 12,
-      Final: 108,
-      Rate: 4,
-      Amount: 432
-    },
-    // Add more dummy data as needed
-  ];
-  dummyPaymentData = [
-    {
-      PaymentDate: '2024-03-16',
-      PaymentType: 'Cash',
-      Narration: 'Payment for goods',
-      Amount: 500
-    },
-    {
-      PaymentDate: '2024-03-17',
-      PaymentType: 'Credit Card',
-      Narration: 'Online purchase',
-      Amount: 250
-    },
-    // Add more dummy payment data as needed
-  ];
+
   paymentDisplayedColumns: string[] = [
     'PaymentDate',
+    'EntryDate',
     'PaymentType',
     'Narration',
     'Amount'
@@ -78,7 +46,7 @@ export class StgBillGenerateComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     // { columnDef: 'CollectionDate', header: 'Collection Date' },
-    { columnDef: 'Grade', header: 'Grade' },
+    { columnDef: 'GradeName', header: 'Grade' },
     // { columnDef: 'Collection', header: 'Collection(KG)' },
     // { columnDef: 'Deduction', header: 'Deduction(KG)' },
     // { columnDef: 'Final', header: 'Final(KG)' },
@@ -87,7 +55,7 @@ export class StgBillGenerateComponent implements OnInit {
 
   ];
   paymentColumns: { columnDef: string; header: string }[] = [
-    // { columnDef: 'PaymentDate', header: 'Payment Date' },
+    { columnDef: 'EntryDate', header: 'Entry Date' },
     { columnDef: 'PaymentType', header: 'Payment Type' },
     { columnDef: 'Narration', header: 'Narration' },
     //  { columnDef: 'Amount', header: 'Amount' }
@@ -104,6 +72,7 @@ export class StgBillGenerateComponent implements OnInit {
   minToDate!: any;
   currentDate: Date | null = new Date();
   ClientNames: any[] = [];
+  OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
   // saleTypeList: any[]=[];
@@ -114,7 +83,8 @@ export class StgBillGenerateComponent implements OnInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
-    private autocompleteService: AutoCompleteService
+    private autocompleteService: AutoCompleteService,
+    private stgBillService: StgBillService
   ) { }
 
   async ngOnInit() {
@@ -126,31 +96,51 @@ export class StgBillGenerateComponent implements OnInit {
       ClientName: ['']
     });
     this.StgAmountForm = this.fb.group({
-      SeasonAmount:[0],
-      TransactDate:[new Date()],
-      IncentiveAmount: [0],
-      TransportingAmount: [0],
-      CessAmount: [0],
-      FinalAmount:[0]
+      SeasonAmount: [0],
+      PreviousAmount: [0],
+      BillDate: [new Date()],
+      Incentive: [0],
+      Transporting: [0],
+      GreenLeafCess: [0],
+      FinalBillAmount: [0],
+      LessSeasonAdv: [0],
+      AmountToPay: [0]
     });
-    this.dataSource.data = this.dummyData;
-    this.paymentDataSource.data = this.dummyPaymentData;
-    this.calculateFinalAmount()
+
     await this.loadClientNames();
   }
 
-  calculateFinalAmount() {
-    const totalAmount = this.getTotal('Amount');
-    const incentiveAmount = this.StgAmountForm.controls['IncentiveAmount'].value || 0;
-    const transportingAmount = this.StgAmountForm.controls['TransportingAmount'].value || 0;
-    const cessAmount = this.StgAmountForm.controls['CessAmount'].value || 0;
+  cleanAmountController(): void {
+    const controlsToReset: string[] = [
+      'FinalBillAmount',
+      'LessSeasonAdv',
+      'GreenLeafCess',
+      'Transporting',
+      'Incentive',
+      'AmountToPay'
+    ];
 
-    const finalAmount = totalAmount + incentiveAmount - (transportingAmount + cessAmount);
-    
-    // Update the value of the final amount input field
-    this.StgAmountForm.controls['FinalAmount'].setValue(finalAmount.toFixed(2));
+    controlsToReset.forEach(controlName => {
+      this.StgAmountForm.controls[controlName].reset();
+    });
   }
 
+  calculateFinalAmount(): void {
+    const grossAmount: number = this.getTotal('GrossAmount');
+    const finalWeight: number = this.getTotal('FinalWeight');
+    const totalPayment: number = this.getTotalPayment('Amount');
+
+    const incentiveAmount: number = (this.StgAmountForm.controls['Incentive'].value || 0) * finalWeight;
+    const transportingAmount: number = (this.StgAmountForm.controls['Transporting'].value || 0) * finalWeight;
+    const cessAmount: number = (this.StgAmountForm.controls['GreenLeafCess'].value || 0) * finalWeight;
+
+    const finalAmount: number = grossAmount + incentiveAmount - (transportingAmount + cessAmount) - totalPayment;
+    const amountToPay: number = finalAmount - (this.StgAmountForm.controls['LessSeasonAdv'].value || 0);
+
+    // Update the value of the final amount input field
+    this.StgAmountForm.controls['FinalBillAmount'].setValue(finalAmount.toFixed(2));
+    this.StgAmountForm.controls['AmountToPay'].setValue(amountToPay.toFixed(2));
+  }
   convertDate(date: any): string {
     const parsedDate = new Date(date);
     return this.datePipe.transform(parsedDate, 'dd-MM-yyyy') || '';
@@ -181,11 +171,29 @@ export class StgBillGenerateComponent implements OnInit {
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
+ 
   getTotal(columnName: string): number {
-    return this.dataSource.filteredData.reduce(
-      (acc, curr) => acc + curr[columnName],
-      0
-    );
+    if (!this.dataSource.filteredData || this.dataSource.filteredData.length === 0) {
+      return 0;
+    }
+
+    const columnValues: number[] = this.dataSource.filteredData
+      .map(item => Number(item[columnName]))
+      .filter(value => !isNaN(value));
+
+    return columnValues.reduce((acc, curr) => acc + curr, 0);
+  }
+
+  getTotalPayment(columnName: string): number {
+    if (!this.paymentDataSource.filteredData || this.paymentDataSource.filteredData.length === 0) {
+      return 0;
+    }
+
+    const columnValues: number[] = this.paymentDataSource.filteredData
+      .map(item => Number(item[columnName]))
+      .filter(value => !isNaN(value));
+
+    return columnValues.reduce((acc, curr) => acc + curr, 0);
   }
 
   getRate(columnName: string): number {
@@ -195,13 +203,13 @@ export class StgBillGenerateComponent implements OnInit {
       0
     );
     const count = filteredData.length;
-    
+
     // Calculate average
     const average = count !== 0 ? total / count : 0;
-  
+
     return average;
   }
-  
+
 
   filterClientNames(value: string): any[] {
 
@@ -225,8 +233,35 @@ export class StgBillGenerateComponent implements OnInit {
   }
 
   search() {
-
+    this.cleanAmountController();
+    this.GetStgBillData();
   }
+
+  GetStgBillData() {
+    const currentDate = new Date();
+    let bodyData: IGetStgBill = {
+      FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      TenantId: this.loginDetails.TenantId,
+      ClientId: this.StgBillForm.value.ClientId ?? 0
+
+    };
+    //  console.log(bodyData, 'bodyData bodyData');
+
+    const categoryListService = this.stgBillService
+      .GetStgBill(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.dataSource.data = res.StgData;
+        this.paymentDataSource.data = res.PaymentData;
+        this.OutStandingData = res.OutStandingData;
+        this.StgAmountForm.controls['SeasonAmount'].setValue(this.OutStandingData[0].SeasonAdvance.toFixed(2));
+        this.StgAmountForm.controls['PreviousAmount'].setValue(this.OutStandingData[0].PreviousBalance.toFixed(2));
+
+      });
+    this.subscriptions.push(categoryListService);
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -268,15 +303,65 @@ export class StgBillGenerateComponent implements OnInit {
     }
   }
 
-isDataSourceFocused(): boolean {
-  return this.selectedRowIndex !== -1;
-}
+  isDataSourceFocused(): boolean {
+    return this.selectedRowIndex !== -1;
+  }
 
-isPaymentDataSourceFocused(): boolean {
-  return this.selectedPaymentRowIndex !== -1;
-}
+  isPaymentDataSourceFocused(): boolean {
+    return this.selectedPaymentRowIndex !== -1;
+  }
 
   editItem(e: any) {
+
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+  BillSave() {
+    const StgObject: StgCollectionData[] = [];
+    const PaymentObject: StgPaymentData[] = [];
+    this.dataSource.data.forEach((selectedItem) => {
+      // Create the selected object based on the selected item
+      const selectedObject: StgCollectionData = {
+        CollectionId: selectedItem.CollectionId ?? 0, // Assuming CollectionId is present in your data
+      };
+      // Push the selected object to the array
+      StgObject.push(selectedObject);
+    });
+
+    this.paymentDataSource.data.forEach((selectedItem) => {
+      // Create the selected object based on the selected item
+      const selectedObject: StgPaymentData = {
+        PaymentId: selectedItem.PaymentId ?? 0, // Assuming CollectionId is present in your data
+      };
+      // Push the selected object to the array
+      PaymentObject.push(selectedObject);
+    });
+
+    let data: SaveStgBill = {
+
+      BillDate: formatDate(this.StgAmountForm.value.BillDate, 'yyyy-MM-dd', 'en-US'),
+      FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      ClientId: this.StgBillForm.value.ClientId,
+      FinalWeight: this.getTotal('FinalWeight')??0,
+      TotalStgAmount: this.getTotal('GrossAmount')??0,
+      TotalStgPayment: this.getTotalPayment('Amount')??0,
+      PreviousBalance: this.StgAmountForm.value.PreviousAmount??0,
+      StandingSeasonAdv: this.StgAmountForm.value.SeasonAmount??0,
+      Incentive: this.StgAmountForm.value.Incentive??0,
+      Transporting: this.StgAmountForm.value.Transporting??0,
+      GreenLeafCess: this.StgAmountForm.value.GreenLeafCess??0,
+      FinalBillAmount: this.StgAmountForm.value.FinalBillAmount??0,
+      LessSeasonAdv: this.StgAmountForm.value.LessSeasonAdv??0,
+      AmountToPay: this.StgAmountForm.value.AmountToPay??0,
+      TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.UserId,
+      CollectionData: StgObject,
+      PaymentData: PaymentObject
+    };
+    console.log(data, 'bildata');
 
   }
 
