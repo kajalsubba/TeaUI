@@ -252,27 +252,56 @@ export class StgBillGenerateComponent implements OnInit {
     await this.GetStgBillData();
   }
 
+  // async GetStgBillData() {
+  //   try {
+  //     const currentDate = new Date();
+  //     let bodyData: IGetStgBill = {
+  //       FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+  //       ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+  //       TenantId: this.loginDetails.TenantId,
+  //       ClientId: this.StgBillForm.value.ClientId ?? 0
+
+  //     };
+
+  //     const res: any = await this.stgBillService
+  //       .GetStgBill(bodyData)
+  //       .pipe(takeUntil(this.destroy$))
+  //       .toPromise();
+
+  //     this.dataSource.data = res.StgData;
+  //     this.paymentDataSource.data = res.PaymentData;
+  //     this.OutStandingData = res.OutStandingData;
+  //     this.StgAmountForm.controls['SeasonAmount'].setValue(this.OutStandingData[0].SeasonAdvance.toFixed(2));
+  //     this.StgAmountForm.controls['PreviousAmount'].setValue(this.OutStandingData[0].PreviousBalance.toFixed(2));
+
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     this.toastr.error('Something went wrong.', 'ERROR');
+  //   }
+  // }
   async GetStgBillData() {
     try {
-      const currentDate = new Date();
-      let bodyData: IGetStgBill = {
+      const bodyData: IGetStgBill = {
         FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
         ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         TenantId: this.loginDetails.TenantId,
         ClientId: this.StgBillForm.value.ClientId ?? 0
-
       };
 
-      const res: any = await this.stgBillService
-        .GetStgBill(bodyData)
-        .pipe(takeUntil(this.destroy$))
-        .toPromise();
+      const res: any = await this.stgBillService.GetStgBill(bodyData).toPromise();
+      const { StgData, PaymentData, OutStandingData } = res;
 
-      this.dataSource.data = res.StgData;
-      this.paymentDataSource.data = res.PaymentData;
-      this.OutStandingData = res.OutStandingData;
-      this.StgAmountForm.controls['SeasonAmount'].setValue(this.OutStandingData[0].SeasonAdvance.toFixed(2));
-      this.StgAmountForm.controls['PreviousAmount'].setValue(this.OutStandingData[0].PreviousBalance.toFixed(2));
+      this.dataSource.data = StgData;
+      this.paymentDataSource.data = PaymentData;
+
+      if (OutStandingData && OutStandingData.length > 0) {
+        const { SeasonAdvance, PreviousBalance } = OutStandingData[0];
+        this.StgAmountForm.controls['SeasonAmount'].setValue(SeasonAdvance.toFixed(2));
+        this.StgAmountForm.controls['PreviousAmount'].setValue(PreviousBalance.toFixed(2));
+      }
+      else {
+        this.toastr.warning('Please submit fisrt season advace!', 'Notification')
+      }
 
     } catch (error) {
       console.error('Error:', error);
@@ -438,9 +467,12 @@ export class StgBillGenerateComponent implements OnInit {
           this.StgBillForm.controls[control].reset();
         });
       });
+      console.log('A')
     await this.GetStgBillData();
+    console.log('B')
     this.cleanAmountController();
+    console.log('C')
     this.ClientNoInput.nativeElement.focus();
-  //  this.StgAmountForm.controls['SeasonAmount'].reset();
+    //  this.StgAmountForm.controls['SeasonAmount'].reset();
   }
 }
