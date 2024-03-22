@@ -83,8 +83,15 @@
             <!-- Amount -->
             <ng-container matColumnDef="Amount">
               <th mat-header-cell *matHeaderCellDef> Amount </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.Amount.toFixed(2) }} Dr </td>
+              <td class="weight-column" mat-cell *matCellDef="let row"> <ng-container
+                  *ngIf="row.Amount >=0; else elseBlock">
+                  {{ row.Amount.toFixed(2) }} Dr
+                </ng-container>
+                <ng-template #elseBlock>
+                  <!-- Render this if row.Amount is null or undefined -->
+                  {{ row.Amount.toFixed(2) }} Cr
+                </ng-template>
+              </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotal('Amount').toFixed(2) }} Dr</b>
               </td>
