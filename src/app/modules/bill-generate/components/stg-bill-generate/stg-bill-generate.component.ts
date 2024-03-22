@@ -141,12 +141,13 @@ export class StgBillGenerateComponent implements OnInit {
     // Update the value of the final amount input field
     this.StgAmountForm.controls['FinalBillAmount'].setValue(finalAmount.toFixed(2));
     this.StgAmountForm.controls['AmountToPay'].setValue(amountToPay.toFixed(2));
-    if (finalAmount < 0) {
-      this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
-    }
-    else {
-      this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
-    }
+    // if (finalAmount < 0) {
+    //   this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
+    // }
+    // else {
+    //   this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
+    // }
+    finalAmount < 0 ? this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true }) : this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
 
   }
   convertDate(date: any): string {
