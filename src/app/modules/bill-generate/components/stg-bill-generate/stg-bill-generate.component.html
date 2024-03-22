@@ -23,11 +23,11 @@
               </div>
               <div class="col-lg-3 my-1">
                 <div class="position-relative">
-                  <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
+                  <input #ClientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
                     formControlName="ClientName" [matAutocomplete]="clientAuto">
 
                   <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
-                    <mat-option *ngFor="let client of filterClientNames(clientName.value)" [value]="client?.ClientName"
+                    <mat-option *ngFor="let client of filterClientNames(ClientName.value)" [value]="client?.ClientName"
                       (onSelectionChange)="selectClient(client)">
                       {{ client?.ClientName }}
                     </mat-option>
@@ -119,9 +119,9 @@
                 <ng-container matColumnDef="GrossAmount">
                   <th mat-header-cell *matHeaderCellDef> Amount </th>
                   <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                    *matCellDef="let row"> {{row.GrossAmount.toFixed(2) }} Dr </td>
+                    *matCellDef="let row"> {{row.GrossAmount.toFixed(2) }}  </td>
                   <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                    <b>{{ getTotal('GrossAmount').toFixed(2) }} Dr</b>
+                    <b>{{ getTotal('GrossAmount').toFixed(2) }} </b>
                   </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>

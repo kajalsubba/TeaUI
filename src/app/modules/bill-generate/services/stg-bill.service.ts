@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IGetStgBill } from '../interfaces/iget-stg-bill';
+import { IGetStgBill, SaveStgBill } from '../interfaces/iget-stg-bill';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,5 +12,10 @@ export class StgBillService {
 
   GetStgBill(clientBody:IGetStgBill): Observable<string[]> {
     return this.apiService.post('Accounts/GetStgBillData', clientBody);
+  }
+
+  
+  SaveStgBIll(clientBody:SaveStgBill): Observable<string[]> {
+    return this.apiService.post('Accounts/SaveStgBill', clientBody);
   }
 }

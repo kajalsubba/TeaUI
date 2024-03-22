@@ -1,5 +1,5 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,7 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { _MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
@@ -62,6 +62,7 @@ export class StgBillGenerateComponent implements OnInit {
 
   ];
 
+  @ViewChild('ClientName') ClientNoInput!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
@@ -171,7 +172,7 @@ export class StgBillGenerateComponent implements OnInit {
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
- 
+
   getTotal(columnName: string): number {
     if (!this.dataSource.filteredData || this.dataSource.filteredData.length === 0) {
       return 0;
@@ -345,24 +346,51 @@ export class StgBillGenerateComponent implements OnInit {
       FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       ClientId: this.StgBillForm.value.ClientId,
-      FinalWeight: this.getTotal('FinalWeight')??0,
-      TotalStgAmount: this.getTotal('GrossAmount')??0,
-      TotalStgPayment: this.getTotalPayment('Amount')??0,
-      PreviousBalance: this.StgAmountForm.value.PreviousAmount??0,
-      StandingSeasonAdv: this.StgAmountForm.value.SeasonAmount??0,
-      Incentive: this.StgAmountForm.value.Incentive??0,
-      Transporting: this.StgAmountForm.value.Transporting??0,
-      GreenLeafCess: this.StgAmountForm.value.GreenLeafCess??0,
-      FinalBillAmount: this.StgAmountForm.value.FinalBillAmount??0,
-      LessSeasonAdv: this.StgAmountForm.value.LessSeasonAdv??0,
-      AmountToPay: this.StgAmountForm.value.AmountToPay??0,
+      FinalWeight: this.getTotal('FinalWeight') ?? 0,
+      TotalStgAmount: this.getTotal('GrossAmount') ?? 0,
+      TotalStgPayment: this.getTotalPayment('Amount') ?? 0,
+      PreviousBalance: this.StgAmountForm.value.PreviousAmount ?? 0,
+      StandingSeasonAdv: this.StgAmountForm.value.SeasonAmount ?? 0,
+      Incentive: this.StgAmountForm.value.Incentive ?? 0,
+      Transporting: this.StgAmountForm.value.Transporting ?? 0,
+      GreenLeafCess: this.StgAmountForm.value.GreenLeafCess ?? 0,
+      FinalBillAmount: this.StgAmountForm.value.FinalBillAmount ?? 0,
+      LessSeasonAdv: this.StgAmountForm.value.LessSeasonAdv ?? 0,
+      AmountToPay: this.StgAmountForm.value.AmountToPay ?? 0,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
       CollectionData: StgObject,
       PaymentData: PaymentObject
     };
     console.log(data, 'bildata');
-
+    this.SaveBill(data);
   }
+  SaveBill(clientBody: SaveStgBill) {
+    this.stgBillService.SaveStgBIll(clientBody)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(error => {
+          console.error('Error:', error);
+          this.toastr.error('An error occurred', 'ERROR');
+          throw error;
+        })
+      )
+      .subscribe((res: any) => {
 
+        this.toastr.success(res.Message, 'SUCCESS');
+
+        this.ClientNoInput.nativeElement.focus();
+        this.cleanAmountController();
+        const formControls = [
+          'ClientName',
+          'ClientId',
+
+        ];
+
+        formControls.forEach(control => {
+          this.StgBillForm.controls[control].reset();
+        });
+      });
+    this.GetStgBillData();
+  }
 }
