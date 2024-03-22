@@ -252,34 +252,7 @@ export class StgBillGenerateComponent implements OnInit {
     await this.GetStgBillData();
   }
 
-  // async GetStgBillData() {
-  //   try {
-  //     const currentDate = new Date();
-  //     let bodyData: IGetStgBill = {
-  //       FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-  //       ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
-  //       TenantId: this.loginDetails.TenantId,
-  //       ClientId: this.StgBillForm.value.ClientId ?? 0
-
-  //     };
-
-  //     const res: any = await this.stgBillService
-  //       .GetStgBill(bodyData)
-  //       .pipe(takeUntil(this.destroy$))
-  //       .toPromise();
-
-  //     this.dataSource.data = res.StgData;
-  //     this.paymentDataSource.data = res.PaymentData;
-  //     this.OutStandingData = res.OutStandingData;
-  //     this.StgAmountForm.controls['SeasonAmount'].setValue(this.OutStandingData[0].SeasonAdvance.toFixed(2));
-  //     this.StgAmountForm.controls['PreviousAmount'].setValue(this.OutStandingData[0].PreviousBalance.toFixed(2));
-
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     this.toastr.error('Something went wrong.', 'ERROR');
-  //   }
-  // }
-  async GetStgBillData() {
+   async GetStgBillData() {
     try {
       const bodyData: IGetStgBill = {
         FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
@@ -309,31 +282,7 @@ export class StgBillGenerateComponent implements OnInit {
     }
   }
 
-  // GetStgBillData() {
-  //   const currentDate = new Date();
-  //   let bodyData: IGetStgBill = {
-  //     FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-  //     ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
-  //     TenantId: this.loginDetails.TenantId,
-  //     ClientId: this.StgBillForm.value.ClientId ?? 0
-
-  //   };
-  //   //  console.log(bodyData, 'bodyData bodyData');
-
-  //   const categoryListService = this.stgBillService
-  //     .GetStgBill(bodyData)
-  //     .subscribe((res: any) => {
-  //       // console.log(res);
-  //       this.dataSource.data = res.StgData;
-  //       this.paymentDataSource.data = res.PaymentData;
-  //       this.OutStandingData = res.OutStandingData;
-  //       this.StgAmountForm.controls['SeasonAmount'].setValue(this.OutStandingData[0].SeasonAdvance.toFixed(2));
-  //       this.StgAmountForm.controls['PreviousAmount'].setValue(this.OutStandingData[0].PreviousBalance.toFixed(2));
-
-  //     });
-  //   this.subscriptions.push(categoryListService);
-  // }
-
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
