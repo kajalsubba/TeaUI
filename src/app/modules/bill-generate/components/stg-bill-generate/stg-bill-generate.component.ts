@@ -24,7 +24,7 @@ export class StgBillGenerateComponent implements OnInit {
 
   displayedColumns: string[] = [
     'CollectionDate',
-    'GradeName',
+  //  'GradeName',
     'FirstWeight',
     'Deduction',
     'FinalWeight',
