@@ -19,6 +19,7 @@ import { CategoryService } from 'src/app/modules/masters/services/category.servi
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { IGetPayment } from '../../interfaces/ipayment';
 import { PaymentService } from '../../services/payment.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-payments',
@@ -171,6 +172,7 @@ export class PaymentsComponent implements OnInit {
 
 
     } catch (error) {
+      
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
     }
@@ -212,7 +214,11 @@ export class PaymentsComponent implements OnInit {
     if (client == '') {
       this.PaymentForm.controls['ClientId'].reset();
     }
-    console.log(client.ClientId, 'Client');
+  
+    if (!environment.production) {
+      console.log(client.ClientId, 'Client');
+    }
+    
 
     this.PaymentForm.controls['ClientId'].setValue(client?.ClientId);
   }

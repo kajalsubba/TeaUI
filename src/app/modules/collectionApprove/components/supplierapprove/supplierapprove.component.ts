@@ -159,7 +159,6 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.loginDetails);
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

@@ -19,6 +19,7 @@ import { GradeService } from 'src/app/modules/masters/services/grade.service';
 import { ISaveSupplierRate, IsupplierRateFix } from '../../interfaces/isupplier-rate-fix';
 import { IsupplierRateFixService } from '../../services/isupplier-rate-fix.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-supplier-rate-fix',
@@ -109,7 +110,6 @@ export class SupplierRateFixComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.loginDetails);
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -172,7 +172,6 @@ export class SupplierRateFixComponent implements OnInit {
   }
   filterClientNames(value: string): any[] {
     const filterValue = value.toLowerCase();
-    // console.log(this.ClientNames.filter((number:any) => number.toLowerCase().includes(filterValue)),'Clinet');
     return this.ClientNames.filter((x: any) =>
       x?.ClientName?.toLowerCase()?.includes(filterValue)
     );
@@ -299,7 +298,11 @@ export class SupplierRateFixComponent implements OnInit {
   onInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
     // Do something when input changes
-    console.log(input.value,'presss');
+    if (!environment.production) {
+
+      console.log(input.value,'presss');
+    }
+   
     if(input.value=='')
     {
       this.accountNames=[];
@@ -360,7 +363,7 @@ export class SupplierRateFixComponent implements OnInit {
       RateData: rateObjects,
     };
 
-    console.log(data,'FixaData')
+  
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30vw',
       minWidth:'25vw',

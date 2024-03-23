@@ -98,7 +98,7 @@
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
 
-            <!-- Collection Date -->
+            <!-- Total-->
             <ng-container matColumnDef="SaleDate">
               <th mat-header-cell *matHeaderCellDef> Sale Date </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.SaleDate }} </td>

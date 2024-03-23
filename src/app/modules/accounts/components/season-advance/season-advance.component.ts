@@ -17,6 +17,7 @@ import { EditAddSeasonAdvanceComponent } from '../../models/edit-add-season-adva
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-season-advance',
@@ -158,7 +159,12 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
       ClientId: this.SeasonAdvanceForm.value.ClientId??0
 
     };
-    console.log(bodyData, 'bodyData bodyData');
+
+    if (!environment.production) {
+      console.log(bodyData, 'bodyData bodyData');
+    }
+    
+   
 
     const categoryListService = this.advanceService
       .GetSeasonAdvance(bodyData)
@@ -200,7 +206,12 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     if (client == '') {
       this.SeasonAdvanceForm.controls['ClientId'].reset();
     }
-    console.log(client.ClientId, 'Client');
+
+    if (!environment.production) {
+      console.log(client.ClientId, 'Client');
+    }
+    
+
 
     this.SeasonAdvanceForm.controls['ClientId'].setValue(client?.ClientId);
   }

@@ -11,6 +11,7 @@ import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { IGetTeaClient, IStg } from '../../interfaces/istg';
 import { StgService } from '../../services/stg.service';
 import { DatePipe, formatDate } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -190,7 +191,6 @@ export class AddEditStgComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log(res);
         if (res.Id == 0) {
           this.toastr.warning(res.Message, 'Warning');
         }
@@ -350,7 +350,13 @@ export class AddEditStgComponent implements OnInit {
     if (client == '') {
       this.stgForm.controls['ClientId'].reset();
     }
-    console.log(client.ClientId, 'Client');
+
+    
+    if (!environment.production) {
+
+      console.log(client.ClientId, 'Client');
+    }
+
 
     this.stgForm.controls['ClientId'].setValue(client?.ClientId);
   }

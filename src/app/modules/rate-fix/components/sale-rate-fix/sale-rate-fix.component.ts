@@ -194,7 +194,6 @@ export class SaleRateFixComponent implements OnInit {
   }
   filterClientNames(value: string): any[] {
     const filterValue = value.toLowerCase();
-    // console.log(this.ClientNames.filter((number:any) => number.toLowerCase().includes(filterValue)),'Clinet');
     return this.ClientNames.filter((x: any) =>
       x?.ClientName?.toLowerCase()?.includes(filterValue)
     );
@@ -277,7 +276,7 @@ export class SaleRateFixComponent implements OnInit {
   onInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
     // Do something when input changes
-    console.log(input.value,'presss');
+   
     if(input.value=='')
     {
       this.accountNames=[];
@@ -376,7 +375,7 @@ RateAssign()
       RateData: rateObjects,
     };
 
-    console.log(data,'FixaData')
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30vw',
       minWidth:'25vw',

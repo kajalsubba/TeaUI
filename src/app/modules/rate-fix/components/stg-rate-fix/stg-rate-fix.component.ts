@@ -112,7 +112,7 @@ export class StgRateFixComponent implements OnInit {
 }
   
   ngAfterViewInit() {
-    console.log(this.loginDetails);
+  
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -228,7 +228,7 @@ export class StgRateFixComponent implements OnInit {
    
     }
     const categoryListService = this.rateFixService.GetStgRateFixData(bodyData).subscribe((res:any)=>{
-     // console.log(res);
+   
       this.dataSource.data = res.StgRateData;
     });
     this.subscriptions.push(categoryListService);
@@ -301,7 +301,7 @@ export class StgRateFixComponent implements OnInit {
       RateData: rateObjects,
     };
 
-    console.log(data,'FixaData')
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30vw',
       minWidth:'25vw',

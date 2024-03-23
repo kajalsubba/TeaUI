@@ -15,6 +15,7 @@ import { MatOptionSelectionChange } from '@angular/material/core';
 import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
 import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
 import { PaymentService } from '../../services/payment.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-edit-payment',
@@ -159,9 +160,8 @@ export class AddEditPaymentComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.paymentTypeList = res.PaymentTypeDetails.filter((payment: any) =>
-        payment.PaymentType.toLowerCase() !== 'bill a/c'
-      );
+      this.paymentTypeList = res.PaymentTypeDetails;
+
 
     } catch (error) {
       this.handleError(error, 'Failed to fetch payment types');
@@ -191,7 +191,11 @@ export class AddEditPaymentComponent implements OnInit {
 
     }
 
-    console.log(data, 'add');
+    if (!environment.production) {
+
+      console.log(data, 'add');
+    }
+
     this.SaveData(data);
   }
 

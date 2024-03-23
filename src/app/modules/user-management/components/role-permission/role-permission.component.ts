@@ -112,7 +112,7 @@ export class RolePermissionComponent implements OnInit {
       PermissionLists:PermissionObjects
     }
 
-    console.log(data,'daaaa');
+
     this.SaveRolePermission(data);
     
   }

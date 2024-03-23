@@ -65,7 +65,6 @@ export class RoleComponent implements OnInit, AfterViewInit, OnDestroy {
     const categoryListService = this.roleService
       .GetRole(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
         this.dataSource.data = res.RoleDetails;
       });
     this.subscriptions.push(categoryListService);

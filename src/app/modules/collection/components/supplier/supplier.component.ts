@@ -228,7 +228,6 @@ export class SupplierComponent implements OnInit {
   }
 
   setStatus(status: string, row: any) {
-    console.log(row);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30%',
       data: {

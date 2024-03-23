@@ -143,8 +143,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
 
     }
 
-    // console.log(data, 'data');
-    this.SaveData(data);
+       this.SaveData(data);
   }
 
   SaveData(clientBody: ISaveSeasonAdvance) {

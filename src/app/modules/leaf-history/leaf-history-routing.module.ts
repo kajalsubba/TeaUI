@@ -6,6 +6,7 @@ import { SupplierHistoryComponent } from './components/supplier-history/supplier
 import { SaleHistoryComponent } from './components/sale-history/sale-history.component';
 import { SeasonAdvanceHistoryComponent } from './components/season-advance-history/season-advance-history.component';
 import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
+import { StgBillHistoryComponent } from './components/stg-bill-history/stg-bill-history.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
     {path:'sale-history', component: SaleHistoryComponent},
     {path:'season-advance-history', component: SeasonAdvanceHistoryComponent},
     {path:'payment-history', component: PaymentHistoryComponent},
+    {path:'stg-bill-history', component: StgBillHistoryComponent},
   ]}
 ];
 

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ConfigService } from './config.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -44,15 +45,28 @@ export class ApiService {
   }
 
   private logRequest(method: string, endpoint: string, data?: any): void {
-    console.log(`Sending ${method} request to ${this.config.apiUrl}/${endpoint}`);
+  
+    if (!environment.production) {
+      console.log(`Sending ${method} request to ${this.config.apiUrl}/${endpoint}`);
+   
+    }
+   
     if (data) {
-      console.log('Request Data:', data);
+      if (!environment.production) {
+        console.log('Request Data:', data);
+     
+      }
+    
     }
   }
 
   private logResponse(method: string, endpoint: string, response: any): void {
-    console.log(`Received ${method} response from ${this.config.apiUrl}/${endpoint}`);
-    console.log('Response Data:', response);
+    if (!environment.production) {
+      console.log(`Received ${method} response from ${this.config.apiUrl}/${endpoint}`);
+      console.log('Response Data:', response);
+   
+    }
+   
   }
 
   get<T>(endpoint: string): Observable<T> {

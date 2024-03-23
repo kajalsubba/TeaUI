@@ -84,7 +84,6 @@ export class PaymentHistoryComponent implements OnInit {
     });
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
-    await this.loadClientNames();
     await this.getCategoryList();
     await this.loadClientNames();
 
@@ -214,7 +213,6 @@ export class PaymentHistoryComponent implements OnInit {
     if (client == '') {
       this.PaymentForm.controls['ClientId'].reset();
     }
-    console.log(client.ClientId, 'Client');
 
     this.PaymentForm.controls['ClientId'].setValue(client?.ClientId);
   }

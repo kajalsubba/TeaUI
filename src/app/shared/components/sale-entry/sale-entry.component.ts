@@ -30,6 +30,7 @@ import { FactoryAccountService } from 'src/app/modules/masters/services/factory-
 import { FactoryService } from 'src/app/modules/masters/services/factory.service';
 import { ISaleStg } from '../../interfaces/isale-stg';
 import { SaleService } from '../../services/sale.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sale-entry',
@@ -252,13 +253,13 @@ export class SaleEntryComponent implements OnInit {
     // Create the data object to be saved
     let data: IStgSaleSave = {
       SaleId: this.data?.isEdit ? this.data.stgData.SaleId : 0,
-      TotalFirstWeight: this.data.stgData.TotalFirstWeight??0,
-      TotalWetLeaf: this.data.stgData.TotalWetLeaf??0,
-      TotalLongLeaf: this.data.stgData.TotalLongLeaf??0,
-      TotalDeduction: this.data.stgData.TotalDeduction??0,
-      TotalFinalWeight: this.data.stgData.TotalFinalWeight??0,
+      TotalFirstWeight: this.data.stgData.TotalFirstWeight ?? 0,
+      TotalWetLeaf: this.data.stgData.TotalWetLeaf ?? 0,
+      TotalLongLeaf: this.data.stgData.TotalLongLeaf ?? 0,
+      TotalDeduction: this.data.stgData.TotalDeduction ?? 0,
+      TotalFinalWeight: this.data.stgData.TotalFinalWeight ?? 0,
 
-      ApproveList: this.data.stgData.ApproveList??[],
+      ApproveList: this.data.stgData.ApproveList ?? [],
       SaleDate: formatDate(
         this.saleEntryForm.value.SaleDate,
         'yyyy-MM-dd',
@@ -277,8 +278,7 @@ export class SaleEntryComponent implements OnInit {
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
     };
-    console.log(data, 'saleData');
-
+    
     this.SaveSaleData(data);
   }
 
@@ -373,7 +373,12 @@ export class SaleEntryComponent implements OnInit {
 
   restrictInput(event: KeyboardEvent) {
     const charCode = event.charCode;
-    console.log(charCode);
+
+    if (!environment.production) {
+
+      console.log(charCode);
+    }
+
     if (charCode >= 48 && charCode <= 57) {
       return true;
     } else {

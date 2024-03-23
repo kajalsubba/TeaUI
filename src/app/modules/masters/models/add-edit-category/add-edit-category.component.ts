@@ -51,7 +51,6 @@ export class AddEditCategoryComponent implements OnInit, AfterViewInit {
         CategoryName : this.categoryForm.value.categoryName
       }
       const saveCategory = this.categoryService.saveCategory(bodyData).subscribe((res:any)=>{
-        console.log(res, "Save Response");
         if(res.Id == 0){
           this.toastr.error(res.Message, "Exists");
         }else{

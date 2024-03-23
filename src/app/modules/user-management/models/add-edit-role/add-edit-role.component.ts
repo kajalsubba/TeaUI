@@ -61,7 +61,7 @@ export class AddEditRoleComponent implements OnInit, AfterViewInit {
      
       }
       const saveCategory = this.roleService.CreateRole(bodyData).subscribe((res:any)=>{
-        console.log(res, "Save Response");
+    
         if(res.Id == 0){
           this.toastr.error(res.Message, "Error");
         }else{

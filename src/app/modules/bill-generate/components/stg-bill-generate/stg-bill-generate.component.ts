@@ -13,6 +13,7 @@ import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgBillService } from '../../services/stg-bill.service';
 import { IGetStgBill, SaveStgBill, StgCollectionData, StgPaymentData } from '../../interfaces/iget-stg-bill';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-stg-bill-generate',
@@ -149,7 +150,10 @@ export class StgBillGenerateComponent implements OnInit {
     // else {
     //   this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
     // }
-    finalAmount < 0 ? this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true }) : this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
+    if (this.StgAmountForm.controls['SeasonAmount'].value > 0) {
+      finalAmount < 0 ? this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true }) : this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
+
+    }
 
   }
   convertDate(date: any): string {
@@ -248,11 +252,13 @@ export class StgBillGenerateComponent implements OnInit {
       this.StgBillForm.markAllAsTouched();
       return;
     }
+
     this.cleanAmountController();
     await this.GetStgBillData();
+
   }
 
-   async GetStgBillData() {
+  async GetStgBillData() {
     try {
       const bodyData: IGetStgBill = {
         FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
@@ -271,9 +277,15 @@ export class StgBillGenerateComponent implements OnInit {
         const { SeasonAdvance, PreviousBalance } = OutStandingData[0];
         this.StgAmountForm.controls['SeasonAmount'].setValue(SeasonAdvance.toFixed(2));
         this.StgAmountForm.controls['PreviousAmount'].setValue(PreviousBalance.toFixed(2));
+        this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
       }
       else {
-        this.toastr.warning('Please submit fisrt season advace!', 'Notification')
+        //this.toastr.warning('Please submit fisrt season advace!', 'Notification')
+        this.StgAmountForm.controls['SeasonAmount'].setValue(0);
+        this.StgAmountForm.controls['PreviousAmount'].setValue(0);
+        this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
+
+
       }
 
     } catch (error) {
@@ -282,7 +294,7 @@ export class StgBillGenerateComponent implements OnInit {
     }
   }
 
-  
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -387,7 +399,12 @@ export class StgBillGenerateComponent implements OnInit {
       CollectionData: StgObject,
       PaymentData: PaymentObject
     };
-    console.log(data, 'bildata');
+
+    if (!environment.production)
+    {
+      console.log(data, 'bildata');
+    }
+
     this.SaveBill(data);
   }
 
@@ -416,7 +433,7 @@ export class StgBillGenerateComponent implements OnInit {
           this.StgBillForm.controls[control].reset();
         });
       });
-      console.log('A')
+    console.log('A')
     await this.GetStgBillData();
     console.log('B')
     this.cleanAmountController();

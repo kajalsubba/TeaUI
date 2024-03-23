@@ -51,7 +51,6 @@ export class AddEditPaymentTypeComponent implements OnInit, AfterViewInit {
         PaymentType : this.PaymentTypeForm.value.PaymentType
       }
       const saveCategory = this.paymentService.SavePaymentType(bodyData).subscribe((res:any)=>{
-        console.log(res, "Save Response");
         if(res.Id == 0){
           this.toastr.error(res.Message, "Notification");
         }else{

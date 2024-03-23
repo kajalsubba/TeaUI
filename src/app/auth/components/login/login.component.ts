@@ -7,6 +7,7 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -46,8 +47,7 @@ export class LoginComponent implements OnInit {
 
   onLogin() {
     this.adminLoginFail = false;
-    //console.log(this.loginForm);
-    if (this.loginForm.invalid) {
+       if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     } else {
@@ -73,7 +73,11 @@ export class LoginComponent implements OnInit {
   }
   GetTenant() {
     const dataService = this.loginService.GetTenant().subscribe((res: any) => {
-      console.log(res);
+     
+      if (!environment.production) {
+        console.log(res,'tenant');
+      }
+     
       this.TenantList = res.TenantDetails;
     });
   }

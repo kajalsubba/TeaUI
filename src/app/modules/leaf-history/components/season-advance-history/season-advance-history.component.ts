@@ -29,6 +29,7 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
     'PaySource',
     'ClientName',
     'Amount',
+    'Remarks'
   ];
 
   dataSource = new _MatTableDataSource<any>();
@@ -38,7 +39,7 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
     { columnDef: 'AdvancedDate', header: 'Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'PaySource', header: 'Category' },
-    //  { columnDef: 'Amount', header: 'Amount' }
+    { columnDef: 'Remarks', header: 'Remarks' }
 
   ];
 

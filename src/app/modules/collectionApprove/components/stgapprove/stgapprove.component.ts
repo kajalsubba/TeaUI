@@ -143,7 +143,6 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     const categoryListService = this.stgService
       .GetStg(bodyData)
       .subscribe((res: any) => {
-        //  console.log(res,'approve');
         //  const result=res.STGDetails.filter((x:any)=>x.Status=='Pending');
         this.dataSource.data = res.STGDetails.filter(
           (x: any) => x.Status == 'Pending'
@@ -154,7 +153,6 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.loginDetails);
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
