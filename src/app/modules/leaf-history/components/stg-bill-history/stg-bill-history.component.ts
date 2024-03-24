@@ -42,7 +42,7 @@ export class StgBillHistoryComponent implements OnInit {
     { columnDef: 'BillPeriod', header: 'Bill Period' },
     { columnDef: 'ClientName', header: 'Client Name' },
     //{ columnDef: 'FinalWeight', header: 'Final Weighht' },
-    { columnDef: 'AvgRate', header: 'Avg. Rate' },
+    //{ columnDef: 'AvgRate', header: 'Avg. Rate' },
    // { columnDef: 'TotalStgAmount', header: 'Total Amount' },
    // { columnDef: 'TotalStgPayment', header: 'Total Payment' }
   ];
