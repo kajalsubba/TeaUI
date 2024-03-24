@@ -40,7 +40,7 @@
                 </span>
                 </div>
               </div>
-              <div class="col-lg-3 my-1">
+              <div class="col-lg-3 d-grid my-1">
                 <button (click)="search()" class="btn btn-color ms-2">Search</button>
               </div>
             </div>
@@ -204,23 +204,25 @@
 
   <form [formGroup]="StgAmountForm">
     <div class="row">
-      <div class="col-lg-4 offset-lg-8">
+      <div class="col-lg-4 offset-lg-4">
         <div class="form-group row my-2">
-          <label for="PreviousAmount" class="col-lg-6 col-form-label"><b class="text-danger">Previous
+          <label for="PreviousAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">Previous
               Balance</b></label>
           <div class="col-lg-6 position-relative">
             <input formControlName="PreviousAmount" readonly #PreviousAmount type="number"
-              class="form-control text-danger final-amount" id="PreviousAmount" placeholder="Previous Balance">
-            <span class="kg-text"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
+              class="form-control text-danger final-amount bill-amount" id="PreviousAmount" placeholder="Previous Balance">
+            <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
           </div>
         </div>
+      </div>
+      <div class="col-lg-4">
         <div class="form-group row my-2">
-          <label for="SeasonAmount" class="col-lg-6 col-form-label"><b class="text-danger">Standing Season
+          <label for="SeasonAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">Standing Season
               Adv.</b></label>
           <div class="col-lg-6 position-relative">
             <input formControlName="SeasonAmount" readonly #SeasonAmount type="number"
-              class="form-control text-danger final-amount" id="SeasonAmount" placeholder="Season Amount">
-            <span class="kg-text"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
+              class="form-control text-danger final-amount bill-amount" id="SeasonAmount" placeholder="Season Amount">
+            <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
           </div>
         </div>
       </div>
