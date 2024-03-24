@@ -330,5 +330,7 @@ export class SaleHistoryComponent {
       }
     }
   }
-
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 }

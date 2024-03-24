@@ -12,6 +12,8 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
+import { StgSummaryService } from '../../services/stg-summary.service';
+import { IStgSummary } from '../../interfaces/istg-summary';
 
 @Component({
   selector: 'app-stg-summary',
@@ -21,14 +23,14 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 export class StgSummaryComponent implements OnInit {
   displayedColumns: string[] = [
     'ClientName',
-    'Collection',
-    'Reject',
-    'Final',
-    'Average',
-    'Amount',
-    'IncAmount',
+    'FirstWeight',
+    'Deduction',
+    'FinalWeight',
+    'Rate',
+    'GrossAmount',
+    'Incentive',
     'Transporting',
-    'CessAmount',
+    'GreenLeafCess',
     'FinalAmount'
   ];
 
@@ -37,16 +39,8 @@ export class StgSummaryComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'ClientName', header: 'Client Name' },
-    // { columnDef: 'Collection', header: 'Collection' },
-    // { columnDef: 'Reject', header: 'Reject' },
-    // { columnDef: 'Final', header: 'Final' },
-    // { columnDef: 'Average', header: 'Average' },
-    // { columnDef: 'Amount', header: 'Amount' },
-    // { columnDef: 'IncAmount', header: 'Inc. Amount' },
-    // { columnDef: 'Transporting', header: 'Transporting' },
-    // { columnDef: 'CessAmount', header: 'Cess Amount' },
-    // { columnDef: 'FinalAmount', header: 'Final Amount' }
-]
+  
+  ]
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -54,11 +48,12 @@ export class StgSummaryComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
   loginDetails: any;
-  stgSummary!: FormGroup;
+  StgSummaryForm!: FormGroup;
   minToDate!: any;
   ClientNames: any[] = [];
-  clientList: any[] = [];
   selectedRowIndex: number = -1;
+  AverageRate: number = 0;
+
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -66,11 +61,12 @@ export class StgSummaryComponent implements OnInit {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
+    private summartService: StgSummaryService
   ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
-    this.stgSummary = this.fb.group({
+    this.StgSummaryForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
       ClientId: [0],
@@ -87,15 +83,13 @@ export class StgSummaryComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: ''
+        Category: 'STG'
 
       };
 
       const res: any = await this.autocompleteService.GetClientNames(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
-
-      this.clientList = res.ClientDetails;
       this.ClientNames = res.ClientDetails;
 
 
@@ -124,20 +118,57 @@ export class StgSummaryComponent implements OnInit {
 
   selectClient(client: any) {
     if (client == '') {
-      this.stgSummary.controls['ClientId'].reset();
+      this.StgSummaryForm.controls['ClientId'].reset();
     }
-    console.log(client.ClientId, 'Client');
 
-    this.stgSummary.controls['ClientId'].setValue(client?.ClientId);
+    this.StgSummaryForm.controls['ClientId'].setValue(client?.ClientId);
   }
 
-  search() {
+  async search() {
 
-    if (this.stgSummary.invalid) {
-      this.stgSummary.markAllAsTouched();
+    if (this.StgSummaryForm.invalid) {
+      this.StgSummaryForm.markAllAsTouched();
       return;
     }
+    await this.GetSaleDeatils();
+
+    const grossAmount: number = this.getTotal('GrossAmount');
+    const finalWeight: number = this.getTotal('FinalWeight');
+    this.AverageRate=grossAmount/finalWeight;
   }
+
+  onInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Do something when input changes
+    if (input.value == '') {
+
+      this.StgSummaryForm.controls['ClientId'].reset();
+
+    }
+
+  }
+
+  async GetSaleDeatils() {
+    try {
+      const bodyData: IStgSummary = {
+        FromDate: formatDate(this.StgSummaryForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.StgSummaryForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        ClientId: this.StgSummaryForm.value.ClientId ?? 0,
+        TenantId: this.loginDetails.TenantId
+
+      };
+      const res: any = await this.summartService.GetStgSummary(bodyData).toPromise();
+      const { StgSummary } = res;
+
+      this.dataSource.data = StgSummary;
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -150,7 +181,7 @@ export class StgSummaryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.stgSummary.controls['toDate'].setValue(null);
+    this.StgSummaryForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -167,5 +198,9 @@ export class StgSummaryComponent implements OnInit {
   }
   editItem(e: any) {
 
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
