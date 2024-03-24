@@ -32,12 +32,12 @@
                       {{ client?.ClientName }}
                     </mat-option>
                   </mat-autocomplete>
-                       <!-- Validation message -->
-                <span
-                  *ngIf="StgBillForm.get('ClientName')?.hasError('required') && StgBillForm.get('ClientName')?.touched"
-                  class="text-danger d-block validation-message">
-                  Client is required.
-                </span>
+                  <!-- Validation message -->
+                  <span
+                    *ngIf="StgBillForm.get('ClientName')?.hasError('required') && StgBillForm.get('ClientName')?.touched"
+                    class="text-danger d-block validation-message">
+                    Client is required.
+                  </span>
                 </div>
               </div>
               <div class="col-lg-3 d-grid my-1">
@@ -125,7 +125,7 @@
                 <ng-container matColumnDef="GrossAmount">
                   <th mat-header-cell *matHeaderCellDef> Amount </th>
                   <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                    *matCellDef="let row"> {{row.GrossAmount.toFixed(2) }}  </td>
+                    *matCellDef="let row"> {{row.GrossAmount.toFixed(2) }} </td>
                   <td class="footer-total" mat-footer-cell *matFooterCellDef>
                     <b>{{ getTotal('GrossAmount').toFixed(2) }} </b>
                   </td>
@@ -206,22 +206,24 @@
     <div class="row">
       <div class="col-lg-4 offset-lg-4">
         <div class="form-group row my-2">
-          <label for="PreviousAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">Previous
-              Balance</b></label>
+          <label for="PreviousAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
+              Standing Season Adv.</b></label>
           <div class="col-lg-6 position-relative">
-            <input formControlName="PreviousAmount" readonly #PreviousAmount type="number"
-              class="form-control text-danger final-amount bill-amount" id="PreviousAmount" placeholder="Previous Balance">
+            <input formControlName="SeasonAmount" readonly #SeasonAmount type="number"
+              class="form-control text-danger final-amount bill-amount" id="SeasonAmount" placeholder="Season Amount">
             <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
           </div>
         </div>
       </div>
       <div class="col-lg-4">
         <div class="form-group row my-2">
-          <label for="SeasonAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">Standing Season
-              Adv.</b></label>
+          <label for="SeasonAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">Previuos
+              Balance</b></label>
+
           <div class="col-lg-6 position-relative">
-            <input formControlName="SeasonAmount" readonly #SeasonAmount type="number"
-              class="form-control text-danger final-amount bill-amount" id="SeasonAmount" placeholder="Season Amount">
+            <input formControlName="PreviousAmount" readonly #PreviousAmount type="number"
+              class="form-control text-danger final-amount bill-amount" id="PreviousAmount"
+              placeholder="Previous Balance">
             <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
           </div>
         </div>
@@ -233,8 +235,7 @@
         <div class="row mx-1 shadow-sm p-2 border-color">
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="BillDate" class="col-lg-6 col-form-label">Bill Date <span
-                  class="text-danger">*</span></label>
+              <label for="BillDate" class="col-lg-6 col-form-label">Bill Date <span class="text-danger">*</span></label>
               <div class="col-lg-6 position-relative">
                 <mat-form-field>
                   <input readonly matInput [matDatepicker]="picker2" placeholder="Bill Date" class="date-select"
@@ -249,8 +250,8 @@
             <div class="form-group row mb-3">
               <label for="Incentive" class="col-lg-6 col-form-label">Incentive</label>
               <div class="col-lg-6 position-relative">
-                <input (input)="calculateFinalAmount()" #Incentive type="number" class="form-control"
-                  id="Incentive" placeholder="Incentive" formControlName="Incentive">
+                <input (input)="calculateFinalAmount()" #Incentive type="number" class="form-control" id="Incentive"
+                  placeholder="Incentive" formControlName="Incentive">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
                 <!-- Validation message -->
@@ -283,11 +284,11 @@
             <div class="form-group row mb-3">
               <label for="GreenLeafCess" class="col-lg-6 col-form-label">Green Leaf Cess </label>
               <div class="col-lg-6 position-relative">
-                <input (input)="calculateFinalAmount()" #GreenLeafCess type="number" class="form-control" id="GreenLeafCess"
-                  placeholder="Cess" formControlName="GreenLeafCess">
+                <input (input)="calculateFinalAmount()" #GreenLeafCess type="number" class="form-control"
+                  id="GreenLeafCess" placeholder="Cess" formControlName="GreenLeafCess">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
-             
+
               </div>
             </div>
           </div>
@@ -319,8 +320,8 @@
               <label for="AmountToPay" class="col-lg-6 col-form-label">Amount To Pay <span
                   class="text-danger">*</span></label>
               <div class="col-lg-6 position-relative">
-                <input readonly #AmountToPay type="number" class="form-control"
-                  id="AmountToPay" placeholder="AmountToPay" formControlName="AmountToPay">
+                <input readonly #AmountToPay type="number" class="form-control" id="AmountToPay"
+                  placeholder="AmountToPay" formControlName="AmountToPay">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
 
