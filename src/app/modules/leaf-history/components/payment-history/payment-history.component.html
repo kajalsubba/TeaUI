@@ -84,11 +84,11 @@
             <ng-container matColumnDef="Amount">
               <th mat-header-cell *matHeaderCellDef> Amount </th>
               <td class="weight-column" mat-cell *matCellDef="let row"> 
-                  {{ row.Amount.toFixed(2) }} Dr
+                  {{ row.Amount.toFixed(2) }} 
                         
               </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotal('Amount').toFixed(2) }} Dr</b>
+                <b>{{ getTotal('Amount').toFixed(2) }} </b>
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
