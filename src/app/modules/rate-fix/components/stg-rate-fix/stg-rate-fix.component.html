@@ -168,7 +168,7 @@
                             <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> <i
                                     class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount}}</td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') }}</b>
+                                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount').toFixed(2) }}</b>
                             </td>
                         </ng-container>
 

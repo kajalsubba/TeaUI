@@ -20,6 +20,8 @@ import { MatOptionSelectionChange } from '@angular/material/core';
 import { IGetPayment } from '../../interfaces/ipayment';
 import { PaymentService } from '../../services/payment.service';
 import { environment } from 'src/environments/environment';
+import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
+import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
 
 @Component({
   selector: 'app-payments',
@@ -64,6 +66,7 @@ export class PaymentsComponent implements OnInit {
   selectedRowIndex: number = -1;
   // saleTypeList: any[]=[];
   categoryList: any[] = [];
+  PaymentTypeList: any[]=[];
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -73,6 +76,7 @@ export class PaymentsComponent implements OnInit {
     private autocompleteService: AutoCompleteService,
     private categoryService: CategoryService,
      private paymentService: PaymentService,
+     private paymentTypeService: PaymenttypeService,
     //   private stgapproveService: StgApproveService,
     // private supplierApproveService: SupplierapproveService
   ) { }
@@ -85,13 +89,28 @@ export class PaymentsComponent implements OnInit {
       ClientId: [0],
       ClientName: [''],
       CategoryId: ['', Validators.required],
-      CategoryName: ['']
+      CategoryName: [''],
+      PaymentType: [''],
     });
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     await this.loadClientNames();
     this.getCategoryList()
+    this.GetPaymentType()
 
+  }
+
+  GetPaymentType() {
+    let bodyData: IGetPaymentType = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    const categoryListService = this.paymentTypeService
+      .GetPaymentType(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.PaymentTypeList = res.PaymentTypeDetails;
+      });
+    this.subscriptions.push(categoryListService);
   }
 
   GetPaymentData(FromDate: any, ToDate: any) {

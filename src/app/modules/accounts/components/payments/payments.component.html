@@ -1,11 +1,11 @@
 <div class="container-fluid mt-2">
   <div class="row">
-    <div class="col-lg-9 my-2 align-items-center">
+    <div class="col-lg-10 my-2 align-items-center">
       <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-12">
           <form [formGroup]="PaymentForm">
             <div class="row">
-              <div class="col-lg-3 my-2">
+              <div class="col-lg-2 my-2">
                 <mat-form-field>
                   <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
                     placeholder="From Date" formControlName="fromDate">
@@ -13,7 +13,7 @@
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
               </div>
-              <div class="col-lg-3 my-2">
+              <div class="col-lg-2 my-2">
                 <mat-form-field class="mx-2">
                   <input readonly matInput [min]="minToDate" [matDatepicker]="picker1"
                     min="PaymentForm.value.fromDate" placeholder="To Date" formControlName="toDate">
@@ -21,7 +21,7 @@
                   <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
               </div>
-              <div class="col-lg-3 position-relative my-2">
+              <div class="col-lg-2 position-relative my-2">
                 <mat-select placeholder="--Client Category--" class="fromSelect" formControlName="CategoryId">
                   <mat-option *ngFor="let category of categoryList" [value]="category.CategoryId"
                     (onSelectionChange)="selectCategory($event, category)">
@@ -34,7 +34,19 @@
                   Client Category is required.
                 </span>
               </div>
-              <div class="col-lg-3 my-2">
+              <div class="col-lg-2 position-relative my-2">
+                <mat-select placeholder="--Payment Type--" class="fromSelect" formControlName="PaymentType">
+                  <mat-option *ngFor="let payment of PaymentTypeList" [value]="payment.PaymentTypeId">
+                    {{payment.PaymentType}}
+                  </mat-option>
+                </mat-select>
+                <span
+                  *ngIf="PaymentForm.get('PaymentType')?.hasError('required') && PaymentForm.get('PaymentType')?.touched"
+                  class="text-danger d-block validation-message">
+                  Payment type is required.
+                </span>
+              </div>
+              <div class="col-lg-2 my-2">
                 <div class="position-relative">
                   <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
                     formControlName="ClientName" [matAutocomplete]="clientAuto">
@@ -47,22 +59,18 @@
                   </mat-autocomplete>
                 </div>
               </div>
-
+              <div class="col-lg-2 my-2">
+                <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
+                <button (click)="search()" class="btn btn-color ms-2">Search</button>
+              </div>
             </div>
           </form>
         </div>
-        <div class="col-lg-2 my-2">
-          <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
-          <button (click)="search()" class="btn btn-color ms-2">Search</button>
-        </div>
+        
       </div>
     </div>
-    <div class="col-lg-3 my-2">
+    <div class="col-lg-2 my-2">
       <div class="top-container my-2">
-        <div class="search-field px-2">
-          <input (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
         <div class="add-button">
           <button (click)="AddSeasonAdvance()" class="btn btn-color">Add New Entry</button>
         </div>

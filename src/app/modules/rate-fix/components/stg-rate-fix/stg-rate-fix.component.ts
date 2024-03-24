@@ -167,7 +167,7 @@ export class StgRateFixComponent implements OnInit {
     }
   
     const columnValues: number[] = this.dataSource.filteredData
-      .map(item => item[columnName])
+      .map(item => +item[columnName])
       .filter(value => typeof value === 'number');
   
     return columnValues.reduce((acc, curr) => acc + (curr as number), 0);
@@ -276,6 +276,9 @@ export class StgRateFixComponent implements OnInit {
       keys.Rate=this.dateRangeForm.value.Rate
      keys.GrossAmount=Number(keys.FinalWeight*this.dateRangeForm.value.Rate).toFixed(2)
     });
+    this.getTotalCost('GrossAmount')
+    console.log(this.dataSource.data);
+    
     this.dateRangeForm.controls["Rate"].reset();
   }
   FixRate()
