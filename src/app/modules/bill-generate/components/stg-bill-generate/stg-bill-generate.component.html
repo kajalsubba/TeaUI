@@ -333,7 +333,7 @@
             <div class="form-group row mb-3">
               <label for="FinalAmount" class="col-lg-6 col-form-label"></label>
               <div class="col-lg-6 d-grid position-relative">
-                <button (click)="BillSave()" class="btn btn-color">Submit</button>
+                <button [disabled]="isSubmitting" (click)="BillSave()" class="btn btn-color">Submit</button>
               </div>
             </div>
           </div>

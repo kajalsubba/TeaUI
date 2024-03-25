@@ -21,7 +21,7 @@ import { MatOptionSelectionChange } from '@angular/material/core';
   styleUrls: ['./edit-add-season-advance.component.scss']
 })
 export class EditAddSeasonAdvanceComponent implements OnInit {
-
+  isSubmitting = false;
   addEditSeasonAdvance!: FormGroup;
   minToDate!: Date | null;
   @ViewChild('AdvancedDate') AdvancedDateInput!: ElementRef;
@@ -142,7 +142,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       CreatedBy: this.loginDetails.UserId
 
     }
-
+    this.isSubmitting = true;
        this.SaveData(data);
   }
 
@@ -152,6 +152,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
         takeUntil(this.destroy$),
         catchError(error => {
           console.error('Error:', error);
+          this.isSubmitting = false;
           this.toastr.error('An error occurred', 'ERROR');
           throw error;
         })
@@ -171,7 +172,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
         this.CleanFormControl();
         this.AdvancedDateInput.nativeElement.focus();
 
-
+        this.isSubmitting = false;
       });
   }
 

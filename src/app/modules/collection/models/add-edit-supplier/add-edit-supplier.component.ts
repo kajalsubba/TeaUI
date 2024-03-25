@@ -22,6 +22,7 @@ import { IGetTeaClient } from '../../interfaces/istg';
   styleUrls: ['./add-edit-supplier.component.scss'],
 })
 export class AddEditSupplierComponent implements OnInit {
+  isSubmitting = false;
   supplierForm!: FormGroup;
   imageUrl: any | ArrayBuffer | null = null;
   ClientNames: any[] = [];
@@ -363,15 +364,11 @@ export class AddEditSupplierComponent implements OnInit {
       CreatedBy: this.loginDetails.UserId
 
     }
-
+    this.isSubmitting = true;
     var CollId = await this.SaveSupplier(data);
 
     if (this.loginDetails.LoginType == 'Client') {
 
-      // if (this.dialogData.value) { // for update 
-
-      //   if (this.dialogData.value.imageUrl!='' &&)
-      // }
       if (this.FileData != undefined) {
         this.uploadChallan(CollId.Id)
       }
@@ -383,6 +380,7 @@ export class AddEditSupplierComponent implements OnInit {
           this.toastr.success(CollId.Message, "SUCCESS");
         }
       }
+      this.isSubmitting = false;
     }
     else {
       if (CollId.Id == 0) {
@@ -395,6 +393,7 @@ export class AddEditSupplierComponent implements OnInit {
       this.CleanFormControl();
       this.supplierForm.controls['ClientName'].reset()
       this.supplierForm.controls['ClientId'].reset()
+      this.isSubmitting = false;
     }
 
   }
@@ -420,7 +419,7 @@ export class AddEditSupplierComponent implements OnInit {
       this.CleanFormControl();
       this.imageUrl = null;
       this.VehicleNoInput.nativeElement.focus();
-
+      this.isSubmitting = false;
     })
 
   }
@@ -436,6 +435,7 @@ export class AddEditSupplierComponent implements OnInit {
       return res;
 
     } catch (error) {
+      this.isSubmitting = false;
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
     }

@@ -20,7 +20,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./add-edit-stg.component.scss']
 })
 export class AddEditStgComponent implements OnInit {
-
+  isSubmitting = false;
   stgForm!: FormGroup;
   private destroy$ = new Subject<void>();
   @ViewChild('clientName') ClientNoInput!: ElementRef;
@@ -149,7 +149,7 @@ export class AddEditStgComponent implements OnInit {
   onSubmit() {
 
 
-    if (this.stgForm.invalid || this.stgForm.value.ClientId==0) {
+    if (this.stgForm.invalid || this.stgForm.value.ClientId == 0) {
       this.stgForm.markAllAsTouched();
       return;
     }
@@ -174,6 +174,7 @@ export class AddEditStgComponent implements OnInit {
       CreatedBy: this.loginDetails.UserId
 
     }
+    this.isSubmitting = true;
     this.SaveStgtData(data);
 
 
@@ -185,6 +186,7 @@ export class AddEditStgComponent implements OnInit {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
+          this.isSubmitting = false;
           console.error('Error:', error);
           this.toastr.error('An error occurred', 'ERROR');
           throw error;
@@ -204,7 +206,7 @@ export class AddEditStgComponent implements OnInit {
 
         this.ClientNoInput.nativeElement.focus();
         this.CleanFormControl();
-
+        this.isSubmitting = false;
       });
   }
   getFactoryDate() {
@@ -241,12 +243,12 @@ export class AddEditStgComponent implements OnInit {
       'Remarks',
       'GradeId'
     ];
-  
+
     formControls.forEach(control => {
       this.stgForm.controls[control].reset();
     });
   }
-  
+
 
   async loadVehicleNumbers() {
     try {
@@ -351,7 +353,7 @@ export class AddEditStgComponent implements OnInit {
       this.stgForm.controls['ClientId'].reset();
     }
 
-    
+
     if (!environment.production) {
 
       console.log(client.ClientId, 'Client');

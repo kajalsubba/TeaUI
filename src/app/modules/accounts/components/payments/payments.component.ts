@@ -76,9 +76,9 @@ export class PaymentsComponent implements OnInit {
     private autocompleteService: AutoCompleteService,
     private categoryService: CategoryService,
      private paymentService: PaymentService,
-     private paymentTypeService: PaymenttypeService,
-    //   private stgapproveService: StgApproveService,
-    // private supplierApproveService: SupplierapproveService
+     private paymentTypeService: PaymenttypeService
+  
+  
   ) { }
 
   async ngOnInit() {

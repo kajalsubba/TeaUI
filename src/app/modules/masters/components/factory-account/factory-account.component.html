@@ -45,7 +45,8 @@
                         [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
                 </tr>
                 <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell text-center" attr.colspan="{{displayedColumns.length + 1}}">No data</td>
+                    <td class="mat-cell text-center" attr.colspan="{{displayedColumns.length + 1}}">Record is not found !
+                    </td>
                   </tr>
                     </table>
                   

@@ -24,6 +24,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AddEditPaymentComponent implements OnInit {
 
+  isSubmitting = false;
   addEditPayment!: FormGroup;
   minToDate!: Date | null;
   private subscriptions: Subscription[] = [];
@@ -44,6 +45,7 @@ export class AddEditPaymentComponent implements OnInit {
     private autocompleteService: AutoCompleteService,
     private paymentTypeService: PaymenttypeService,
     private paymentService: PaymentService
+
   ) { }
 
   async ngOnInit() {
@@ -132,24 +134,7 @@ export class AddEditPaymentComponent implements OnInit {
     }
   }
 
-  // async getPaymentType() {
-  //   try {
-  //     const categoryBody: IGetPaymentType = {
-  //       TenantId: this.loginDetails.TenantId
-  //     };
-
-  //     const res: any = await this.paymentTypeService.GetPaymentType(categoryBody)
-  //       .pipe(takeUntil(this.destroy$))
-  //       .toPromise();
-
-  //     this.paymentTypeList = res.PaymentTypeDetails.filter((x:any)=>x.PaymentType.toLowerCase()!='Bill A/C'.toLowerCase());
-
-
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     this.toastr.error('Something went wrong.', 'ERROR');
-  //   }
-  // }
+ 
   async getPaymentType(): Promise<void> {
     try {
       const categoryBody: IGetPaymentType = {
@@ -196,6 +181,8 @@ export class AddEditPaymentComponent implements OnInit {
       console.log(data, 'add');
     }
 
+    this.isSubmitting = true;
+
     this.SaveData(data);
   }
 
@@ -204,6 +191,7 @@ export class AddEditPaymentComponent implements OnInit {
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
+          this.isSubmitting = false;
           console.error('Error:', error);
           this.toastr.error('An error occurred', 'ERROR');
           throw error;
@@ -223,6 +211,7 @@ export class AddEditPaymentComponent implements OnInit {
         this.CleanFormControl();
         this.PaymentDateInput.nativeElement.focus();
 
+       this.isSubmitting = false;
 
       });
   }

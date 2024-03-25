@@ -24,7 +24,7 @@ export class StgBillGenerateComponent implements OnInit {
 
   displayedColumns: string[] = [
     'CollectionDate',
-  //  'GradeName',
+    //  'GradeName',
     'FirstWeight',
     'Deduction',
     'FinalWeight',
@@ -69,6 +69,7 @@ export class StgBillGenerateComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
   loginDetails: any;
+  isSubmitting = false;
   StgBillForm!: FormGroup;
   StgAmountForm!: FormGroup;
   minToDate!: any;
@@ -144,7 +145,7 @@ export class StgBillGenerateComponent implements OnInit {
     // Update the value of the final amount input field
     this.StgAmountForm.controls['FinalBillAmount'].setValue(finalAmount.toFixed(2));
     this.StgAmountForm.controls['AmountToPay'].setValue(amountToPay.toFixed(2));
-   
+
     if (this.StgAmountForm.controls['SeasonAmount'].value > 0) {
       finalAmount < 0 ? this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true }) : this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
 
@@ -395,11 +396,10 @@ export class StgBillGenerateComponent implements OnInit {
       PaymentData: PaymentObject
     };
 
-    if (!environment.production)
-    {
+    if (!environment.production) {
       console.log(data, 'bildata');
     }
-
+    this.isSubmitting = true;
     this.SaveBill(data);
   }
 
@@ -409,6 +409,7 @@ export class StgBillGenerateComponent implements OnInit {
         takeUntil(this.destroy$),
         catchError(error => {
           console.error('Error:', error);
+          this.isSubmitting = false;
           this.toastr.error('An error occurred', 'ERROR');
           throw error;
         })
@@ -428,12 +429,12 @@ export class StgBillGenerateComponent implements OnInit {
           this.StgBillForm.controls[control].reset();
         });
       });
-    console.log('A')
+
     await this.GetStgBillData();
-    console.log('B')
+
     this.cleanAmountController();
-    console.log('C')
+
     this.ClientNoInput.nativeElement.focus();
-    //  this.StgAmountForm.controls['SeasonAmount'].reset();
+    this.isSubmitting = false;
   }
 }
