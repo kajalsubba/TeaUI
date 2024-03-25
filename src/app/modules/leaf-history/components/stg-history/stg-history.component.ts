@@ -123,19 +123,16 @@ export class StgHistoryComponent {
 
   search() {
 
-    const currentDate = new Date();
+    this.GetStgList();
 
-    const fromDate = this.dateRangeForm.value.fromDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
-    const toDate = this.dateRangeForm.value.toDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US');
-
-    this.GetStgList(fromDate, toDate);
   }
 
-  GetStgList(FromDate: any, ToDate: any) {
-    const currentDate = new Date();
-    let bodyData: IStgSelect = {
-      FromDate: FromDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : FromDate,
-      ToDate: ToDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : ToDate,
+  GetStgList() {
+
+
+    const bodyData: IStgSelect = {
+      FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
@@ -162,7 +159,7 @@ export class StgHistoryComponent {
   }
 
   getTotal(columnName: string): number {
-    return this.dataSource.filteredData.filter((x:any)=>x.Status!='Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
+    return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
   }
 
   async loadVehicleNumbers() {

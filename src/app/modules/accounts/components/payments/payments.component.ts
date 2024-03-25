@@ -213,22 +213,8 @@ export class PaymentsComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  AddSeasonAdvance() {
-    const dialogRef = this.dialog.open(AddEditPaymentComponent, {
-      width: '30%',
-      data: {
-        title: 'Add Payment Entry',
-        buttonName: 'Save',
-      },
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+ 
 
-      }
-    });
-  }
   selectClient(client: any) {
     if (client == '') {
       this.PaymentForm.controls['ClientId'].reset();
@@ -278,8 +264,41 @@ export class PaymentsComponent implements OnInit {
       }
     }
   }
-  editItem(e: any) {
 
+  AddPayment() {
+    const dialogRef = this.dialog.open(AddEditPaymentComponent, {
+      width: '30%',
+      data: {
+        title: 'Add Payment Entry',
+        buttonName: 'Save',
+      },
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+
+      }
+    });
+  }
+
+  editItem(element: any) {
+    const dialogRef = this.dialog.open(AddEditPaymentComponent, {
+      width: '30%',
+      data: {
+        title: 'Update Payment Entry',
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+
+      }
+    });
   }
 
 }

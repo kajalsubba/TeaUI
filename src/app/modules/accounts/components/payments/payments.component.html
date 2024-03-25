@@ -34,7 +34,7 @@
                   Client Category is required.
                 </span>
               </div>
-              <div class="col-lg-2 position-relative my-2">
+              <!-- <div class="col-lg-2 position-relative my-2">
                 <mat-select placeholder="--Payment Type--" class="fromSelect" formControlName="PaymentType">
                   <mat-option *ngFor="let payment of PaymentTypeList" [value]="payment.PaymentTypeId">
                     {{payment.PaymentType}}
@@ -45,7 +45,7 @@
                   class="text-danger d-block validation-message">
                   Payment type is required.
                 </span>
-              </div>
+              </div> -->
               <div class="col-lg-2 my-2">
                 <div class="position-relative">
                   <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
@@ -72,7 +72,7 @@
     <div class="col-lg-2 my-2">
       <div class="top-container my-2">
         <div class="add-button">
-          <button (click)="AddSeasonAdvance()" class="btn btn-color">Add New Entry</button>
+          <button (click)="AddPayment()" class="btn btn-color">Add New Entry</button>
         </div>
       </div>
     </div>

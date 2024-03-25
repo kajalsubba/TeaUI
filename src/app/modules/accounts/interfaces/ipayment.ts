@@ -7,6 +7,7 @@ export interface ISavePayment {
     PaymentTypeId: number;
     Amount: number;
     Narration: string;
+    CategoryId:number;
     TenantId: number;
     CreatedBy: number;
 }

@@ -63,6 +63,16 @@ export class AddEditPaymentComponent implements OnInit {
     await this.getPaymentType();
     await this.getCategoryList();
     await this.loadClientNames();
+
+    if (this.dialogData.value) {
+      this.addEditPayment.controls['PaymentDate'].setValue(new Date(this.dialogData.value.PayDate));
+      this.addEditPayment.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
+      this.addEditPayment.controls['ClientId'].setValue(this.dialogData.value.ClientId);
+      this.addEditPayment.controls['ClientName'].setValue(this.dialogData.value.ClientName);
+      this.addEditPayment.controls['PaymentTypeId'].setValue(this.dialogData.value.PaymentTypeId);
+      this.addEditPayment.controls['Amount'].setValue(this.dialogData.value.Amount);
+      this.addEditPayment.controls['Narration'].setValue(this.dialogData.value.Narration);
+    }
   }
 
   displayWithFn(value: string): string {
@@ -134,7 +144,7 @@ export class AddEditPaymentComponent implements OnInit {
     }
   }
 
- 
+
   async getPaymentType(): Promise<void> {
     try {
       const categoryBody: IGetPaymentType = {
@@ -171,6 +181,7 @@ export class AddEditPaymentComponent implements OnInit {
       PaymentTypeId: this.addEditPayment.value.PaymentTypeId,
       Amount: this.addEditPayment.value.Amount,
       Narration: this.addEditPayment.value.Narration,
+      CategoryId:this.addEditPayment.value.CategoryId,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId
 
@@ -211,7 +222,7 @@ export class AddEditPaymentComponent implements OnInit {
         this.CleanFormControl();
         this.PaymentDateInput.nativeElement.focus();
 
-       this.isSubmitting = false;
+        this.isSubmitting = false;
 
       });
   }
