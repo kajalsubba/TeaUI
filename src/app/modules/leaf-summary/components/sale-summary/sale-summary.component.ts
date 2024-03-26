@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -14,6 +14,8 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { FactoryAccountService } from 'src/app/modules/masters/services/factory-account.service';
 import { FactoryService } from 'src/app/modules/masters/services/factory.service';
+import { SaleSummaryService } from '../../services/sale-summary.service';
+import { ISaleSummary } from '../../interfaces/isale-summary';
 
 @Component({
   selector: 'app-sale-summary',
@@ -23,12 +25,12 @@ import { FactoryService } from 'src/app/modules/masters/services/factory.service
 export class SaleSummaryComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'Factory',
+    'FactoryName',
     'AccountName',
     'ChallanWeight',
-    'AverageRate',
-    'Amount',
-    'IncAmount',
+    'Rate',
+    'GrossAmount',
+    'Incentive',
     'FinalAmount'
   ];
 
@@ -36,18 +38,10 @@ export class SaleSummaryComponent implements OnInit {
 
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'Factory', header: 'Factory' },
+    { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'AccountName', header: 'Account Name' },
-    // { columnDef: 'Collection', header: 'Collection' },
-    // { columnDef: 'Reject', header: 'Reject' },
-    // { columnDef: 'Final', header: 'Final' },
-    // { columnDef: 'Average', header: 'Average' },
-    // { columnDef: 'Amount', header: 'Amount' },
-    // { columnDef: 'IncAmount', header: 'Inc. Amount' },
-    // { columnDef: 'Transporting', header: 'Transporting' },
-    // { columnDef: 'CessAmount', header: 'Cess Amount' },
-    // { columnDef: 'FinalAmount', header: 'Final Amount' }
-]
+
+  ]
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -57,13 +51,14 @@ export class SaleSummaryComponent implements OnInit {
   loginDetails: any;
   saleSummary!: FormGroup;
   minToDate!: any;
-  ClientNames: any[] = [];
-  clientList: any[] = [];
+  factoryNames: any[] = [];
   selectedRowIndex: number = -1;
-  FactoryList: any[]=[];
-  filteredFactory: any[]=[];
-  filteredAccounts: any[]=[];
-  AccountList: any[]=[];
+  FactoryList: any[] = [];
+  filteredFactory: any[] = [];
+  accountNames: any[] = [];
+  filteredAccounts: any[] = [];
+  AccountList: any[] = [];
+  AverageRate: number = 0;
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -72,7 +67,7 @@ export class SaleSummaryComponent implements OnInit {
     private factoryService: FactoryService,
     private accountService: FactoryAccountService,
     private fb: FormBuilder,
-    private autocompleteService: AutoCompleteService,
+    private summaryService: SaleSummaryService,
   ) { }
 
   async ngOnInit() {
@@ -81,7 +76,9 @@ export class SaleSummaryComponent implements OnInit {
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
       FactoryName: [''],
-      AccountId: [''],
+      FactoryId: [0],
+      AccountId: [0],
+      AccountName:['']
     });
     await this.GetFactoryList();
     await this.GetFactoryAccountList();
@@ -91,27 +88,7 @@ export class SaleSummaryComponent implements OnInit {
     return value || '';
   }
 
-  // async loadClientNames() {
-  //   try {
-  //     const bodyData: IGetTeaClient = {
-  //       TenantId: this.loginDetails.TenantId,
-  //       Category: ''
 
-  //     };
-
-  //     const res: any = await this.autocompleteService.GetClientNames(bodyData)
-  //       .pipe(takeUntil(this.destroy$))
-  //       .toPromise();
-
-  //     this.clientList = res.ClientDetails;
-  //     this.ClientNames = res.ClientDetails;
-
-
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     this.toastr.error('Something went wrong.', 'ERROR');
-  //   }
-  // }
   getTotal(columnName: string): number {
     return this.dataSource.filteredData.reduce(
       (acc, curr) => acc + curr[columnName],
@@ -119,32 +96,46 @@ export class SaleSummaryComponent implements OnInit {
     );
   }
 
-  // filterClientNames(value: string): any[] {
 
-  //   const filterValue = value.toLowerCase();
-  //   return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
-  // }
   ngAfterViewInit() {
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  // selectClient(client: any) {
-  //   if (client == '') {
-  //     this.saleSummary.controls['ClientId'].reset();
-  //   }
-  //   console.log(client.ClientId, 'Client');
+  async GetSummary() {
+    try {
+      const bodyData: ISaleSummary = {
+        FromDate: formatDate(this.saleSummary.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.saleSummary.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        FactoryId: this.saleSummary.value.FactoryId ?? 0,
+        AccountId: this.saleSummary.value.AccountId ?? 0,
+        TenantId: this.loginDetails.TenantId
 
-  //   this.saleSummary.controls['ClientId'].setValue(client?.ClientId);
-  // }
+      };
+      const res: any = await this.summaryService.GetSaleSummary(bodyData).toPromise();
+      const { SaleSummary } = res;
 
-  search() {
+      this.dataSource.data = SaleSummary;
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+  async search() {
 
     if (this.saleSummary.invalid) {
       this.saleSummary.markAllAsTouched();
       return;
     }
+    await this.GetSummary();
+
+    const grossAmount: number = this.getTotal('GrossAmount');
+    const finalWeight: number = this.getTotal('ChallanWeight');
+    this.AverageRate = grossAmount / finalWeight;
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -174,6 +165,37 @@ export class SaleSummaryComponent implements OnInit {
     }
   }
 
+  onInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Do something when input changes
+    console.log(input.value, 'presss');
+    if (input.value == '') {
+      this.accountNames = [];
+      this.saleSummary.controls['FactoryId'].reset();
+      this.saleSummary.controls['FactoryName'].reset();
+      this.saleSummary.controls['AccountName'].reset();
+      this.saleSummary.controls['AccountId'].reset();
+
+
+    }
+
+  }
+  filterAccountNames(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.accountNames.filter((x: any) =>
+      x?.AccountName?.toLowerCase()?.includes(filterValue)
+    );
+  }
+
+  selectAccount(account: any) {
+    this.saleSummary.controls['AccountId'].setValue(account?.AccountId);
+  }
+  filterFactoryNames(value: string): any {
+    const filterValue = value.toLowerCase();
+    return this.factoryNames.filter((x: any) =>
+      x?.FactoryName?.toLowerCase()?.includes(filterValue)
+    );
+  }
   async GetFactoryList() {
     try {
       const bodyData: IGetFactory = {
@@ -186,8 +208,8 @@ export class SaleSummaryComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.FactoryList = res.FactoryDetails;
-      this.filteredFactory = res.FactoryDetails;
+      this.factoryNames = res.FactoryDetails;
+
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -207,7 +229,6 @@ export class SaleSummaryComponent implements OnInit {
         .toPromise();
 
       this.AccountList = res.AccountDetails;
-      this.filteredAccounts = res.AccountDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -221,10 +242,9 @@ export class SaleSummaryComponent implements OnInit {
     );
   }
 
-  SelectFactory(e: any) {
-    this.filteredAccounts = this.AccountList.filter(
-      (x: any) => x.FactoryId == e
-    );
+  selectFactory(factory: any) {
+    this.saleSummary.controls['FactoryId'].setValue(factory?.FactoryId);
+    this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.FactoryId)
   }
 
   filterAccounts(value: string) {

@@ -23,17 +23,7 @@
                   <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
               </div>
-              <!-- <div class="position-relative col-lg-3 d-grid">
-                      <input #vehicleNo (input)="VehicleInput(vehicleNo.value)" type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
-                          formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
-                  
-                      <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
-                          <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
-                              [value]="number.VehicleNo">
-                              {{ number.VehicleNo }}
-                          </mat-option>
-                      </mat-autocomplete>
-                  </div> -->
+             
               <div class="position-relative col-lg-3 my-2">
                 <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
                   formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onInputChange($event)">

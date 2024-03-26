@@ -211,9 +211,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
       console.log(client.ClientId, 'Client');
     }
     
-
-
-    this.SeasonAdvanceForm.controls['ClientId'].setValue(client?.ClientId);
+   this.SeasonAdvanceForm.controls['ClientId'].setValue(client?.ClientId);
   }
 
   search() {
@@ -252,8 +250,23 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
       }
     }
   }
-  editItem(e: any) {
+  editItem(element: any) {
+    const dialogRef = this.dialog.open(EditAddSeasonAdvanceComponent, {
+      width: '30%',
+      data: {
+        title: 'Update Season Adv. Entry',
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
 
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetSeasonAdvanceData(formatDate(this.SeasonAdvanceForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.SeasonAdvanceForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+
+      }
+    });
   }
 
 }

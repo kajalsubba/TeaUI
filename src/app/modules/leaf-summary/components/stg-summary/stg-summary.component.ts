@@ -130,7 +130,7 @@ export class StgSummaryComponent implements OnInit {
       this.StgSummaryForm.markAllAsTouched();
       return;
     }
-    await this.GetSaleDeatils();
+    await this.GetSummary();
 
     const grossAmount: number = this.getTotal('GrossAmount');
     const finalWeight: number = this.getTotal('FinalWeight');
@@ -148,7 +148,7 @@ export class StgSummaryComponent implements OnInit {
 
   }
 
-  async GetSaleDeatils() {
+  async GetSummary() {
     try {
       const bodyData: IStgSummary = {
         FromDate: formatDate(this.StgSummaryForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),

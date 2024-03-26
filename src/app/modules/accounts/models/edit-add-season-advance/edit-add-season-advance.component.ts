@@ -52,8 +52,18 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       ClientId: [0],
       Amount: ['', Validators.required],
     });
-    await this.loadClientNames()
-    await this.getCategoryList()
+    await this.loadClientNames();
+    await this.getCategoryList();
+
+    
+    if (this.dialogData.value) {
+      this.addEditSeasonAdvance.controls['AdvancedDate'].setValue(new Date(this.dialogData.value.AdvDate));
+      this.addEditSeasonAdvance.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
+      this.addEditSeasonAdvance.controls['ClientId'].setValue(this.dialogData.value.ClientId);
+      this.addEditSeasonAdvance.controls['ClientName'].setValue(this.dialogData.value.ClientName);
+      this.addEditSeasonAdvance.controls['Amount'].setValue(this.dialogData.value.Amount);
+
+    }
   }
 
   displayWithFn(value: string): string {
@@ -131,13 +141,14 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       this.addEditSeasonAdvance.markAllAsTouched();
       return;
     }
-    // if(this.dialogData.buttonName == "Save"){
+    
     let data: ISaveSeasonAdvance = {
       SeasonAdvanceId: this.dialogData?.value?.SeasonAdvanceId ? this.dialogData?.value?.SeasonAdvanceId : 0,
       AdvancedDate: formatDate(this.addEditSeasonAdvance.value.AdvancedDate, 'yyyy-MM-dd', 'en-US'),
       ClientCategory: this.addEditSeasonAdvance.value.CategoryName,
       ClientId: this.addEditSeasonAdvance.value.ClientId,
       Amount: this.addEditSeasonAdvance.value.Amount,
+      CategoryId:this.addEditSeasonAdvance.value.CategoryId,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId
 

@@ -230,7 +230,7 @@ export class SaleHistoryComponent {
       AccountId: this.SaleForm.value.AccountId??0,
       SaleTypeId: this.SaleForm.value.SaleTypeId??0,
       TenantId: this.loginDetails.TenantId,
-      //  VehicleNo:this.dateRangeForm.value.VehicleNo,
+   
     };
     const categoryListService = this.saleService
       .GetSaleDetails(bodyData)

@@ -4,6 +4,7 @@ export interface ISaveSeasonAdvance {
     ClientCategory: string;
     ClientId: number;
     Amount: number;
+    CategoryId:number;
     TenantId: number;
     CreatedBy: number;
 }
