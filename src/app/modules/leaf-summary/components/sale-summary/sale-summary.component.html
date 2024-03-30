@@ -22,8 +22,7 @@
                 </mat-form-field>
               </div>
               <div class="col-lg-3 my-2">
-                <div class="form-group row py-1">
-                  <div class="col-lg-12 position-relative">
+                  <div class="position-relative">
 
                     <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
                       formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onInputChange($event)">
@@ -35,11 +34,9 @@
                       </mat-option>
                     </mat-autocomplete>
                   </div>
-                </div>
               </div>
               <div class="col-lg-3 my-2">
-                <div class="form-group row py-1">
-                  <div class="col-lg-12 position-relative">
+                  <div class="position-relative">
 
                     <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
                       formControlName="AccountName" [matAutocomplete]="accountAuto">
@@ -51,7 +48,6 @@
                       </mat-option>
                     </mat-autocomplete>
                   </div>
-                </div>
               </div>
 
 

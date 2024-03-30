@@ -84,7 +84,7 @@
             <!-- Amount -->
             <ng-container matColumnDef="Amount">
               <th mat-header-cell *matHeaderCellDef> Amount </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+              <td [ngClass]="{'text-danger': row.Amount <= 0 }" class="weight-column" mat-cell
                 *matCellDef="let row"> {{row.Amount.toFixed(2) }}  </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotal('Amount').toFixed(2) }} </b>

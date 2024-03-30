@@ -15,7 +15,9 @@ import { PaymentService } from 'src/app/modules/accounts/services/payment.servic
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
+import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
+import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
 
 @Component({
   selector: 'app-payment-history',
@@ -59,6 +61,7 @@ export class PaymentHistoryComponent implements OnInit {
   selectedRowIndex: number = -1;
   clientList: any[] = [];
   categoryList: any[] = [];
+PaymentTypeList: any[]=[];
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -68,6 +71,7 @@ export class PaymentHistoryComponent implements OnInit {
     private autocompleteService: AutoCompleteService,
     private categoryService: CategoryService,
     private paymentService: PaymentService,
+    private paymentTypeService: PaymenttypeService
     //   private stgapproveService: StgApproveService,
     // private supplierApproveService: SupplierapproveService
   ) { }
@@ -80,12 +84,14 @@ export class PaymentHistoryComponent implements OnInit {
       ClientId: [0],
       ClientName: [''],
       CategoryId: ['', Validators.required],
-      CategoryName: ['']
+      CategoryName: [''],
+      PaymentType: [''],
     });
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     await this.getCategoryList();
     await this.loadClientNames();
+    await this.GetPaymentType();
 
   }
 
@@ -148,6 +154,19 @@ export class PaymentHistoryComponent implements OnInit {
             this.ClientNames = dataList;
         }
     }
+}
+
+async GetPaymentType() {
+  let bodyData: IGetPaymentType = {
+    TenantId: this.loginDetails.TenantId,
+  };
+  const categoryListService = this.paymentTypeService
+    .GetPaymentType(bodyData)
+    .subscribe((res: any) => {
+      // console.log(res);
+      this.PaymentTypeList = res.PaymentTypeDetails;
+    });
+  this.subscriptions.push(categoryListService);
 }
 
 
