@@ -56,7 +56,7 @@ export class AddEditSupplierComponent implements OnInit {
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
 
-    var dd = this.dialogData.value;
+  //  var dd = this.dialogData.value;
     this.supplierForm = this.fb.group({
       CollectionDate: [new Date()],
       ClientName: ['', Validators.required],
@@ -71,7 +71,7 @@ export class AddEditSupplierComponent implements OnInit {
       GrossAmount: [0],
       Status: ['Pending'],
       TripId: ['', Validators.required],
-      ChallanImage: ['', this.loginDetails.LoginType == 'Client' && this.dialogData.value.imageUrl == '' ? Validators.required : ''],
+      ChallanImage: ['', this.loginDetails.LoginType == 'Client' && this.dialogData.value?.imageUrl == '' ? Validators.required : ''],
       Remarks: []
     });
     await this.loadClientNames();
