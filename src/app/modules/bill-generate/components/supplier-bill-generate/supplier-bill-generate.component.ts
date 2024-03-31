@@ -14,6 +14,8 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { StgBillService } from '../../services/stg-bill.service';
 import { IGetStgBill, SaveStgBill, StgCollectionData, StgPaymentData } from '../../interfaces/iget-stg-bill';
 import { environment } from 'src/environments/environment';
+import { SupplierBillService } from '../../services/supplier-bill.service';
+import { SaveSupplierBill } from '../../interfaces/iget-supplier-bill';
 
 @Component({
   selector: 'app-supplier-bill-generate',
@@ -24,12 +26,12 @@ export class SupplierBillGenerateComponent implements OnInit {
 
   displayedColumns: string[] = [
     'CollectionDate',
-    'Factory',
+    'FactoryName',
     'VehicleNo',
     'FineLeaf',
     'ChallanWeight',
     'Rate',
-    'Amount'
+    'GrossAmount'
 
   ];
 
@@ -47,8 +49,8 @@ export class SupplierBillGenerateComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     // { columnDef: 'CollectionDate', header: 'Collection Date' },
-    // { columnDef: 'GradeName', header: 'Grade' },
-    // { columnDef: 'Collection', header: 'Collection(KG)' },
+     { columnDef: 'FactoryName', header: 'Factory Name' },
+     { columnDef: 'VehicleNo', header: 'Vehicle No ' },
     // { columnDef: 'Deduction', header: 'Deduction(KG)' },
     // { columnDef: 'Final', header: 'Final(KG)' },
     // { columnDef: 'Rate', header: 'Rate' },
@@ -87,6 +89,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
+    private billService:SupplierBillService
   ) { }
 
   async ngOnInit() {
@@ -102,7 +105,6 @@ export class SupplierBillGenerateComponent implements OnInit {
       PreviousAmount: [0],
       BillDate: [new Date()],
       LessComission: [0],
-      Transporting: [0],
       GreenLeafCess: [0],
       FinalBillAmount: [0],
       LessSeasonAdv: [0],
@@ -117,8 +119,7 @@ export class SupplierBillGenerateComponent implements OnInit {
       'FinalBillAmount',
       'LessSeasonAdv',
       'GreenLeafCess',
-      'Transporting',
-      'Incentive',
+      'LessComission',
       'AmountToPay',
       'SeasonAmount',
       'PreviousAmount'
@@ -131,14 +132,13 @@ export class SupplierBillGenerateComponent implements OnInit {
 
   calculateFinalAmount(): void {
     const grossAmount: number = this.getTotal('GrossAmount');
-    const finalWeight: number = this.getTotal('FinalWeight');
+    const finalWeight: number = this.getTotal('ChallanWeight');
     const totalPayment: number = this.getTotalPayment('Amount');
     const totalPaymentWithPreviusBalance: number = totalPayment + Number(this.supplierAmountForm.controls['PreviousAmount'].value);
-    const incentiveAmount: number = (this.supplierAmountForm.controls['Incentive'].value || 0) * finalWeight;
-    const transportingAmount: number = (this.supplierAmountForm.controls['Transporting'].value || 0) * finalWeight;
+    const lessCommAmount: number = (this.supplierAmountForm.controls['LessComission'].value || 0) * finalWeight;
     const cessAmount: number = (this.supplierAmountForm.controls['GreenLeafCess'].value || 0) * finalWeight;
 
-    const finalAmount: number = grossAmount + incentiveAmount - (transportingAmount + cessAmount) - totalPaymentWithPreviusBalance;
+    const finalAmount: number = grossAmount  - (lessCommAmount + cessAmount) - totalPaymentWithPreviusBalance;
     const amountToPay: number = finalAmount - (this.supplierAmountForm.controls['LessSeasonAdv'].value || 0);
 
     // Update the value of the final amount input field
@@ -249,12 +249,44 @@ export class SupplierBillGenerateComponent implements OnInit {
     }
 
     this.cleanAmountController();
-    await this.GetStgBillData();
+    await this.GetSupplierBillData();
 
   }
 
-  async GetStgBillData() {
-   
+  async GetSupplierBillData() {
+    try {
+      const bodyData: IGetStgBill = {
+        FromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        TenantId: this.loginDetails.TenantId,
+        ClientId: this.supplierBillForm.value.ClientId ?? 0
+      };
+
+      const res: any = await this.billService.GetSupplierBill(bodyData).toPromise();
+      const { SupplierData, PaymentData, OutStandingData } = res;
+
+      this.dataSource.data = SupplierData;
+      this.paymentDataSource.data = PaymentData;
+
+      if (OutStandingData && OutStandingData.length > 0) {
+        const { SeasonAdvance, PreviousBalance } = OutStandingData[0];
+        this.supplierAmountForm.controls['SeasonAmount'].setValue(SeasonAdvance.toFixed(2));
+        this.supplierAmountForm.controls['PreviousAmount'].setValue(PreviousBalance.toFixed(2));
+        this.supplierAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
+      }
+      else {
+        //this.toastr.warning('Please submit fisrt season advace!', 'Notification')
+        this.supplierAmountForm.controls['SeasonAmount'].setValue(0);
+        this.supplierAmountForm.controls['PreviousAmount'].setValue(0);
+        this.supplierAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
+
+
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
   }
 
 
@@ -315,11 +347,93 @@ export class SupplierBillGenerateComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   BillSave() {
-    
+    if (this.supplierAmountForm.invalid || this.supplierAmountForm.value.ClientId == 0 || this.supplierBillForm.invalid) {
+      this.supplierAmountForm.markAllAsTouched();
+      this.supplierBillForm.markAllAsTouched();
+      return;
+    }
+    const StgObject: StgCollectionData[] = [];
+    const PaymentObject: StgPaymentData[] = [];
+    this.dataSource.data.forEach((selectedItem) => {
+      // Create the selected object based on the selected item
+      const selectedObject: StgCollectionData = {
+        CollectionId: selectedItem.CollectionId ?? 0, // Assuming CollectionId is present in your data
+      };
+      // Push the selected object to the array
+      StgObject.push(selectedObject);
+    });
+
+    this.paymentDataSource.data.forEach((selectedItem) => {
+      // Create the selected object based on the selected item
+      const selectedObject: StgPaymentData = {
+        PaymentId: selectedItem.PaymentId ?? 0, // Assuming CollectionId is present in your data
+      };
+      // Push the selected object to the array
+      PaymentObject.push(selectedObject);
+    });
+
+    let data: SaveSupplierBill = {
+
+      BillDate: formatDate(this.supplierAmountForm.value.BillDate, 'yyyy-MM-dd', 'en-US'),
+      FromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      ClientId: this.supplierBillForm.value.ClientId,
+      FinalWeight: this.getTotal('ChallanWeight') ?? 0,
+      TotalStgAmount: this.getTotal('GrossAmount') ?? 0,
+      TotalStgPayment: this.getTotalPayment('Amount') ?? 0,
+      PreviousBalance: this.supplierAmountForm.value.PreviousAmount ?? 0,
+      StandingSeasonAdv: this.supplierAmountForm.value.SeasonAmount ?? 0,
+      Commision: this.supplierAmountForm.value.LessComission ?? 0,
+      GreenLeafCess: this.supplierAmountForm.value.GreenLeafCess ?? 0,
+      FinalBillAmount: this.supplierAmountForm.value.FinalBillAmount ?? 0,
+      LessSeasonAdv: this.supplierAmountForm.value.LessSeasonAdv ?? 0,
+      AmountToPay: this.supplierAmountForm.value.AmountToPay ?? 0,
+      TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.UserId,
+      CollectionData: StgObject,
+      PaymentData: PaymentObject
+    };
+
+    if (!environment.production) {
+      console.log(data, 'bildata');
+    }
+    this.isSubmitting = true;
+    this.SaveBill(data);
   }
 
-  async SaveBill(clientBody: SaveStgBill) {
-    
+  async SaveBill(clientBody: SaveSupplierBill) {
+    this.billService.SaveSupplierBIll(clientBody)
+    .pipe(
+      takeUntil(this.destroy$),
+      catchError(error => {
+        console.error('Error:', error);
+        this.isSubmitting = false;
+        this.toastr.error('An error occurred', 'ERROR');
+        throw error;
+      })
+    )
+    .subscribe((res: any) => {
+
+      this.toastr.success(res.Message, 'SUCCESS');
+
+
+      const formControls = [
+        'ClientName',
+        'ClientId',
+
+      ];
+
+      formControls.forEach(control => {
+        this.supplierBillForm.controls[control].reset();
+      });
+    });
+
+  await this.GetSupplierBillData();
+
+  this.cleanAmountController();
+
+  this.ClientNoInput.nativeElement.focus();
+  this.isSubmitting = false;
   }
 
 }

@@ -25,6 +25,7 @@ import { AddStgComponent } from './models/add-stg/add-stg.component';
 import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
 import { SeasonAdvanceHistoryComponent } from './components/season-advance-history/season-advance-history.component';
 import { StgBillHistoryComponent } from './components/stg-bill-history/stg-bill-history.component';
+import { SupplierBillHistoryComponent } from './components/supplier-bill-history/supplier-bill-history.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -47,7 +48,8 @@ export const MY_FORMATS = {
     AddStgComponent,
     PaymentHistoryComponent,
     SeasonAdvanceHistoryComponent,
-    StgBillHistoryComponent
+    StgBillHistoryComponent,
+    SupplierBillHistoryComponent
   ],
   imports: [
     CommonModule,

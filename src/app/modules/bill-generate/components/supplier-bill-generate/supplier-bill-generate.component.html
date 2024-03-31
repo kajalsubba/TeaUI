@@ -85,24 +85,8 @@
                     </td>
                   </ng-container>
   
-                  <!-- Factory -->
-                  <ng-container matColumnDef="Factory">
-                    <th mat-header-cell *matHeaderCellDef> Factory </th>
-                    <td class="weight-column" mat-cell *matCellDef="let row">{{row.Factory}}</td>
-                    <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                      <!-- <b>{{ getTotal('FirstWeight')}} KG</b> -->
-                    </td>
-                  </ng-container>
-  
-                  <!-- Vehicle No -->
-                  <ng-container matColumnDef="VehicleNo">
-                    <th mat-header-cell *matHeaderCellDef> VehicleNo </th>
-                    <td class="weight-column" mat-cell *matCellDef="let row">{{row.VehicleNo}}</td>
-                    <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                      <!-- <b>{{ getTotal('Deduction') }} KG</b> -->
-                    </td>
-                  </ng-container>
-  
+        
+            
                   <!-- Fine Leaf -->
                   <ng-container matColumnDef="FineLeaf">
                     <th mat-header-cell *matHeaderCellDef> FineLeaf </th>
@@ -130,13 +114,13 @@
                     </td>
                   </ng-container>
   
-                  <!-- Amount -->
-                  <ng-container matColumnDef="Amount">
-                    <th mat-header-cell *matHeaderCellDef> Amount </th>
-                    <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                      *matCellDef="let row"> {{row.Amount.toFixed(2) }} </td>
+                  <!-- GrossAmount -->
+                  <ng-container matColumnDef="GrossAmount">
+                    <th mat-header-cell *matHeaderCellDef> GrossAmount </th>
+                    <td  class="weight-column" mat-cell
+                      *matCellDef="let row"> {{row.GrossAmount.toFixed(2) }} </td>
                     <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                      <b>{{ getTotal('Amount').toFixed(2) }} </b>
+                      <b>{{ getTotal('GrossAmount').toFixed(2) }} </b>
                     </td>
                   </ng-container>
                   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
@@ -273,16 +257,6 @@
               </div>
             </div>
             <div class="col-lg-4">
-              <!-- <div class="form-group row mb-3">
-                <label for="Transporting" class="col-lg-6 col-form-label">Transporting </label>
-                <div class="col-lg-6 position-relative">
-                  <input (input)="calculateFinalAmount()" #Transporting type="number" class="form-control"
-                    id="Transporting" placeholder="Transporting" formControlName="Transporting">
-                  <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                </div>
-              </div> -->
-            </div>
-            <div class="col-lg-4">
               <div class="form-group row mb-3">
                 <label for="GreenLeafCess" class="col-lg-6 col-form-label">Green Leaf Cess </label>
                 <div class="col-lg-6 position-relative">
@@ -304,7 +278,6 @@
                 </div>
               </div>
             </div>
-  
             <div class="col-lg-4">
               <div class="form-group row mb-3">
                 <label for="LessSeasonAdv" class="col-lg-6 col-form-label">Less Season Adv. </label>
@@ -317,6 +290,7 @@
                 </div>
               </div>
             </div>
+  
             <div class="col-lg-4">
               <div class="form-group row mb-3">
                 <label for="AmountToPay" class="col-lg-6 col-form-label">Amount To Pay <span
@@ -330,7 +304,13 @@
                 </div>
               </div>
             </div>
+            <div class="col-lg-4">
+          
+            </div>
   
+            <div class="col-lg-4">
+             
+            </div>
             <div class="col-lg-4">
               <div class="form-group row mb-3">
                 <label for="FinalAmount" class="col-lg-6 col-form-label"></label>
