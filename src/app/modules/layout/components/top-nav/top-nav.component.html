@@ -10,6 +10,26 @@
             <span>{{loginDetails.CompanyName }}</span>
             <span class="router">{{formatCurrentRoute()}}</span>
         </div>
+        <div class="notification-icon" [matMenuTriggerFor]="notificationMenu">
+            <i class="fa-solid fa-bell fa-2x text-light"></i>
+            <span class="notification-badge">{{countOfPendingNotifications}}</span> <!-- Badge for notification count -->
+        </div>
+        <mat-menu #notificationMenu="matMenu" class="notification-menu p-0">
+            <div class="notification-header">
+                Notifications
+            </div>
+            <button (click)="redirectToNotification(notification.Link)" class="notification-button" mat-menu-item *ngFor="let notification of NotificationData">
+                <div class="notification-item" >
+                    <div class="notification-content">
+                        <div class="notification-module">{{ notification.Module }}</div>
+                        <div class="notification-info">{{ notification.TotalPending }} pending</div>
+                    </div>
+                </div>
+            </button>
+            <!-- Add more notification items as needed -->
+        </mat-menu>
+        
+        
         <div class="user-profile rounded">
             <div class="profile-image">
                 <i class="fa-solid fa-2x fa-user"></i>

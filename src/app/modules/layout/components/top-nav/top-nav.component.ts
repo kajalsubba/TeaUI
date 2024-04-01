@@ -2,6 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { IGetNotifications } from '../../interfaces/iget-notifications';
+import { NotificationsService } from '../../services/notifications.service';
 
 @Component({
   selector: 'app-top-nav',
@@ -13,9 +15,16 @@ export class TopNavComponent implements OnInit {
   switchSideNav: boolean = false;
   @Output() sideNavSwitch = new EventEmitter<any>();
   loginDetails: any;
-  currentDateTime: string | null = null; 
+  currentDateTime: string | null = null;
+  NotificationData: any[]=[];
+  countOfPendingNotifications: any;
 
-  constructor(public helper: HelperService, private router: Router, private datePipe: DatePipe) {}
+  constructor(
+    public helper: HelperService,
+    private router: Router,
+    private datePipe: DatePipe,
+    private notificationService: NotificationsService
+  ) {}
 
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -23,6 +32,7 @@ export class TopNavComponent implements OnInit {
     setInterval(() => {
       this.updateDateTime();
     }, 1000);
+    this.GetNotificationData();
   }
 
   toggleSideNav(): void {
@@ -37,6 +47,21 @@ export class TopNavComponent implements OnInit {
     sessionStorage.clear();
   }
 
+  GetNotificationData() {
+    let data: IGetNotifications = {
+      TenantId: this.loginDetails.TenantId,
+    };
+
+    this.notificationService.GetStgBillHistory(data).subscribe((res) => {
+      this.NotificationData = res.NotificationData;
+      const pendingNotifications = res.NotificationData.filter((item:any) => item.TotalPending > 0);
+
+      // Count the number of filtered items
+      this.countOfPendingNotifications = pendingNotifications.length;
+    })
+
+  }
+
   formatCurrentRoute(): string {
     const currentRoute = this.helper.getCurrentRoute();
     const parts = currentRoute.split('/');
@@ -45,6 +70,10 @@ export class TopNavComponent implements OnInit {
     const formattedRoute = parts.slice(1).join(' > ');
 
     return formattedRoute.toUpperCase();
+  }
+
+  redirectToNotification(link:any){
+    this.router.navigate([`home/${link}`]);
   }
 
   updateDateTime(): void {
