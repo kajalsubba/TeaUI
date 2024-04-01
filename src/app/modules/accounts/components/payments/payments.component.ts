@@ -66,7 +66,7 @@ export class PaymentsComponent implements OnInit {
   selectedRowIndex: number = -1;
   // saleTypeList: any[]=[];
   categoryList: any[] = [];
-  PaymentTypeList: any[]=[];
+  PaymentTypeList: any[] = [];
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -75,10 +75,10 @@ export class PaymentsComponent implements OnInit {
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
     private categoryService: CategoryService,
-     private paymentService: PaymentService,
-     private paymentTypeService: PaymenttypeService
-  
-  
+    private paymentService: PaymentService,
+    private paymentTypeService: PaymenttypeService
+
+
   ) { }
 
   async ngOnInit() {
@@ -89,8 +89,8 @@ export class PaymentsComponent implements OnInit {
       ClientId: [0],
       ClientName: [''],
       CategoryId: ['', Validators.required],
-      CategoryName: [''],
-      PaymentType: [''],
+      CategoryName: ['']
+
     });
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
@@ -113,21 +113,15 @@ export class PaymentsComponent implements OnInit {
     this.subscriptions.push(categoryListService);
   }
 
-  GetPaymentData(FromDate: any, ToDate: any) {
+  GetPaymentData() {
     const currentDate = new Date();
     let bodyData: IGetPayment = {
-      FromDate:
-        FromDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : FromDate,
-      ToDate:
-        ToDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : ToDate,
+      FromDate:  formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate:formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       ClientCategory: this.PaymentForm.value.CategoryName,
-      ClientId: this.PaymentForm.value.ClientId??0
-
+      ClientId: this.PaymentForm.value.ClientId ?? 0,
+      PaymentTypeId: 0
     };
     console.log(bodyData, 'bodyData bodyData');
 
@@ -191,7 +185,7 @@ export class PaymentsComponent implements OnInit {
 
 
     } catch (error) {
-      
+
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
     }
@@ -213,17 +207,17 @@ export class PaymentsComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
- 
+
 
   selectClient(client: any) {
     if (client == '') {
       this.PaymentForm.controls['ClientId'].reset();
     }
-  
+
     if (!environment.production) {
       console.log(client.ClientId, 'Client');
     }
-    
+
 
     this.PaymentForm.controls['ClientId'].setValue(client?.ClientId);
   }
@@ -233,7 +227,7 @@ export class PaymentsComponent implements OnInit {
       this.PaymentForm.markAllAsTouched();
       return;
     }
-    this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+    this.GetPaymentData();
 
 
   }
@@ -276,7 +270,7 @@ export class PaymentsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+        this.GetPaymentData();
 
       }
     });
@@ -295,7 +289,7 @@ export class PaymentsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+        this.GetPaymentData();
 
       }
     });

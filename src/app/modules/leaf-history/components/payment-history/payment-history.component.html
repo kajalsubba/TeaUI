@@ -49,16 +49,13 @@
                 </div>
               </div>
               <div class="col-lg-2 position-relative my-2">
-                <mat-select placeholder="--Payment Type--" class="fromSelect" formControlName="PaymentType">
+                <mat-select placeholder="--Payment Type--" class="fromSelect" formControlName="PaymentTypeId">
+                  <mat-option value="0">All Payment</mat-option>
                   <mat-option *ngFor="let payment of PaymentTypeList" [value]="payment.PaymentTypeId">
                     {{payment.PaymentType}}
                   </mat-option>
                 </mat-select>
-                <span
-                  *ngIf="PaymentForm.get('PaymentType')?.hasError('required') && PaymentForm.get('PaymentType')?.touched"
-                  class="text-danger d-block validation-message">
-                  Payment type is required.
-                </span>
+           
               </div>
               <div class="col-lg-2 my-2">
                 <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->

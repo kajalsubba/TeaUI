@@ -18,4 +18,5 @@ export interface IGetPayment {
     TenantId: number;
     ClientId: number;
     ClientCategory:string;
+    PaymentTypeId:number;
 }

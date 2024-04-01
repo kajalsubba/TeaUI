@@ -85,7 +85,7 @@ PaymentTypeList: any[]=[];
       ClientName: [''],
       CategoryId: ['', Validators.required],
       CategoryName: [''],
-      PaymentType: [''],
+      PaymentTypeId: [0],
     });
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
@@ -95,20 +95,15 @@ PaymentTypeList: any[]=[];
 
   }
 
-  GetPaymentData(FromDate: any, ToDate: any) {
+  GetPaymentData() {
     const currentDate = new Date();
     let bodyData: IGetPayment = {
-      FromDate:
-        FromDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : FromDate,
-      ToDate:
-        ToDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : ToDate,
+      FromDate:formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       ClientCategory: this.PaymentForm.value.CategoryName??'',
-      ClientId: this.PaymentForm.value.ClientId ?? 0
+      ClientId: this.PaymentForm.value.ClientId ?? 0,
+      PaymentTypeId:this.PaymentForm.value.PaymentTypeId ?? 0,
 
     };
     console.log(bodyData, 'bodyData bodyData');
@@ -122,22 +117,7 @@ PaymentTypeList: any[]=[];
     this.subscriptions.push(categoryListService);
   }
 
-  // async selectCategory(event: MatOptionSelectionChange, category: any) {
 
-  //   if (event.source.selected) {
-  //     this.PaymentForm.controls['ClientId'].reset();
-  //     this.PaymentForm.controls['ClientName'].reset();
-  //     this.PaymentForm.controls['CategoryName'].setValue(category?.CategoryName);
-  //     if (category == '') {
-  //       this.ClientNames = this.clientList;
-  //     }
-  //     else {
-  //       var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.PaymentForm.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
-  //       this.ClientNames = dataList;
-  //     }
-  //   }
-
-  // }
   async selectCategory(event: MatOptionSelectionChange, category: any) {
     if (event.source.selected) {
         this.PaymentForm.controls['ClientId'].reset();
@@ -241,7 +221,7 @@ async GetPaymentType() {
       this.PaymentForm.markAllAsTouched();
       return;
     }
-    this.GetPaymentData(formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+    this.GetPaymentData();
 
 
   }

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -11,6 +11,8 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
+import { SupplierSummaryService } from '../../services/supplier-summary.service';
+import { ISupplierSummary } from '../../interfaces/isupplier-summary';
 
 @Component({
   selector: 'app-supplier-summary',
@@ -22,11 +24,11 @@ export class SupplierSummaryComponent implements OnInit {
   displayedColumns: string[] = [
     'ClientName',
     'ChallanWeight',
-    'AverageRate',
-    'Amount',
-    'IncAmount',
-    'CommissionAmount',
-    'CessAmount',
+    'Rate',
+    'GrossAmount',
+    'Incentive',
+    'LessCommison',
+    'GreenLeafCess',
     'FinalAmount'
   ];
 
@@ -44,7 +46,7 @@ export class SupplierSummaryComponent implements OnInit {
     // { columnDef: 'Transporting', header: 'Transporting' },
     // { columnDef: 'CessAmount', header: 'Cess Amount' },
     // { columnDef: 'FinalAmount', header: 'Final Amount' }
-]
+  ]
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -55,8 +57,9 @@ export class SupplierSummaryComponent implements OnInit {
   supplierSummary!: FormGroup;
   minToDate!: any;
   ClientNames: any[] = [];
-  clientList: any[] = [];
+ // clientList: any[] = [];
   selectedRowIndex: number = -1;
+  AverageRate: number = 0;
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -64,6 +67,7 @@ export class SupplierSummaryComponent implements OnInit {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
+    private summaryService: SupplierSummaryService
   ) { }
 
   async ngOnInit() {
@@ -85,7 +89,7 @@ export class SupplierSummaryComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: ''
+        Category: 'Supplier'
 
       };
 
@@ -93,7 +97,7 @@ export class SupplierSummaryComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.clientList = res.ClientDetails;
+      //  this.clientList = res.ClientDetails;
       this.ClientNames = res.ClientDetails;
 
 
@@ -129,11 +133,46 @@ export class SupplierSummaryComponent implements OnInit {
     this.supplierSummary.controls['ClientId'].setValue(client?.ClientId);
   }
 
-  search() {
+  async search() {
 
     if (this.supplierSummary.invalid) {
       this.supplierSummary.markAllAsTouched();
       return;
+    }
+    await this.GetSummary();
+    const grossAmount: number = this.getTotal('GrossAmount');
+    const challanWeight: number = this.getTotal('ChallanWeight');
+    this.AverageRate=grossAmount/challanWeight;
+  }
+  onInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Do something when input changes
+    if (input.value == '') {
+
+      this.supplierSummary.controls['ClientId'].reset();
+
+    }
+
+  }
+
+  async GetSummary() {
+    try {
+      const bodyData: ISupplierSummary = {
+        FromDate: formatDate(this.supplierSummary.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.supplierSummary.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        ClientId: this.supplierSummary.value.ClientId ?? 0,
+        TenantId: this.loginDetails.TenantId
+
+      };
+      const res: any = await this.summaryService.GetSupplierSummary(bodyData).toPromise();
+      const { SupplierSummary } = res;
+
+      this.dataSource.data = SupplierSummary;
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
   applyFilter(event: Event) {
