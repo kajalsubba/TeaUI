@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HelperService } from 'src/app/core/services/helper.service';
 
 @Component({
   selector: 'app-change-password',
@@ -10,10 +11,11 @@ export class ChangePasswordComponent implements OnInit {
 
   changeForm!:FormGroup;
   passwordType: string='password';
-
-  constructor(private fb:FormBuilder){}
+  loginDetails: any;
+  constructor(private fb:FormBuilder,  private helper: HelperService){}
 
   ngOnInit(): void {
+    this.loginDetails = this.helper.getItem('loginDetails');
       this.changeForm = this.fb.group({
         Password:['', Validators.required],
         ConfirmPassword:['', [Validators.required, this.passwordMatchValidator.bind(this)]]
@@ -47,6 +49,15 @@ export class ChangePasswordComponent implements OnInit {
     if (this.changeForm.valid) {
       // Proceed with form submission
       console.log("Form submitted successfully!");
+
+      if (this.loginDetails.LoginType == 'Client')
+      {
+
+      }
+      else
+      {
+
+      }
     } else {
       // Form is invalid, handle accordingly
       this.changeForm.markAllAsTouched()
