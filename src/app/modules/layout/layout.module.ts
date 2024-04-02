@@ -8,6 +8,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { DashboardModule } from '../dashboard/dashboard.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatExpansionModule,
     DashboardModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ]
 })
 export class LayoutModule { }
