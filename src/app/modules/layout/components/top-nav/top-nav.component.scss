@@ -154,3 +154,88 @@
   color: var(--bg-color);
   font-size: 1rem;
 }
+
+.notification-icon{
+  position: absolute;
+  right: 15%;
+  cursor: pointer;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+::ng-deep .notification-menu {
+  width: 500px; /* Adjust menu width as needed */
+  height: 300px;
+  overflow: auto;
+}
+
+.notification-header {
+  padding: 10px;
+  color: var(--primary-color);
+  background-color:#fff;
+  font-weight: 600;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #ddd;
+  font-size: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+.mat-mdc-menu-content{
+  padding: 0 !important;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.notification-button{
+  border-bottom: 1px solid lightgray;
+  &:hover{
+    background-color: var(--primary-color) !important;
+    .notification-module{
+      color: #fff;
+    }
+  }
+}
+
+.notification-content {
+  flex-grow: 1;
+}
+
+.notification-module {
+  font-weight: 500;
+  color: #1877f2; /* Facebook blue color */
+}
+
+.notification-info {
+  background-color: #ffc107;
+  color: white;
+  box-shadow: var(--soft-box-shadow);
+  padding: 5px 10px;
+  border-radius: 30px;
+}
+
+.no-notifications-message{
+  position: absolute;
+  width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
