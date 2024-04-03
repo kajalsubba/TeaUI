@@ -31,6 +31,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     'PaySource',
     'ClientName',
     'Amount',
+    'Remarks',
     'actions'
 
   ];
@@ -41,6 +42,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     { columnDef: 'AdvancedDate', header: 'Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'PaySource', header: 'Category' },
+    { columnDef: 'Remarks', header: 'Remarks' },
     //  { columnDef: 'Amount', header: 'Amount' }
 
   ];
