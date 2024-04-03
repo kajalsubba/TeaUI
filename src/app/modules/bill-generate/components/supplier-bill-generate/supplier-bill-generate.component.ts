@@ -402,7 +402,7 @@ export class SupplierBillGenerateComponent implements OnInit {
   }
 
   async SaveBill(clientBody: SaveSupplierBill) {
-    this.billService.SaveSupplierBIll(clientBody)
+    this.billService.SaveSupplierBill(clientBody)
     .pipe(
       takeUntil(this.destroy$),
       catchError(error => {

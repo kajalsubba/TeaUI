@@ -14,7 +14,7 @@ export class SupplierBillService {
     return this.apiService.post('Accounts/GetSupplierBillData', clientBody);
   }
 
-  SaveSupplierBIll(clientBody:SaveSupplierBill): Observable<string[]> {
-    return this.apiService.post('Accounts/GetSupplierBillHistory', clientBody);
+  SaveSupplierBill(clientBody:SaveSupplierBill): Observable<string[]> {
+    return this.apiService.post('Accounts/SaveSupplierBill', clientBody);
   }
 }
