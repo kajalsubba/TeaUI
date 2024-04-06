@@ -171,3 +171,46 @@
     }
   }
 }
+
+.playstore-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--primary-color);
+  border-radius: 9999px;
+  background-color: #f2f2f2;
+  padding: 0.25rem 1.5rem;
+  text-align: center;
+  color: var(--primary-color);
+  outline: 0;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.playstore-button:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.icon {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.texts {
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.text-1 {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.text-2 {
+  font-weight: 600;
+}
