@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
       this.TenantList = res.TenantDetails;
     });
   }
-
+ 
   onClientLogin() {
     this.clientLoginFail = false;
     if (this.ClientloginForm.invalid) {
