@@ -8,6 +8,7 @@ import { SeasonAdvanceHistoryComponent } from './components/season-advance-histo
 import { PaymentHistoryComponent } from './components/payment-history/payment-history.component';
 import { StgBillHistoryComponent } from './components/stg-bill-history/stg-bill-history.component';
 import { SupplierBillHistoryComponent } from './components/supplier-bill-history/supplier-bill-history.component';
+import { SmartHistoryComponent } from './components/smart-history/smart-history.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
     {path:'payment-history', component: PaymentHistoryComponent},
     {path:'stg-bill-history', component: StgBillHistoryComponent},
     {path:'supplier-bill-history', component: SupplierBillHistoryComponent},
+    {path:'smart-history', component: SmartHistoryComponent},
     
   ]}
 ];

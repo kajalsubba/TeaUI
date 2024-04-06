@@ -164,8 +164,11 @@
               History</a></li>
           <li routerLink="LeafHistory/stg-bill-history" routerLinkActive="active"><a class="sub-menu-title">STG Bill
               History</a></li>
-              <li routerLink="LeafHistory/supplier-bill-history" routerLinkActive="active"><a class="sub-menu-title">Supplier Bill
-                History</a></li>
+          <li routerLink="LeafHistory/supplier-bill-history" routerLinkActive="active"><a
+              class="sub-menu-title">Supplier Bill
+              History</a></li>
+          <li routerLink="LeafHistory/smart-history" routerLinkActive="active"><a class="sub-menu-title">Smart
+              History</a></li>
         </ul>
       </li>
       <li [class.showMenu]="currentOpenMenu === 'leaf-summary'" class="main-menu" routerLinkActive="main-menu-active">
@@ -181,7 +184,8 @@
           </li>
           <li routerLink="leaf-summary/supplier-summary" routerLinkActive="active"><a class="sub-menu-title">Supplier
               Summary</a></li>
-          <li routerLink="leaf-summary/sale-summary" routerLinkActive="active"><a class="sub-menu-title">Sale Summary</a>
+          <li routerLink="leaf-summary/sale-summary" routerLinkActive="active"><a class="sub-menu-title">Sale
+              Summary</a>
           </li>
 
         </ul>
@@ -198,14 +202,15 @@
           <li
             *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[16].ModuleId==19 && PermissionDetails[16].HideModule==false"
             routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
-        
-            <!-- <li
+
+          <!-- <li
             *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[17].ModuleId==20 && PermissionDetails[17].HideModule==false"
             routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role
               Permission</a></li> -->
 
-          <li routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role Permission</a></li>
-            
+          <li routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role
+              Permission</a></li>
+
           <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="user-management/user" routerLinkActive="active"><a
               class="sub-menu-title">Create User</a></li>
           <li routerLink="user-management/change-password" routerLinkActive="active"><a class="sub-menu-title">Change
