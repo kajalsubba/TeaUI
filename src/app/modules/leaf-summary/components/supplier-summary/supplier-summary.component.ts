@@ -26,7 +26,6 @@ export class SupplierSummaryComponent implements OnInit {
     'ChallanWeight',
     'Rate',
     'GrossAmount',
-    'Incentive',
     'LessCommison',
     'GreenLeafCess',
     'FinalAmount'

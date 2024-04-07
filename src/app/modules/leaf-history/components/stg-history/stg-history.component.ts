@@ -161,6 +161,7 @@ export class StgHistoryComponent {
 
   getTotal(columnName: string): number {
     return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
+
   }
 
   async loadVehicleNumbers() {

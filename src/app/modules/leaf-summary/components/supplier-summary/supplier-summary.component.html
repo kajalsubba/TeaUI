@@ -115,17 +115,7 @@
             </td>
           </ng-container> -->
 
-              <!-- IncAmount -->
-
-              <ng-container matColumnDef="Incentive">
-                <th mat-header-cell *matHeaderCellDef>Inc. Amount <i class="fa-solid fa-indian-rupee-sign"></i>
-                </th>
-                <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
-                  {{row.Incentive.toFixed(2)}} </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('Incentive').toFixed(2) }}</b>
-                </td>
-              </ng-container>
+          
               <!-- <ng-container matColumnDef="Incentive">
                 <th mat-header-cell *matHeaderCellDef> Inc. Amount </th>
                 <td class="weight-column" mat-cell

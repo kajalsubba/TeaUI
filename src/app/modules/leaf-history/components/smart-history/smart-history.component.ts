@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -14,6 +14,8 @@ import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
+import { ISmartHistory } from '../../interfaces/istgbill-history';
+import { SuppilerHistoryService } from '../../services/suppiler-history.service';
 
 @Component({
   selector: 'app-smart-history',
@@ -38,12 +40,12 @@ export class SmartHistoryComponent implements OnInit {
 
   ];
 
-  leftDataSource = new _MatTableDataSource<any>();
-  rightDataSource = new _MatTableDataSource<any>();
+  LeafDataSource = new _MatTableDataSource<any>();
+  PaymentDataSource = new _MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     // { columnDef: 'CollectionDate', header: 'Collection Date' },
-     { columnDef: 'FinalWeight', header: 'Final Weight' },
+  //  { columnDef: 'FinalWeight', header: 'Final Weight' },
     //  { columnDef: 'VehicleNo', header: 'Vehicle No ' },
     // { columnDef: 'Deduction', header: 'Deduction(KG)' },
     // { columnDef: 'Final', header: 'Final(KG)' },
@@ -75,8 +77,9 @@ export class SmartHistoryComponent implements OnInit {
   OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
-  // saleTypeList: any[]=[];
+  AverageRate:Number=0;
   categoryList: any[] = [];
+  Totaldays:Number=0;
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -84,7 +87,8 @@ export class SmartHistoryComponent implements OnInit {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private smartService: SuppilerHistoryService
   ) { }
 
   async ngOnInit() {
@@ -138,7 +142,7 @@ export class SmartHistoryComponent implements OnInit {
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
-        Category: 'SUPPLIER',
+        Category: '',
 
       };
 
@@ -175,23 +179,26 @@ export class SmartHistoryComponent implements OnInit {
   }
 
   getTotal(columnName: string): number {
-    if (!this.leftDataSource.filteredData || this.leftDataSource.filteredData.length === 0) {
+    if (!this.LeafDataSource.filteredData || this.LeafDataSource.filteredData.length === 0) {
       return 0;
     }
 
-    const columnValues: number[] = this.leftDataSource.filteredData
-      .map(item => Number(item[columnName]))
-      .filter(value => !isNaN(value));
+    // const columnValues: number[] = this.LeafDataSource.filteredData
+    //   .map(item => Number(item[columnName]))
+    //   .filter((x: any) => x.Status != 'Rejected');
 
-    return columnValues.reduce((acc, curr) => acc + curr, 0);
+    // return columnValues.reduce((acc, curr) => acc + curr, 0);
+
+    return this.LeafDataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
+
   }
 
   getTotalPayment(columnName: string): number {
-    if (!this.rightDataSource.filteredData || this.rightDataSource.filteredData.length === 0) {
+    if (!this.PaymentDataSource.filteredData || this.PaymentDataSource.filteredData.length === 0) {
       return 0;
     }
 
-    const columnValues: number[] = this.rightDataSource.filteredData
+    const columnValues: number[] = this.PaymentDataSource.filteredData
       .map(item => Number(item[columnName]))
       .filter(value => !isNaN(value));
 
@@ -199,7 +206,7 @@ export class SmartHistoryComponent implements OnInit {
   }
 
   getRate(columnName: string): number {
-    const filteredData = this.leftDataSource.filteredData;
+    const filteredData = this.LeafDataSource.filteredData;
     const total = filteredData.reduce(
       (acc, curr) => acc + curr[columnName],
       0
@@ -220,8 +227,8 @@ export class SmartHistoryComponent implements OnInit {
   }
   ngAfterViewInit() {
 
-    this.leftDataSource.paginator = this.paginator;
-    this.leftDataSource.sort = this.sort;
+    this.LeafDataSource.paginator = this.paginator;
+    this.LeafDataSource.sort = this.sort;
   }
 
 
@@ -239,16 +246,58 @@ export class SmartHistoryComponent implements OnInit {
       this.smartHistoryForm.markAllAsTouched();
       return;
     }
+    await this.GetSmartSummary();
+    const grossAmount: number = this.getTotal('Amount');
+    const challanWeight: number = this.getTotal('FinalWeight');
+    this.AverageRate=grossAmount/challanWeight;
 
+    const uniqueCategories = new Set(this.LeafDataSource.data.map(leaf => leaf.CollectionDate));
+    const distinctCount = uniqueCategories.size;
+   this.Totaldays=distinctCount;
+  }
+
+  async GetSmartSummary() {
+    try {
+      const bodyData: ISmartHistory = {
+        FromDate: formatDate(this.smartHistoryForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.smartHistoryForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        ClientId: this.smartHistoryForm.value.ClientId ?? 0,
+        TenantId: this.loginDetails.TenantId,
+        CategoryName: this.smartHistoryForm.value.CategoryName ?? "",
+
+      };
+      const res: any = await this.smartService.GetSmartHistory(bodyData).toPromise();
+      const { CollectionSummary, PaymentSummary, OutstandingSummary } = res;
+
+      this.LeafDataSource.data = CollectionSummary;
+
+      this.PaymentDataSource.data = PaymentSummary;
+   
+      if (OutstandingSummary && OutstandingSummary.length > 0) {
+        const { SeasonAdvance, PreviousBalance } = OutstandingSummary[0];
+      this.CalculationForm.controls['SeasonAmount'].setValue(SeasonAdvance.toFixed(2));
+      this.CalculationForm.controls['PreviousAmount'].setValue(PreviousBalance.toFixed(2));
+      }
+      else
+      {
+        this.CalculationForm.controls['SeasonAmount'].setValue(0);
+        this.CalculationForm.controls['PreviousAmount'].setValue(0);
+      }
+
+  
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
   }
 
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.leftDataSource.filter = filterValue.trim().toLowerCase();
+    this.LeafDataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.leftDataSource.paginator) {
-      this.leftDataSource.paginator.firstPage();
+    if (this.LeafDataSource.paginator) {
+      this.LeafDataSource.paginator.firstPage();
     }
   }
   selectRow(row: any, index: number) {
@@ -268,10 +317,10 @@ export class SmartHistoryComponent implements OnInit {
   @HostListener('document:keydown', ['$event'])
   handleKeyboardNavigation(event: KeyboardEvent) {
     if (event.key === 'ArrowDown') {
-      if (this.isDataSourceFocused() && this.selectedRowIndex < this.leftDataSource.data.length - 1) {
+      if (this.isDataSourceFocused() && this.selectedRowIndex < this.LeafDataSource.data.length - 1) {
         this.selectedRowIndex++;
       }
-      if (this.isPaymentDataSourceFocused() && this.selectedPaymentRowIndex < this.rightDataSource.data.length - 1) {
+      if (this.isPaymentDataSourceFocused() && this.selectedPaymentRowIndex < this.PaymentDataSource.data.length - 1) {
         this.selectedPaymentRowIndex++;
       }
     } else if (event.key === 'ArrowUp') {
