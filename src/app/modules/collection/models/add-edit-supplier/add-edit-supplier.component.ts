@@ -34,7 +34,7 @@ export class AddEditSupplierComponent implements OnInit {
   vehicleNumbers: any[] = [];
   filteredFactory: any[] = [];
   FactoryList: any[] = [];
-  statusList: string[] = ['Pending', 'Rejected']
+  statusList: string[] = ['Pending', 'Rejected','Approved']
   TripList: any[] = [];
   @ViewChild('CollectDate') CollDateInput!: ElementRef;
   @ViewChild('VehicleNo') VehicleNoInput!: ElementRef;
@@ -395,6 +395,7 @@ export class AddEditSupplierComponent implements OnInit {
       this.supplierForm.controls['ClientId'].reset()
       this.isSubmitting = false;
     }
+    this.dialogRef.close(true)
 
   }
 

@@ -163,8 +163,12 @@ export class SaleEntryComponent implements OnInit {
       this.saleEntryForm.controls['Incentive'].setValue(this.data.stgData.Incentive);
       this.saleEntryForm.controls['GrossAmount'].setValue(this.data.stgData.GrossAmount);
       this.saleEntryForm.controls['Remarks'].setValue(this.data.stgData.Remarks);
-      await this.GetSaleStgData(this.data.stgData.ApproveId);
-
+      if (this.data.stgData.TypeName == 'STG') {
+        await this.GetSaleStgData(this.data.stgData.ApproveId);
+      }
+      else  {
+        await this.GetSaleSupplierData(this.data.stgData.ApproveId);
+      }
       this.saleEntryForm.controls['FieldCollectionWeight'].setValue(
         this.getTotalCost('FinalWeight')
       );
@@ -202,6 +206,25 @@ export class SaleEntryComponent implements OnInit {
         .toPromise();
 
       this.dataSource.data = res.SaleStgData;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+  async GetSaleSupplierData(ApproveId: any) {
+    try {
+      const bodyData: ISaleStg = {
+        TenantId: this.loginDetails.TenantId,
+        ApproveId: ApproveId
+      };
+
+      const res: any = await this.saleService
+        .GetSaleSupplierData(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.dataSource.data = res.SaleSupplierData;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -278,7 +301,7 @@ export class SaleEntryComponent implements OnInit {
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
     };
-    
+
     this.SaveSaleData(data);
   }
 

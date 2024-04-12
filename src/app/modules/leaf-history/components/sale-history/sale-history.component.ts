@@ -290,7 +290,7 @@ export class SaleHistoryComponent {
       minWidth: '90vw',
       disableClose: true,
       data: {
-        title: 'Sale Edit Form-STG',
+        title: 'Sale Edit Form-'+row.TypeName,
         stgData: row,
         approveData: null,
         isEdit: true,

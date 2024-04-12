@@ -2,6 +2,7 @@ import { DatePipe, formatDate } from '@angular/common';
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { ISupplierSelect } from 'src/app/modules/collection/interfaces/isupplier';
+import { AddEditSupplierComponent } from 'src/app/modules/collection/models/add-edit-supplier/add-edit-supplier.component';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { SupplierService } from 'src/app/modules/collection/services/supplier.service';
@@ -35,7 +37,7 @@ export class SupplierHistoryComponent {
     'Remarks',
     'TripName',
     'Status',
-    //'actions'
+    'actions'
   ];
 
   dataSource = new MatTableDataSource<any>();
@@ -68,6 +70,7 @@ export class SupplierHistoryComponent {
   private destroy$ = new Subject<void>();
 
   constructor(
+    private dialog: MatDialog,
     private helper: HelperService,
     private datePipe: DatePipe,
     private toastr: ToastrService,
@@ -103,11 +106,11 @@ export class SupplierHistoryComponent {
     this.minToDate = event.value
   }
 
-  GetSupplierList(FromDate: any, ToDate: any) {
+  GetSupplierList() {
     const currentDate = new Date();
     let bodyData: ISupplierSelect = {
-      FromDate: FromDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : FromDate,
-      ToDate: ToDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : ToDate,
+      FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
@@ -124,12 +127,8 @@ export class SupplierHistoryComponent {
 
   search() {
 
-    // const currentDate = new Date();
-
-    // const fromDate =this.dateRangeForm.value.fromDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): this.dateRangeForm.value.fromDate.format('yyyy-MM-DD');
-    // const toDate =this.dateRangeForm.value.toDate==null? formatDate(currentDate, 'yyyy-MM-dd', 'en-US'):  this.dateRangeForm.value.toDate.format('yyyy-MM-DD');
-
-    this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),);
+  
+    this.GetSupplierList();
   }
   getTotalCost(columnName: string): number {
     return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
@@ -168,6 +167,25 @@ export class SupplierHistoryComponent {
   VehicleInput(value: string) {
     let newVal = value.toUpperCase();
     this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
+  }
+  editItem(element?:any)
+  {
+    const dialogRef = this.dialog.open(AddEditSupplierComponent, {
+      width: '80%',
+      data: {
+        title: 'Update Supplier',
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetSupplierList();
+
+      }
+    });
   }
 
   selectRow(row: any, index: number) {

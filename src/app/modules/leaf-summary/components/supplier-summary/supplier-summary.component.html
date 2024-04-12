@@ -106,26 +106,8 @@
               <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('GrossAmount').toFixed(2) }}</b>
             </td>
           </ng-container>
-           <!-- <ng-container matColumnDef="GrossAmount">
-            <th mat-header-cell *matHeaderCellDef> Amount </th>
-            <td  class="weight-column" mat-cell
-              *matCellDef="let row"> {{row.GrossAmount.toFixed(2) }}  </td>
-            <td class="footer-total" mat-footer-cell *matFooterCellDef>
-              <b>{{ getTotal('GrossAmount').toFixed(2) }} </b>
-            </td>
-          </ng-container> -->
-
-          
-              <!-- <ng-container matColumnDef="Incentive">
-                <th mat-header-cell *matHeaderCellDef> Inc. Amount </th>
-                <td class="weight-column" mat-cell
-                  *matCellDef="let row"> {{row.Incentive.toFixed(2) }}  </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b>{{ getTotal('Incentive').toFixed(2) }} </b>
-                </td>
-              </ng-container> -->
-  
-              <!-- CommissionAmount -->
+                  
+           
 
               <ng-container matColumnDef="LessCommison">
                 <th mat-header-cell *matHeaderCellDef>Commission Amount <i class="fa-solid fa-indian-rupee-sign"></i>
@@ -136,16 +118,7 @@
                   <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('LessCommison').toFixed(2) }}</b>
                 </td>
               </ng-container>
-              <!-- <ng-container matColumnDef="LessCommison">
-                <th mat-header-cell *matHeaderCellDef> Commission Amount </th>
-                <td class="weight-column" mat-cell
-                  *matCellDef="let row"> {{row.LessCommison.toFixed(2) }}  </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b>{{ getTotal('LessCommison').toFixed(2) }} </b>
-                </td>
-              </ng-container> -->
-  
-              <!-- CessAmount -->
+           
 
               <ng-container matColumnDef="GreenLeafCess">
                 <th mat-header-cell *matHeaderCellDef>Cess Amount <i class="fa-solid fa-indian-rupee-sign"></i>
@@ -156,16 +129,7 @@
                   <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('GreenLeafCess').toFixed(2) }}</b>
                 </td>
               </ng-container>
-              <!-- <ng-container matColumnDef="GreenLeafCess">
-                <th mat-header-cell *matHeaderCellDef> Cess Amount </th>
-                <td class="weight-column" mat-cell
-                  *matCellDef="let row"> {{row.GreenLeafCess.toFixed(2) }}  </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b>{{ getTotal('GreenLeafCess').toFixed(2) }} </b>
-                </td>
-              </ng-container> -->
-  
-              <!-- FinalAmount -->
+           
 
               <ng-container matColumnDef="FinalAmount">
                 <th mat-header-cell *matHeaderCellDef>Final Amount <i class="fa-solid fa-indian-rupee-sign"></i>
@@ -176,16 +140,7 @@
                   <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('FinalAmount').toFixed(2) }}</b>
                 </td>
               </ng-container>
-              <!-- <ng-container matColumnDef="FinalAmount">
-                <th mat-header-cell *matHeaderCellDef> Final Amount </th>
-                <td class="weight-column" mat-cell
-                  *matCellDef="let row"> {{row.FinalAmount.toFixed(2) }}  </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b>{{ getTotal('FinalAmount').toFixed(2) }} </b>
-                </td>
-              </ng-container> -->
-
-     
+             
               <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
                 [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">

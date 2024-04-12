@@ -110,17 +110,11 @@ export class SupplierComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  GetSupplierList(FromDate: any, ToDate: any) {
+  GetSupplierList() {
     const currentDate = new Date();
     let bodyData: ISupplierSelect = {
-      FromDate:
-        FromDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : FromDate,
-      ToDate:
-        ToDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : ToDate,
+      FromDate:formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate:formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
@@ -148,8 +142,8 @@ export class SupplierComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        //this.GetSupplierList(null, null);
-        this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+  
+        this.GetSupplierList();
 
       }
     });
@@ -168,7 +162,7 @@ export class SupplierComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+        this.GetSupplierList();
 
       }
     });
@@ -202,18 +196,8 @@ export class SupplierComponent implements OnInit {
   }
 
   search() {
-    const currentDate = new Date();
-
-    const fromDate =
-      this.dateRangeForm.value.fromDate == null
-        ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-        : formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US');
-    const toDate =
-      this.dateRangeForm.value.toDate == null
-        ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-        : formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US');
-
-    this.GetSupplierList(fromDate, toDate);
+  
+    this.GetSupplierList();
   }
 
   handleChange(event: any): void {
