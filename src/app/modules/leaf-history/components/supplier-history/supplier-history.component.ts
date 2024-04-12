@@ -100,6 +100,10 @@ export class SupplierHistoryComponent {
       this.dataSource.paginator.firstPage();
     }
   }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
     this.dateRangeForm.controls['toDate'].setValue(null);
