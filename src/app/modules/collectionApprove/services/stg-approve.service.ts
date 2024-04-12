@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/core/services/api.service';
 import { IStgVehicle, IstgApprove } from '../interfaces/istg-approve';
 import { Observable } from 'rxjs';
 import { IGetSale, IStgPendingDate, IStgSaleSave, IsaleSave } from '../interfaces/isale-save';
+import { IGetSaleFactory } from '../../masters/interfaces/IFactory';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class StgApproveService {
 
   GetSaleDetails(clientBody:IGetSale): Observable<string[]> {
     return this.apiService.post('Sale/GetSaleDetails', clientBody);
+  }
+
+  GetSaleFactoryDetails(clientBody:IGetSaleFactory): Observable<string[]> {
+    return this.apiService.post('Sale/GetSaleFactory', clientBody);
   }
 
   GetSaleType(): Observable<string[]> {

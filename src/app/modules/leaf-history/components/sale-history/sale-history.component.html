@@ -16,7 +16,7 @@
 
               <div class="col-lg-3 my-2">
                 <mat-form-field class="w-100" >
-                  <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="SaleForm.value.fromDate"
+                  <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="SaleForm.value.fromDate" (dateChange)="GetFactory($event)"
                     placeholder="To Date" formControlName="toDate">
                   <mat-datepicker-toggle [disabled]="SaleForm.value.fromDate == null" matSuffix
                     [for]="picker1"></mat-datepicker-toggle>

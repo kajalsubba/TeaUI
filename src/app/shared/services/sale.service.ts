@@ -15,6 +15,6 @@ export class SaleService {
   }
 
   GetSaleSupplierData(Body:ISaleStg): Observable<any> {
-    return this.apiService.post('Sale/GetSalSupplierData', Body);
+    return this.apiService.post('Sale/GetSaleSupplierData', Body);
   }
 }

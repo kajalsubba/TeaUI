@@ -12,7 +12,7 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { IGetSale } from 'src/app/modules/collectionApprove/interfaces/isale-save';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
-import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { IGetFactory, IGetSaleFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { EditSaleEntryComponent } from 'src/app/shared/components/edit-sale-entry/edit-sale-entry.component';
@@ -100,15 +100,12 @@ export class SaleHistoryComponent {
       SaleTypeId: [null]
     });
     //  this.loadVehicleNumbers();
-    this.loadFactoryNames();
+ //   this.loadFactoryNames();
     this.loadAccountNames();
     this.GetSaleType();
   }
   search() {
-    this.GetSaleDeatils(
-      formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-      formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US')
-    );
+    this.GetSaleDeatils();
   }
 
   getTotalCost(columnName: string): number {
@@ -136,10 +133,14 @@ export class SaleHistoryComponent {
   }
 
   filterFactoryNames(value: string): any {
+  // if (value!="")
+  //   {
     const filterValue = value.toLowerCase();
     return this.factoryNames.filter((x: any) =>
       x?.FactoryName?.toLowerCase()?.includes(filterValue)
     );
+//  }
+  
   }
 
   filterAccountNames(value: string): any {
@@ -194,6 +195,26 @@ export class SaleHistoryComponent {
     }
   }
 
+  async loadSaleFactoryNames() {
+    try {
+      const bodyData: IGetSaleFactory = {
+        TenantId: this.loginDetails.TenantId,
+        FromDate: formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate:formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      };
+
+      const res: any = await this.saleService
+        .GetSaleFactoryDetails(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.factoryNames = res.SaleFactory;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
   async loadAccountNames() {
     try {
       const bodyData: IGetFactoryAccount = {
@@ -214,17 +235,11 @@ export class SaleHistoryComponent {
   displayWithFn(value: string): string {
     return value || '';
   }
-  GetSaleDeatils(FromDate: any, ToDate: any) {
+  GetSaleDeatils() {
     const currentDate = new Date();
     let bodyData: IGetSale = {
-      FromDate:
-        FromDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : FromDate,
-      ToDate:
-        ToDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : ToDate,
+      FromDate:formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate:formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       VehicleNo: this.SaleForm.value.VehicleNo,
       FactoryId: this.SaleForm.value.FactoryId??0,
       AccountId: this.SaleForm.value.AccountId??0,
@@ -281,6 +296,10 @@ export class SaleHistoryComponent {
     this.minToDate = event.value;
   }
 
+  GetFactory  (event: MatDatepickerInputEvent<Date>): void {
+    this.loadSaleFactoryNames();
+  }
+
   editItem(row: any) {
 
 
@@ -306,8 +325,7 @@ export class SaleHistoryComponent {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.GetSaleDeatils(formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
-        // this.selection = new SelectionModel<any>(true, []);
+        this.GetSaleDeatils();
       }
     });
   }
