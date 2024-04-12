@@ -15,7 +15,7 @@ import { StgApproveService } from 'src/app/modules/collectionApprove/services/st
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
-import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-entry.component';
+import { EditSaleEntryComponent } from 'src/app/shared/components/edit-sale-entry/edit-sale-entry.component';
 
 @Component({
   selector: 'app-sale-history',
@@ -284,7 +284,7 @@ export class SaleHistoryComponent {
   editItem(row: any) {
 
 
-    const dialogRef = this.dialog.open(SaleEntryComponent, {
+    const dialogRef = this.dialog.open(EditSaleEntryComponent, {
       width: '90vw',
       height: '95%',
       minWidth: '90vw',

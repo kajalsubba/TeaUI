@@ -19,9 +19,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
+import { EditSaleEntryComponent } from './components/edit-sale-entry/edit-sale-entry.component';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent],
+  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent],
   exports: [ConfirmDialogComponent],
   imports: [
     CommonModule,
