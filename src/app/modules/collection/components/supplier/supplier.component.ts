@@ -117,6 +117,7 @@ export class SupplierComponent implements OnInit {
       ToDate:formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
+      ClientId:0,
       Status: '',
       TripId: 0,
       CreatedBy:

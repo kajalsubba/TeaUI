@@ -22,11 +22,12 @@ export interface IStgSelect
 {
     FromDate: any;
     ToDate: any;
-    TenantId: any;
+    TenantId: number;
     VehicleNo: any;
     Status: string;
-    TripId:any;
-    CreatedBy:any;
+    TripId:number;
+    ClientId:number;
+    CreatedBy:number;
 }
 
 export interface IGetTeaClient {

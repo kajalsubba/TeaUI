@@ -27,6 +27,7 @@ export interface ISupplierSelect
     TenantId: any;
     VehicleNo: any;
     Status: string;
+    ClientId:Number;
     TripId:any;
     CreatedBy:any;
 }

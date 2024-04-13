@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { ISupplierSelect } from 'src/app/modules/collection/interfaces/isupplier';
 import { AddEditSupplierComponent } from 'src/app/modules/collection/models/add-edit-supplier/add-edit-supplier.component';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
@@ -62,6 +63,7 @@ export class SupplierHistoryComponent {
   private subscriptions: Subscription[] = [];
   loginDetails: any;
   dateRangeForm!: FormGroup;
+  ClientNames: any[] = [];
   minToDate!: any;
   vehicleNumbers: any[] = [];
   statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
@@ -81,17 +83,47 @@ export class SupplierHistoryComponent {
 
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      VehicleNo: [''],
+      //  VehicleNo: [''],
+      ClientName: [],
+      ClientId: [0],
       Status: ['']
     });
-    this.loadVehicleNumbers();
-
+    // this.loadVehicleNumbers();
+    await this.loadClientNames();
   }
+
+  async loadClientNames() {
+    try {
+      const bodyData: IGetTeaClient = {
+        TenantId: this.loginDetails.TenantId,
+        Category: 'Supplier'
+
+      };
+
+      const res: any = await this.autocompleteService.GetClientNames(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+
+      this.ClientNames = res.ClientDetails;
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+  filterClientNames(value: string): any[] {
+
+    const filterValue = value.toLowerCase();
+    return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -104,7 +136,25 @@ export class SupplierHistoryComponent {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+  selectClient(client: any) {
+    if (client == '') {
+      this.dateRangeForm.controls['ClientId'].reset();
+    }
 
+    this.dateRangeForm.controls['ClientId'].setValue(client?.ClientId);
+  }
+  onInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Do something when input changes
+    console.log(input.value, 'presss');
+    if (input.value == '') {
+
+      this.dateRangeForm.controls['ClientId'].reset();
+
+
+    }
+
+  }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
     this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value
@@ -116,7 +166,8 @@ export class SupplierHistoryComponent {
       FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
-      VehicleNo: this.dateRangeForm.value.VehicleNo,
+      VehicleNo: '',
+      ClientId:this.dateRangeForm.value.ClientId,
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
       TripId: 0,
       CreatedBy: this.loginDetails.LoginType == 'Client' ? this.loginDetails.UserId : 0,
@@ -131,12 +182,12 @@ export class SupplierHistoryComponent {
 
   search() {
 
-  
+
     this.GetSupplierList();
   }
   getTotalCost(columnName: string): number {
     return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
- 
+
   }
 
   async loadVehicleNumbers() {
@@ -172,8 +223,7 @@ export class SupplierHistoryComponent {
     let newVal = value.toUpperCase();
     this.dateRangeForm.controls['VehicleNo'].setValue(newVal);
   }
-  editItem(element?:any)
-  {
+  editItem(element?: any) {
     const dialogRef = this.dialog.open(AddEditSupplierComponent, {
       width: '80%',
       data: {

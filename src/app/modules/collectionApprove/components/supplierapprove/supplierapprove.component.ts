@@ -127,21 +127,16 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     this.subscriptions.push(supplierService);
   }
 
-  GetSupplierList(FromDate: any, ToDate: any) {
+  GetSupplierList() {
     this.selection.clear()
     const currentDate = new Date();
     let bodyData: IStgSelect = {
-      FromDate:
-        FromDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : FromDate,
-      ToDate:
-        ToDate == null
-          ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US')
-          : FromDate,
+      FromDate:  formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate:  formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: 'Pending',
+      ClientId:0,
       TripId: this.dateRangeForm.value.TripId,
       CreatedBy: 0
     };
@@ -171,10 +166,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.GetSupplierList(
-      formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-      formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US')
-    );
+    this.GetSupplierList();
   }
 
   clearFilter() { }

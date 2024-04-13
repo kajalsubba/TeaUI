@@ -122,6 +122,7 @@ export class StgComponent implements OnInit, AfterViewInit {
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
+      ClientId:0,
       TripId: this.dateRangeForm.value.TripId,
       CreatedBy: 0, // this.loginDetails.UserId,
     };
