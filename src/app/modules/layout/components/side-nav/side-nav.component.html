@@ -190,6 +190,25 @@
 
         </ul>
       </li>
+      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'leaf-report'" class="main-menu" routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'leaf-report')">
+          <a>
+            <i class="fa-regular fa-rectangle-list"></i>
+            <span class="link_name">Reports </span>
+          </a>
+          <i class='bx bxs-chevron-down arrow'></i>
+        </div>
+        <ul class="sub-menu">
+          <li routerLink="leaf-report/grade-report" routerLinkActive="active"><a class="sub-menu-title">Grade Report</a>
+          </li>
+          <li routerLink="leaf-report/profit-loss-report" routerLinkActive="active"><a class="sub-menu-title">Profit & Loss
+              </a></li>
+          <!-- <li routerLink="leaf-summary/sale-summary" routerLinkActive="active"><a class="sub-menu-title">Sale
+              Summary</a>
+          </li> -->
+
+        </ul>
+      </li>
       <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">
           <a>
