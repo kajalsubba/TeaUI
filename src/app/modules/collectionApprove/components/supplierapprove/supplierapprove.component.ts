@@ -41,9 +41,10 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     'Rate',
     'GrossAmount',
     'Remarks',
-    'TripName',
+   // 'TripName',
     'Status',
-
+    'CreatedBy',
+    'CreatedDate'
   ];
   //  dataList:any=[];
   dataSource = new _MatTableDataSource<any>();
@@ -63,7 +64,9 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
     // { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' },
-    { columnDef: 'TripName', header: 'Trip' },
+//    { columnDef: 'TripName', header: 'Trip' },
+    { columnDef: 'CreatedBy', header: 'Created By' },
+    { columnDef: 'CreatedDate', header: 'Created Date' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
