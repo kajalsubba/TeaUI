@@ -41,10 +41,10 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     'Rate',
     'GrossAmount',
     'Remarks',
-   // 'TripName',
-    'Status',
+    // 'TripName',
     'CreatedBy',
-    'CreatedDate'
+    'CreatedDate',
+    'Status'
   ];
   //  dataList:any=[];
   dataSource = new _MatTableDataSource<any>();
@@ -64,7 +64,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
     // { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' },
-//    { columnDef: 'TripName', header: 'Trip' },
+    //    { columnDef: 'TripName', header: 'Trip' },
     { columnDef: 'CreatedBy', header: 'Created By' },
     { columnDef: 'CreatedDate', header: 'Created Date' },
   ];
@@ -79,7 +79,6 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
   selectedRowIndex: number = -1;
-
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -134,12 +133,12 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     this.selection.clear()
     const currentDate = new Date();
     let bodyData: IStgSelect = {
-      FromDate:  formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-      ToDate:  formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: 'Pending',
-      ClientId:0,
+      ClientId: 0,
       TripId: this.dateRangeForm.value.TripId,
       CreatedBy: 0
     };
