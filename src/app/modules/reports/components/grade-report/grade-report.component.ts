@@ -86,7 +86,13 @@ export class GradeReportComponent implements OnInit {
 
       this.dataSource.data = GradeReport;
       this.displayedColumns = Object.keys(this.dataSource.data[0]);
-
+      this.dataSource.data .forEach(item => {
+        for (const key in item) {
+          if (item.hasOwnProperty(key) && item[key] === null) {
+            item[key] = 0;
+          }
+        }
+      });
 
     } catch (error) {
       console.error('Error:', error);
