@@ -20,7 +20,7 @@ export class ConfirmDialogRemarksComponent {
   }
 
   onYesClick(): void {
-    this.dialogRef.close(true);
+    this.dialogRef.close(this.remarks);
   }
 
 }

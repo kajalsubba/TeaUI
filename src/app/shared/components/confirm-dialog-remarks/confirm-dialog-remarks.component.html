@@ -14,6 +14,11 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-    <button (click)="onNoClick()" class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button>
+    <button (click)="onNoClick()" class="btn-color bg-danger" color="warn" mat-raised-button
+        mat-dialog-close>Cancel</button>
     <button [disabled]="remarks == ''" (click)="onYesClick()" class="btn-color" mat-raised-button cdkFocusInitial>Confirm</button>
-  </mat-dialog-actions>
+ 
+    <!-- <button (click)="onYesClick()" class="btn-color" mat-raised-button
+        cdkFocusInitial>Confirm</button> -->
+
+</mat-dialog-actions>

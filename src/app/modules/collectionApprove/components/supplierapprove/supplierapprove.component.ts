@@ -216,6 +216,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       FineLeaf: row.FineLeaf,
       ChallanWeight: row.ChallanWeight,
       SaleTypeId: 2,
+      Remarks:'',
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId
     };
@@ -233,11 +234,17 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
         },
       });
       dialogRef.afterClosed().subscribe((result: any) => {
-        if (result) {
+        if (result!="") {
+          data.Remarks=result;
           this.SaveApproveData(data);
   
   
         }
+        // else
+        // {
+        //   this.toastr.warning("Please type remarks !","Notification");
+        //   return;
+        // }
       });
     }else{
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {

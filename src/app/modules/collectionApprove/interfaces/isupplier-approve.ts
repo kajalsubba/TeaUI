@@ -8,6 +8,7 @@ export interface IsupplierApprove {
     ChallanWeight:any;
     SaleTypeId:any;
     TenantId:any;
+    Remarks:any;
     CreatedBy: any;
 }
 
