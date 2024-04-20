@@ -220,24 +220,45 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       CreatedBy: this.loginDetails.UserId
     };
 
-    const dialogRef = this.dialog.open(ConfirmDialogRemarksComponent, {
-      width: '30vw',
-      minWidth: '25vw',
-      disableClose: true,
-      data: {
-        title: 'Confirm Action',
-        message: 'Do you want to Confirm !',
-        data: data,
-
-      },
-    });
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.SaveApproveData(data);
-
-
-      }
-    });
+    if(saleStatus == 'Reject'){
+      const dialogRef = this.dialog.open(ConfirmDialogRemarksComponent, {
+        width: '30vw',
+        minWidth: '25vw',
+        disableClose: true,
+        data: {
+          title: 'Confirm Action',
+          message: 'Do you want to Confirm !',
+          data: data,
+  
+        },
+      });
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result) {
+          this.SaveApproveData(data);
+  
+  
+        }
+      });
+    }else{
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '30vw',
+        minWidth: '25vw',
+        disableClose: true,
+        data: {
+          title: 'Confirm Action',
+          message: 'Do you want to Confirm !',
+          data: data,
+  
+        },
+      });
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result) {
+          this.SaveApproveData(data);
+  
+  
+        }
+      });
+    }
 
 
   }
