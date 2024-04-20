@@ -10,11 +10,11 @@
             <span>{{loginDetails.CompanyName }}</span>
             <span class="router">{{formatCurrentRoute()}}</span>
         </div>
-        <div matTooltip="Notification" matTooltipPosition="below" class="notification-icon" [matMenuTriggerFor]="notificationMenu">
+        <div *ngIf="loginDetails.LoginType=='Agent'" matTooltip="Notification" matTooltipPosition="below" class="notification-icon" [matMenuTriggerFor]="notificationMenu">
             <i [ngClass]="{'fa-shake':NotificationData.length > 0}" class="fa-solid fa-bell fa-2x text-light"></i>
             <span *ngIf="NotificationData.length > 0" class="notification-badge">{{countOfPendingNotifications}}</span> <!-- Badge for notification count -->
         </div>
-        <mat-menu #notificationMenu="matMenu" class="notification-menu p-0">
+        <mat-menu #notificationMenu="matMenu" class="notification-menu p-0" >
             <div class="notification-header">
                 Notifications
             </div>
