@@ -21,6 +21,7 @@ import { ISupplierVehicle, IsupplierApprove } from '../../interfaces/isupplier-a
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { IDefaultData } from 'src/app/modules/collection/interfaces/isupplier';
+import { ConfirmDialogRemarksComponent } from 'src/app/shared/components/confirm-dialog-remarks/confirm-dialog-remarks.component';
 
 @Component({
   selector: 'app-supplierapprove',
@@ -219,9 +220,8 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       CreatedBy: this.loginDetails.UserId
     };
 
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialogRemarksComponent, {
       width: '30vw',
-      height: '20%',
       minWidth: '25vw',
       disableClose: true,
       data: {

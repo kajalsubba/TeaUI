@@ -20,9 +20,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
 import { EditSaleEntryComponent } from './components/edit-sale-entry/edit-sale-entry.component';
+import { ConfirmDialogRemarksComponent } from './components/confirm-dialog-remarks/confirm-dialog-remarks.component';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent],
+  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent, ConfirmDialogRemarksComponent],
   exports: [ConfirmDialogComponent],
   imports: [
     CommonModule,
