@@ -53,8 +53,8 @@ export class TopNavComponent implements OnInit {
     };
 
     this.notificationService.GetStgBillHistory(data).subscribe((res) => {
-      this.NotificationData = res.NotificationData;
       const pendingNotifications = res.NotificationData.filter((item:any) => item.TotalPending > 0);
+      this.NotificationData = pendingNotifications;
 
       // Count the number of filtered items
       this.countOfPendingNotifications = pendingNotifications.length;

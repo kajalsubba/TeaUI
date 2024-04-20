@@ -14,6 +14,7 @@ import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgSummaryService } from '../../services/stg-summary.service';
 import { IStgSummary } from '../../interfaces/istg-summary';
+import { PdfExportService } from 'src/app/shared/services/pdf-export.service';
 
 @Component({
   selector: 'app-stg-summary',
@@ -61,7 +62,8 @@ export class StgSummaryComponent implements OnInit {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
-    private summartService: StgSummaryService
+    private summartService: StgSummaryService,
+    private pdfService: PdfExportService
   ) { }
 
   async ngOnInit() {
@@ -202,5 +204,9 @@ export class StgSummaryComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  downloadPdf(){
+    this.pdfService.ggeneratePDF(this.dataSource.data, 'STG_SUMMARY');
   }
 }
