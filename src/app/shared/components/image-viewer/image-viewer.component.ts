@@ -8,6 +8,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ImageViewerComponent implements OnInit {
 
+  rotateDegrees = 'rotate(0deg)'; 
   constructor(
     public dialogRef: MatDialogRef<ImageViewerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -15,6 +16,10 @@ export class ImageViewerComponent implements OnInit {
 
   ngOnInit(): void {
       
+  }
+  rotateImage() {
+    // Update the rotation angle
+    this.rotateDegrees = `rotate(${(parseInt(this.rotateDegrees.substring(7)) + 90) % 360}deg)`;
   }
 
 }
