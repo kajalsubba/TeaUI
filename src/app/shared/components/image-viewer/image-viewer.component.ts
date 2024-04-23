@@ -21,5 +21,15 @@ export class ImageViewerComponent implements OnInit {
     // Update the rotation angle
     this.rotateDegrees = `rotate(${(parseInt(this.rotateDegrees.substring(7)) + 90) % 360}deg)`;
   }
+  downloadImage() {
+   // window.open(this.data.imageUrl, '_blank');
 
+    const link = document.createElement('a');
+    link.href = this.data.imageUrl; // Use the image URL
+    link.target = '_blank'; // Open in a new tab
+    link.download = 'image.jpg'; // Set the file name for download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }
