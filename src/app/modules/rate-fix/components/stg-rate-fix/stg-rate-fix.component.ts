@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -17,7 +17,8 @@ import { GradeService } from 'src/app/modules/masters/services/grade.service';
 import { StgRateFixService } from '../../services/stg-rate-fix.service';
 import { ISaveStgRate, IStgRateFix } from '../../interfaces/istg-rate-fix';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-stg-rate-fix',
   templateUrl: './stg-rate-fix.component.html',

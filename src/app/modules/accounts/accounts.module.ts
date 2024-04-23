@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { SeasonAdvanceComponent } from './components/season-advance/season-advance.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
@@ -21,6 +21,7 @@ import { AccountsRoutingModule } from './accounts-routing.module';
 import { EditAddSeasonAdvanceComponent } from './models/edit-add-season-advance/edit-add-season-advance.component';
 import { AccountsComponent } from './accounts.component';
 import { AddEditPaymentComponent } from './models/add-edit-payment/add-edit-payment.component';
+import { CharacterRestrictionDirective } from 'src/app/shared/character-restriction.directive';
 
 export const MY_FORMATS = {
   parse: {
@@ -40,7 +41,8 @@ export const MY_FORMATS = {
     PaymentsComponent,
     EditAddSeasonAdvanceComponent,
     AccountsComponent,
-    AddEditPaymentComponent
+    AddEditPaymentComponent,
+    CharacterRestrictionDirective
   ],
   imports: [
     CommonModule,
@@ -63,6 +65,7 @@ export const MY_FORMATS = {
 
   ],
   providers : [
+    CurrencyPipe,
     DatePipe,
     {
       provide: DateAdapter,
@@ -70,6 +73,6 @@ export const MY_FORMATS = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-  ]
+  ],
 })
 export class AccountsModule { }

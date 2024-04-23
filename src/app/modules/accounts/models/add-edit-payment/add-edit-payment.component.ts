@@ -8,7 +8,7 @@ import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
 import { ISavePayment } from '../../interfaces/ipayment';
-import { formatDate } from '@angular/common';
+import { CurrencyPipe, formatDate, registerLocaleData } from '@angular/common';
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -16,6 +16,8 @@ import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype
 import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
 import { PaymentService } from '../../services/payment.service';
 import { environment } from 'src/environments/environment';
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 
 @Component({
   selector: 'app-add-edit-payment',
@@ -34,6 +36,8 @@ export class AddEditPaymentComponent implements OnInit {
   loginDetails: any;
   ClientNames: any[] = [];
   clientList: any[] = [];
+  formattedAmount:any;
+
   @ViewChild('PaymentDate') PaymentDateInput!: ElementRef;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
@@ -44,9 +48,12 @@ export class AddEditPaymentComponent implements OnInit {
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
     private paymentTypeService: PaymenttypeService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private currencyPipe: CurrencyPipe
 
-  ) { }
+  ) {
+
+   }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -70,7 +77,11 @@ export class AddEditPaymentComponent implements OnInit {
       this.addEditPayment.controls['ClientId'].setValue(this.dialogData.value.ClientId);
       this.addEditPayment.controls['ClientName'].setValue(this.dialogData.value.ClientName);
       this.addEditPayment.controls['PaymentTypeId'].setValue(this.dialogData.value.PaymentTypeId);
-      this.addEditPayment.controls['Amount'].setValue(this.dialogData.value.Amount);
+      const formattedValue = this.currencyPipe.transform(this.dialogData.value.Amount,  "INR",
+      '',
+      undefined,
+      "en-IN");
+      this.addEditPayment.controls['Amount'].setValue(formattedValue);
       this.addEditPayment.controls['Narration'].setValue(this.dialogData.value.Narration);
     }
   }
@@ -105,7 +116,17 @@ export class AddEditPaymentComponent implements OnInit {
     const filterValue = value.toLowerCase();
     return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
   }
+  formatCurrency(event: any) {
+    const value = event.target.value;
+    const formattedValue = this.currencyPipe.transform(value,  "INR",
+    '',
+    undefined,
+    "en-IN");
+    console.log(formattedValue,'formattedValue');
+    
+    this.addEditPayment.controls["Amount"].setValue(formattedValue);
 
+  }
   selectClient(client: any) {
     if (client == '') {
       this.addEditPayment.controls['ClientId'].reset();
@@ -179,7 +200,7 @@ export class AddEditPaymentComponent implements OnInit {
       ClientCategory: this.addEditPayment.value.CategoryName,
       ClientId: this.addEditPayment.value.ClientId,
       PaymentTypeId: this.addEditPayment.value.PaymentTypeId,
-      Amount: this.addEditPayment.value.Amount,
+      Amount: this.addEditPayment.value.Amount.toString().replace(/,/g,''),
       Narration: this.addEditPayment.value.Narration,
       CategoryId:this.addEditPayment.value.CategoryId,
       TenantId: this.loginDetails.TenantId,

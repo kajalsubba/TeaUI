@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -16,7 +16,8 @@ import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-season-advance-history',
   templateUrl: './season-advance-history.component.html',

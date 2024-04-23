@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -18,7 +18,8 @@ import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-payment-history',
   templateUrl: './payment-history.component.html',

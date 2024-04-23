@@ -96,14 +96,14 @@
                 <b>{{ getTotalCost('ChallanWeight') }} KG</b>
               </td>
             </ng-container>
-            <!-- WetLeaf -->
+            <!-- GrossAmount -->
             <ng-container matColumnDef="GrossAmount">
               <th mat-header-cell *matHeaderCellDef> Gross Amount <i class="fa-solid fa-indian-rupee-sign"></i> </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
                 *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
-                {{row.GrossAmount}} </td>
+                {{row.GrossAmount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') }}</b>
+                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') | currency:'INR':'symbol':undefined:'en-IN'}}</b>
               </td>
             </ng-container>
             <!-- Actions column -->

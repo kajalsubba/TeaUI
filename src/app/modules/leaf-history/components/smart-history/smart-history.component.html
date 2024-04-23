@@ -115,9 +115,9 @@
                   </th>
                   <td class="weight-column" mat-cell *matCellDef="let row"> <i
                       class="fa-solid fa-indian-rupee-sign"></i>
-                    {{row.Amount.toFixed(2)}} </td>
+                    {{row.Amount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
                   <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                    <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('Amount').toFixed(2) }}</b>
+                    <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('Amount') | currency:'INR':'symbol':undefined:'en-IN' }}</b>
                   </td>
                 </ng-container>
 
@@ -183,9 +183,9 @@
               <th mat-header-cell *matHeaderCellDef>Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
               <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
-                {{row.Amount.toFixed(2)}} </td>
+                {{row.Amount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalPayment('Amount').toFixed(2) }}</b>
+                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalPayment('Amount') | currency:'INR':'symbol':undefined:'en-IN' }}</b>
               </td>
             </ng-container>
 

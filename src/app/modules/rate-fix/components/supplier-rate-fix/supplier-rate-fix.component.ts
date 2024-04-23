@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -20,7 +20,8 @@ import { ISaveSupplierRate, IsupplierRateFix } from '../../interfaces/isupplier-
 import { IsupplierRateFixService } from '../../services/isupplier-rate-fix.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { environment } from 'src/environments/environment';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-rate-fix',
   templateUrl: './supplier-rate-fix.component.html',

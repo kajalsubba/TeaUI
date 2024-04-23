@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -16,7 +16,8 @@ import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import { ISmartHistory } from '../../interfaces/istgbill-history';
 import { SuppilerHistoryService } from '../../services/suppiler-history.service';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-smart-history',
   templateUrl: './smart-history.component.html',

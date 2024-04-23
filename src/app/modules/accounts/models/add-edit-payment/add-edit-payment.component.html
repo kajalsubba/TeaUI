@@ -84,8 +84,8 @@
                             <label for="Amount" class="col-lg-5 col-form-label">Amount <span
                                     class="text-danger">*</span></label>
                             <div class="col-lg-7 position-relative">
-                                <input #Amount type="number" class="form-control" id="Amount" placeholder="Amount"
-                                    formControlName="Amount">
+                                <input #Amount type="text" class="form-control" id="Amount" placeholder="Amount"
+                                    formControlName="Amount" (blur)="formatCurrency($event)" appCharacterRestriction>
                                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
                                 <!-- Validation message -->

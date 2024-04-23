@@ -104,7 +104,7 @@
                 <th mat-header-cell *matHeaderCellDef> Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
                 </th>
                 <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
-                  {{row.AvgRate.toFixed(2)}} </td>
+                  {{row.AvgRate| currency:'INR':'symbol':undefined:'en-IN'}} </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
                   <b> </b>
                 </td>
@@ -117,7 +117,7 @@
                 <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
                   {{row.TotalStgAmount.toFixed(2)}} </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('TotalStgAmount').toFixed(2) }}</b>
+                  <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('TotalStgAmount')| currency:'INR':'symbol':undefined:'en-IN' }}</b>
                 </td>
               </ng-container>
   
@@ -128,7 +128,7 @@
                 <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
                   {{row.TotalStgPayment.toFixed(2)}} </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('TotalStgPayment').toFixed(2) }}</b>
+                  <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('TotalStgPayment')| currency:'INR':'symbol':undefined:'en-IN' }}</b>
                 </td>
               </ng-container>
   

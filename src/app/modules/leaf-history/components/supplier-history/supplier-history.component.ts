@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -16,7 +16,8 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { SupplierService } from 'src/app/modules/collection/services/supplier.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-history',
   templateUrl: './supplier-history.component.html',

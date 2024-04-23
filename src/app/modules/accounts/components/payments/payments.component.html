@@ -108,9 +108,9 @@
             <ng-container matColumnDef="Amount">
               <th mat-header-cell *matHeaderCellDef> Amount </th>
               <td [ngClass]="{'text-danger':row.Amount < 0}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.Amount.toFixed(2) }}  </td>
+                *matCellDef="let row"> {{row.Amount | currency:'INR':'symbol':undefined:'en-IN'  }}  </td>
               <td [ngClass]="{'text-danger':getTotal('Amount') < 0}" class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotal('Amount').toFixed(2) }} </b>
+                <b>{{ getTotal('Amount') | currency:'INR':'symbol':undefined:'en-IN' }} </b>
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>

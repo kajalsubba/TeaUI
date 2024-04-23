@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -12,7 +12,8 @@ import { IGetTeaClient, IStgSelect } from 'src/app/modules/collection/interfaces
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-stg-history',
   templateUrl: './stg-history.component.html',
@@ -50,8 +51,8 @@ export class StgHistoryComponent {
     // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
     //  { columnDef: 'Grade', header: 'Grade' },
  
-    { columnDef: 'Rate', header: 'Rate' },
-    { columnDef: 'GrossAmount', header: 'Gross Amount' },
+   // { columnDef: 'Rate', header: 'Rate' },
+    //{ columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
   ];
 

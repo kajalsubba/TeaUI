@@ -11,9 +11,11 @@ import { StgApproveService } from 'src/app/modules/collectionApprove/services/st
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import { ISaveSeasonAdvance } from '../../interfaces/iseason-advance';
-import { formatDate } from '@angular/common';
+import { CurrencyPipe, formatDate, registerLocaleData } from '@angular/common';
 import { SeasonAdvanceService } from '../../services/season-advance.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 
 @Component({
   selector: 'app-edit-add-season-advance',
@@ -39,7 +41,8 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
     private helper: HelperService,
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
-    private advaceService: SeasonAdvanceService
+    private advaceService: SeasonAdvanceService,
+    private currencyPipe: CurrencyPipe
   ) { }
 
   async ngOnInit() {
@@ -61,7 +64,11 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       this.addEditSeasonAdvance.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
       this.addEditSeasonAdvance.controls['ClientId'].setValue(this.dialogData.value.ClientId);
       this.addEditSeasonAdvance.controls['ClientName'].setValue(this.dialogData.value.ClientName);
-      this.addEditSeasonAdvance.controls['Amount'].setValue(this.dialogData.value.Amount);
+      const formattedValue = this.currencyPipe.transform(this.dialogData.value.Amount,  "INR",
+      '',
+      undefined,
+      "en-IN");
+      this.addEditSeasonAdvance.controls['Amount'].setValue(formattedValue);
 
     }
   }
@@ -147,7 +154,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       AdvancedDate: formatDate(this.addEditSeasonAdvance.value.AdvancedDate, 'yyyy-MM-dd', 'en-US'),
       ClientCategory: this.addEditSeasonAdvance.value.CategoryName,
       ClientId: this.addEditSeasonAdvance.value.ClientId,
-      Amount: this.addEditSeasonAdvance.value.Amount,
+      Amount: this.addEditSeasonAdvance.value.Amount.toString().replace(/,/g,''),
       CategoryId:this.addEditSeasonAdvance.value.CategoryId,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId
@@ -156,7 +163,17 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
     this.isSubmitting = true;
        this.SaveData(data);
   }
+  formatCurrency(event: any) {
+    const value = event.target.value;
+    const formattedValue = this.currencyPipe.transform(value,  "INR",
+    '',
+    undefined,
+    "en-IN");
+    console.log(formattedValue,'formattedValue');
+    
+    this.addEditSeasonAdvance.controls["Amount"].setValue(formattedValue);
 
+  }
   SaveData(clientBody: ISaveSeasonAdvance) {
     this.advaceService.SaveSeasonAdvance(clientBody)
       .pipe(

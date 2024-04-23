@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { LeafHistoryComponent } from './leaf-history.component';
 import { StgHistoryComponent } from './components/stg-history/stg-history.component';
 import { SupplierHistoryComponent } from './components/supplier-history/supplier-history.component';
@@ -73,6 +73,7 @@ export const MY_FORMATS = {
     MatAutocompleteModule
   ],
   providers : [
+    CurrencyPipe,
     DatePipe,
     {
       provide: DateAdapter,

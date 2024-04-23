@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -16,7 +16,8 @@ import { IGetFactory, IGetSaleFactory } from 'src/app/modules/masters/interfaces
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { EditSaleEntryComponent } from 'src/app/shared/components/edit-sale-entry/edit-sale-entry.component';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-sale-history',
   templateUrl: './sale-history.component.html',
@@ -51,8 +52,8 @@ export class SaleHistoryComponent {
     { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-    { columnDef: 'Rate', header: 'Rate' },
-    { columnDef: 'Incentive', header: 'Incentive' },
+   // { columnDef: 'Rate', header: 'Rate' },
+    { columnDef: 'Incentive', header: 'Incentive (%)' },
     // { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
     //  { columnDef: 'FinalAmount', header: 'Final Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },

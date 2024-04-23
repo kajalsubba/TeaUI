@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { RateFixRoutingModule } from './rate-fix-routing.module';
 import { RateFixComponent } from './rate-fix.component';
 import { StgRateFixComponent } from './components/stg-rate-fix/stg-rate-fix.component';
@@ -61,7 +61,9 @@ export const MY_FORMATS = {
     MatSlideToggleModule,
     MatAutocompleteModule
   ],
-  providers:[ApiService,
+  providers:[
+    ApiService,
+    CurrencyPipe,
     DatePipe,
     {
       provide: DateAdapter,

@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { DatePipe, formatDate, registerLocaleData } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +13,8 @@ import { SuppilerHistoryService } from '../../services/suppiler-history.service'
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { IGetsupplierBill } from '../../interfaces/isupplier-history';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-
+import enIN from '@angular/common/locales/en-IN';
+registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-bill-history',
   templateUrl: './supplier-bill-history.component.html',

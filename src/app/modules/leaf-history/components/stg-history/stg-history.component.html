@@ -125,6 +125,26 @@
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('FinalWeight') }} KG</b> </td>
             </ng-container>
 
+              <!-- Rate -->
+              <ng-container matColumnDef="Rate">
+                <th mat-header-cell *matHeaderCellDef> Rate </th>
+                <td  class="weight-column" mat-cell
+                  *matCellDef="let row"> {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}}  </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                  <!-- <b>{{ getTotal('Rate') }} KG</b> -->
+                </td>
+              </ng-container>
+
+               <!-- Gross Amount -->
+               <ng-container matColumnDef="GrossAmount">
+                <th mat-header-cell *matHeaderCellDef> Gross Amount </th>
+                <td  class="weight-column" mat-cell
+                  *matCellDef="let row"> {{row.GrossAmount | currency:'INR':'symbol':undefined:'en-IN'}}  </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                  <b>{{ getTotal('GrossAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
+                </td>
+              </ng-container>
+
             <!-- Status column -->
             <ng-container matColumnDef="Status">
               <th mat-header-cell *matHeaderCellDef>Status</th>
