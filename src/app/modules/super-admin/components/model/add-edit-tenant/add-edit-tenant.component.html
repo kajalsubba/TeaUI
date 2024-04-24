@@ -1,0 +1,136 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.title}}</span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="TenantForm">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row my-2 d-flex align-items-center">
+                                <label for="TenantName" class="col-lg-5 col-form-label">Tenant Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative my-2">
+                                    <input type="text" class="form-control" id="TenantName"
+                                        placeholder="Enter First Name " formControlName="TenantName">
+                                    <span
+                                        *ngIf="TenantForm.get('TenantName')?.hasError('required') && TenantForm.get('TenantName')?.touched"
+                                        class="text-danger validation-message">
+                                        Tenant Name is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row my-2 d-flex align-items-center">
+                                <label for="TenantOwner" class="col-lg-5 col-form-label">Tenant Owner Name </label>
+                                <div class="col-lg-7 position-relative my-2">
+                                    <input type="text" class="form-control" id="TenantOwner" placeholder="Owner Name "
+                                        formControlName="TenantOwner">
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-lg-6">
+                            <div class="form-group row my-2 d-flex align-items-center">
+                                <label for="UserLastName" class="col-lg-5 col-form-label">Last Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative my-2">
+                                    <input type="text" class="form-control" id="UserLastName"
+                                        placeholder="Enter Last Name " formControlName="UserLastName">
+                                    <span
+                                        *ngIf="TenantForm.get('UserLastName')?.hasError('required') && TenantForm.get('UserLastName')?.touched"
+                                        class="text-danger validation-message">
+                                        Last Name is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-lg-6">
+                            <div class="form-group row my-2 d-flex align-items-center">
+                                <label for="TenantEmail" class="col-lg-5 col-form-label">Email </label>
+                                <div class="col-lg-7 position-relative my-2">
+                                    <input type="email" class="form-control" id="TenantEmail" placeholder="Enter Email"
+                                        formControlName="TenantEmail">
+
+                                    <span
+                                        *ngIf="TenantForm.get('TenantEmail')?.hasError('pattern') && TenantForm.get('TenantEmail')?.touched"
+                                        class="text-danger validation-message">
+                                        Please enter a valid Email.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row my-2 d-flex align-items-center">
+                                <label for="TenantContactNo" class="col-lg-5 col-form-label">Contact No. <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative my-2">
+                                    <input type="text" maxlength="10" (keypress)="restrictInput($event)"
+                                        class="form-control" id="TenantContactNo" placeholder="Enter Contack No. "
+                                        formControlName="TenantContactNo">
+
+                                    <span
+                                        *ngIf="TenantForm.get('TenantContactNo')?.hasError('pattern') && TenantForm.get('TenantContactNo')?.touched"
+                                        class="text-danger validation-message">
+                                        Please enter a valid mobile number.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row my-2 d-flex align-items-center">
+                                <label for="UserName" class="col-lg-5 col-form-label">User Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative my-2">
+                                    <input type="text" class="form-control" id="UserName"
+                                        placeholder="Enter Contack No. " formControlName="UserName">
+
+                                    <span
+                                        *ngIf="TenantForm.get('UserName')?.hasError('pattern') && TenantForm.get('UserName')?.touched"
+                                        class="text-danger validation-message">
+                                        Please enter a User Name
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row my-2 d-flex align-items-center">
+                                <label for="Password" class="col-lg-5 col-form-label">Password <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative my-2">
+                                    <input type="text" class="form-control" id="Password"
+                                        placeholder="Password Contack No. " formControlName="Password">
+
+                                    <span
+                                        *ngIf="TenantForm.get('Password')?.hasError('pattern') && TenantForm.get('Password')?.touched"
+                                        class="text-danger validation-message">
+                                        Please enter a Password.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="form-group row mb-3">
+                                <label for="isActive" class="col-lg-5 col-form-label">IsActive <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-slide-toggle formControlName="IsActive">{{TenantForm.value.IsActive ? "Active"
+                                        : "InActive"}}</mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
+    <button (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
+</mat-dialog-actions>

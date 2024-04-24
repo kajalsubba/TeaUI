@@ -1,18 +1,18 @@
-// .image-container{
-//     object-fit: cover;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
+.image-container{
+    object-fit: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// .image-container {
+//     width: 100%; /* Adjust the width as needed */
+//     height: 300px; /* Adjust the height as needed */
+//     overflow: hidden; /* Hide overflowing content */
 // }
 
-.image-container {
-    width: 100%; /* Adjust the width as needed */
-    height: 300px; /* Adjust the height as needed */
-    overflow: hidden; /* Hide overflowing content */
-}
-
-.img-fluid {
-    width: 100%; /* Make the image responsive */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Remove any inline margins */
-}
+// .img-fluid {
+//     width: 100%; /* Make the image responsive */
+//     height: auto; /* Maintain aspect ratio */
+//     display: block; /* Remove any inline margins */
+// }

@@ -23,7 +23,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
-
 @NgModule({
   declarations: [
     UserManagementComponent,
@@ -32,7 +31,9 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     AddEditRoleComponent,
     RolePermissionComponent,
     AddEditUserComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    
+    
   ],
   imports: [
     CommonModule,

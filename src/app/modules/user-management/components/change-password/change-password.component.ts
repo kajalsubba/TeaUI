@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { UserService } from '../../services/user.service';
+import { IChangePassword } from '../../interfaces/iuser';
+import { Subject, catchError, takeUntil } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-change-password',
@@ -12,7 +16,11 @@ export class ChangePasswordComponent implements OnInit {
   changeForm!:FormGroup;
   passwordType: string='password';
   loginDetails: any;
-  constructor(private fb:FormBuilder,  private helper: HelperService){}
+  private destroy$ = new Subject<void>();
+  constructor(private fb:FormBuilder,  private helper: HelperService,private passwordService:UserService,
+    private toastr: ToastrService,
+
+  ){}
 
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -46,23 +54,34 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.changeForm.valid) {
-      // Proceed with form submission
-      console.log("Form submitted successfully!");
-
-      if (this.loginDetails.LoginType == 'Client')
-      {
-
-      }
-      else
-      {
-
-      }
-    } else {
-      // Form is invalid, handle accordingly
-      this.changeForm.markAllAsTouched()
-      console.log("Form is invalid!");
+    if (this.changeForm.invalid) {
+      this.changeForm.markAllAsTouched();
+      return;
     }
+  
+      let data: IChangePassword = {
+        UserName: this.loginDetails.LoginUserName,
+        Password: this.changeForm.value.LongLeaf,
+        LoginType:this.loginDetails.LoginType,
+        TenantId: this.loginDetails.TenantId,
+        CreatedBy: this.loginDetails.UserId
+      };
+      this.passwordService
+      .ChangePassword(data)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          console.error('Error:', error);
+          this.toastr.error('An error occurred', 'ERROR');
+          throw error;
+        })
+      )
+      .subscribe((res: any) => {
+
+        this.toastr.success(res.Message, "SUCCESS");
+        this.changeForm.reset();
+      });
+   
   }
 
 }

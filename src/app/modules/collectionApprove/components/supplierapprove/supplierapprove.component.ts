@@ -357,33 +357,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     );
   }
 
-  // saleEntry(response: any, approveData: any) {
-  //   const dialogRef = this.dialog.open(SaleEntryComponent, {
-  //     width: '90vw',
-  //     height: '95%',
-  //     minWidth:'90vw',
-  //     disableClose: true,
-  //     data: {
-  //       title: 'Sale Entry Form-SUPPLIER',
-  //       approveId: response.Id,
-  //       approveData: approveData,
-  //       VehicleNo: this.dateRangeForm.value.VehicleNo,
-  //       VehicleId: this.dateRangeForm.value.VehicleId,
-  //       CollectionDate: this.dateRangeForm.value.fromDate,
-  //       FactoryName:this.selection?.selected[0]?.FactoryName,
-  //       FactoryId:this.selection?.selected[0]?.FactoryId,
-  //       AccountId:this.selection?.selected[0]?.AccountId,
-  //       ChallanWeight:this.selection?.selected[0]?.ChallanWeight,
-  //       saleTypeId: 2,
-  //     },
-  //   });
-  //   dialogRef.afterClosed().subscribe((result: any) => {
-  //     if (result) {
-  //       this.GetStgList(   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
-  //       this.selection = new SelectionModel<any>(true, []);
-  //     }
-  //   });
-  // }
+
 
   GeTript() {
     const gradeGetService = this.stgService.GetTrip().subscribe((res: any) => {

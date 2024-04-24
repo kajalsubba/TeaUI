@@ -1,9 +1,8 @@
 export interface IGetUser {
-    TenantId:any;
+    TenantId: any;
 }
 
-export interface IUserSave
-{
+export interface IUserSave {
     UserId: number;
     LoginUserName: string;
     UserFirstName: string;
@@ -15,5 +14,13 @@ export interface IUserSave
     UserRoleId: number;
     TenantId: number;
     IsActive: boolean;
+    CreatedBy: number;
+}
+
+export interface IChangePassword {
+    UserName: string;
+    LoginType: string;
+    Password: string;
+    TenantId: number;
     CreatedBy: number;
 }

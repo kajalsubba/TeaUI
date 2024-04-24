@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AddEditTenantComponent } from './components/model/add-edit-tenant/add-edit-tenant.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     SuperAdminComponent,
     TenantComponent,
     UserComponent,
-    RoleComponent
+    RoleComponent,
+    AddEditTenantComponent
   ],
   imports: [
     CommonModule,
