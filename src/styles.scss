@@ -5,6 +5,7 @@
 :root {
   --bg-color: white; /* Cream color for background */
   --primary-color: #018353;
+  --focus-color: #F28C28;
   --secondary-color: #effaf6; /* Lighter shade for neumorphic effect */
 
   --box-shadow: 5px 5px 10px var(--secondary-color), -5px -5px 10px var(--bg-color);
@@ -97,7 +98,7 @@ input[type="text"],input[type="email"],input[type="number"],input[type="password
   border-radius: 0;
   box-shadow: var(--box-shadow-inset);
   &:focus{
-    border: 1px solid var(--primary-color) !important;
+    border: 1px solid var(--focus-color) !important;
     box-shadow: var(--soft-box-shadow) !important;
   }
 
@@ -177,7 +178,7 @@ textarea{
   padding: 7px 7px 7px 0px;
 
   &:focus {
-    border: 1px solid var(--primary-color) !important;
+    border: 1px solid var(--focus-color) !important;
     box-shadow: var(--soft-box-shadow) !important;
   }
 
