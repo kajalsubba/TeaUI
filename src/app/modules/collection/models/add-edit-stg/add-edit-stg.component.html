@@ -24,6 +24,24 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
+                                <label for="Grade" class="col-lg-5 col-form-label">Trip <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select placeholder="--Select Trip--" class="fromSelect"
+                                        formControlName="TripId">
+                                        <mat-option *ngFor="let trip of TripList" [value]="trip.TripId">
+                                            {{trip.TripName}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <span *ngIf="stgForm.get('TripId')?.hasError('required') && stgForm.get('TripId')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Trip is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
                                 <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
@@ -47,6 +65,10 @@
 
                             </div>
                         </div>
+                      
+                    </div>
+
+                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
@@ -72,9 +94,6 @@
 
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="FirstWeight" class="col-lg-5 col-form-label">First Weight <span
@@ -106,6 +125,9 @@
                                 </div>
                             </div>
                         </div>
+                      
+                    </div>
+                    <div class="row">
                         <div class="col-lg-4">
 
                             <div class="form-group row mb-3">
@@ -123,8 +145,6 @@
                             </div>
                         </div>
 
-                    </div>
-                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="Deduction" class="col-lg-5 col-form-label">Deduction</label>
@@ -149,6 +169,10 @@
                                 </div>
                             </div>
                         </div>
+                       
+                    </div>
+
+                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="Rate" class="col-lg-5 col-form-label">Rate </label>
@@ -161,9 +185,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="Grade" class="col-lg-5 col-form-label">Grade <span
@@ -182,24 +203,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="form-group row mb-3">
-                                <label for="Grade" class="col-lg-5 col-form-label">Trip <span
-                                        class="text-danger">*</span></label>
-                                <div class="col-lg-7 position-relative">
-                                    <mat-select placeholder="--Select Trip--" class="fromSelect"
-                                        formControlName="TripId">
-                                        <mat-option *ngFor="let trip of TripList" [value]="trip.TripId">
-                                            {{trip.TripName}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <span *ngIf="stgForm.get('TripId')?.hasError('required') && stgForm.get('TripId')?.touched"
-                                        class="text-danger d-block validation-message">
-                                        Trip is required.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                    
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>

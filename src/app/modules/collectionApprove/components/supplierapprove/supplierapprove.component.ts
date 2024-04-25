@@ -112,6 +112,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   }
 
   GetSupplierDefaultList() {
+    this.selection.clear();
     const currentDate = new Date();
     let bodyData: IDefaultData = {
 

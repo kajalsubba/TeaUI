@@ -81,11 +81,13 @@ table{
 // Table Style END 
 
 // button style 
-
+.btn-color:focus {
+  background-color: #F28C28 !important;
+}
 .btn-color{
   background-color: var(--primary-color) !important;
   color: #ffffff !important;
-  border-radius: 0 !important;
+  border-radius: 5px !important;
   box-shadow: var(--soft-box-shadow);
 }
 
