@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit {
     let bodyData: Idashboard = {
 
       TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
 
     };
     const categoryListService = this.dashBoardService
@@ -64,6 +65,7 @@ export class DashboardComponent implements OnInit {
     let bodyData: Idashboard = {
 
       TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
 
     };
     const categoryListService = this.dashBoardService
@@ -83,6 +85,7 @@ export class DashboardComponent implements OnInit {
     let bodyData: Idashboard = {
 
       TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
 
     };
     const categoryListService = this.dashBoardService
