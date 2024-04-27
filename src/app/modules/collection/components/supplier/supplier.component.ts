@@ -113,15 +113,14 @@ export class SupplierComponent implements OnInit {
   GetSupplierList() {
     const currentDate = new Date();
     let bodyData: ISupplierSelect = {
-      FromDate:formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-      ToDate:formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
-      ClientId:0,
+      ClientId: 0,
       Status: '',
       TripId: 0,
-      CreatedBy:
-        this.loginDetails.LoginType == 'Client' ? this.loginDetails.UserId : 0,
+      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
     };
     const categoryListService = this.supplierService
       .GetSupplierData(bodyData)
@@ -143,7 +142,7 @@ export class SupplierComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-  
+
         this.GetSupplierList();
 
       }
@@ -197,7 +196,7 @@ export class SupplierComponent implements OnInit {
   }
 
   search() {
-  
+
     this.GetSupplierList();
   }
 
@@ -238,7 +237,7 @@ export class SupplierComponent implements OnInit {
     //   0
     // );
     return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
- 
+
   }
 
   async loadVehicleNumbers() {

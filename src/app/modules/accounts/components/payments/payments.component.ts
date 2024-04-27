@@ -121,7 +121,8 @@ export class PaymentsComponent implements OnInit {
       TenantId: this.loginDetails.TenantId,
       ClientCategory: this.PaymentForm.value.CategoryName,
       ClientId: this.PaymentForm.value.ClientId ?? 0,
-      PaymentTypeId: 0
+      PaymentTypeId: 0,
+      CreatedBy:0
     };
     console.log(bodyData, 'bodyData bodyData');
 

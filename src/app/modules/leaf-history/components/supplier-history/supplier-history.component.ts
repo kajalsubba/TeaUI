@@ -38,6 +38,8 @@ export class SupplierHistoryComponent {
     'GrossAmount',
     'Remarks',
     'TripName',
+    'CreatedBy',
+    'CreatedDate',
     'Status',
     'actions'
   ];
@@ -56,6 +58,8 @@ export class SupplierHistoryComponent {
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Remarks', header: 'Remark' },
     { columnDef: 'TripName', header: 'TripName ' },
+    { columnDef: 'CreatedBy', header: 'Created By' },
+    { columnDef: 'CreatedDate', header: 'Created DateTime' },
     // { columnDef: 'Status', header: 'Status ' }
   ];
 
@@ -162,7 +166,7 @@ export class SupplierHistoryComponent {
   }
 
   GetSupplierList() {
-    const currentDate = new Date();
+
     let bodyData: ISupplierSelect = {
       FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
@@ -170,8 +174,8 @@ export class SupplierHistoryComponent {
       VehicleNo: '',
       ClientId:this.dateRangeForm.value.ClientId,
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
-      TripId: 0,
-      CreatedBy: this.loginDetails.LoginType == 'Client' ? this.loginDetails.UserId : 0,
+      TripId: 0, 
+      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
     }
     const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res: any) => {
       // console.log(res);

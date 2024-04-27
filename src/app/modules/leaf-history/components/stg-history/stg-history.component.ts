@@ -35,25 +35,22 @@ export class StgHistoryComponent {
     'Rate',
     'GrossAmount',
     'Remarks',
+    'CreatedBy',
+    'CreatedDate',
     'Status',
   ];
 
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    // { columnDef: 'CollectionDate', header: 'Collection Date' },
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-    // { columnDef: 'WetLeafKg', header: 'Wet Leaf (KG) ' },
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-    // { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
-    //  { columnDef: 'Grade', header: 'Grade' },
- 
-   // { columnDef: 'Rate', header: 'Rate' },
-    //{ columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
+    { columnDef: 'CreatedBy', header: 'Created By' },
+    { columnDef: 'CreatedDate', header: 'Created DateTime' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -186,7 +183,7 @@ export class StgHistoryComponent {
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
       TripId: 0,
       ClientId:this.dateRangeForm.value.ClientId,
-      CreatedBy: this.loginDetails.UserId,
+      CreatedBy: this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res: any) => {
       // console.log(res);

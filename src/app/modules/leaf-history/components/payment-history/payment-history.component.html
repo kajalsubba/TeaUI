@@ -57,6 +57,15 @@
                 </mat-select>
            
               </div>
+              <div class="col-lg-2 position-relative my-2">
+                <mat-select placeholder="--Users--" class="fromSelect" formControlName="UserId">
+                  <mat-option value="0">All User</mat-option>
+                  <mat-option *ngFor="let user of UserList" [value]="user.UserId">
+                    {{user.FullName}}
+                  </mat-option>
+                </mat-select>
+           
+              </div>
               <div class="col-lg-2 my-2">
                 <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
                 <button (click)="search()" class="btn btn-color ms-2">Search</button>

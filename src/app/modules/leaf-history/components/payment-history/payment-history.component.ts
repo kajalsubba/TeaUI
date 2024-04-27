@@ -19,6 +19,8 @@ import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-typ
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
 import enIN from '@angular/common/locales/en-IN';
+import { UserService } from 'src/app/modules/user-management/services/user.service';
+import { IGetUser } from 'src/app/modules/user-management/interfaces/iuser';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-payment-history',
@@ -35,6 +37,8 @@ export class PaymentHistoryComponent implements OnInit {
     'PaymentType',
     'Amount',
     'Narration',
+    'CreatedBy',
+    'CreatedDate'
 
   ];
 
@@ -47,8 +51,8 @@ export class PaymentHistoryComponent implements OnInit {
     { columnDef: 'PaySource', header: 'Pay Source' },
     { columnDef: 'PaymentType', header: 'Payment Type' },
     { columnDef: 'Narration', header: 'Narration' },
-    //  { columnDef: 'Amount', header: 'Amount' }
-
+    { columnDef: 'CreatedBy', header: 'Created By' },
+    { columnDef: 'CreatedDate', header: 'Created DateTime' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -61,8 +65,9 @@ export class PaymentHistoryComponent implements OnInit {
   ClientNames: any[] = [];
   selectedRowIndex: number = -1;
   clientList: any[] = [];
+  UserList: any[] = [];
   categoryList: any[] = [];
-PaymentTypeList: any[]=[];
+  PaymentTypeList: any[] = [];
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -72,8 +77,8 @@ PaymentTypeList: any[]=[];
     private autocompleteService: AutoCompleteService,
     private categoryService: CategoryService,
     private paymentService: PaymentService,
-    private paymentTypeService: PaymenttypeService
-    //   private stgapproveService: StgApproveService,
+    private paymentTypeService: PaymenttypeService,
+    private userService: UserService,
     // private supplierApproveService: SupplierapproveService
   ) { }
 
@@ -87,28 +92,29 @@ PaymentTypeList: any[]=[];
       CategoryId: ['', Validators.required],
       CategoryName: [''],
       PaymentTypeId: [0],
+      UserId: [0]
     });
 
     //  await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
     await this.getCategoryList();
     await this.loadClientNames();
     await this.GetPaymentType();
-
+    await this.GetUserList();
   }
 
   GetPaymentData() {
     const currentDate = new Date();
     let bodyData: IGetPayment = {
-      FromDate:formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      FromDate: formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
-      ClientCategory: this.PaymentForm.value.CategoryName??'',
+      ClientCategory: this.PaymentForm.value.CategoryName ?? '',
       ClientId: this.PaymentForm.value.ClientId ?? 0,
-      PaymentTypeId:this.PaymentForm.value.PaymentTypeId ?? 0,
+      PaymentTypeId: this.PaymentForm.value.PaymentTypeId ?? 0,
+      CreatedBy:this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
 
     };
-    console.log(bodyData, 'bodyData bodyData');
-
+ 
     const categoryListService = this.paymentService
       .GetPaymentData(bodyData)
       .subscribe((res: any) => {
@@ -121,34 +127,46 @@ PaymentTypeList: any[]=[];
 
   async selectCategory(event: MatOptionSelectionChange, category: any) {
     if (event.source.selected) {
-        this.PaymentForm.controls['ClientId'].reset();
-        this.PaymentForm.controls['ClientName'].reset();
-        this.PaymentForm.controls['CategoryName'].setValue(category?.CategoryName);
+      this.PaymentForm.controls['ClientId'].reset();
+      this.PaymentForm.controls['ClientName'].reset();
+      this.PaymentForm.controls['CategoryName'].setValue(category?.CategoryName);
 
-        if (!category) {
-            this.ClientNames = this.clientList;
-        } else {
-            const dataList = this.clientList.filter((x: any) =>
-                x.CategoryName.toLowerCase() === this.PaymentForm.value.CategoryName.toLowerCase() ||
-                x.CategoryName.toLowerCase() === 'both'
-            );
-            this.ClientNames = dataList;
-        }
+      if (!category) {
+        this.ClientNames = this.clientList;
+      } else {
+        const dataList = this.clientList.filter((x: any) =>
+          x.CategoryName.toLowerCase() === this.PaymentForm.value.CategoryName.toLowerCase() ||
+          x.CategoryName.toLowerCase() === 'both'
+        );
+        this.ClientNames = dataList;
+      }
     }
-}
+  }
 
-async GetPaymentType() {
-  let bodyData: IGetPaymentType = {
-    TenantId: this.loginDetails.TenantId,
-  };
-  const categoryListService = this.paymentTypeService
-    .GetPaymentType(bodyData)
-    .subscribe((res: any) => {
-      // console.log(res);
-      this.PaymentTypeList = res.PaymentTypeDetails;
-    });
-  this.subscriptions.push(categoryListService);
-}
+  async GetPaymentType() {
+    let bodyData: IGetPaymentType = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    const categoryListService = this.paymentTypeService
+      .GetPaymentType(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.PaymentTypeList = res.PaymentTypeDetails;
+      });
+    this.subscriptions.push(categoryListService);
+  }
+  async GetUserList() {
+    let bodyData: IGetUser = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    const categoryListService = this.userService
+      .GetUser(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.UserList = res.UserDetails;
+      });
+    this.subscriptions.push(categoryListService);
+  }
 
 
   async getCategoryList() {

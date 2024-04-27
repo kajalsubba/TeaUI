@@ -124,7 +124,7 @@ export class StgComponent implements OnInit, AfterViewInit {
       Status: '',
       ClientId:0,
       TripId: this.dateRangeForm.value.TripId,
-      CreatedBy: 0, // this.loginDetails.UserId,
+      CreatedBy: this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
     };
     const categoryListService = this.stgService
       .GetStg(bodyData)

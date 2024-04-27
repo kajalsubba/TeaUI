@@ -19,4 +19,5 @@ export interface IGetPayment {
     ClientId: number;
     ClientCategory:string;
     PaymentTypeId:number;
+    CreatedBy: number;
 }

@@ -67,7 +67,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     { columnDef: 'Remarks', header: 'Remarks' },
     //    { columnDef: 'TripName', header: 'Trip' },
     { columnDef: 'CreatedBy', header: 'Created By' },
-    { columnDef: 'CreatedDate', header: 'Created Date' },
+    { columnDef: 'CreatedDate', header: 'Created DateTime' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
