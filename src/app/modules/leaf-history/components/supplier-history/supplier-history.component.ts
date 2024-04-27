@@ -17,6 +17,8 @@ import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { SupplierService } from 'src/app/modules/collection/services/supplier.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import enIN from '@angular/common/locales/en-IN';
+import { IGetUser } from 'src/app/modules/user-management/interfaces/iuser';
+import { UserService } from 'src/app/modules/user-management/services/user.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-history',
@@ -75,6 +77,7 @@ export class SupplierHistoryComponent {
   selectedRowIndex: number = -1;
 
   private destroy$ = new Subject<void>();
+  UserList: any[]=[];
 
   constructor(
     private dialog: MatDialog,
@@ -84,6 +87,7 @@ export class SupplierHistoryComponent {
     private autocompleteService: AutoCompleteService,
     private fb: FormBuilder,
     private stgService: StgService,
+    private userService: UserService,
     private supplierService: SupplierService
 
   ) { }
@@ -181,6 +185,19 @@ export class SupplierHistoryComponent {
       // console.log(res);
       this.dataSource.data = res.SupplierDetails;
     });
+    this.subscriptions.push(categoryListService);
+  }
+
+  async GetUserList() {
+    let bodyData: IGetUser = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    const categoryListService = this.userService
+      .GetUser(bodyData)
+      .subscribe((res: any) => {
+        // console.log(res);
+        this.UserList = res.UserDetails;
+      });
     this.subscriptions.push(categoryListService);
   }
 

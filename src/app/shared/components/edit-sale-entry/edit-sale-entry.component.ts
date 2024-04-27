@@ -1,6 +1,6 @@
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,6 +18,7 @@ import { ISaleStg } from '../../interfaces/isale-stg';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IStgSaleSave } from 'src/app/modules/collectionApprove/interfaces/isale-save';
 import { formatDate } from '@angular/common';
+import { AddEditStgComponent } from 'src/app/modules/collection/models/add-edit-stg/add-edit-stg.component';
 
 @Component({
   selector: 'app-edit-sale-entry',
@@ -74,7 +75,8 @@ export class EditSaleEntryComponent implements OnInit {
     private factoryService: FactoryService,
     private accountService: FactoryAccountService,
     private stgapproveService: StgApproveService,
-    private saleService: SaleService
+    private saleService: SaleService,
+    private dialog:MatDialog
   ) { }
 
   async ngOnInit() {
@@ -430,5 +432,21 @@ export class EditSaleEntryComponent implements OnInit {
         this.selectedRowIndex--;
       }
     }
+  }
+
+  addSaleEntry(){
+      const dialogRef = this.dialog.open(AddEditStgComponent, {
+        width: '80%',
+        data: {
+          title: 'Add STG Entry',
+          buttonName: 'Save',
+        },
+        disableClose: true,
+      });
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if (result) {
+          
+        }
+      });
   }
 }

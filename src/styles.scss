@@ -18,7 +18,7 @@ html,
 body {
   height: 100%;
   background-color: #e5eef4 !important;
-  // font-size: 14px;
+  font-size: 14px;
 }
 body {
   margin: 0;
@@ -108,10 +108,18 @@ input[type="text"],input[type="email"],input[type="number"],input[type="password
   }
 }
 
+.mat-mdc-select-placeholder{
+  font-size: 1rem;
+}
+
 .form-group input:read-only:not(.date-select) {
   background-color: #e7e7e7;
   box-shadow: none;
   border: 1px solid gray;
+}
+
+.form-control{
+  height: 40px;
 }
 
 .mat-date-range-input-inner{

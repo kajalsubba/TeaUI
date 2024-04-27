@@ -1,5 +1,5 @@
 .table-container{
-    height: calc(100vh - 240px);
+    height: calc(100vh - 260px);
     overflow: auto;
     box-shadow: var(--soft-box-shadow);
   }
@@ -217,4 +217,8 @@
   
   .selected-row {
   background-color: #cacaca; /* Change this to the desired background color */
+  }
+
+  .border-left{
+    border-left: 2px solid gray;
   }
