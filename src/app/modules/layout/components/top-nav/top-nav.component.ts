@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetNotifications } from '../../interfaces/iget-notifications';
 import { NotificationsService } from '../../services/notifications.service';
+import { NotificationDataService } from '../../services/notification-data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-top-nav',
@@ -16,15 +18,17 @@ export class TopNavComponent implements OnInit {
   @Output() sideNavSwitch = new EventEmitter<any>();
   loginDetails: any;
   currentDateTime: string | null = null;
-  NotificationData: any[]=[];
+  NotificationData: any[] = [];
   countOfPendingNotifications: any;
+  private notificationDataSubscription!: Subscription;
 
   constructor(
     public helper: HelperService,
     private router: Router,
     private datePipe: DatePipe,
-    private notificationService: NotificationsService
-  ) {}
+    //private notificationService: NotificationsService
+    private notificationDataService: NotificationDataService
+  ) { }
 
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -32,6 +36,14 @@ export class TopNavComponent implements OnInit {
     setInterval(() => {
       this.updateDateTime();
     }, 1000);
+
+    // Subscribe to changes in notification data
+    this.notificationDataSubscription = this.notificationDataService.notificationData$.subscribe((data) => {
+      // Update NotificationData and countOfPendingNotifications
+      this.NotificationData = data;
+      this.countOfPendingNotifications = data.length;
+    });
+
     this.GetNotificationData();
   }
 
@@ -46,22 +58,13 @@ export class TopNavComponent implements OnInit {
     this.router.navigateByUrl('login');
     sessionStorage.clear();
   }
-
-  GetNotificationData() {
-    let data: IGetNotifications = {
+  GetNotificationData(): void {
+    const data: IGetNotifications = {
       TenantId: this.loginDetails.TenantId,
     };
-
-    this.notificationService.GetStgBillHistory(data).subscribe((res) => {
-      const pendingNotifications = res.NotificationData.filter((item:any) => item.TotalPending > 0);
-      this.NotificationData = pendingNotifications;
-
-      // Count the number of filtered items
-      this.countOfPendingNotifications = pendingNotifications.length;
-    })
-
+    this.notificationDataService.getNotificationData(data);
   }
-
+ 
   formatCurrentRoute(): string {
     const currentRoute = this.helper.getCurrentRoute();
     const parts = currentRoute.split('/');
@@ -72,10 +75,13 @@ export class TopNavComponent implements OnInit {
     return formattedRoute.toUpperCase();
   }
 
-  redirectToNotification(link:any){
+  redirectToNotification(link: any) {
     this.router.navigate([`home/${link}`]);
   }
-
+  ngOnDestroy(): void {
+    // Unsubscribe to avoid memory leaks
+    this.notificationDataSubscription.unsubscribe();
+  }
   updateDateTime(): void {
     const now = new Date();
     this.currentDateTime = this.datePipe.transform(now, 'dd-MMM-yyyy HH:mm:ss');

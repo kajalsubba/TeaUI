@@ -10,13 +10,13 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IStgSelect } from 'src/app/modules/collection/interfaces/istg';
-import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgService } from 'src/app/modules/collection/services/stg.service';
-import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { IStgVehicle, IstgApprove } from '../../interfaces/istg-approve';
 import { StgApproveService } from '../../services/stg-approve.service';
 import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-entry.component';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
+import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
+import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
 
 @Component({
   selector: 'app-stgapprove',
@@ -48,20 +48,14 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<any>(true, []);
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    // { columnDef: 'CollectionDate', header: 'Collection Date' },
+
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    // { columnDef: 'FirstWeight', header: 'First Weight(Kg)' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-    //{ columnDef: 'WetLeafKg', header: 'Wet Leaf (KG)' },
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-    //    { columnDef: 'LongLeafKg', header: 'Long Leaf (KG)' },
-    // { columnDef: 'Deduction', header: 'Deduction' },
-    // { columnDef: 'FinalWeight', header: 'Final Weight' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
-    // { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' },
     { columnDef: 'TripName', header: 'Trip' },
   ];
@@ -84,9 +78,10 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
-    private autocompleteService: AutoCompleteService,
+    //private autocompleteService: AutoCompleteService,
     private stgService: StgService,
-    private stgapproveService: StgApproveService
+    private stgapproveService: StgApproveService,
+    private notificationDataService: NotificationDataService
   ) { }
 
   async ngOnInit() {
@@ -121,7 +116,12 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     });
     this.subscriptions.push(getPendingCollectionDate)
   }
-
+  RefreshNotifications(): void {
+    const data: IGetNotifications = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    this.notificationDataService.getNotificationData(data);
+  }
   GetStgList(FromDate: any, ToDate: any) {
 
     const currentDate = new Date();
@@ -137,7 +137,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
-      ClientId:0,
+      ClientId: 0,
       TripId: this.dateRangeForm.value.TripId,
       CreatedBy: 0,
     };
@@ -357,6 +357,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       if (result) {
         this.GetStgList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
         this.selection = new SelectionModel<any>(true, []);
+        this.RefreshNotifications();
       }
     });
   }

@@ -22,6 +22,8 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { IDefaultData } from 'src/app/modules/collection/interfaces/isupplier';
 import { ConfirmDialogRemarksComponent } from 'src/app/shared/components/confirm-dialog-remarks/confirm-dialog-remarks.component';
+import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
+import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
 
 @Component({
   selector: 'app-supplierapprove',
@@ -70,6 +72,8 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     { columnDef: 'CreatedDate', header: 'Created DateTime' },
   ];
 
+ // @ViewChild('child') navComponent!: TopNavComponent;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
@@ -90,7 +94,8 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     private supplierService: SupplierService,
     private stgService: StgService,
     private stgapproveService: StgApproveService,
-    private supplierApproveService: SupplierapproveService
+    private supplierApproveService: SupplierapproveService,
+    private notificationDataService: NotificationDataService
   ) { }
 
   async ngOnInit() {
@@ -178,10 +183,16 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   async fromDateChange(event: MatDatepickerInputEvent<Date>) {
 
     await this.loadVehicleNumbers(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
-    // alert(this.datePipe.transform(event.value, 'yyyy-MM-dd'));
+
 
   }
 
+  RefreshNotifications(): void {
+    const data: IGetNotifications = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    this.notificationDataService.getNotificationData(data);
+  }
   editItem(e: any) { }
 
   deleteItem(e: any) { }
@@ -217,12 +228,12 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       FineLeaf: row.FineLeaf,
       ChallanWeight: row.ChallanWeight,
       SaleTypeId: 2,
-      Remarks:'',
+      Remarks: '',
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId
     };
 
-    if(saleStatus == 'Reject'){
+    if (saleStatus == 'Reject') {
       const dialogRef = this.dialog.open(ConfirmDialogRemarksComponent, {
         width: '30vw',
         minWidth: '25vw',
@@ -231,23 +242,19 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
           title: 'Confirm Action',
           message: 'Do you want to Confirm !',
           data: data,
-  
+
         },
       });
       dialogRef.afterClosed().subscribe((result: any) => {
-        if (result!="") {
-          data.Remarks=result;
+        if (result != "") {
+          data.Remarks = result;
           this.SaveApproveData(data);
-  
-  
+
+
         }
-        // else
-        // {
-        //   this.toastr.warning("Please type remarks !","Notification");
-        //   return;
-        // }
+
       });
-    }else{
+    } else {
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '30vw',
         minWidth: '25vw',
@@ -256,14 +263,14 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
           title: 'Confirm Action',
           message: 'Do you want to Confirm !',
           data: data,
-  
+
         },
       });
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result) {
           this.SaveApproveData(data);
-  
-  
+
+
         }
       });
     }
@@ -284,9 +291,8 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       .subscribe((res: any) => {
 
         this.toastr.success(res.Message, "SUCCESS");
-        // this.GetSupplierList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-        //   formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
         this.GetSupplierDefaultList();
+        this.RefreshNotifications()
       });
   }
 

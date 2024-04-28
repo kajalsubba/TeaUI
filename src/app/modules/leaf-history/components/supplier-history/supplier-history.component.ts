@@ -100,10 +100,12 @@ export class SupplierHistoryComponent {
       //  VehicleNo: [''],
       ClientName: [],
       ClientId: [0],
-      Status: ['']
+      Status: [''],
+      UserId:[0]
     });
-    // this.loadVehicleNumbers();
+
     await this.loadClientNames();
+    await this.GetUserList();
   }
 
   async loadClientNames() {
@@ -179,7 +181,7 @@ export class SupplierHistoryComponent {
       ClientId:this.dateRangeForm.value.ClientId,
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
       TripId: 0, 
-      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
+      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : this.dateRangeForm.value.UserId,
     }
     const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res: any) => {
       // console.log(res);
