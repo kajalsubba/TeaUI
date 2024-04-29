@@ -29,6 +29,7 @@ export interface ISupplierSelect
     Status: string;
     ClientId:Number;
     TripId:any;
+    FactoryId:Number;
     CreatedBy:any;
 }
 export interface IDefaultData

@@ -19,6 +19,8 @@ import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import enIN from '@angular/common/locales/en-IN';
 import { IGetUser } from 'src/app/modules/user-management/interfaces/iuser';
 import { UserService } from 'src/app/modules/user-management/services/user.service';
+import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
+import { IGetSaleFactory } from 'src/app/modules/masters/interfaces/IFactory';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-history',
@@ -75,7 +77,7 @@ export class SupplierHistoryComponent {
   vehicleNumbers: any[] = [];
   statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
   selectedRowIndex: number = -1;
-
+  factoryNames: any[] = [];
   private destroy$ = new Subject<void>();
   UserList: any[]=[];
 
@@ -88,7 +90,8 @@ export class SupplierHistoryComponent {
     private fb: FormBuilder,
     private stgService: StgService,
     private userService: UserService,
-    private supplierService: SupplierService
+    private supplierService: SupplierService,
+    private saleService: StgApproveService
 
   ) { }
 
@@ -101,13 +104,24 @@ export class SupplierHistoryComponent {
       ClientName: [],
       ClientId: [0],
       Status: [''],
-      UserId:[0]
+      UserId:[0],
+      FactoryName:[''],
+      FactoryId: [0],
     });
 
     await this.loadClientNames();
     await this.GetUserList();
   }
-
+  filterFactoryNames(value: string): any {
+    // if (value!="")
+    //   {
+      const filterValue = value.toLowerCase();
+      return this.factoryNames.filter((x: any) =>
+        x?.FactoryName?.toLowerCase()?.includes(filterValue)
+      );
+  //  }
+    
+    }
   async loadClientNames() {
     try {
       const bodyData: IGetTeaClient = {
@@ -142,6 +156,48 @@ export class SupplierHistoryComponent {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  onFactoryInputChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    // Do something when input changes
+    console.log(input.value, 'presss');
+    if (input.value == '') {
+   
+      this.dateRangeForm.controls['FactoryId'].reset();
+      this.dateRangeForm.controls['FactoryName'].reset();
+   
+
+    }
+
+  }
+  GetFactory  (event: MatDatepickerInputEvent<Date>): void {
+    this.loadSaleFactoryNames();
+  }
+
+  async loadSaleFactoryNames() {
+    try {
+      const bodyData: IGetSaleFactory = {
+        TenantId: this.loginDetails.TenantId,
+        FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate:formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      };
+
+      const res: any = await this.saleService
+        .GetSaleFactoryDetails(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.factoryNames = res.SaleFactory;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+  selectFactory(factory: any) {
+    this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
+    //this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.FactoryId)
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -181,6 +237,7 @@ export class SupplierHistoryComponent {
       ClientId:this.dateRangeForm.value.ClientId,
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
       TripId: 0, 
+      FactoryId:this.dateRangeForm.value.FactoryId,
       CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : this.dateRangeForm.value.UserId,
     }
     const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res: any) => {

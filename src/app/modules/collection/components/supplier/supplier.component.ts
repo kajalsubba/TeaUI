@@ -120,6 +120,7 @@ export class SupplierComponent implements OnInit {
       ClientId: 0,
       Status: '',
       TripId: 0,
+      FactoryId:0,
       CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
     };
     const categoryListService = this.supplierService

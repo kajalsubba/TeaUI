@@ -16,21 +16,14 @@
             <div class="col-lg-2 d-grid">
               <mat-form-field class="mx-2 ">
                 <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="dateRangeForm.value.fromDate"
-                  placeholder="To Date" formControlName="toDate">
+                  placeholder="To Date"   (dateChange)="GetFactory($event)" formControlName="toDate">
                 <mat-datepicker-toggle [disabled]="dateRangeForm.value.fromDate == null" matSuffix
                   [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
               </mat-form-field>
             </div>
             <div class="position-relative col-lg-2 d-grid">
-              <!-- <input #vehicleNo (input)="VehicleInput(vehicleNo.value)" type="text" class="form-control" id="VehicleNo"
-                placeholder="Vehicle No." formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
-         
-              <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
-                <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)" [value]="number.VehicleNo">
-                  {{ number.VehicleNo }}
-                </mat-option>
-              </mat-autocomplete> -->
+
               <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
                 formControlName="ClientName" [matAutocomplete]="clientAuto" (input)="onInputChange($event)">
 
@@ -41,7 +34,23 @@
                 </mat-option>
               </mat-autocomplete>
             </div>
-
+            <div class="col-lg-2 position-relative my-2">
+              <!-- <mat-select placeholder="--Users--" class="fromSelect" formControlName="UserId">
+                <mat-option value="0">All User</mat-option>
+                <mat-option *ngFor="let user of UserList" [value]="user.UserId">
+                  {{user.FullName}}
+                </mat-option>
+              </mat-select> -->
+              <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
+                formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onFactoryInputChange($event)">
+              <!-- Autocomplete options -->
+              <mat-autocomplete #factoryAuto="matAutocomplete" [displayWith]="displayWithFn">
+                <mat-option *ngFor="let factory of filterFactoryNames(factoryName.value)" [value]="factory?.FactoryName"
+                  (onSelectionChange)="selectFactory(factory)">
+                  {{ factory?.FactoryName }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
             <div class="col-lg-2 mx-2">
               <mat-select placeholder="--Select Status--" class="fromSelect" formControlName="Status">
                 <mat-option *ngFor="let status of statusList" [value]="status">
@@ -49,7 +58,7 @@
                 </mat-option>
               </mat-select>
             </div>
-            <div class="col-lg-2 position-relative my-2">
+            <!-- <div class="col-lg-2 position-relative my-2">
               <mat-select placeholder="--Users--" class="fromSelect" formControlName="UserId">
                 <mat-option value="0">All User</mat-option>
                 <mat-option *ngFor="let user of UserList" [value]="user.UserId">
@@ -57,7 +66,7 @@
                 </mat-option>
               </mat-select>
          
-            </div>
+            </div> -->
             <div class="col-lg-2 d-grid">
               <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
               <button (click)="search()" class="btn btn-color ms-2">Search</button>
@@ -112,7 +121,8 @@
                 *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
                 {{row.GrossAmount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') | currency:'INR':'symbol':undefined:'en-IN'}}</b>
+                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount') |
+                  currency:'INR':'symbol':undefined:'en-IN'}}</b>
               </td>
             </ng-container>
             <!-- Actions column -->

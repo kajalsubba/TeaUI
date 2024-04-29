@@ -106,7 +106,7 @@ export class DashboardComponent implements OnInit {
     
     this.companyWiseSaleDetails = {
       title: {
-        text: 'Company Wise Sale for the month - '+currentMonthName
+        text: 'Factory Wise Sale for the month - '+currentMonthName
       },
       subtitle: {
         text: ''
@@ -139,7 +139,7 @@ export class DashboardComponent implements OnInit {
   GetStgWiseChart(categories: any = [], stgData: any = [], supplierData: any = []) {
     this.stgAndSale = {
       title: {
-        text: 'STG and SALE Comparision'
+        text: 'STG and SALE Comapre for last 10 days'
       },
       subtitle: {
         text: ''
@@ -179,7 +179,7 @@ export class DashboardComponent implements OnInit {
   GetSupplierWiseChart(categories: any = [], supplierData: any = []) {
     this.supplierWiseSaleDetails = {
       title: {
-        text: 'Supplier Wise Sale Details'
+        text: 'Supplier Wise sale for last 10 days'
       },
       subtitle: {
         text: ''
