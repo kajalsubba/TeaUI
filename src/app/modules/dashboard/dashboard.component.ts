@@ -101,10 +101,12 @@ export class DashboardComponent implements OnInit {
   }
 
   GetCompanyWiseSaleChart(categories: any = [], datas: any = []) {
-
+    const currentDate = new Date();
+    const currentMonthName = currentDate.toLocaleString('default', { month: 'long' });
+    
     this.companyWiseSaleDetails = {
       title: {
-        text: 'Company Wise Sale Details'
+        text: 'Company Wise Sale for the month - '+currentMonthName
       },
       subtitle: {
         text: ''
