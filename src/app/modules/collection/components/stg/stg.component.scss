@@ -18,6 +18,13 @@
 
 .top-container{
     display: flex;
+    @media (max-width: 68em) {
+      display: grid;
+      .add-button{
+        display: grid;
+        margin: 5px 10px;
+      }
+    }
     .search-field{
         flex: 1;
         position: relative;

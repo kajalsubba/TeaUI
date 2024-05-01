@@ -309,3 +309,11 @@ td.reject-row{
   background-color: yellow !important; /* Change the color as needed */
   border-radius: 50%;
 }
+
+.border-left{
+  border-left: 2px solid gray;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input, .mat-mdc-select-value-text{
+  font-size: 1rem !important;
+}

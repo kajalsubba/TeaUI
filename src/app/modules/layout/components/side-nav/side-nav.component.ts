@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, HostListener, Input, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { HelperService } from 'src/app/core/services/helper.service';
 
@@ -9,6 +9,7 @@ import { HelperService } from 'src/app/core/services/helper.service';
 })
 export class SideNavComponent {
   isExpanded: boolean = false;
+  isDesktop: boolean = true;
   panelOpenState = false;
   currentOpenMenu: string | null = null;
   loginDetails: any;
@@ -17,7 +18,7 @@ export class SideNavComponent {
    *
    */
   constructor(public helper: HelperService, private router: Router) {
-
+    this.isDesktop = window.innerWidth > 768;
   }
 
   ngOnInit(): void {
@@ -33,9 +34,23 @@ export class SideNavComponent {
 
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isDesktop = event.target.innerWidth > 768; // Update isDesktop flag on window resize
+  }
+
+  onMouseEnter() {
+    this.isExpanded = true;
+  }
+
+  onMouseLeave() {
+    this.isExpanded = false;
+  }
+
+
 
   toggleWidth() {
-    this.isExpanded = !this.isExpanded;
+    this.isExpanded?false:true;
   }
 
   toggleMenu(event: MouseEvent, menuIdentifier: string): void {
