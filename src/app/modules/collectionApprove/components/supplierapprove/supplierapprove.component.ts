@@ -20,7 +20,7 @@ import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/ima
 import { ISupplierVehicle, IsupplierApprove } from '../../interfaces/isupplier-approve';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { IDefaultData } from 'src/app/modules/collection/interfaces/isupplier';
+import { IDefaultData, ISupplierSelect } from 'src/app/modules/collection/interfaces/isupplier';
 import { ConfirmDialogRemarksComponent } from 'src/app/shared/components/confirm-dialog-remarks/confirm-dialog-remarks.component';
 import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
 import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
@@ -104,7 +104,8 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       fromDate: [new Date(), Validators.required],
       VehicleNo: [''],
       VehicleId: [''],
-      TripId: [null]
+      TripId: [null],
+      FactoryId:[0]
     });
 
     await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
@@ -139,7 +140,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   GetSupplierList() {
     this.selection.clear()
     const currentDate = new Date();
-    let bodyData: IStgSelect = {
+    let bodyData: ISupplierSelect = {
       FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
@@ -147,6 +148,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       Status: 'Pending',
       ClientId: 0,
       TripId: this.dateRangeForm.value.TripId,
+      FactoryId:0,
       CreatedBy: 0
     };
     const categoryListService = this.supplierService

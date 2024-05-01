@@ -111,7 +111,7 @@ export class PaymentHistoryComponent implements OnInit {
       ClientCategory: this.PaymentForm.value.CategoryName ?? '',
       ClientId: this.PaymentForm.value.ClientId ?? 0,
       PaymentTypeId: this.PaymentForm.value.PaymentTypeId ?? 0,
-      CreatedBy:this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
+      CreatedBy:this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId :this.PaymentForm.value.UserId ,
 
     };
  
