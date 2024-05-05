@@ -371,3 +371,14 @@ a.sub-menu-title{
   // .active>a.sub-menu-title{
   //   color: #fff !important;
   // }
+
+  /* Add this media query to disable hover effects on smaller screens */
+@media (max-width: 768px) {
+  .sidenav {
+    pointer-events: auto; /* Enable pointer events on smaller screens */
+  }
+
+  .sidenav:hover {
+    pointer-events: none; /* Disable hover effects on smaller screens */
+  }
+}

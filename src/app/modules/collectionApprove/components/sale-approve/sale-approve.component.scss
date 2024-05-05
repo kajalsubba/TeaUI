@@ -84,6 +84,10 @@
     height: 80vh;
     display: flex;
     align-items: center;
+    @media (max-width:68em) {
+      display: block;
+      margin-top: 20px;
+    }
     >.row{
       background-color: #fff;
       padding-bottom: 20px;
