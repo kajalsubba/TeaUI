@@ -256,7 +256,7 @@ export class PaymentHistoryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.PaymentForm.controls['toDate'].setValue(null);
+  //  this.PaymentForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])

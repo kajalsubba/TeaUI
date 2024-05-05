@@ -237,7 +237,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.SeasonAdvanceForm.controls['toDate'].setValue(null);
+  //  this.SeasonAdvanceForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])

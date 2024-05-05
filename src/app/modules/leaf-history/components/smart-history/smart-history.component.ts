@@ -312,7 +312,7 @@ export class SmartHistoryComponent implements OnInit {
     this.selectedRowIndex = -1;
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.smartHistoryForm.controls['toDate'].setValue(null);
+   // this.smartHistoryForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])

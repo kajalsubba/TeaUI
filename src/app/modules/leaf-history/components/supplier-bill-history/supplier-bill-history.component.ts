@@ -184,7 +184,7 @@ export class SupplierBillHistoryComponent implements OnInit{
 
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.SupplierBillForm.controls['toDate'].setValue(null);
+  //  this.SupplierBillForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   applyFilter(event: Event) {

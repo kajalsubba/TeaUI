@@ -149,7 +149,7 @@ export class SaleSummaryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.saleSummary.controls['toDate'].setValue(null);
+   // this.saleSummary.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])

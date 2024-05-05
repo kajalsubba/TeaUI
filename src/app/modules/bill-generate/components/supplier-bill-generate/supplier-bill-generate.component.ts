@@ -309,7 +309,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     this.selectedRowIndex = -1;
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.supplierBillForm.controls['toDate'].setValue(null);
+ //   this.supplierBillForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])

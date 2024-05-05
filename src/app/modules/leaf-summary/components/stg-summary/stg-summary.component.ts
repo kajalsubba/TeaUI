@@ -183,7 +183,7 @@ export class StgSummaryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.StgSummaryForm.controls['toDate'].setValue(null);
+  //  this.StgSummaryForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])

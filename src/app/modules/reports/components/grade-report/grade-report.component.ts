@@ -65,7 +65,7 @@ export class GradeReportComponent implements OnInit {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.gradeReportForm.controls['toDate'].setValue(null);
+   // this.gradeReportForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 

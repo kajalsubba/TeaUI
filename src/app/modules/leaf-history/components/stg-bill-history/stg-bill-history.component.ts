@@ -185,7 +185,7 @@ export class StgBillHistoryComponent implements OnInit {
 
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.StgBillForm.controls['toDate'].setValue(null);
+   // this.StgBillForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   applyFilter(event: Event) {
