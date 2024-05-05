@@ -43,16 +43,19 @@
                             </mat-option>
                         </mat-autocomplete>
                     </div>
-                    <div class="col-lg-2">
-                        <input type="text" class="form-control" id="FineLeaf" placeholder="Fine Leaf (10-30)"
-                            formControlName="FineLeaf">
-                    </div>
                     <div class="col-lg-2 d-grid">
+                        <button (click)="FixRate()" class="btn btn-color">Fix</button>
+                    </div>
+                    <div class="col-lg-2 d-grid border-left">
                                 <button (click)="Search()" class="btn btn-color">Search</button>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-lg-2 offset-lg-4">
+                <div class="row">
+                    <div class="col-lg-2 offset-lg-2 my-2">
+                        <input type="text" class="form-control" id="FineLeaf" placeholder="Fine Leaf (10-30)"
+                            formControlName="FineLeaf">
+                    </div>
+                    <div class="col-lg-2 my-2">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative">
                                 <input #Rate type="number" class="form-control" id="Rate" placeholder="Rate"
@@ -68,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-2 my-2">
                         <!-- <input
                           type="number"
                           class="form-control"
@@ -82,20 +85,14 @@
 
 
                     </div>
-                    <div class="col-lg-2 d-grid">
+                    <div class="col-lg-2 d-grid my-2">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative d-grid">
                                 <button (click)="RateAssign()" class="btn btn-color">Insert</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 d-grid">
-                        <div class="form-group row mb-3">
-                            <div class="col-lg-12 position-relative d-grid">
-                                <button (click)="FixRate()" class="btn btn-color">Fix</button>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="col-lg-2 d-grid border-left"></div>
                 </div>
             </form>
         </div>

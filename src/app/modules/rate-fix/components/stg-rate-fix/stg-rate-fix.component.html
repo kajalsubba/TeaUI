@@ -38,7 +38,42 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-lg-2">
+                        <div class="form-group row mb-3">
+                            <div class="col-lg-12 position-relative">
+                                <input #Rate type="number" class="form-control" id="Rate" placeholder="Rate"
+                                    formControlName="Rate">
+                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                                <!-- Validation message -->
+                                <span
+                                    *ngIf="dateRangeForm.get('Rate')?.hasError('required') && dateRangeForm.get('Rate')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Rate is required.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 d-grid">
+                        <div class="form-group row mb-3">
+                            <div class="col-lg-12 position-relative d-grid">
+                                <button (click)="FixRate()" class="btn btn-color">Fix</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-2 d-grid border-left">
+                        <div class="form-group row mb-3">
+
+                            <div class="col-lg-12 position-relative d-grid">
+                                <button (click)="Search()" class="btn btn-color">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 offset-lg-6">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative">
                                 <input #clientName type="text" class="form-control" id="ClientName"
@@ -65,40 +100,11 @@
                     <div class="col-lg-2 d-grid">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative d-grid">
-                                <button (click)="Search()" class="btn btn-color">Search</button>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-2 offset-lg-6">
-                        <div class="form-group row mb-3">
-                            <div class="col-lg-12 position-relative">
-                                <input #Rate type="number" class="form-control" id="Rate" placeholder="Rate"
-                                    formControlName="Rate">
-                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                                <!-- Validation message -->
-                                <span
-                                    *ngIf="dateRangeForm.get('Rate')?.hasError('required') && dateRangeForm.get('Rate')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Rate is required.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 d-grid">
-                        <div class="form-group row mb-3">
-                            <div class="col-lg-6 position-relative d-grid">
                                 <button (click)="RateAssign()" class="btn btn-color">Insert</button>
                             </div>
-
-                            <div class="col-lg-6 position-relative d-grid">
-                                <button (click)="FixRate()" class="btn btn-color">Fix</button>
-                            </div>
                         </div>
                     </div>
+                    <div class="col-lg-2 d-grid border-left"></div>
                 </div>
             </form>
         </div>
