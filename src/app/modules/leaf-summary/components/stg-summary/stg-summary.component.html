@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-9 my-2 align-items-center">
       <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-12 col-xl-10">
           <form [formGroup]="StgSummaryForm">
             <div class="row">
               <div class="col-lg-3 my-2">
@@ -35,7 +35,7 @@
                 </div>
               </div>
 
-              <div class="col-lg-2 my-2">
+              <div class="col-lg-2 my-2 d-grid">
                 <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
                 <button (click)="search()" class="btn btn-color ms-2">Search</button>
                 <!-- <button matTooltip="PDF Download" matTooltipPosition="below" (click)="downloadPdf()" class="btn btn-color ms-2"><i class="fa-solid fa-file-pdf"></i></button> -->
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-3 my-2">
+    <div class="col-lg-3 my-2 border-left">
       <div class="top-container my-2">
         <div class="search-field px-2">
           <input (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">

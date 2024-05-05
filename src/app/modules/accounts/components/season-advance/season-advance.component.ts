@@ -190,7 +190,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
 
   AddSeasonAdvance() {
     const dialogRef = this.dialog.open(EditAddSeasonAdvanceComponent, {
-      width: '30%',
+      width: window.innerWidth <= 1024 ?'40%' : '30%',
       data: {
         title: 'Add Season Advance Entry',
         buttonName: 'Save',
@@ -254,7 +254,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
   }
   editItem(element: any) {
     const dialogRef = this.dialog.open(EditAddSeasonAdvanceComponent, {
-      width: '30%',
+      width: window.innerWidth <= 1024 ?'40%' : '30%',
       data: {
         title: 'Update Season Adv. Entry',
         buttonName: 'Update',
