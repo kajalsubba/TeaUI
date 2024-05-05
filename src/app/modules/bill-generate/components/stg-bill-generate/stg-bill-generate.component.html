@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-12 my-2 align-items-center">
       <div class="row">
-        <div class="col-lg-8 ps-0">
+        <div class="col-xl-8 col-lg-10 col-md-12 ps-0">
           <form [formGroup]="StgBillForm">
             <div class="row border-color mx-2">
               <div class="col-lg-3 my-1">
@@ -14,7 +14,7 @@
                 </mat-form-field>
               </div>
               <div class="col-lg-3 my-1">
-                <mat-form-field class="mx-2">
+                <mat-form-field>
                   <input readonly matInput [min]="minToDate" [max]="currentDate" [matDatepicker]="picker1"
                     placeholder="To Date" formControlName="toDate">
                   <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>

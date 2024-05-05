@@ -262,7 +262,7 @@ export class PaymentsComponent implements OnInit {
 
   AddPayment() {
     const dialogRef = this.dialog.open(AddEditPaymentComponent, {
-      width: '30%',
+      width: window.innerWidth <= 1024 ?'40%' : '30%',
       data: {
         title: 'Add Payment Entry',
         buttonName: 'Save',
@@ -279,7 +279,7 @@ export class PaymentsComponent implements OnInit {
 
   editItem(element: any) {
     const dialogRef = this.dialog.open(AddEditPaymentComponent, {
-      width: '30%',
+      width: window.innerWidth <= 1024 ?'40%' : '30%',
       data: {
         title: 'Update Payment Entry',
         buttonName: 'Update',
