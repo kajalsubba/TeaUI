@@ -5,6 +5,7 @@ import { UserService } from '../../services/user.service';
 import { IChangePassword } from '../../interfaces/iuser';
 import { Subject, catchError, takeUntil } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
@@ -19,6 +20,7 @@ export class ChangePasswordComponent implements OnInit {
   private destroy$ = new Subject<void>();
   constructor(private fb:FormBuilder,  private helper: HelperService,private passwordService:UserService,
     private toastr: ToastrService,
+    private router: Router
 
   ){}
 
@@ -80,6 +82,10 @@ export class ChangePasswordComponent implements OnInit {
 
         this.toastr.success(res.Message, "SUCCESS");
         this.changeForm.reset();
+        this.helper.setItem('isLoggedIn', false);
+        this.helper.clear();
+        this.router.navigateByUrl('login');
+        sessionStorage.clear();
       });
    
   }
