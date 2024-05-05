@@ -293,7 +293,7 @@ export class SaleHistoryComponent {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.SaleForm.controls['toDate'].setValue(null);
+  //  this.SaleForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 

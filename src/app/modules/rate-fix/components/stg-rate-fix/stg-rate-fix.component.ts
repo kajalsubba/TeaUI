@@ -134,7 +134,7 @@ export class StgRateFixComponent implements OnInit {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.dateRangeForm.controls['toDate'].setValue(null);
+   // this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 

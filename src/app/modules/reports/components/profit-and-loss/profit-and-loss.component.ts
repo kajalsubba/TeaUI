@@ -170,7 +170,7 @@ export class ProfitAndLossComponent implements OnInit {
     this.selectedRowIndex = -1;
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.profitLossForm.controls['toDate'].setValue(null);
+   // this.profitLossForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])

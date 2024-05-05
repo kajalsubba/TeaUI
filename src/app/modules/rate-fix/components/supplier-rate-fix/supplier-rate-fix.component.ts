@@ -102,6 +102,7 @@ export class SupplierRateFixComponent implements OnInit {
       AccountId:[0],
       FactoryName:[''],
       FactoryId:[0],
+      FineLeaf:['']
     });
     await this.loadClientNames();
 
@@ -131,7 +132,7 @@ export class SupplierRateFixComponent implements OnInit {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.dateRangeForm.controls['toDate'].setValue(null);
+ //   this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 

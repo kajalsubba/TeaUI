@@ -54,7 +54,7 @@ export class GradeReportComponent implements OnInit {
     //     D: '',
     //   }
     // ];
-   // this.displayedColumns = Object.keys(this.dataSource.data[0]);
+    // this.displayedColumns = Object.keys(this.dataSource.data[0]);
 
   }
 
@@ -65,7 +65,7 @@ export class GradeReportComponent implements OnInit {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.gradeReportForm.controls['toDate'].setValue(null);
+   // this.gradeReportForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 
@@ -83,16 +83,17 @@ export class GradeReportComponent implements OnInit {
       };
       const res: any = await this.reportService.GetClientGradeReport(bodyData).toPromise();
       const { GradeReport } = res;
-
-      this.dataSource.data = GradeReport;
-      this.displayedColumns = Object.keys(this.dataSource.data[0]);
-      this.dataSource.data .forEach(item => {
-        for (const key in item) {
-          if (item.hasOwnProperty(key) && item[key] === null) {
-            item[key] = 0;
+      if (GradeReport.length > 0) {
+        this.dataSource.data = GradeReport;
+        this.displayedColumns = Object.keys(this.dataSource.data[0]);
+        this.dataSource.data.forEach(item => {
+          for (const key in item) {
+            if (item.hasOwnProperty(key) && item[key] === null) {
+              item[key] = 0;
+            }
           }
-        }
-      });
+        });
+      }
 
     } catch (error) {
       console.error('Error:', error);

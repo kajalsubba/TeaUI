@@ -60,8 +60,8 @@ export class ChangePasswordComponent implements OnInit {
     }
   
       let data: IChangePassword = {
-        UserName: this.loginDetails.LoginUserName,
-        Password: this.changeForm.value.LongLeaf,
+        UserName:this.loginDetails.LoginType=='Client'? this.loginDetails.ClientId.toString():this.loginDetails.UserId.toString(),
+        Password: this.changeForm.value.Password,
         LoginType:this.loginDetails.LoginType,
         TenantId: this.loginDetails.TenantId,
         CreatedBy: this.loginDetails.UserId
