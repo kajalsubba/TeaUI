@@ -63,6 +63,17 @@ export class CompanyComponent implements OnInit, AfterViewInit   {
       });
     this.subscriptions.push(GetService);
   }
+  // convertImageUrlToBlob() {
+  //   const imageUrl = 'https://example.com/image.jpg'; // Replace with your image URL
+
+  //   this.http.get(imageUrl, { responseType: 'blob' }).subscribe((blob: Blob) => {
+  //     const file: File = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+  //     console.log('File created from image URL:', file);
+  //     // You can now use the 'file' object for further processing, like uploading it to a server
+  //   }, (error:any) => {
+  //     console.error('Error downloading image:', error);
+  //   });
+  // }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];

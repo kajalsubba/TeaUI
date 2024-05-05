@@ -56,7 +56,7 @@ export class AddEditUserComponent {
     });
     if (this.dialogData.value) {
 
-      this.UserForm.controls['UserFirstName'].setValue(this.dialogData.value.RoleName);
+      this.UserForm.controls['UserFirstName'].setValue(this.dialogData.value.UserFirstName);
       this.UserForm.controls['UserMiddleName'].setValue(this.dialogData.value.UserMiddleName);
       this.UserForm.controls['UserLastName'].setValue(this.dialogData.value.UserLastName);
       this.UserForm.controls['UserEmail'].setValue(this.dialogData.value.UserEmail);
