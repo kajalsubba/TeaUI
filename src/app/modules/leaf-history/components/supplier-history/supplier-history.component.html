@@ -7,7 +7,7 @@
             <div class="col-lg-2 d-grid">
               <mat-form-field>
                 <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
-                  placeholder="From Date" formControlName="fromDate">
+                  placeholder="From Date" (dateChange)="GetFactory($event)" formControlName="fromDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
@@ -16,7 +16,7 @@
             <div class="col-lg-2 d-grid">
               <mat-form-field class="mx-2 ">
                 <input readonly matInput [min]="minToDate" [matDatepicker]="picker1" min="dateRangeForm.value.fromDate"
-                  placeholder="To Date"   (dateChange)="GetFactory($event)" formControlName="toDate">
+                  placeholder="To Date" (dateChange)="GetFactory($event)" formControlName="toDate">
                 <mat-datepicker-toggle [disabled]="dateRangeForm.value.fromDate == null" matSuffix
                   [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
@@ -105,6 +105,13 @@
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
             </ng-container>
 
+            <!-- Vehicle Count -->
+            <ng-container matColumnDef="VehicleNo">
+              <th mat-header-cell *matHeaderCellDef> Vehicle No </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.VehicleNo }} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Count : {{TotalVehicleCount}}</b> </td>
+            </ng-container>
+
             <!-- First Weight -->
             <ng-container matColumnDef="ChallanWeight">
               <th mat-header-cell *matHeaderCellDef> Challan Weight(KG) </th>
@@ -112,6 +119,18 @@
                 *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('ChallanWeight') }} KG</b>
+              </td>
+            </ng-container>
+
+            <!-- AverageRate -->
+            <ng-container matColumnDef="Rate">
+              <th mat-header-cell *matHeaderCellDef>Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
+              </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+                {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
+                  currency:'INR':'symbol':undefined:'en-IN' }}</b>
               </td>
             </ng-container>
             <!-- GrossAmount -->

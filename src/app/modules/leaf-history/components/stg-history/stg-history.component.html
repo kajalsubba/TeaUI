@@ -23,7 +23,7 @@
               </mat-form-field>
             </div>
             <div class="position-relative col-lg-3 d-grid">
-         
+
               <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
                 formControlName="ClientName" [matAutocomplete]="clientAuto" (input)="onInputChange($event)">
 
@@ -80,6 +80,13 @@
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
             </ng-container>
 
+            <!-- Vehicle Count -->
+            <ng-container matColumnDef="VehicleNo">
+              <th mat-header-cell *matHeaderCellDef> Vehicle No </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.VehicleNo }} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Count : {{TotalVehicleCount}}</b> </td>
+            </ng-container>
+            
             <!-- First Weight -->
             <ng-container matColumnDef="FirstWeight">
               <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
@@ -125,25 +132,35 @@
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('FinalWeight') }} KG</b> </td>
             </ng-container>
 
-              <!-- Rate -->
-              <ng-container matColumnDef="Rate">
+            <!-- AverageRate -->
+            <!-- <ng-container matColumnDef="Rate">
                 <th mat-header-cell *matHeaderCellDef> Rate </th>
                 <td  class="weight-column" mat-cell
                   *matCellDef="let row"> {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}}  </td>
                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <!-- <b>{{ getTotal('Rate') }} KG</b> -->
-                </td>
-              </ng-container>
+                          </td>
+              </ng-container> -->
+            <!-- AverageRate -->
+            <ng-container matColumnDef="Rate">
+              <th mat-header-cell *matHeaderCellDef>Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
+              </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+                {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
+                  currency:'INR':'symbol':undefined:'en-IN' }}</b>
+              </td>
+            </ng-container>
 
-               <!-- Gross Amount -->
-               <ng-container matColumnDef="GrossAmount">
-                <th mat-header-cell *matHeaderCellDef> Gross Amount </th>
-                <td  class="weight-column" mat-cell
-                  *matCellDef="let row"> {{row.GrossAmount | currency:'INR':'symbol':undefined:'en-IN'}}  </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b>{{ getTotal('GrossAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
-                </td>
-              </ng-container>
+            <!-- Gross Amount -->
+            <ng-container matColumnDef="GrossAmount">
+              <th mat-header-cell *matHeaderCellDef> Gross Amount </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.GrossAmount |
+                currency:'INR':'symbol':undefined:'en-IN'}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>{{ getTotal('GrossAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
+              </td>
+            </ng-container>
 
             <!-- Status column -->
             <ng-container matColumnDef="Status">

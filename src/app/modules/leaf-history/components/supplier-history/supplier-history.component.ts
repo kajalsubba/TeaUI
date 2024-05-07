@@ -54,12 +54,12 @@ export class SupplierHistoryComponent {
     { columnDef: 'CollectionId', header: 'Id ' },
     // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'VehicleNo', header: 'Vehicle No' },
+  //  { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'FineLeaf', header: 'Fine Leaf' },
     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
-    { columnDef: 'Rate', header: 'Rate' },
+  //  { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Remarks', header: 'Remark' },
     { columnDef: 'TripName', header: 'TripName ' },
     { columnDef: 'CreatedBy', header: 'Created By' },
@@ -74,12 +74,14 @@ export class SupplierHistoryComponent {
   dateRangeForm!: FormGroup;
   ClientNames: any[] = [];
   minToDate!: any;
+  AverageRate:number=0;
   vehicleNumbers: any[] = [];
   statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
   selectedRowIndex: number = -1;
   factoryNames: any[] = [];
   private destroy$ = new Subject<void>();
   UserList: any[]=[];
+  TotalVehicleCount:number=0;
 
   constructor(
     private dialog: MatDialog,
@@ -111,6 +113,12 @@ export class SupplierHistoryComponent {
 
     await this.loadClientNames();
     await this.GetUserList();
+    if (this.loginDetails.LoginType == 'Client') {
+      this.dateRangeForm.controls['ClientName'].disable({ onlySelf: true });
+      this.dateRangeForm.controls['FactoryName'].disable({ onlySelf: true });
+    }
+  
+
   }
   filterFactoryNames(value: string): any {
     // if (value!="")
@@ -243,6 +251,14 @@ export class SupplierHistoryComponent {
     const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res: any) => {
       // console.log(res);
       this.dataSource.data = res.SupplierDetails;
+
+      const grossAmount: number = this.getTotalCost('GrossAmount');
+      const finalWeight: number = this.getTotalCost('ChallanWeight');
+      this.AverageRate = grossAmount / finalWeight;
+
+      const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
+
+      this.TotalVehicleCount=uniqueCategories;
     });
     this.subscriptions.push(categoryListService);
   }

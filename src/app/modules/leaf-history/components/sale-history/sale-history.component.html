@@ -8,7 +8,7 @@
               <div class="col-lg-3 my-2">
                 <mat-form-field class="w-100">
                   <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
-                    placeholder="From Date" formControlName="fromDate">
+                    placeholder="From Date" (dateChange)="GetFactory($event)" formControlName="fromDate">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -118,15 +118,25 @@
             </ng-container>
 
             <!-- Rate -->
-            <ng-container matColumnDef="Rate">
+            <!-- <ng-container matColumnDef="Rate">
               <th mat-header-cell *matHeaderCellDef> Rate </th>
               <td  class="weight-column" mat-cell
                 *matCellDef="let row"> {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}}  </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <!-- <b>{{ getTotalCost('ChallanWeight') }} KG</b> -->
+          
+              </td>
+            </ng-container> -->
+            <!-- AverageRate -->
+            <ng-container matColumnDef="Rate">
+              <th mat-header-cell *matHeaderCellDef>Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
+              </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+                {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
+                  currency:'INR':'symbol':undefined:'en-IN' }}</b>
               </td>
             </ng-container>
-
             <!-- Gross Amount -->
             <ng-container matColumnDef="GrossAmount">
               <th mat-header-cell *matHeaderCellDef> Gross Amount</th>
@@ -175,8 +185,8 @@
                 <div>
                   <i (click)="editItem(row)" matTooltip="Edit" matTooltipPosition="left"
                     class="fa-solid edit-delete-button fa-pen-to-square"></i>
-                  <i *ngIf="row.TypeName == 'STG'" (click)="addStgItem(row)" matTooltip="Add STG data"
-                    matTooltipPosition="right" class="fa-solid edit-delete-button fa-circle-plus"></i>
+                  <!-- <i *ngIf="row.TypeName == 'STG'" (click)="addStgItem(row)" matTooltip="Add STG data"
+                    matTooltipPosition="right" class="fa-solid edit-delete-button fa-circle-plus"></i> -->
                 </div>
               </td>
               <td mat-footer-cell *matFooterCellDef> </td>

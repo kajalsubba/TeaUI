@@ -33,21 +33,31 @@
                         </mat-autocomplete>
                     </div>
                     <div class="position-relative col-lg-2">
-                        <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
+                        <!-- <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
                             formControlName="AccountName" [matAutocomplete]="accountAuto">
-                        <!-- Autocomplete options -->
+                   
                         <mat-autocomplete #accountAuto="matAutocomplete" [displayWith]="displayWithFn">
                             <mat-option *ngFor="let account of filterAccountNames(accountName.value)"
                                 [value]="account?.AccountName" (onSelectionChange)="selectAccount(account)">
                                 {{ account?.AccountName }}
                             </mat-option>
-                        </mat-autocomplete>
+                        </mat-autocomplete> -->
+                        <input #Rate type="number" class="form-control" id="Rate" placeholder="Rate"
+                            formControlName="Rate" (blur)="RateChange($event)">
+                        <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+
+                        <span
+                            *ngIf="dateRangeForm.get('Rate')?.hasError('required') && dateRangeForm.get('Rate')?.touched"
+                            class="text-danger d-block validation-message">
+                            Rate is required.
+                        </span>
                     </div>
                     <div class="col-lg-2 d-grid">
-                        <button (click)="FixRate()" class="btn btn-color">Fix</button>
+                        <button (click)="RateAssign()" class="btn btn-color">Insert</button>
+
                     </div>
                     <div class="col-lg-2 d-grid border-left">
-                                <button (click)="Search()" class="btn btn-color">Search</button>
+                        <button (click)="Search()" class="btn btn-color">Search</button>
                     </div>
                 </div>
                 <div class="row">
@@ -58,37 +68,39 @@
                     <div class="col-lg-2 my-2">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative">
-                                <input #Rate type="number" class="form-control" id="Rate" placeholder="Rate"
-                                    formControlName="Rate">
+                                <!-- <input #Rate type="number" class="form-control" id="Rate" placeholder="Rate"
+                                    formControlName="Rate" (blur)="RateChange($event)">
                                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
-                                <!-- Validation message -->
                                 <span
                                     *ngIf="dateRangeForm.get('Rate')?.hasError('required') && dateRangeForm.get('Rate')?.touched"
                                     class="text-danger d-block validation-message">
                                     Rate is required.
-                                </span>
+                                </span> -->
+                                <input #accountName type="text" class="form-control" id="accountName"
+                                    placeholder="Account Name" formControlName="AccountName"
+                                    [matAutocomplete]="accountAuto">
+
+                                <mat-autocomplete #accountAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                    <mat-option *ngFor="let account of filterAccountNames(accountName.value)"
+                                        [value]="account?.AccountName" (onSelectionChange)="selectAccount(account)">
+                                        {{ account?.AccountName }}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-2 my-2">
-                        <!-- <input
-                          type="number"
-                          class="form-control"
-                          id="Incentive"
-                          placeholder="Insentive"
-                          formControlName="Incentive"
-                        > -->
+
                         <input #Rate type="number" class="form-control" id="Incentive" placeholder="Insentive"
                             formControlName="Incentive">
-                        <!-- <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span> -->
 
 
                     </div>
                     <div class="col-lg-2 d-grid my-2">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative d-grid">
-                                <button (click)="RateAssign()" class="btn btn-color">Insert</button>
+                                <button (click)="FixRate()" class="btn btn-color">Fix</button>
                             </div>
                         </div>
                     </div>
@@ -148,8 +160,8 @@
                       
                         </ng-container> -->
 
-                         <!-- Incentive Amount  -->
-                         <ng-container matColumnDef="IncentiveAmount">
+                        <!-- Incentive Amount  -->
+                        <ng-container matColumnDef="IncentiveAmount">
                             <th mat-header-cell *matHeaderCellDef> Incentive Amount</th>
                             <td class="weight-column" mat-cell *matCellDef="let row"> {{row.IncentiveAmount |
                                 currency:'INR':'symbol':undefined:'en-IN'}} </td>

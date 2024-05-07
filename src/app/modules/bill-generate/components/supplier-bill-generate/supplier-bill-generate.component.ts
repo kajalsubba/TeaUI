@@ -16,6 +16,7 @@ import { IGetStgBill, SaveStgBill, StgCollectionData, StgPaymentData } from '../
 import { environment } from 'src/environments/environment';
 import { SupplierBillService } from '../../services/supplier-bill.service';
 import { SaveSupplierBill } from '../../interfaces/iget-supplier-bill';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-supplier-bill-generate',
@@ -398,7 +399,26 @@ export class SupplierBillGenerateComponent implements OnInit {
       console.log(data, 'bildata');
     }
     this.isSubmitting = true;
-    this.SaveBill(data);
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '30vw',
+      minWidth: '25vw',
+      disableClose: true,
+      data: {
+        title: 'Confirm Action',
+        message: 'Do you want to Confirm !',
+        data: data,
+
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.SaveBill(data);
+
+
+      }
+    });
+   
   }
 
   async SaveBill(clientBody: SaveSupplierBill) {

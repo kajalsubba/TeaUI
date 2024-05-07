@@ -73,7 +73,7 @@ export class SaleHistoryComponent {
   AccountList: any = [];
   saleTypeList: any;
   selectedRowIndex: number = -1;
-
+  AverageRate:number=0;
 
   constructor(
     private helper: HelperService,
@@ -253,6 +253,11 @@ export class SaleHistoryComponent {
       .subscribe((res: any) => {
         // console.log(res);
         this.dataSource.data = res.SaleDetails;
+
+        
+      const grossAmount: number = this.getTotalCost('GrossAmount');
+      const finalWeight: number = this.getTotalCost('ChallanWeight');
+      this.AverageRate = grossAmount / finalWeight;
       });
     this.subscriptions.push(categoryListService);
   }

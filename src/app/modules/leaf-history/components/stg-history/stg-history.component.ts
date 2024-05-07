@@ -43,7 +43,7 @@ export class StgHistoryComponent {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
+    //{ columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
@@ -63,7 +63,8 @@ export class StgHistoryComponent {
   vehicleNumbers: any[] = [];
   statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
   selectedRowIndex: number = -1;
-
+  AverageRate: number = 0;
+  TotalVehicleCount:number=0;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -188,6 +189,14 @@ export class StgHistoryComponent {
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res: any) => {
       // console.log(res);
       this.dataSource.data = res.STGDetails;
+
+      const grossAmount: number = this.getTotal('GrossAmount');
+      const finalWeight: number = this.getTotal('FinalWeight');
+      this.AverageRate = grossAmount / finalWeight;
+
+      const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
+
+      this.TotalVehicleCount=uniqueCategories;
     });
     this.subscriptions.push(categoryListService);
   }

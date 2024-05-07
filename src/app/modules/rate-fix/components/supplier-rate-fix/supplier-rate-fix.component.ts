@@ -323,7 +323,7 @@ export class SupplierRateFixComponent implements OnInit {
       ClientId:this.dateRangeForm.value.ClientName==''?0:this.dateRangeForm.value.ClientId,
       FactoryId: this.dateRangeForm.value.FactoryName==''?0:this.dateRangeForm.value.FactoryId,
       AccountId:this.dateRangeForm.value.AccountName==''?0:this.dateRangeForm.value.AccountId,
-   
+      FineLeaf:this.dateRangeForm.value.FineLeaf
     }
     const categoryListService = this.rateFixService.GetSupplierRateFixData(bodyData).subscribe((res:any)=>{
      // console.log(res);

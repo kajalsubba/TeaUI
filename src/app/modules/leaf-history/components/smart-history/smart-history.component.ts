@@ -108,6 +108,16 @@ export class SmartHistoryComponent implements OnInit {
     });
     await this.getCategoryList();
     await this.loadClientNames();
+    if (this.loginDetails.LoginType == 'Client') {
+      this.smartHistoryForm.controls['ClientName'].disable({ onlySelf: true });
+      this.smartHistoryForm.controls['CategoryId'].disable({ onlySelf: true });
+      const suppVal= this.categoryList.filter((x: any) => x.CategoryName == 'Supplier');
+      this.smartHistoryForm.controls['CategoryName'].setValue( suppVal[0].CategoryName);
+      this.smartHistoryForm.controls['CategoryId'].setValue( suppVal[0].CategoryId);
+      this.smartHistoryForm.controls['ClientName'].setValue(this.loginDetails.ClientName);
+      this.smartHistoryForm.controls['ClientId'].setValue(this.loginDetails.ClientId);
+      
+    }
   }
 
   async getCategoryList() {

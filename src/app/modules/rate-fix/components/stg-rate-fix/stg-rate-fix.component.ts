@@ -214,15 +214,15 @@ export class StgRateFixComponent implements OnInit {
   Search()
   {
    
-    this.GetStgData( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+    this.GetStgData( );
  
   }
 
-  GetStgData(FromDate:any,ToDate:any){
+  GetStgData(){
     const currentDate = new Date();
     let bodyData:IStgRateFix = {
-      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
-      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
+      FromDate:formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate:formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId:this.loginDetails.TenantId,
       ClientId:this.dateRangeForm.value.ClientId,
       GradeId: this.dateRangeForm.value.GradeId
@@ -344,7 +344,7 @@ export class StgRateFixComponent implements OnInit {
       
       this.toastr.success(res.Message, "SUCCESS");
       this.clearform();
-      this.GetStgData(this.dateRangeForm.value.fromDate.format('yyyy-MM-DD'),this.dateRangeForm.value.toDate.format('yyyy-MM-DD'));
+      this.GetStgData();
  
     });
   }

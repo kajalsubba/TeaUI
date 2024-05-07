@@ -109,6 +109,20 @@ export class SaleRateFixComponent implements OnInit {
     await this.loadAccountNames();
     await this.loadFactoryNames();
     // this.GetGrade();
+
+    this.dateRangeForm.controls['Incentive'].disable({ onlySelf: true });
+  }
+  RateChange(event:any)
+  {
+    const value = event.target.value;
+    if (value==0 || value=='')
+      {
+        this.dateRangeForm.controls['Incentive'].disable({ onlySelf: true });
+      }
+      else
+      {
+        this.dateRangeForm.controls['Incentive'].enable({ onlySelf: true });
+      }
   }
 
   ngAfterViewInit() {
