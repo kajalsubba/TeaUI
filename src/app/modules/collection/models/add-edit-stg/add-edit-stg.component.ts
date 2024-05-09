@@ -31,7 +31,7 @@ export class AddEditStgComponent implements OnInit {
   GradeList: any[] = [];
   TripList: any[] = [];
   myDatepipe!: any;
-  statusList: string[] = ['Pending', 'Rejected']
+  statusList: string[] = ['Pending', 'Rejected','Approved']
 
   private subscriptions: Subscription[] = [];
 

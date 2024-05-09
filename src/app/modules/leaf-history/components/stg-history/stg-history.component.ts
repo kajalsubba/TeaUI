@@ -13,6 +13,8 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { StgService } from 'src/app/modules/collection/services/stg.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import enIN from '@angular/common/locales/en-IN';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEditStgComponent } from 'src/app/modules/collection/models/add-edit-stg/add-edit-stg.component';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-stg-history',
@@ -38,6 +40,7 @@ export class StgHistoryComponent {
     'CreatedBy',
     'CreatedDate',
     'Status',
+    'actions'
   ];
 
   dataSource = new MatTableDataSource<any>();
@@ -74,6 +77,7 @@ export class StgHistoryComponent {
     private autocompleteService: AutoCompleteService,
     private fb: FormBuilder,
     private stgService: StgService,
+    private dialog: MatDialog,
   ) { }
 
  async ngOnInit(){
@@ -236,7 +240,24 @@ export class StgHistoryComponent {
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
+  editItem(element?: any) {
+    const dialogRef = this.dialog.open(AddEditStgComponent, {
+      width: '80%',
+      data: {
+        title: 'Update STG',
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
 
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetStgList();
+
+      }
+    });
+  }
   // Autocomplete function
   filterVehicleNumbers(value: string): any {
     const filterValue = value.toLowerCase();

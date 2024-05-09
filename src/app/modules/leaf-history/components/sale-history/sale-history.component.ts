@@ -50,7 +50,7 @@ export class SaleHistoryComponent {
     //   { columnDef: 'SaleDate', header: 'Sale Date' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'AccountName', header: 'Account Name' },
-    { columnDef: 'VehicleNo', header: 'Vehicle No' },
+   // { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
    // { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Incentive', header: 'Incentive (%)' },
@@ -74,7 +74,7 @@ export class SaleHistoryComponent {
   saleTypeList: any;
   selectedRowIndex: number = -1;
   AverageRate:number=0;
-
+  TotalVehicleCount:number=0;
   constructor(
     private helper: HelperService,
     private datePipe: DatePipe,
@@ -258,6 +258,11 @@ export class SaleHistoryComponent {
       const grossAmount: number = this.getTotalCost('GrossAmount');
       const finalWeight: number = this.getTotalCost('ChallanWeight');
       this.AverageRate = grossAmount / finalWeight;
+
+      
+      const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
+
+      this.TotalVehicleCount=uniqueCategories;
       });
     this.subscriptions.push(categoryListService);
   }
