@@ -17,6 +17,7 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import enIN from '@angular/common/locales/en-IN';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-season-advance-history',
@@ -61,6 +62,7 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
+    private excelService: ExcelExportService,
     private autocompleteService: AutoCompleteService,
     private advanceService: SeasonAdvanceService,
     private categoryService: CategoryService
@@ -234,6 +236,14 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
   }
   editItem(e: any) {
 
+  }
+
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'Season Advance History');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
+    }
   }
 
 }

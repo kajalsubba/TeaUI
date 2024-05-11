@@ -15,6 +15,7 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { StgSummaryService } from '../../services/stg-summary.service';
 import { IStgSummary } from '../../interfaces/istg-summary';
 import { PdfExportService } from 'src/app/shared/services/pdf-export.service';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 
 @Component({
   selector: 'app-stg-summary',
@@ -61,6 +62,7 @@ export class StgSummaryComponent implements OnInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
+    private excelService: ExcelExportService,
     private autocompleteService: AutoCompleteService,
     private summartService: StgSummaryService,
     private pdfService: PdfExportService
@@ -208,5 +210,12 @@ export class StgSummaryComponent implements OnInit {
 
   downloadPdf(){
     this.pdfService.ggeneratePDF(this.dataSource.data, 'STG_SUMMARY');
+  }
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'STG Summary');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
+    }
   }
 }

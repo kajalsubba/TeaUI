@@ -21,6 +21,7 @@ import { IGetUser } from 'src/app/modules/user-management/interfaces/iuser';
 import { UserService } from 'src/app/modules/user-management/services/user.service';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
 import { IGetSaleFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-history',
@@ -90,6 +91,7 @@ export class SupplierHistoryComponent {
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
     private fb: FormBuilder,
+    private excelService: ExcelExportService,
     private stgService: StgService,
     private userService: UserService,
     private supplierService: SupplierService,
@@ -353,6 +355,14 @@ export class SupplierHistoryComponent {
       if (this.selectedRowIndex > 0) {
         this.selectedRowIndex--;
       }
+    }
+  }
+
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'Supplier Leaf History');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
     }
   }
 

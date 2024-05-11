@@ -13,6 +13,7 @@ import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { SupplierSummaryService } from '../../services/supplier-summary.service';
 import { ISupplierSummary } from '../../interfaces/isupplier-summary';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 
 @Component({
   selector: 'app-supplier-summary',
@@ -65,6 +66,7 @@ export class SupplierSummaryComponent implements OnInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
+    private excelService: ExcelExportService,
     private autocompleteService: AutoCompleteService,
     private summaryService: SupplierSummaryService
   ) { }
@@ -203,6 +205,14 @@ export class SupplierSummaryComponent implements OnInit {
   }
   editItem(e: any) {
 
+  }
+
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'Supplier Summary');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
+    }
   }
 
 }

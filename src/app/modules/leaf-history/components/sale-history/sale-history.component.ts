@@ -17,6 +17,7 @@ import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryA
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { EditSaleEntryComponent } from 'src/app/shared/components/edit-sale-entry/edit-sale-entry.component';
 import enIN from '@angular/common/locales/en-IN';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-sale-history',
@@ -81,6 +82,7 @@ export class SaleHistoryComponent {
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
     private fb: FormBuilder,
+    private excelService: ExcelExportService,
     private saleService: StgApproveService,
     private dialog: MatDialog,
 
@@ -361,5 +363,13 @@ export class SaleHistoryComponent {
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'Sale History');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
+    }
   }
 }

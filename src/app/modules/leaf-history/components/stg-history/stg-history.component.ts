@@ -15,6 +15,7 @@ import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import enIN from '@angular/common/locales/en-IN';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditStgComponent } from 'src/app/modules/collection/models/add-edit-stg/add-edit-stg.component';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-stg-history',
@@ -76,6 +77,7 @@ export class StgHistoryComponent {
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
     private fb: FormBuilder,
+    private excelService: ExcelExportService,
     private stgService: StgService,
     private dialog: MatDialog,
   ) { }
@@ -287,6 +289,14 @@ export class StgHistoryComponent {
       if (this.selectedRowIndex > 0) {
         this.selectedRowIndex--;
       }
+    }
+  }
+
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'STG Leaf History');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
     }
   }
 

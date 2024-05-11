@@ -125,6 +125,10 @@
     font-size: 0.8rem;
     letter-spacing: 2px;
     font-weight: 500;
+    max-width: 120px;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 

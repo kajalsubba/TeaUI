@@ -14,6 +14,7 @@ import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { IGetsupplierBill } from '../../interfaces/isupplier-history';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import enIN from '@angular/common/locales/en-IN';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-bill-history',
@@ -66,6 +67,7 @@ export class SupplierBillHistoryComponent implements OnInit{
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
+    private excelService: ExcelExportService,
     private autocompleteService: AutoCompleteService,
     private billService: SuppilerHistoryService,
     //  private paymentService: PaymentService,
@@ -210,5 +212,13 @@ export class SupplierBillHistoryComponent implements OnInit{
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'Supplier Leaf History');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
+    }
   }
 }

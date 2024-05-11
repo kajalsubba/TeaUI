@@ -16,6 +16,7 @@ import { FactoryAccountService } from 'src/app/modules/masters/services/factory-
 import { FactoryService } from 'src/app/modules/masters/services/factory.service';
 import { SaleSummaryService } from '../../services/sale-summary.service';
 import { ISaleSummary } from '../../interfaces/isale-summary';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 
 @Component({
   selector: 'app-sale-summary',
@@ -64,6 +65,7 @@ export class SaleSummaryComponent implements OnInit {
     private toastr: ToastrService,
     private helper: HelperService,
     private datePipe: DatePipe,
+    private excelService: ExcelExportService,
     private factoryService: FactoryService,
     private accountService: FactoryAccountService,
     private fb: FormBuilder,
@@ -252,6 +254,14 @@ export class SaleSummaryComponent implements OnInit {
     this.filteredAccounts = this.AccountList.filter((account: any) =>
       account.AccountName.toLowerCase().includes(filterValue)
     );
+  }
+
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'Sale Summary');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
+    }
   }
 
 }

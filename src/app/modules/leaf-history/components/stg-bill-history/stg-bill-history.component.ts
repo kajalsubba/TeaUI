@@ -14,6 +14,7 @@ import { AutoCompleteService } from 'src/app/modules/collection/services/auto-co
 import { GetstgBill } from '../../interfaces/istgbill-history';
 import { StgBillService } from '../../services/stg-bill.service';
 import enIN from '@angular/common/locales/en-IN';
+import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-stg-bill-history',
@@ -67,6 +68,7 @@ export class StgBillHistoryComponent implements OnInit {
     private helper: HelperService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
+    private excelService: ExcelExportService,
     private autocompleteService: AutoCompleteService,
     private billService: StgBillService,
     //  private paymentService: PaymentService,
@@ -211,5 +213,13 @@ export class StgBillHistoryComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  exportToExcel(){
+    if(this.dataSource.data.length > 0){
+      this.excelService.exportToExcel('material-table', 'STG Bill History');
+    }else{
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
+    }
   }
 }
