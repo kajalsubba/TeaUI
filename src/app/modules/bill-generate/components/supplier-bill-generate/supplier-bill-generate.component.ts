@@ -81,7 +81,7 @@ export class SupplierBillGenerateComponent implements OnInit {
   OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
-  // saleTypeList: any[]=[];
+  AverageRate:number=1;
   categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
@@ -268,6 +268,10 @@ export class SupplierBillGenerateComponent implements OnInit {
 
       this.dataSource.data = SupplierData;
       this.paymentDataSource.data = PaymentData;
+
+      const grossAmount: number = this.getTotal('GrossAmount');
+      const challanWeight: number = this.getTotal('ChallanWeight');
+      this.AverageRate=grossAmount/challanWeight;
 
       if (OutStandingData && OutStandingData.length > 0) {
         const { SeasonAdvance, PreviousBalance } = OutStandingData[0];

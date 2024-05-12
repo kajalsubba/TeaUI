@@ -20,6 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DatewiseGradeReportComponent } from './components/datewise-grade-report/datewise-grade-report.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -36,7 +37,8 @@ export const MY_FORMATS = {
   declarations: [
     ReportsComponent,
     GradeReportComponent,
-    ProfitAndLossComponent
+    ProfitAndLossComponent,
+    DatewiseGradeReportComponent
   ],
   imports: [
     CommonModule,

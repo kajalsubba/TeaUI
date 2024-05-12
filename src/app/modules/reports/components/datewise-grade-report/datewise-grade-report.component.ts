@@ -1,21 +1,21 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { _MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { HelperService } from 'src/app/core/services/helper.service';
 import { ReportsServiceService } from '../../services/reports-service.service';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { _MatTableDataSource } from '@angular/material/table';
 import { IReports } from '../../interfaces/ireports';
 import { formatDate } from '@angular/common';
-import { HelperService } from 'src/app/core/services/helper.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-grade-report',
-  templateUrl: './grade-report.component.html',
-  styleUrls: ['./grade-report.component.scss']
+  selector: 'app-datewise-grade-report',
+  templateUrl: './datewise-grade-report.component.html',
+  styleUrls: ['./datewise-grade-report.component.scss']
 })
-export class GradeReportComponent implements OnInit {
+export class DatewiseGradeReportComponent implements OnInit {
   loginDetails: any;
   minToDate!: any;
   currentDate: Date | null = new Date();
@@ -81,7 +81,7 @@ export class GradeReportComponent implements OnInit {
         TenantId: this.loginDetails.TenantId
 
       };
-      const res: any = await this.reportService.GetClientWiseGradeReport(bodyData).toPromise();
+      const res: any = await this.reportService.GetDateWiseGradeReport(bodyData).toPromise();
       const { GradeReport } = res;
       if (GradeReport.length > 0) {
         this.dataSource.data = GradeReport;

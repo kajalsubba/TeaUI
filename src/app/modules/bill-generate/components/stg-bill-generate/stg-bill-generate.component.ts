@@ -79,6 +79,7 @@ export class StgBillGenerateComponent implements OnInit {
   OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
+  AverageRate:number=0;
   // saleTypeList: any[]=[];
   categoryList: any[] = [];
   constructor(
@@ -269,7 +270,10 @@ export class StgBillGenerateComponent implements OnInit {
 
       this.dataSource.data = StgData;
       this.paymentDataSource.data = PaymentData;
-
+      const grossAmount: number = this.getTotal('GrossAmount');
+      const challanWeight: number = this.getTotal('FinalWeight');
+      this.AverageRate=grossAmount/challanWeight;
+  
       if (OutStandingData && OutStandingData.length > 0) {
         const { SeasonAdvance, PreviousBalance } = OutStandingData[0];
         this.StgAmountForm.controls['SeasonAmount'].setValue(SeasonAdvance.toFixed(2));

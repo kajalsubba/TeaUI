@@ -283,7 +283,8 @@ export class SmartHistoryComponent implements OnInit {
       this.LeafDataSource.data = CollectionSummary;
 
       this.PaymentDataSource.data = PaymentSummary;
-   
+
+     
       if (OutstandingSummary && OutstandingSummary.length > 0) {
         const { SeasonAdvance, PreviousBalance } = OutstandingSummary[0];
       this.CalculationForm.controls['SeasonAmount'].setValue(SeasonAdvance.toFixed(2));

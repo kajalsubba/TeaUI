@@ -10,7 +10,11 @@ export class ReportsServiceService {
 
   constructor(private apiService: ApiService) { }
 
-  GetClientGradeReport(Body:IReports): Observable<any> {
-    return this.apiService.post('Reports/GradeReport', Body);
+  GetClientWiseGradeReport(Body:IReports): Observable<any> {
+    return this.apiService.post('Reports/ClientWiseGradeReport', Body);
+  }
+
+  GetDateWiseGradeReport(Body:IReports): Observable<any> {
+    return this.apiService.post('Reports/DateWiseGradeReport', Body);
   }
 }

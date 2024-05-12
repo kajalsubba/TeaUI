@@ -417,6 +417,7 @@ this.dateRangeForm.controls["ClientName"].reset();
 this.dateRangeForm.controls["FactoryId"].reset();
 this.dateRangeForm.controls["FactoryName"].reset();
 this.dateRangeForm.controls["AccountId"].reset();
+this.dateRangeForm.controls["FineLeaf"].reset();
 this.dateRangeForm.controls["AccountName"].reset();
 this.dateRangeForm.controls["Rate"].reset();
 }

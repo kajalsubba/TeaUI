@@ -112,24 +112,34 @@
                   </td>
                 </ng-container>
 
-                <!-- Rate -->
+        
+                <!-- AverageRate -->
                 <ng-container matColumnDef="Rate">
-                  <th mat-header-cell *matHeaderCellDef> Rate </th>
-                  <td class="weight-column" mat-cell *matCellDef="let row">{{row.Rate.toFixed(2)}}</td>
+                  <th mat-header-cell *matHeaderCellDef>Rate <i class="fa-solid fa-indian-rupee-sign"></i>
+                  </th>
+                  <td class="weight-column" mat-cell *matCellDef="let row"> <i
+                      class="fa-solid fa-indian-rupee-sign"></i>
+                    {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}} </td>
                   <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                    <b>{{ getRate('Rate').toFixed(2) }}</b>
+                    <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
+                      currency:'INR':'symbol':undefined:'en-IN' }}</b>
                   </td>
                 </ng-container>
 
-                <!-- Amount -->
+                <!-- GrossAmount -->
+
                 <ng-container matColumnDef="GrossAmount">
-                  <th mat-header-cell *matHeaderCellDef> Amount </th>
-                  <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                    *matCellDef="let row"> {{row.GrossAmount.toFixed(2) }} </td>
+                  <th mat-header-cell *matHeaderCellDef>Amount <i class="fa-solid fa-indian-rupee-sign"></i>
+                  </th>
+                  <td class="weight-column" mat-cell *matCellDef="let row"> <i
+                      class="fa-solid fa-indian-rupee-sign"></i>
+                    {{row.GrossAmount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
                   <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                    <b>{{ getTotal('GrossAmount').toFixed(2) }} </b>
+                    <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('GrossAmount') |
+                      currency:'INR':'symbol':undefined:'en-IN' }}</b>
                   </td>
                 </ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
                   [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
@@ -170,21 +180,17 @@
             </ng-container>
 
             <!-- Amount -->
-            <!-- <ng-container matColumnDef="Amount">
-                <th mat-header-cell *matHeaderCellDef> Amount </th>
-                <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                  *matCellDef="let row"> {{row.Amount.toFixed(2) }} Dr </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <b>{{ getTotal('Amount').toFixed(2) }} Dr</b>
-                </td>
-              </ng-container> -->
             <ng-container matColumnDef="Amount">
-              <th mat-header-cell *matHeaderCellDef> Amount </th>
-              <td class="weight-column" mat-cell *matCellDef="let row">{{row.Amount.toFixed(2)}}</td>
+              <th mat-header-cell *matHeaderCellDef>Amount <i class="fa-solid fa-indian-rupee-sign"></i>
+              </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+                {{row.Amount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotalPayment('Amount').toFixed(2) }}</b>
+                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalPayment('Amount') |
+                  currency:'INR':'symbol':undefined:'en-IN' }}</b>
               </td>
             </ng-container>
+
             <tr mat-header-row *matHeaderRowDef="paymentDisplayedColumns; sticky:true;"></tr>
             <tr mat-row *matRowDef="let row; columns: paymentDisplayedColumns; let i = index;"
               [class.selected-row]="i == selectedPaymentRowIndex" (click)="selectPaymentRow(row, i)">

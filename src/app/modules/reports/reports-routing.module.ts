@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReportsComponent } from './reports.component';
 import { GradeReportComponent } from './components/grade-report/grade-report.component';
 import { ProfitAndLossComponent } from './components/profit-and-loss/profit-and-loss.component';
+import { DatewiseGradeReportComponent } from './components/datewise-grade-report/datewise-grade-report.component';
 
 const routes: Routes = [
     {
@@ -11,6 +12,8 @@ const routes: Routes = [
       children: [
         { path: '', redirectTo: 'grade-report', pathMatch: 'full' },
         { path: 'grade-report', component: GradeReportComponent },
+        { path: 'dategrade-report', component: DatewiseGradeReportComponent },
+
         { path: 'profit-loss-report', component: ProfitAndLossComponent }
       ],
     },
