@@ -216,8 +216,28 @@ export class SupplierBillHistoryComponent implements OnInit{
 
   exportToExcel(){
     if(this.dataSource.data.length > 0){
-      this.excelService.exportToExcel('material-table', 'Supplier Leaf History');
-    }else{
+      // Get the table element
+      const table = document.getElementById('material-table');
+      
+      if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
+        // Remove unwanted columns
+        const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove
+        columnsToRemove.forEach(col => {
+          const columnIndex = Array.from(table.rows[0].cells).findIndex(cell => cell.textContent && cell.textContent.trim() === col);
+          if (columnIndex !== -1) {
+            Array.from(table.rows).forEach(row => {
+              if (row.cells[columnIndex]) {
+                row.deleteCell(columnIndex);
+              }
+            });
+          }
+        });
+
+        this.excelService.exportToExcel('material-table', 'Supplier Bill History');
+      } else {
+        console.error("Table element not found or not an HTML table.");
+      }
+    } else {
       this.toastr.warning("NO DATA TO EXPORT", "WARNING");
     }
   }
