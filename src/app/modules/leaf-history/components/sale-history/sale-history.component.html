@@ -109,7 +109,7 @@
             <ng-container matColumnDef="FieldWeight">
               <th mat-header-cell *matHeaderCellDef> Field Weight ( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.FieldWeight}} KG </td>
+                *matCellDef="let row"> {{row.FieldWeight}}  </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('FieldWeight') }} KG</b>
               </td>
@@ -119,7 +119,7 @@
             <ng-container matColumnDef="ChallanWeight">
               <th mat-header-cell *matHeaderCellDef> Challan Weight ( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
+                *matCellDef="let row"> {{row.ChallanWeight}}  </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('ChallanWeight') }} KG</b>
               </td>
@@ -138,8 +138,8 @@
             <ng-container matColumnDef="Rate">
               <th mat-header-cell *matHeaderCellDef>Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
-                {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+              <td class="weight-column" mat-cell *matCellDef="let row"> 
+                {{row.Rate | currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
                   currency:'INR':'symbol':undefined:'en-IN' }}</b>
@@ -149,7 +149,7 @@
             <ng-container matColumnDef="GrossAmount">
               <th mat-header-cell *matHeaderCellDef> Gross Amount</th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.GrossAmount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+                *matCellDef="let row"> {{row.GrossAmount | currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('GrossAmount') |
                   currency:'INR':'symbol':undefined:'en-IN'}} </b>
               </td>
@@ -159,7 +159,7 @@
             <ng-container matColumnDef="IncentiveAmount">
               <th mat-header-cell *matHeaderCellDef> Insentive Amount</th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.IncentiveAmount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+                *matCellDef="let row"> {{row.IncentiveAmount | currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('IncentiveAmount')|
                   currency:'INR':'symbol':undefined:'en-IN' }} </b>
               </td>
@@ -169,7 +169,7 @@
             <ng-container matColumnDef="FinalAmount">
               <th mat-header-cell *matHeaderCellDef> Final Amount</th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.FinalAmount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+                *matCellDef="let row"> {{row.FinalAmount | currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalAmount')|
                   currency:'INR':'symbol':undefined:'en-IN' }} </b>
               </td>

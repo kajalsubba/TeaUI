@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { _MatTableDataSource } from '@angular/material/table';
 import { IReports } from '../../interfaces/ireports';
 import { formatDate } from '@angular/common';
+import { ExcelExportService } from 'src/app/shared/services/excel-export.service';
 
 @Component({
   selector: 'app-datewise-grade-report',
@@ -36,7 +37,8 @@ export class DatewiseGradeReportComponent implements OnInit {
     private fb: FormBuilder,
     private reportService: ReportsServiceService,
     private helper: HelperService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private excelService: ExcelExportService
   ) { }
 
   ngOnInit(): void {
@@ -116,6 +118,34 @@ export class DatewiseGradeReportComponent implements OnInit {
       if (this.selectedRowIndex > 0) {
         this.selectedRowIndex--;
       }
+    }
+  }
+  exportToExcel()
+  {
+    if(this.dataSource.data.length > 0){
+      // Get the table element
+      const table = document.getElementById('material-table');
+      
+      if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
+        // Remove unwanted columns
+        const columnsToRemove = ['']; // Specify columns to remove
+        columnsToRemove.forEach(col => {
+          const columnIndex = Array.from(table.rows[0].cells).findIndex(cell => cell.textContent && cell.textContent.trim() === col);
+          if (columnIndex !== -1) {
+            Array.from(table.rows).forEach(row => {
+              if (row.cells[columnIndex]) {
+                row.deleteCell(columnIndex);
+              }
+            });
+          }
+        });
+
+        this.excelService.exportToExcel('material-table', 'date wise grade');
+      } else {
+        console.error("Table element not found or not an HTML table.");
+      }
+    } else {
+      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
     }
   }
 

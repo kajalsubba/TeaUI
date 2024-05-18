@@ -79,7 +79,7 @@ export class StgBillGenerateComponent implements OnInit {
   OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
-  AverageRate:number=0;
+  AverageRate: number = 0;
   // saleTypeList: any[]=[];
   categoryList: any[] = [];
   constructor(
@@ -272,8 +272,8 @@ export class StgBillGenerateComponent implements OnInit {
       this.paymentDataSource.data = PaymentData;
       const grossAmount: number = this.getTotal('GrossAmount');
       const challanWeight: number = this.getTotal('FinalWeight');
-      this.AverageRate=grossAmount/challanWeight;
-  
+      this.AverageRate = grossAmount / challanWeight;
+
       if (OutStandingData && OutStandingData.length > 0) {
         const { SeasonAdvance, PreviousBalance } = OutStandingData[0];
         this.StgAmountForm.controls['SeasonAmount'].setValue(SeasonAdvance.toFixed(2));
@@ -315,7 +315,7 @@ export class StgBillGenerateComponent implements OnInit {
     this.selectedRowIndex = -1;
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.StgBillForm.controls['toDate'].setValue(null);
+    // this.StgBillForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -424,7 +424,7 @@ export class StgBillGenerateComponent implements OnInit {
 
       }
     });
-   
+
   }
 
   async SaveBill(clientBody: SaveStgBill) {
@@ -454,8 +454,9 @@ export class StgBillGenerateComponent implements OnInit {
         });
       });
 
-    await this.GetStgBillData();
-
+    // await this.GetStgBillData();
+    this.dataSource.data = [];
+    this.paymentDataSource.data = [];
     this.cleanAmountController();
 
     this.ClientNoInput.nativeElement.focus();

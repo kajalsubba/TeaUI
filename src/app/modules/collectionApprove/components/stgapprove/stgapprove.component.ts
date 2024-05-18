@@ -29,6 +29,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     'CollectionDate',
     'VehicleNo',
     'ClientName',
+    'GradeName',
     'FirstWeight',
     'WetLeaf',
     'WetLeafKg',
@@ -36,7 +37,6 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     'LongLeafKg',
     'Deduction',
     'FinalWeight',
-    'GradeName',
     'Rate',
     'GrossAmount',
     'Remarks',
@@ -51,9 +51,9 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
 
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
+    // { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-    { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
@@ -71,7 +71,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   TripList: any[] = [];
   selectedRowIndex: number = -1;
   CollectionDates: any[] = [];
-
+  GradeSummary: any="Grade Summary";
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -111,7 +111,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     const getPendingCollectionDate = this.stgapproveService.GetStgPendingDate(data).subscribe((res: any) => {
       this.CollectionDates = res.PendingDate;
 
-      console.log(this.CollectionDates, 'this.CollectionDates');
+      //     console.log(this.CollectionDates, 'this.CollectionDates');
 
     });
     this.subscriptions.push(getPendingCollectionDate)
@@ -149,9 +149,33 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
           (x: any) => x.Status == 'Pending'
         );
         this.dataSource.data.forEach((row) => this.selection.select(row));
+
+        interface GroupedData {
+          [key: string]: number;
+        }
+
+        const groupedData: GroupedData = this.dataSource.data.reduce((acc, item) => {
+          if (acc[item.GradeName]) {
+            acc[item.GradeName] += item.FinalWeight;
+          } else {
+            acc[item.GradeName] = item.FinalWeight;
+          }
+          return acc;
+        }, {} as GroupedData);
+
+        let groupedDataString = JSON.stringify(groupedData);
+
+        // Remove the curly braces
+        groupedDataString = groupedDataString.slice(1, -1);
+
+        // Remove the double quotes
+        groupedDataString = groupedDataString.replace(/\"/g, '');
+        this.GradeSummary = groupedDataString;
+        console.log(groupedDataString, 'groupedDataString');
       });
     this.subscriptions.push(categoryListService);
   }
+
 
   ngAfterViewInit() {
 
@@ -327,6 +351,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   }
 
   getTotalCost(columnName: string): number {
+    
     return this.selection.selected.reduce(
       (acc, curr) => acc + curr[columnName],
       0

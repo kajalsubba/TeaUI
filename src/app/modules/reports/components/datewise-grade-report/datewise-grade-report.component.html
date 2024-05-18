@@ -23,17 +23,24 @@
                 </div>
                 <div class="col-lg-3 d-grid my-1">
                   <button (click)="search()" class="btn btn-color ms-2">Search</button>
+                
+                </div>
+                <div class="col-lg-3 d-grid my-1">
+                  <button matTooltip="Excel Export" (click)="exportToExcel()" class="btn btn-outline-dark">
+                    <i class="fa-solid py-2 px-1 fa-file-excel"></i>
+                  </button>
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
+      
       <hr>
       <div class="col-lg-12">
         <div class="table-container">
           <div>
-            <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
+            <table id="material-table" matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
               <!-- Displayed columns -->
               <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
                 <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column }}</th>

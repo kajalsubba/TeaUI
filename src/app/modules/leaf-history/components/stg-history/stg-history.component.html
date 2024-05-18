@@ -94,7 +94,7 @@
             <ng-container matColumnDef="FirstWeight">
               <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.FirstWeight}} KG </td>
+                *matCellDef="let row"> {{row.FirstWeight}}  </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotal('FirstWeight') }} KG</b>
               </td>
@@ -103,7 +103,7 @@
             <ng-container matColumnDef="WetLeafKg">
               <th mat-header-cell *matHeaderCellDef> Wet Leaf ( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.WetLeafKg}} KG </td>
+                *matCellDef="let row"> {{row.WetLeafKg}}  </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotal('WetLeafKg') }} KG</b>
               </td>
@@ -113,7 +113,7 @@
             <ng-container matColumnDef="LongLeafKg">
               <th mat-header-cell *matHeaderCellDef> Long Leaf ( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.LongLeafKg}} KG </td>
+                *matCellDef="let row"> {{row.LongLeafKg}}  </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotal('LongLeafKg') }} KG</b>
               </td>
@@ -123,7 +123,7 @@
             <ng-container matColumnDef="Deduction">
               <th mat-header-cell *matHeaderCellDef> Deduction ( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.Deduction}} KG </td>
+                *matCellDef="let row"> {{row.Deduction}}  </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('Deduction') }} KG</b> </td>
             </ng-container>
 
@@ -131,7 +131,7 @@
             <ng-container matColumnDef="FinalWeight">
               <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.FinalWeight}} KG</td>
+                *matCellDef="let row"> {{row.FinalWeight}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('FinalWeight') }} KG</b> </td>
             </ng-container>
 
@@ -140,8 +140,8 @@
             <ng-container matColumnDef="Rate">
               <th mat-header-cell *matHeaderCellDef>Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
-                {{row.Rate | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+              <td class="weight-column" mat-cell *matCellDef="let row"> 
+                {{row.Rate | currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
                   currency:'INR':'symbol':undefined:'en-IN' }}</b>
@@ -152,9 +152,9 @@
             <ng-container matColumnDef="GrossAmount">
               <th mat-header-cell *matHeaderCellDef> Gross Amount </th>
               <td class="weight-column" mat-cell *matCellDef="let row"> {{row.GrossAmount |
-                currency:'INR':'symbol':undefined:'en-IN'}} </td>
+                currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotal('GrossAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
+                <b>{{ getTotal('GrossAmount') | currency:'INR':'':undefined:'en-IN'}} </b>
               </td>
             </ng-container>
             <!-- Actions column -->
