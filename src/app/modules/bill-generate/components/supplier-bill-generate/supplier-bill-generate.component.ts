@@ -50,8 +50,8 @@ export class SupplierBillGenerateComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     // { columnDef: 'CollectionDate', header: 'Collection Date' },
-     { columnDef: 'FactoryName', header: 'Factory Name' },
-     { columnDef: 'VehicleNo', header: 'Vehicle No ' },
+    { columnDef: 'FactoryName', header: 'Factory Name' },
+    { columnDef: 'VehicleNo', header: 'Vehicle No ' },
     // { columnDef: 'Deduction', header: 'Deduction(KG)' },
     // { columnDef: 'Final', header: 'Final(KG)' },
     // { columnDef: 'Rate', header: 'Rate' },
@@ -81,7 +81,7 @@ export class SupplierBillGenerateComponent implements OnInit {
   OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
-  AverageRate:number=1;
+  AverageRate: number = 1;
   categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
@@ -90,7 +90,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private autocompleteService: AutoCompleteService,
-    private billService:SupplierBillService
+    private billService: SupplierBillService
   ) { }
 
   async ngOnInit() {
@@ -139,7 +139,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     const lessCommAmount: number = (this.supplierAmountForm.controls['LessComission'].value || 0) * finalWeight;
     const cessAmount: number = (this.supplierAmountForm.controls['GreenLeafCess'].value || 0) * finalWeight;
 
-    const finalAmount: number = grossAmount  - (lessCommAmount + cessAmount) - totalPaymentWithPreviusBalance;
+    const finalAmount: number = grossAmount - (lessCommAmount + cessAmount) - totalPaymentWithPreviusBalance;
     const amountToPay: number = finalAmount - (this.supplierAmountForm.controls['LessSeasonAdv'].value || 0);
 
     // Update the value of the final amount input field
@@ -271,7 +271,7 @@ export class SupplierBillGenerateComponent implements OnInit {
 
       const grossAmount: number = this.getTotal('GrossAmount');
       const challanWeight: number = this.getTotal('ChallanWeight');
-      this.AverageRate=grossAmount/challanWeight;
+      this.AverageRate = grossAmount / challanWeight;
 
       if (OutStandingData && OutStandingData.length > 0) {
         const { SeasonAdvance, PreviousBalance } = OutStandingData[0];
@@ -314,7 +314,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     this.selectedRowIndex = -1;
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
- //   this.supplierBillForm.controls['toDate'].setValue(null);
+    //   this.supplierBillForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -422,42 +422,43 @@ export class SupplierBillGenerateComponent implements OnInit {
 
       }
     });
-   
+
   }
 
   async SaveBill(clientBody: SaveSupplierBill) {
     this.billService.SaveSupplierBill(clientBody)
-    .pipe(
-      takeUntil(this.destroy$),
-      catchError(error => {
-        console.error('Error:', error);
-        this.isSubmitting = false;
-        this.toastr.error('An error occurred', 'ERROR');
-        throw error;
-      })
-    )
-    .subscribe((res: any) => {
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(error => {
+          console.error('Error:', error);
+          this.isSubmitting = false;
+          this.toastr.error('An error occurred', 'ERROR');
+          throw error;
+        })
+      )
+      .subscribe((res: any) => {
 
-      this.toastr.success(res.Message, 'SUCCESS');
+        this.toastr.success(res.Message, 'SUCCESS');
 
 
-      const formControls = [
-        'ClientName',
-        'ClientId',
+        const formControls = [
+          'ClientName',
+          'ClientId',
 
-      ];
+        ];
 
-      formControls.forEach(control => {
-        this.supplierBillForm.controls[control].reset();
+        formControls.forEach(control => {
+          this.supplierBillForm.controls[control].reset();
+        });
       });
-    });
 
-  await this.GetSupplierBillData();
+    // await this.GetSupplierBillData();
+    this.dataSource.data = [];
+    this.paymentDataSource.data = [];
+    this.cleanAmountController();
 
-  this.cleanAmountController();
-
-  this.ClientNoInput.nativeElement.focus();
-  this.isSubmitting = false;
+    this.ClientNoInput.nativeElement.focus();
+    this.isSubmitting = false;
   }
 
 }

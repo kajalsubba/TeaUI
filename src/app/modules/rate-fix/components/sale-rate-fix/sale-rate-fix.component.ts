@@ -20,6 +20,7 @@ import { ISaveSaleRate, IsaleRateFix } from '../../interfaces/isale-rate-fix';
 import { SaleRateFixService } from '../../services/sale-rate-fix.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import enIN from '@angular/common/locales/en-IN';
+import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-sale-rate-fix',
@@ -41,7 +42,7 @@ export class SaleRateFixComponent implements OnInit {
     'Incentive',
     'IncentiveAmount',
     'FinalAmount',
-    // 'Remarks',
+    'actions',
     //'TypeName',
   ];
 
@@ -54,10 +55,10 @@ export class SaleRateFixComponent implements OnInit {
     { columnDef: 'AccountName', header: 'Account Name' },
 
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-     { columnDef: 'Rate', header: 'Rate' },
-   // { columnDef: 'GrossAmount', header: 'Gross Amount' },
+    // { columnDef: 'Rate', header: 'Rate' },
+    // { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Incentive', header: 'Incentive' },
-   // { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
+    // { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
     //  { columnDef: 'FinalAmount', header: 'Final Amount' },
     //{ columnDef: 'Remarks', header: 'Remarks' },
     // { columnDef: 'TypeName', header: 'Sale Type' },
@@ -112,17 +113,14 @@ export class SaleRateFixComponent implements OnInit {
 
     this.dateRangeForm.controls['Incentive'].disable({ onlySelf: true });
   }
-  RateChange(event:any)
-  {
+  RateChange(event: any) {
     const value = event.target.value;
-    if (value==0 || value=='')
-      {
-        this.dateRangeForm.controls['Incentive'].disable({ onlySelf: true });
-      }
-      else
-      {
-        this.dateRangeForm.controls['Incentive'].enable({ onlySelf: true });
-      }
+    if (value == 0 || value == '') {
+      this.dateRangeForm.controls['Incentive'].disable({ onlySelf: true });
+    }
+    else {
+      this.dateRangeForm.controls['Incentive'].enable({ onlySelf: true });
+    }
   }
 
   ngAfterViewInit() {
@@ -147,7 +145,7 @@ export class SaleRateFixComponent implements OnInit {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-  //  this.dateRangeForm.controls['toDate'].setValue(null);
+    //  this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 
@@ -351,8 +349,8 @@ export class SaleRateFixComponent implements OnInit {
     this.dataSource.data.forEach((keys: any, val: any) => {
       keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
         keys.GrossAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Rate).toFixed(2),
-        keys.Incentive = this.dateRangeForm.value.Incentive == '' ? 0 : this.dateRangeForm.value.Incentive,
-        keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive).toFixed(2),
+        keys.Incentive = this.dateRangeForm.value.Incentive ??0,
+        keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
         keys.FinalAmount = Number(Number(keys.ChallanWeight * this.dateRangeForm.value.Rate) + Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive)).toFixed(2)
 
     });
@@ -424,5 +422,45 @@ export class SaleRateFixComponent implements OnInit {
         this.GetSaleData(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
 
       });
+  }
+
+
+
+  EditRate(element: any) {
+    const dialogRef = this.dialog.open(EditRateComponent, {
+      width: window.innerWidth <= 1024 ? '40%' : '30%',
+      data: {
+        title:element.SaleDate+' - ' +element.FactoryName,
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        //  this.GetPaymentData();
+        this.dataSource.data.forEach(item => {
+          // Replace 'someCondition' with your actual condition
+          if (item.SaleId == result.SaleId) {
+            // Update the necessary fields
+
+            item.Rate = result.Rate;
+
+          }
+        });
+        this.dataSource.data = [...this.dataSource.data];
+        this.dataSource.data.forEach((keys: any, val: any) => {
+     //     keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
+            keys.GrossAmount = Number(keys.ChallanWeight * keys.Rate).toFixed(2),
+         //   keys.Incentive = this.dateRangeForm.value.Incentive ??0,
+       //     keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
+            keys.FinalAmount = Number(Number(keys.ChallanWeight * keys.Rate) + Number(keys.ChallanWeight * keys.Incentive)).toFixed(2)
+    
+        });
+      }
+    });
+
+   
   }
 }
