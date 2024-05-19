@@ -111,8 +111,8 @@
                         <div class="form-group row mb-3">
                             <label for="Narration" class="col-lg-5 col-form-label">Narration </label>
                             <div class="col-lg-7 position-relative">
-                                <textarea #Narration type="text" class="form-control" id="Narration"
-                                    placeholder="Narration" formControlName="Narration" ></textarea>
+                                <input #Narration type="text" class="form-control" id="Narration"
+                                    placeholder="Narration" formControlName="Narration" autocomplete="on">
 
 
                             </div>
@@ -125,5 +125,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
-    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
+    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button
+        cdkFocusInitial>{{dialogData.buttonName}}</button>
 </mat-dialog-actions>

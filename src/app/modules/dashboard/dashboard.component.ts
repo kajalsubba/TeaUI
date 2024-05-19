@@ -103,10 +103,10 @@ export class DashboardComponent implements OnInit {
   GetCompanyWiseSaleChart(categories: any = [], datas: any = []) {
     const currentDate = new Date();
     const currentMonthName = currentDate.toLocaleString('default', { month: 'long' });
-    
+
     this.companyWiseSaleDetails = {
       title: {
-        text: 'Factory Wise Sale for the month - '+currentMonthName
+        text: 'Factory Wise Sale for the month - ' + currentMonthName
       },
       subtitle: {
         text: ''
@@ -136,7 +136,19 @@ export class DashboardComponent implements OnInit {
       ]
     };
   }
-  GetStgWiseChart(categories: any = [], stgData: any = [], supplierData: any = []) {
+
+  GetStgWiseChart(categories: any = [], stgData: any = [], saleData: any = []) {
+
+// Function to determine color based on condition
+function getSaleColor(stgValue: number, saleValue: number): string {
+  return stgValue > saleValue ? '#ff0000' : '#018353'; // Red if saleData > stgData, otherwise original color
+}
+
+// Process saleData to include color based on condition
+const processedSaleData = saleData.map((saleValue: number, index: number) => ({
+  y: saleValue,
+  color: getSaleColor(stgData[index], saleValue)
+}));
     this.stgAndSale = {
       title: {
         text: 'STG and SALE Comapre for last 10 days'
@@ -170,7 +182,7 @@ export class DashboardComponent implements OnInit {
           name: 'SALE',
           color: '#018353',
           type: 'column', // Set the type property to 'column' for column chart
-          data: supplierData
+          data: processedSaleData
         }
       ]
     };
