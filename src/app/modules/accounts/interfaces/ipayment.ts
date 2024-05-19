@@ -2,6 +2,7 @@ export interface ISavePayment {
 
     PaymentId: number;
     PaymentDate: string;
+    BillDate:string;
     ClientCategory: string;
     ClientId: number;
     PaymentTypeId: number;

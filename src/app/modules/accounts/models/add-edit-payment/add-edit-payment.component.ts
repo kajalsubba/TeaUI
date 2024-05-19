@@ -59,6 +59,7 @@ export class AddEditPaymentComponent implements OnInit {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.addEditPayment = this.fb.group({
       PaymentDate: [new Date(), Validators.required],
+      BillDate:[new Date(), Validators.required],
       CategoryId: ['', Validators.required],
       CategoryName: [''],
       ClientId: [''],
@@ -72,6 +73,7 @@ export class AddEditPaymentComponent implements OnInit {
     await this.loadClientNames();
 
     if (this.dialogData.value) {
+      this.addEditPayment.controls['BillDate'].setValue(new Date(this.dialogData.value.BllDate));
       this.addEditPayment.controls['PaymentDate'].setValue(new Date(this.dialogData.value.PayDate));
       this.addEditPayment.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
       this.addEditPayment.controls['ClientId'].setValue(this.dialogData.value.ClientId);
@@ -197,6 +199,7 @@ export class AddEditPaymentComponent implements OnInit {
     let data: ISavePayment = {
       PaymentId: this.dialogData?.value?.PaymentId ? this.dialogData?.value?.PaymentId : 0,
       PaymentDate: formatDate(this.addEditPayment.value.PaymentDate, 'yyyy-MM-dd', 'en-US'),
+      BillDate: formatDate(this.addEditPayment.value.BillDate, 'yyyy-MM-dd', 'en-US'),
       ClientCategory: this.addEditPayment.value.CategoryName,
       ClientId: this.addEditPayment.value.ClientId,
       PaymentTypeId: this.addEditPayment.value.PaymentTypeId,

@@ -31,7 +31,7 @@ registerLocaleData(enIN);
 export class PaymentHistoryComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'EntryDate',
+    'BillDate',
     'PaymentDate',
     'PaySource',
     'ClientName',
@@ -46,7 +46,7 @@ export class PaymentHistoryComponent implements OnInit {
   dataSource = new _MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'EntryDate', header: 'Entry Date' },
+    { columnDef: 'BillDate', header: 'Bill Date' },
     { columnDef: 'PaymentDate', header: 'Payment Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'PaySource', header: 'Pay Source' },

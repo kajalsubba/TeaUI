@@ -31,7 +31,7 @@ import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-typ
 export class PaymentsComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'EntryDate',
+    'BillDate',
     'PaymentDate',
     'PaySource',
     'ClientName',
@@ -45,7 +45,7 @@ export class PaymentsComponent implements OnInit {
   dataSource = new _MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'EntryDate', header: 'Entry Date' },
+    { columnDef: 'BillDate', header: 'Bill Date' },
     { columnDef: 'PaymentDate', header: 'Payment Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'PaySource', header: 'Pay Source' },
