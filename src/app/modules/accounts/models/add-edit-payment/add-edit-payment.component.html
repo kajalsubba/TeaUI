@@ -9,11 +9,11 @@
                 <form [formGroup]="addEditPayment">
                     <div class="row">
                         <div class="form-group row mb-3">
-                            <label for="PaymentDate" class="col-lg-5 col-form-label">Bill Date <span
+                            <label for="BillDate" class="col-lg-5 col-form-label">Bill Date <span
                                     class="text-danger">*</span></label>
                             <div class="col-lg-7 position-relative">
                                 <mat-form-field>
-                                    <input #PaymentDate class="date-select" readonly matInput [matDatepicker]="picker"
+                                    <input #BillDate class="date-select" readonly matInput [matDatepicker]="picker"
                                         placeholder="BillDate" formControlName="BillDate">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
