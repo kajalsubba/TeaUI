@@ -15,6 +15,7 @@ import { IGetsupplierBill } from '../../interfaces/isupplier-history';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import enIN from '@angular/common/locales/en-IN';
 import { ExcelExportService } from '../../../../shared/services/excel-export.service';
+import { IPrint } from '../../interfaces/istgbill-history';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-bill-history',
@@ -183,7 +184,23 @@ export class SupplierBillHistoryComponent implements OnInit{
   }
 
   ViewBill(e: any) {
+    let bodyData: IPrint = {
 
+      TenantId: this.loginDetails.TenantId,
+      BillNo: e.BillId
+
+    };
+   // console.log(e, 'bodyData bodyData');
+
+    const categoryListService = this.billService
+      .PrintBill(bodyData)
+      .subscribe((response: Blob) => {
+        const blobUrl = URL.createObjectURL(response);
+
+        // Open PDF in a new browser tab
+        window.open(blobUrl, '_blank');
+      });
+    this.subscriptions.push(categoryListService);
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
   //  this.SupplierBillForm.controls['toDate'].setValue(null);

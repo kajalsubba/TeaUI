@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient, private config: ConfigService) {}
+  constructor(private http: HttpClient, private config: ConfigService) { }
 
   private getRequestOptions(contentType: string = 'application/json'): { headers: HttpHeaders } {
     const headers = new HttpHeaders({
@@ -45,18 +45,18 @@ export class ApiService {
   }
 
   private logRequest(method: string, endpoint: string, data?: any): void {
-  
+
     if (!environment.production) {
       console.log(`Sending ${method} request to ${this.config.apiUrl}/${endpoint}`);
-   
+
     }
-   
+
     if (data) {
       if (!environment.production) {
         console.log('Request Data:', data);
-     
+
       }
-    
+
     }
   }
 
@@ -64,9 +64,9 @@ export class ApiService {
     if (!environment.production) {
       console.log(`Received ${method} response from ${this.config.apiUrl}/${endpoint}`);
       console.log('Response Data:', response);
-   
+
     }
-   
+
   }
 
   get<T>(endpoint: string): Observable<T> {
@@ -87,12 +87,20 @@ export class ApiService {
     );
   }
 
-  postfile<T>(endpoint: string, data: FormData): Observable<T> {
-     const headers = new HttpHeaders();
-    headers.append('Content-Type', 'multipart/form-data');
-   this.logRequest('POST', endpoint, data);
+  postPdf<T>(endpoint: string, data: any): Observable<Blob> {
+  
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+   
+    return this.http.post(`${this.config.apiUrl}/${endpoint}`, data, { headers, responseType: 'blob' });
+  }
 
-    return this.http.post<T>(`${this.config.apiUrl}/${endpoint}`, data, {headers} ).pipe(
+
+  postfile<T>(endpoint: string, data: FormData): Observable<T> {
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    this.logRequest('POST', endpoint, data);
+
+    return this.http.post<T>(`${this.config.apiUrl}/${endpoint}`, data, { headers }).pipe(
       tap((response) => this.logResponse('POST', endpoint, response)),
       catchError(this.handleHttpError)
     );

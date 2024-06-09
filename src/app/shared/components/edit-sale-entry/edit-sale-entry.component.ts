@@ -18,7 +18,7 @@ import { ISaleStg } from '../../interfaces/isale-stg';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IStgSaleSave } from 'src/app/modules/collectionApprove/interfaces/isale-save';
 import { formatDate } from '@angular/common';
-import { AddEditStgComponent } from 'src/app/modules/collection/models/add-edit-stg/add-edit-stg.component';
+import { LaterAddEditStgComponent } from 'src/app/modules/collection/models/later-add-edit-stg/later-add-edit-stg.component';
 
 @Component({
   selector: 'app-edit-sale-entry',
@@ -435,11 +435,13 @@ export class EditSaleEntryComponent implements OnInit {
   }
 
   addSaleEntry(){
-      const dialogRef = this.dialog.open(AddEditStgComponent, {
+      const dialogRef = this.dialog.open(LaterAddEditStgComponent, {
         width: '80%',
         data: {
           title: 'Add STG Entry',
           buttonName: 'Save',
+          value:  this.saleEntryForm.value,
+          approveId:this.data.stgData.ApproveId
         },
         disableClose: true,
       });

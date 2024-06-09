@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
 import { IGetsupplierBill } from '../interfaces/isupplier-history';
 import { Observable } from 'rxjs';
-import { ISmartHistory } from '../interfaces/istgbill-history';
+import { IPrint, ISmartHistory } from '../interfaces/istgbill-history';
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +17,9 @@ export class SuppilerHistoryService {
 
   GetSmartHistory(Body:ISmartHistory): Observable<any> {
     return this.apiService.post('Accounts/GetSmartHistory', Body);
+  }
+
+  PrintBill(Body:IPrint): Observable<any> {
+    return this.apiService.postPdf('Print/SupplierBillPrint', Body);
   }
 }

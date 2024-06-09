@@ -1,0 +1,254 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.title}}</span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="stgForm">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="CollectionDate" class="col-lg-5 col-form-label">Collection Date <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                          
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker" placeholder="CollectionDate" formControlName="CollectionDate" readonly>
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="Grade" class="col-lg-5 col-form-label">Trip <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select placeholder="--Select Trip--" class="fromSelect"
+                                        formControlName="TripId" [disabled]="true" >
+                                        <mat-option *ngFor="let trip of TripList" [value]="trip.TripId">
+                                            {{trip.TripName}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <span *ngIf="stgForm.get('TripId')?.hasError('required') && stgForm.get('TripId')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Trip is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                                        formControlName="VehicleNo" [matAutocomplete]="vehicleAuto" readonly>
+                                    <!-- Autocomplete options -->
+                                    <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                        <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                                            [value]="number.VehicleNo">
+                                            {{ number.VehicleNo }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                    <!-- Validation message -->
+                                    <span
+                                        *ngIf="stgForm.get('VehicleNo')?.hasError('required') && stgForm.get('VehicleNo')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Vehicle No. is required.
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                      
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
+                                        formControlName="ClientName" [matAutocomplete]="clientAuto">
+                                    <!-- Autocomplete options -->
+                                    <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                        <mat-option *ngFor="let client of filterClientNames(clientName.value)"
+                                            [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
+                                            {{ client?.ClientName }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                    <!-- Validation message -->
+                                    <span
+                                        *ngIf="stgForm.get('ClientName')?.hasError('required') && stgForm.get('ClientName')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Client Name is required.
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="FirstWeight" class="col-lg-5 col-form-label">First Weight <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #FirstWeight (input)="FirstWeightInput(FirstWeight.value)" type="number" class="form-control" id="FirstWeight" placeholder="FirstWeight"
+                                        formControlName="FirstWeight">
+                                        <span class="kg-text">KG</span>
+                                    <span
+                                        *ngIf="stgForm.get('FirstWeight')?.hasError('required') && stgForm.get('FirstWeight')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        First Weight is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="WetLeaf" class="col-lg-5 col-form-label">Wet Leaf </label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #LongLeaf (input)="LongLeafInput(LongLeaf.value)" type="number" class="form-control" id="WetLeaf" placeholder="WetLeaf"
+                                        formControlName="WetLeaf">
+                                        <i class="fa-solid fa-percent"></i>
+                                    <!-- <span
+                                        *ngIf="stgForm.get('WetLeaf')?.hasError('required') && stgForm.get('WetLeaf')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Wet Leaf is required.
+                                    </span> -->
+                                </div>
+                            </div>
+                        </div>
+                      
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+
+                            <div class="form-group row mb-3">
+                                <label for="LongLeaf" class="col-lg-5 col-form-label">Long Leaf </label>
+                                <div class="col-lg-7 position-relative">
+                                    <input #WetLeaf (input)="WetLeafInput(WetLeaf.value)" type="number" class="form-control" id="LongLeaf" placeholder="LongLeaf"
+                                        formControlName="LongLeaf">
+                                        <i class="fa-solid fa-percent"></i>
+                                    <!-- <span
+                                        *ngIf="stgForm.get('LongLeaf')?.hasError('required') && stgForm.get('LongLeaf')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Long Leaf is required.
+                                    </span> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="Deduction" class="col-lg-5 col-form-label">Deduction</label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="number" class="form-control" id="Deduction" readonly placeholder="Deduction"
+                                        formControlName="Deduction">
+                                    <span class="kg-text">KG</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="FinalWeight" class="col-lg-5 col-form-label">Final Weight</label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="number" class="form-control" id="FinalWeight" readonly
+                                        placeholder="FinalWeight" formControlName="FinalWeight">
+                                    <span
+                                        *ngIf="stgForm.get('FinalWeight')?.hasError('required') && stgForm.get('FinalWeight')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Long Leaf is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="Rate" class="col-lg-5 col-form-label">Rate </label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="number" class="form-control" id="Rate" placeholder="Rate"
+                                        formControlName="Rate">
+                                    <span class="kg-text">
+                                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="Grade" class="col-lg-5 col-form-label">Grade <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select placeholder="--Select Grade--" class="fromSelect"
+                                        formControlName="GradeId">
+                                        <mat-option *ngFor="let Grade of GradeList" [value]="Grade.GradeId">
+                                            {{Grade.GradeName}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <span *ngIf="stgForm.get('GradeId')?.hasError('required') && stgForm.get('GradeId')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Grade is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-lg-4">
+                            <div class="form-group row mb-3">
+                                <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>
+                                <div class="col-lg-7 position-relative">
+                                    <textarea class="form-control" name="Remarks" id="Remarks" formControlName="Remarks"></textarea>
+                                    <span
+                                    *ngIf="stgForm.get('Remarks')?.hasError('required') && stgForm.get('Remarks')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Challan Weight is less than field collection! Please Enter reason.
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                     
+                    
+                    </div>
+
+                    <div class="row">
+                        
+
+                        <div class="col-lg-4" *ngIf="dialogData.buttonName=='Update'">
+                            <div class="form-group row mb-3">
+                                <label for="CategoryId" class="col-lg-5 col-form-label">Status <span class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select aria-placeholder="--Select Status--" class="fromSelect" formControlName="Status">
+                                        <mat-option *ngFor="let item of statusList" [value]="item">
+                                          {{item}}
+                                        </mat-option>
+                                      </mat-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                       
+                        </div>
+                        <div class="col-lg-4" *ngIf="dialogData.buttonName=='Update'">
+                        
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
+    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
+</mat-dialog-actions>

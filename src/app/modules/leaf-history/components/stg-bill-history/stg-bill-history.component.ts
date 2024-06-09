@@ -11,7 +11,7 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
-import { GetstgBill } from '../../interfaces/istgbill-history';
+import { GetstgBill, IPrint } from '../../interfaces/istgbill-history';
 import { StgBillService } from '../../services/stg-bill.service';
 import enIN from '@angular/common/locales/en-IN';
 import { ExcelExportService } from '../../../../shared/services/excel-export.service';
@@ -40,13 +40,13 @@ export class StgBillHistoryComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'BillId', header: 'Bill No' },
-   // { columnDef: 'BillDate', header: 'Bill Date' },
+    // { columnDef: 'BillDate', header: 'Bill Date' },
     { columnDef: 'BillPeriod', header: 'Bill Period' },
     { columnDef: 'ClientName', header: 'Client Name' },
     //{ columnDef: 'FinalWeight', header: 'Final Weighht' },
     //{ columnDef: 'AvgRate', header: 'Avg. Rate' },
-   // { columnDef: 'TotalStgAmount', header: 'Total Amount' },
-   // { columnDef: 'TotalStgPayment', header: 'Total Payment' }
+    // { columnDef: 'TotalStgAmount', header: 'Total Amount' },
+    // { columnDef: 'TotalStgPayment', header: 'Total Payment' }
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -133,7 +133,7 @@ export class StgBillHistoryComponent implements OnInit {
 
   onInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
-    
+
     // Reset ClientId and ClientName if input value is empty
     if (input.value === '') {
       this.StgBillForm.get('ClientId')?.reset();
@@ -151,10 +151,10 @@ export class StgBillHistoryComponent implements OnInit {
   //   const filterValue = value.toLowerCase();
   //   return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
   // }
-  
+
   filterClientNames(value: string): any[] {
     const filterValue = value.toLowerCase().trim(); // Trim whitespace for more accurate filtering
-  
+
     return this.ClientNames.filter(x =>
       x?.ClientName?.toLowerCase().includes(filterValue)
     );
@@ -184,10 +184,27 @@ export class StgBillHistoryComponent implements OnInit {
   }
 
   ViewBill(e: any) {
+    let bodyData: IPrint = {
 
+      TenantId: this.loginDetails.TenantId,
+      BillNo: e.BillId
+
+    };
+   // console.log(e, 'bodyData bodyData');
+
+    const categoryListService = this.billService
+      .PrintBill(bodyData)
+      .subscribe((response: Blob) => {
+        const blobUrl = URL.createObjectURL(response);
+
+        // Open PDF in a new browser tab
+        window.open(blobUrl, '_blank');
+      });
+    this.subscriptions.push(categoryListService);
   }
+
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.StgBillForm.controls['toDate'].setValue(null);
+    // this.StgBillForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   applyFilter(event: Event) {
@@ -215,11 +232,11 @@ export class StgBillHistoryComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove
