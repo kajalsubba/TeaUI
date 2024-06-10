@@ -395,7 +395,7 @@ export class AddEditSupplierComponent implements OnInit {
       this.supplierForm.controls['ClientId'].reset()
       this.isSubmitting = false;
     }
-    this.dialogRef.close(true)
+   // this.dialogRef.close(true)
 
   }
 

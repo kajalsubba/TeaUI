@@ -33,6 +33,7 @@ export class StgBillHistoryComponent implements OnInit {
     'TotalStgAmount',
     'TotalStgPayment',
     'IncAmount',
+    'TransportingAmount',
     'PreviousBalance',
     'CessAmount',
     'LessSeasonAdv',
@@ -125,7 +126,7 @@ export class StgBillHistoryComponent implements OnInit {
       ClientId: this.StgBillForm.value.ClientId ?? 0
 
     };
-    console.log(bodyData, 'bodyData bodyData');
+ //   console.log(bodyData, 'bodyData bodyData');
 
     const categoryListService = this.billService
       .GetStgBillHistory(bodyData)

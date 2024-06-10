@@ -97,7 +97,7 @@
             <ng-container matColumnDef="AvgRate">
               <th mat-header-cell *matHeaderCellDef> Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> 
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.AvgRate| currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b> </b>
@@ -146,10 +146,21 @@
             <ng-container matColumnDef="IncAmount">
               <th mat-header-cell *matHeaderCellDef> Inc. Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> 
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.IncAmount| currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('IncAmount')|
+                  currency:'INR':'symbol':undefined:'en-IN' }}</b>
+              </td>
+            </ng-container>
+            <!-- Transport Amount -->
+            <ng-container matColumnDef="TransportingAmount">
+              <th mat-header-cell *matHeaderCellDef> Transport Amount <i class="fa-solid fa-indian-rupee-sign"></i>
+              </th>
+              <td class="weight-column" mat-cell *matCellDef="let row">
+                {{row.TransportingAmount| currency:'INR':'':undefined:'en-IN'}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('TransportingAmount')|
                   currency:'INR':'symbol':undefined:'en-IN' }}</b>
               </td>
             </ng-container>
@@ -158,7 +169,7 @@
             <ng-container matColumnDef="PreviousBalance">
               <th mat-header-cell *matHeaderCellDef> Pre. Dues Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> 
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.PreviousBalance| currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('PreviousBalance')|
@@ -171,7 +182,7 @@
             <ng-container matColumnDef="CessAmount">
               <th mat-header-cell *matHeaderCellDef>GL Cess Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> 
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.CessAmount| currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('CessAmount')|
@@ -183,7 +194,7 @@
             <ng-container matColumnDef="LessSeasonAdv">
               <th mat-header-cell *matHeaderCellDef> Less Season Adv. <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> 
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.LessSeasonAdv| currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('LessSeasonAdv')|
@@ -191,7 +202,7 @@
               </td>
             </ng-container>
 
-            
+
             <!-- LessSeasonAdv Amount -->
             <ng-container matColumnDef="AmountToPay">
               <th mat-header-cell *matHeaderCellDef> Paid Amount <i class="fa-solid fa-indian-rupee-sign"></i>
