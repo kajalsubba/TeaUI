@@ -28,10 +28,14 @@ export class SupplierBillHistoryComponent implements OnInit{
     'BillDate',
     'BillPeriod',
     'ClientName',
-    'FinalWeight',
     'AvgRate',
+    'FinalWeight',
     'TotalStgAmount',
     'TotalStgPayment',
+    'CommAmount',
+    'CessAmount',
+    'LessSeasonAdv',
+    'AmountToPay',
     'actions',
 
   ];

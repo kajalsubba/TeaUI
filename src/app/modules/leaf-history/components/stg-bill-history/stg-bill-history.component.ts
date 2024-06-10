@@ -28,10 +28,15 @@ export class StgBillHistoryComponent implements OnInit {
     'BillDate',
     'BillPeriod',
     'ClientName',
-    'FinalWeight',
     'AvgRate',
+    'FinalWeight',
     'TotalStgAmount',
     'TotalStgPayment',
+    'IncAmount',
+    'PreviousBalance',
+    'CessAmount',
+    'LessSeasonAdv',
+    'AmountToPay',
     'actions',
 
   ];
