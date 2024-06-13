@@ -41,6 +41,9 @@ export class SupplierHistoryComponent {
     'ChallanWeight',
     'Rate',
     'GrossAmount',
+    'CommAmount',
+    'GLCessAmount',
+    'FinalAmount',
     'Remarks',
     'TripName',
     'CreatedBy',
@@ -55,12 +58,12 @@ export class SupplierHistoryComponent {
     { columnDef: 'CollectionId', header: 'Id ' },
     // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
-  //  { columnDef: 'VehicleNo', header: 'Vehicle No' },
+    //  { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'FineLeaf', header: 'Fine Leaf' },
     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
-  //  { columnDef: 'Rate', header: 'Rate' },
+    //  { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Remarks', header: 'Remark' },
     { columnDef: 'TripName', header: 'TripName ' },
     { columnDef: 'CreatedBy', header: 'Created By' },
@@ -75,14 +78,14 @@ export class SupplierHistoryComponent {
   dateRangeForm!: FormGroup;
   ClientNames: any[] = [];
   minToDate!: any;
-  AverageRate:number=0;
+  AverageRate: number = 0;
   vehicleNumbers: any[] = [];
   statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
   selectedRowIndex: number = -1;
   factoryNames: any[] = [];
   private destroy$ = new Subject<void>();
-  UserList: any[]=[];
-  TotalVehicleCount:number=0;
+  UserList: any[] = [];
+  TotalVehicleCount: number = 0;
 
   constructor(
     private dialog: MatDialog,
@@ -108,8 +111,8 @@ export class SupplierHistoryComponent {
       ClientName: [],
       ClientId: [0],
       Status: [''],
-      UserId:[0],
-      FactoryName:[''],
+      UserId: [0],
+      FactoryName: [''],
       FactoryId: [0],
     });
 
@@ -119,19 +122,19 @@ export class SupplierHistoryComponent {
       this.dateRangeForm.controls['ClientName'].disable({ onlySelf: true });
       this.dateRangeForm.controls['FactoryName'].disable({ onlySelf: true });
     }
-  
+
 
   }
   filterFactoryNames(value: string): any {
     // if (value!="")
     //   {
-      const filterValue = value.toLowerCase();
-      return this.factoryNames.filter((x: any) =>
-        x?.FactoryName?.toLowerCase()?.includes(filterValue)
-      );
-  //  }
-    
-    }
+    const filterValue = value.toLowerCase();
+    return this.factoryNames.filter((x: any) =>
+      x?.FactoryName?.toLowerCase()?.includes(filterValue)
+    );
+    //  }
+
+  }
   async loadClientNames() {
     try {
       const bodyData: IGetTeaClient = {
@@ -173,15 +176,15 @@ export class SupplierHistoryComponent {
     // Do something when input changes
     console.log(input.value, 'presss');
     if (input.value == '') {
-   
+
       this.dateRangeForm.controls['FactoryId'].reset();
       this.dateRangeForm.controls['FactoryName'].reset();
-   
+
 
     }
 
   }
-  GetFactory  (event: MatDatepickerInputEvent<Date>): void {
+  GetFactory(event: MatDatepickerInputEvent<Date>): void {
     this.loadSaleFactoryNames();
   }
 
@@ -190,7 +193,7 @@ export class SupplierHistoryComponent {
       const bodyData: IGetSaleFactory = {
         TenantId: this.loginDetails.TenantId,
         FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-        ToDate:formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       };
 
       const res: any = await this.saleService
@@ -233,7 +236,7 @@ export class SupplierHistoryComponent {
 
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.dateRangeForm.controls['toDate'].setValue(null);
+    // this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value
   }
 
@@ -244,11 +247,11 @@ export class SupplierHistoryComponent {
       ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       VehicleNo: '',
-      ClientId:this.dateRangeForm.value.ClientId,
+      ClientId: this.dateRangeForm.value.ClientId,
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
-      TripId: 0, 
-      FactoryId:this.dateRangeForm.value.FactoryId,
-      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : this.dateRangeForm.value.UserId,
+      TripId: 0,
+      FactoryId: this.dateRangeForm.value.FactoryId,
+      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : this.dateRangeForm.value.UserId,
     }
     const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res: any) => {
       // console.log(res);
@@ -260,7 +263,7 @@ export class SupplierHistoryComponent {
 
       const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
 
-      this.TotalVehicleCount=uniqueCategories;
+      this.TotalVehicleCount = uniqueCategories;
     });
     this.subscriptions.push(categoryListService);
   }
@@ -358,11 +361,11 @@ export class SupplierHistoryComponent {
     }
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove
