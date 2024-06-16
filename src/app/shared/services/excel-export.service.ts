@@ -9,12 +9,7 @@ export class ExcelExportService {
   constructor() { }
 
   exportToExcel(tableId: string, fileName: string): void {
-    //   const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
-    //     document.getElementById(tableId)
-    //   );
-    //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    //   XLSX.writeFile(wb, fileName + '.xlsx');
+
 
     const tableElement = document.getElementById(tableId);
     if (!tableElement) {
@@ -25,15 +20,20 @@ export class ExcelExportService {
     // Convert the table to a worksheet with raw option to prevent automatic type detection
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(tableElement, { raw: true });
 
-    // Explicitly convert date columns to strings (if necessary)
-    // Adjust this part if you need specific handling for certain columns
-    // Here, I'm assuming all cells should be treated as strings
+    // Iterate through each cell in the worksheet
     Object.keys(ws).forEach((cellAddress) => {
       const cell = ws[cellAddress];
       if (cell && cell.v) {
-        // Convert all cell values to strings
-        cell.v = String(cell.v);
-        cell.t = 's'; // Set the cell type to string
+        // Check if the cell value is numeric
+        if (!isNaN(cell.v)) {
+          // Convert numeric value to number format
+          cell.v = Number(cell.v);
+          cell.t = 'n'; // Set cell type to number
+        } else {
+          // Convert all other cell values to strings
+          cell.v = String(cell.v);
+          cell.t = 's'; // Set cell type to string
+        }
       }
     });
 

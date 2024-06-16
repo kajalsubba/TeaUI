@@ -37,13 +37,11 @@ export class StgHistoryComponent {
     'FinalWeight',
     'Rate',
     'GrossAmount',
-    'IncAmount',
-    'TransportingAmount',
-    'GLCessAmount',
-    'FinalAmount',
     'Remarks',
     'CreatedBy',
     'CreatedDate',
+    'ModifyBy',
+    'ModifyDate',
     'Status',
     'actions'
   ];
@@ -59,6 +57,8 @@ export class StgHistoryComponent {
     { columnDef: 'Remarks', header: 'Remarks' },
     { columnDef: 'CreatedBy', header: 'Created By' },
     { columnDef: 'CreatedDate', header: 'Created DateTime' },
+    { columnDef: 'ModifyBy', header: 'Modify By' },
+    { columnDef: 'ModifyDate', header: 'Modify DateTime' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

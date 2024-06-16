@@ -36,7 +36,7 @@ export class AddEditPaymentComponent implements OnInit {
   loginDetails: any;
   ClientNames: any[] = [];
   clientList: any[] = [];
-  formattedAmount:any;
+  formattedAmount: any;
 
   @ViewChild('PaymentDate') PaymentDateInput!: ElementRef;
   constructor(
@@ -53,13 +53,13 @@ export class AddEditPaymentComponent implements OnInit {
 
   ) {
 
-   }
+  }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.addEditPayment = this.fb.group({
       PaymentDate: [new Date(), Validators.required],
-      BillDate:[new Date(), Validators.required],
+      BillDate: [new Date(), Validators.required],
       CategoryId: ['', Validators.required],
       CategoryName: [''],
       ClientId: [''],
@@ -79,10 +79,10 @@ export class AddEditPaymentComponent implements OnInit {
       this.addEditPayment.controls['ClientId'].setValue(this.dialogData.value.ClientId);
       this.addEditPayment.controls['ClientName'].setValue(this.dialogData.value.ClientName);
       this.addEditPayment.controls['PaymentTypeId'].setValue(this.dialogData.value.PaymentTypeId);
-      const formattedValue = this.currencyPipe.transform(this.dialogData.value.Amount,  "INR",
-      '',
-      undefined,
-      "en-IN");
+      const formattedValue = this.currencyPipe.transform(this.dialogData.value.Amount, "INR",
+        '',
+        undefined,
+        "en-IN");
       this.addEditPayment.controls['Amount'].setValue(formattedValue);
       this.addEditPayment.controls['Narration'].setValue(this.dialogData.value.Narration);
     }
@@ -120,12 +120,11 @@ export class AddEditPaymentComponent implements OnInit {
   }
   formatCurrency(event: any) {
     const value = event.target.value;
-    const formattedValue = this.currencyPipe.transform(value,  "INR",
-    '',
-    undefined,
-    "en-IN");
-    console.log(formattedValue,'formattedValue');
-    
+    const formattedValue = this.currencyPipe.transform(value, "INR",
+      '',
+      undefined,
+      "en-IN");
+
     this.addEditPayment.controls["Amount"].setValue(formattedValue);
 
   }
@@ -203,9 +202,9 @@ export class AddEditPaymentComponent implements OnInit {
       ClientCategory: this.addEditPayment.value.CategoryName,
       ClientId: this.addEditPayment.value.ClientId,
       PaymentTypeId: this.addEditPayment.value.PaymentTypeId,
-      Amount: this.addEditPayment.value.Amount.toString().replace(/,/g,''),
+      Amount: this.addEditPayment.value.Amount.toString().replace(/,/g, ''),
       Narration: this.addEditPayment.value.Narration,
-      CategoryId:this.addEditPayment.value.CategoryId,
+      CategoryId: this.addEditPayment.value.CategoryId,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId
 

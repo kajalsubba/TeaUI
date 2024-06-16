@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 
 import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsComponent } from './reports.component';
@@ -21,6 +21,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } f
 import { MatSelectModule } from '@angular/material/select';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DatewiseGradeReportComponent } from './components/datewise-grade-report/datewise-grade-report.component';
+import { SalePurchaseReportComponent } from './components/sale-purchase-report/sale-purchase-report.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -38,7 +39,8 @@ export const MY_FORMATS = {
     ReportsComponent,
     GradeReportComponent,
     ProfitAndLossComponent,
-    DatewiseGradeReportComponent
+    DatewiseGradeReportComponent,
+    SalePurchaseReportComponent
   ],
   imports: [
     CommonModule,
@@ -60,6 +62,7 @@ export const MY_FORMATS = {
     MatAutocompleteModule
   ],
   providers : [
+    CurrencyPipe,
     DatePipe,
     {
       provide: DateAdapter,

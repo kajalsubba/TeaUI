@@ -17,4 +17,8 @@ export class ReportsServiceService {
   GetDateWiseGradeReport(Body:IReports): Observable<any> {
     return this.apiService.post('Reports/DateWiseGradeReport', Body);
   }
+
+  GetPurchaseSaleReport(Body:IReports): Observable<any> {
+    return this.apiService.post('Reports/PurchaseAndSaleReport', Body);
+  }
 }

@@ -137,6 +137,18 @@
                   currency:'INR':'symbol':undefined:'en-IN' }}</b>
               </td>
             </ng-container>
+
+              <!-- Sale AverageRate -->
+              <ng-container matColumnDef="SaleRate">
+                <th mat-header-cell *matHeaderCellDef>Sale Price <i class="fa-solid fa-indian-rupee-sign"></i>
+                </th>
+                <td class="weight-column red-font" mat-cell *matCellDef="let row">
+                  {{row.SaleRate | currency:'INR':'':undefined:'en-IN'}} </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                  <!-- <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
+                    currency:'INR':'symbol':undefined:'en-IN' }}</b> -->
+                </td>
+              </ng-container>
             <!-- GrossAmount -->
             <ng-container matColumnDef="GrossAmount">
               <th mat-header-cell *matHeaderCellDef> Gross Amount <i class="fa-solid fa-indian-rupee-sign"></i> </th>
@@ -151,34 +163,34 @@
 
             
             <!-- Commission Amount -->
-            <ng-container matColumnDef="CommAmount">
+            <!-- <ng-container matColumnDef="CommAmount">
               <th mat-header-cell *matHeaderCellDef> Comm. Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
               <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CommAmount |
                 currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('CommAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- GL Cess Amount -->
-            <ng-container matColumnDef="GLCessAmount">
+            <!-- <ng-container matColumnDef="GLCessAmount">
               <th mat-header-cell *matHeaderCellDef> GL Cess. Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
               <td class="weight-column" mat-cell *matCellDef="let row"> {{row.GLCessAmount |
                 currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('GLCessAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Final Amount -->
-            <ng-container matColumnDef="FinalAmount">
+            <!-- <ng-container matColumnDef="FinalAmount">
               <th mat-header-cell *matHeaderCellDef> Final Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
               <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalAmount |
                 currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('FinalAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
               </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Actions column -->
             <ng-container matColumnDef="actions">

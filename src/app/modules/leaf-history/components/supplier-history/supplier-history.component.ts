@@ -40,14 +40,14 @@ export class SupplierHistoryComponent {
     'FineLeaf',
     'ChallanWeight',
     'Rate',
+    'SaleRate',
     'GrossAmount',
-    'CommAmount',
-    'GLCessAmount',
-    'FinalAmount',
     'Remarks',
     'TripName',
     'CreatedBy',
     'CreatedDate',
+    'ModifyBy',
+    'ModifyDate',
     'Status',
     'actions'
   ];
@@ -68,6 +68,8 @@ export class SupplierHistoryComponent {
     { columnDef: 'TripName', header: 'TripName ' },
     { columnDef: 'CreatedBy', header: 'Created By' },
     { columnDef: 'CreatedDate', header: 'Created DateTime' },
+    { columnDef: 'ModifyBy', header: 'Modify By' },
+    { columnDef: 'ModifyDate', header: 'Modify DateTime' },
     // { columnDef: 'Status', header: 'Status ' }
   ];
 
