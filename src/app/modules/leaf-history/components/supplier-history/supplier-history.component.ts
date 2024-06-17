@@ -40,16 +40,16 @@ export class SupplierHistoryComponent {
     'FineLeaf',
     'ChallanWeight',
     'Rate',
-    'SaleRate',
-    'GrossAmount',
-    'Remarks',
-    'TripName',
-    'CreatedBy',
-    'CreatedDate',
-    'ModifyBy',
-    'ModifyDate',
-    'Status',
-    'actions'
+    // 'SaleRate',
+    // 'GrossAmount',
+    // 'Remarks',
+    // 'TripName',
+    // 'CreatedBy',
+    // 'CreatedDate',
+    // 'ModifyBy',
+    // 'ModifyDate',
+    // 'Status',
+    // 'actions'
   ];
 
   dataSource = new MatTableDataSource<any>();
@@ -79,6 +79,7 @@ export class SupplierHistoryComponent {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   ClientNames: any[] = [];
+  hideSaleRateColumn: boolean = true;
   minToDate!: any;
   AverageRate: number = 0;
   vehicleNumbers: any[] = [];
@@ -124,7 +125,22 @@ export class SupplierHistoryComponent {
       this.dateRangeForm.controls['ClientName'].disable({ onlySelf: true });
       this.dateRangeForm.controls['FactoryName'].disable({ onlySelf: true });
     }
+    if (this.loginDetails.LoginType == 'Client') {
+      this.hideSaleRateColumn = true;
+      // Remove 'SaleRate' from displayedColumns if it's hidden
+      this.displayedColumns = this.displayedColumns.filter(col => col !== 'SaleRate');
+      this.displayedColumns.push('GrossAmount', 'Remarks', 'TripName', 'CreatedBy', 'CreatedDate',
+        'ModifyBy', 'ModifyDate', 'Status', 'actions');
 
+    } else {
+      this.hideSaleRateColumn = false;
+      // Add 'SaleRate' to displayedColumns if it's not hidden
+      if (!this.displayedColumns.includes('SaleRate')) {
+        this.displayedColumns.push('SaleRate', 'GrossAmount', 'Remarks', 'TripName', 'CreatedBy', 'CreatedDate',
+          'ModifyBy', 'ModifyDate', 'Status', 'actions');
+        //  this.displayedColumns.push('SaleRate');
+      }
+    }
 
   }
   filterFactoryNames(value: string): any {

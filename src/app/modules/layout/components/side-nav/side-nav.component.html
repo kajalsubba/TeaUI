@@ -1,8 +1,5 @@
-<div class="sidenav" 
-  (mouseenter)="isDesktop && onMouseEnter()"
-  (mouseleave)="isDesktop && onMouseLeave()"
-  (click)="!isDesktop && toggleWidth()"
-  [style.width.px]="isExpanded ? 210 : 62">
+<div class="sidenav" (mouseenter)="isDesktop && onMouseEnter()" (mouseleave)="isDesktop && onMouseLeave()"
+  (click)="!isDesktop && toggleWidth()" [style.width.px]="isExpanded ? 210 : 62">
   <div [ngClass]="{'close': !isExpanded }" class="sidebar">
     <div class="logo-details">
       <!-- <i class='bx bxl-c-plus-plus'></i> -->
@@ -128,7 +125,8 @@
           <!-- </li> -->
         </ul>
       </li>
-      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'Bill'" class="main-menu" routerLinkActive="main-menu-active">
+      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'Bill'" class="main-menu"
+        routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Bill')">
           <a>
             <i class="fa-solid fa-file-invoice"></i>
@@ -157,24 +155,29 @@
         <ul class="sub-menu">
           <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/stg-history" routerLinkActive="active"><a
               class="sub-menu-title">STG Leaf History</a></li>
-          <li routerLink="LeafHistory/supplier-history" routerLinkActive="active"><a class="sub-menu-title">Supplier Leaf
+          <li routerLink="LeafHistory/supplier-history" routerLinkActive="active"><a class="sub-menu-title">Supplier
+              Leaf
               History</a></li>
           <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/sale-history" routerLinkActive="active"><a
               class="sub-menu-title">Sale History</a></li>
-          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/season-advance-history" routerLinkActive="active"><a class="sub-menu-title">Season
+          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/season-advance-history"
+            routerLinkActive="active"><a class="sub-menu-title">Season
               Adv. History</a></li>
-          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/payment-history" routerLinkActive="active"><a class="sub-menu-title">Payment
+          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/payment-history"
+            routerLinkActive="active"><a class="sub-menu-title">Payment
               History</a></li>
-          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/stg-bill-history" routerLinkActive="active"><a class="sub-menu-title">STG Bill
+          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/stg-bill-history"
+            routerLinkActive="active"><a class="sub-menu-title">STG Bill
               History</a></li>
-          <li *ngIf="loginDetails.LoginType=='Agent'"  routerLink="LeafHistory/supplier-bill-history" routerLinkActive="active"><a
-              class="sub-menu-title">Supplier Bill
+          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="LeafHistory/supplier-bill-history"
+            routerLinkActive="active"><a class="sub-menu-title">Supplier Bill
               History</a></li>
           <li routerLink="LeafHistory/smart-history" routerLinkActive="active"><a class="sub-menu-title">Smart
               History</a></li>
         </ul>
       </li>
-      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'leaf-summary'" class="main-menu" routerLinkActive="main-menu-active">
+      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'leaf-summary'"
+        class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'leaf-summary')">
           <a>
             <i class="fa-regular fa-rectangle-list"></i>
@@ -193,7 +196,8 @@
 
         </ul>
       </li>
-      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'leaf-report'" class="main-menu" routerLinkActive="main-menu-active">
+      <li *ngIf="loginDetails.LoginType=='Agent'" [class.showMenu]="currentOpenMenu === 'leaf-report'" class="main-menu"
+        routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'leaf-report')">
           <a>
             <i class='bx bxs-report'></i>
@@ -202,15 +206,17 @@
           <i class='bx bxs-chevron-down arrow'></i>
         </div>
         <ul class="sub-menu">
-          <li routerLink="leaf-report/grade-report" routerLinkActive="active"><a class="sub-menu-title">ClientWise Grade Report</a>
+          <li routerLink="leaf-report/grade-report" routerLinkActive="active"><a class="sub-menu-title">ClientWise Grade
+              Report</a>
           </li>
-          <li routerLink="leaf-report/dategrade-report" routerLinkActive="active"><a class="sub-menu-title">DateWise Grade Report</a>
+          <li routerLink="leaf-report/dategrade-report" routerLinkActive="active"><a class="sub-menu-title">DateWise
+              Grade Report</a>
           </li>
-          <li routerLink="leaf-report/sale-purchase-report" routerLinkActive="active"><a class="sub-menu-title">Sale & Purchase Report
-              </a></li>
-          <!-- <li routerLink="leaf-summary/sale-summary" routerLinkActive="active"><a class="sub-menu-title">Sale
-              Summary</a>
-          </li> -->
+          <li routerLink="leaf-report/sale-purchase-report" routerLinkActive="active"><a class="sub-menu-title">Sale &
+              Purchase Report
+            </a></li>
+          <li routerLink="leaf-report/month-wise-collection-report" routerLinkActive="active"><a class="sub-menu-title">Month Wise Report
+            </a></li>
 
         </ul>
       </li>
@@ -227,9 +233,8 @@
             *ngIf="loginDetails.LoginType=='Agent' && PermissionDetails[19].ModuleId==19 && PermissionDetails[19].HideModule==false"
             routerLink="user-management/role" routerLinkActive="active"><a class="sub-menu-title">Create Role</a></li>
 
-          <li
-            *ngIf="loginDetails.LoginType=='Agent'"
-            routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role
+          <li *ngIf="loginDetails.LoginType=='Agent'" routerLink="user-management/role-permission"
+            routerLinkActive="active"><a class="sub-menu-title">Role
               Permission</a></li>
 
           <!-- <li  routerLink="user-management/role-permission" routerLinkActive="active"><a class="sub-menu-title">Role

@@ -22,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DatewiseGradeReportComponent } from './components/datewise-grade-report/datewise-grade-report.component';
 import { SalePurchaseReportComponent } from './components/sale-purchase-report/sale-purchase-report.component';
+import { MonthWiseCollectionReportComponent } from './components/month-wise-collection-report/month-wise-collection-report.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -40,7 +41,8 @@ export const MY_FORMATS = {
     GradeReportComponent,
     ProfitAndLossComponent,
     DatewiseGradeReportComponent,
-    SalePurchaseReportComponent
+    SalePurchaseReportComponent,
+    MonthWiseCollectionReportComponent
   ],
   imports: [
     CommonModule,

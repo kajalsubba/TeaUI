@@ -139,7 +139,7 @@
             </ng-container>
 
               <!-- Sale AverageRate -->
-              <ng-container matColumnDef="SaleRate">
+              <ng-container matColumnDef="SaleRate"  *ngIf="!hideSaleRateColumn">
                 <th mat-header-cell *matHeaderCellDef>Sale Price <i class="fa-solid fa-indian-rupee-sign"></i>
                 </th>
                 <td class="weight-column red-font" mat-cell *matCellDef="let row">
@@ -149,6 +149,7 @@
                     currency:'INR':'symbol':undefined:'en-IN' }}</b> -->
                 </td>
               </ng-container>
+
             <!-- GrossAmount -->
             <ng-container matColumnDef="GrossAmount">
               <th mat-header-cell *matHeaderCellDef> Gross Amount <i class="fa-solid fa-indian-rupee-sign"></i> </th>
