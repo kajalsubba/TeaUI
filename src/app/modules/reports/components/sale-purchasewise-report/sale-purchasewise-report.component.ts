@@ -12,16 +12,16 @@ import { IReports } from '../../interfaces/ireports';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ToastrService } from 'ngx-toastr';
 
-interface MonthWiseData {
-  Months: string;
-  FactoryName: string;
-  AccountName: string;
-  ChallanWeight: number;
-  AvgRate: number;
-  TotalWeight: number;
-  rowspan: number;
-  showRow: boolean;
-}
+// interface MonthWiseData {
+//   Months: string;
+//   FactoryName: string;
+//   AccountName: string;
+//   ChallanWeight: number;
+//   AvgRate: number;
+//   TotalWeight: number;
+//   rowspan: number;
+//   showRow: boolean;
+// }
 
 @Component({
   selector: 'app-sale-purchasewise-report',
@@ -43,7 +43,7 @@ export class SalePurchasewiseReportComponent implements OnInit {
 
   ];
 
-  dataSource = new _MatTableDataSource<MonthWiseData>();
+  dataSource = new _MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
    // { columnDef: 'Months', header: 'Months' },
@@ -64,7 +64,7 @@ export class SalePurchasewiseReportComponent implements OnInit {
   selectedRowIndex: number = -1;
   clientList: any[] = [];
   categoryList: any[] = [];
-  monthWiseData:MonthWiseData[]=[];
+ // monthWiseData:MonthWiseData[]=[];
 
   constructor(
 
@@ -101,39 +101,39 @@ export class SalePurchasewiseReportComponent implements OnInit {
       .GetSalePurchaseWiseReport(bodyData)
       .subscribe((res: any) => {
         // console.log(res);
-      //  this.dataSource.data = res.SaleWiseReport;
+        this.dataSource.data = res.SaleWiseReport;
 
-        this.monthWiseData =  res.SaleWiseReport;
-        this.dataSource.data=this.monthWiseData;
+     //   this.monthWiseData =  res.SaleWiseReport;
+      //  this.dataSource.data=this.monthWiseData;
       });
     this.subscriptions.push(categoryListService);
   }
 
 
-  preprocessData(data: MonthWiseData[]): MonthWiseData[] {
-    const groupedData = data.reduce((acc:any, curr) => {
-      const month = curr.Months;
-      if (!acc[month]) {
-        acc[month] = { ...curr, rowspan: 1, showRow: true };
-      } else {
-        acc[month].rowspan++;
-        curr.showRow = false;
-      }
-      return acc;
-    }, {});
+  // preprocessData(data: MonthWiseData[]): MonthWiseData[] {
+  //   const groupedData = data.reduce((acc:any, curr) => {
+  //     const month = curr.Months;
+  //     if (!acc[month]) {
+  //       acc[month] = { ...curr, rowspan: 1, showRow: true };
+  //     } else {
+  //       acc[month].rowspan++;
+  //       curr.showRow = false;
+  //     }
+  //     return acc;
+  //   }, {});
 
-    return Object.values(groupedData);
-  }
-
-  getTotalWeight(): number {
-    return this.monthWiseData.map((t:any) => t.ChallanWeight).reduce((acc, value) => acc + value, 0);
-  }
-  // getTotal(columnName: string): number {
-  //   return this.dataSource.filteredData.reduce(
-  //     (acc, curr) => acc + curr[columnName],
-  //     0
-  //   );
+  //   return Object.values(groupedData);
   // }
+
+  // getTotalWeight(): number {
+  //   return this.monthWiseData.map((t:any) => t.ChallanWeight).reduce((acc, value) => acc + value, 0);
+  // }
+  getTotal(columnName: string): number {
+    return this.dataSource.filteredData.reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
+  }
 
   filterClientNames(value: string): any[] {
     const filterValue = value.toLowerCase().trim(); // Trim whitespace for more accurate filtering

@@ -111,7 +111,7 @@
                             <td class="weight-column" mat-cell *matCellDef="let row">
                                 {{row.ChallanWeight}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                                <b> </b>
+                                <b>{{ getTotal('ChallanWeight') }} KG</b>
                             </td>
                         </ng-container>
 
@@ -133,7 +133,7 @@
                             <td class="weight-column" mat-cell *matCellDef="let row">
                                 {{row.TotalWeight}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                                <b> </b>
+                                <b> {{ getTotal('TotalWeight') }} KG</b>
                             </td>
                         </ng-container>
 
