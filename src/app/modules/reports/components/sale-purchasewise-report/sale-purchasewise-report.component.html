@@ -1,0 +1,158 @@
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-lg-9 my-2 align-items-center">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form [formGroup]="SalePurchaseForm">
+                        <div class="row">
+                            <div class="col-lg-3 my-2">
+                                <mat-form-field>
+                                    <input readonly matInput [matDatepicker]="picker"
+                                        (dateChange)="fromDateChange($event)" placeholder="From Date"
+                                        formControlName="fromDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 my-2">
+                                <mat-form-field class="mx-2">
+                                    <input readonly matInput [min]="minToDate" [matDatepicker]="picker1"
+                                        min="PaymentForm.value.fromDate" placeholder="To Date" formControlName="toDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-lg-3 my-2">
+                                <div class="position-relative">
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 my-2 d-grid">
+                                <button (click)="search()" class="btn btn-color ms-2">Search</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 my-2 border-left">
+            <div class="top-container my-2">
+                <div class="search-field px-2">
+                    <input (input)="applyFilter($event)" type="text" placeholder="Find" class="form-control">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <button matTooltip="Excel Export" (click)="exportToExcel()" class="btn btn-outline-dark">
+                    <i class="fa-solid py-2 px-1 fa-file-excel"></i>
+                </button>
+            </div>
+        </div>
+        <hr>
+        <div class="col-lg-12">
+            <div class="table-container">
+                <div>
+                    <table id="material-table" matSort mat-table [dataSource]="dataSource"
+                        (keydown)="handleKeyboardNavigation($event)">
+                       
+                        <!-- Displayed columns -->
+                        <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+                            <td mat-cell *matCellDef="let row; let i = index;">
+                                {{ row[column.columnDef] }}
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+
+
+
+                        <!-- Months -->
+                        <ng-container matColumnDef="Months" >
+                            <th mat-header-cell *matHeaderCellDef> Months </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row" >
+                                {{ row.Months }}
+
+                            </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b></b>
+                            </td>
+                        </ng-container>
+
+                        <!-- Factory -->
+                        <ng-container matColumnDef="FactoryName">
+                            <th mat-header-cell *matHeaderCellDef> FactoryName </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{ row.FactoryName }}
+
+                            </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b></b>
+                            </td>
+                        </ng-container>
+
+                           <!-- Account Name -->
+                           <ng-container matColumnDef="AccountName">
+                            <th mat-header-cell *matHeaderCellDef> AccountName </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{ row.AccountName }}
+
+                            </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b></b>
+                            </td>
+                        </ng-container>
+
+
+                        <!-- ChallanWeight-->
+                        <ng-container matColumnDef="ChallanWeight">
+                            <th mat-header-cell *matHeaderCellDef> ChallanWeight
+                            </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{row.ChallanWeight}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b> </b>
+                            </td>
+                        </ng-container>
+
+                        <!-- AvgRate -->
+                        <ng-container matColumnDef="AvgRate">
+                            <th mat-header-cell *matHeaderCellDef> AvgRate <i class="fa-solid fa-indian-rupee-sign"></i>
+                            </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{row.AvgRate| currency:'INR':'':undefined:'en-IN'}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b></b>
+                            </td>
+                        </ng-container>
+
+                        <!-- TotalWeight -->
+                        <ng-container matColumnDef="TotalWeight">
+                            <th mat-header-cell *matHeaderCellDef> Total Weight
+                            </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{row.TotalWeight}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b> </b>
+                            </td>
+                        </ng-container>
+
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+                            [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+                        </tr>
+                        <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">
+                                Record is not
+                                found !</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

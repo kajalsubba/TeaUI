@@ -25,4 +25,8 @@ export class ReportsServiceService {
   GetMonthWiseCollectionReport(Body:IMonthWiseCollection): Observable<any> {
     return this.apiService.post('Reports/MonthWiseWeightReport', Body);
   }
+
+  GetSalePurchaseWiseReport(Body:IReports): Observable<any> {
+    return this.apiService.post('Reports/SalePurchaseWiseReport', Body);
+  }
 }
