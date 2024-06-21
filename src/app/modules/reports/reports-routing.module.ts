@@ -19,7 +19,7 @@ const routes: Routes = [
         { path: 'profit-loss-report', component: ProfitAndLossComponent },
         { path: 'sale-purchase-report', component: SalePurchaseReportComponent },
         { path: 'month-wise-collection-report', component: MonthWiseCollectionReportComponent },
-        { path: 'sale-purchase-wise-report', component: SalePurchasewiseReportComponent }
+        { path: 'sale-breakup-report', component: SalePurchasewiseReportComponent }
 
         
       ],
