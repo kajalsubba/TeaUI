@@ -109,7 +109,9 @@ export class StgBillGenerateComponent implements OnInit {
       GreenLeafCess: [0],
       FinalBillAmount: [0],
       LessSeasonAdv: [0],
-      AmountToPay: [0]
+      AmountToPay: [0],
+      PaidAmount: [0],
+      OutstandingAmount:[]
     });
 
     await this.loadClientNames();

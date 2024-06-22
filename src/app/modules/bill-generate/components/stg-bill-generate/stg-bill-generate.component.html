@@ -210,25 +210,13 @@
 
   <form [formGroup]="StgAmountForm">
     <div class="row">
-      <div class="col-lg-4 offset-lg-4">
+      <div class="col-lg-4">
         <div class="form-group row my-2">
           <label for="PreviousAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
               Standing Season Adv.</b></label>
           <div class="col-lg-6 position-relative">
             <input formControlName="SeasonAmount" readonly #SeasonAmount type="number"
               class="form-control text-danger final-amount bill-amount" id="SeasonAmount" placeholder="Season Amount">
-            <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 offset-lg-4">
-        <div class="form-group row my-2">
-          <label for="OutstandingAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
-              Outstanding Amount</b></label>
-          <div class="col-lg-6 position-relative">
-            <input formControlName="OutstandingAmount" readonly #SeasonAmount type="number"
-              class="form-control text-danger final-amount bill-amount" id="OutstandingAmount" placeholder="Outstanding Amount">
             <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
           </div>
         </div>
@@ -243,6 +231,18 @@
             <input formControlName="PreviousAmount" readonly #PreviousAmount type="number"
               class="form-control text-danger final-amount bill-amount" id="PreviousAmount"
               placeholder="Previous Balance">
+            <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="form-group row my-2">
+          <label for="OutstandingAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
+              Outstanding Amount</b></label>
+          <div class="col-lg-6 position-relative">
+            <input formControlName="OutstandingAmount" readonly #SeasonAmount type="number"
+              class="form-control text-danger final-amount bill-amount" id="OutstandingAmount" placeholder="Outstanding Amount">
             <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
           </div>
         </div>
@@ -350,11 +350,30 @@
 
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="FinalAmount" class="col-lg-6 col-form-label"></label>
-              <div class="col-lg-6 d-grid position-relative">
-                <button [disabled]="isSubmitting" (click)="BillSave()" class="btn btn-color">Submit</button>
+              <label for="PaidAmount" class="col-lg-6 col-form-label">Paid Amount</label>
+              <div class="col-lg-6 position-relative">
+                <input #PaidAmount type="number" class="form-control" id="PaidAmount"
+                  placeholder="Paid Amount" formControlName="PaidAmount">
+                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
               </div>
             </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-group row mb-3">
+              <label for="OutstandingAmount" class="col-lg-6 col-form-label highlight">Outstanding Amount <span
+                  class="text-danger">*</span></label>
+              <div class="col-lg-6 position-relative">
+                <input readonly #OutstandingAmount type="number" class="form-control" id="OutstandingAmount"
+                  placeholder="OutstandingAmount" formControlName="OutstandingAmount">
+                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 offset-lg-10">
+              <div class="d-grid position-relative">
+                <button [disabled]="isSubmitting" (click)="BillSave()" class="btn btn-color">Submit</button>
+              </div>
           </div>
         </div>
       </div>
