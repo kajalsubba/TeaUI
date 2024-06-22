@@ -221,6 +221,19 @@
           </div>
         </div>
       </div>
+
+      <div class="col-lg-4 offset-lg-4">
+        <div class="form-group row my-2">
+          <label for="OutstandingAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
+              Outstanding Amount</b></label>
+          <div class="col-lg-6 position-relative">
+            <input formControlName="OutstandingAmount" readonly #SeasonAmount type="number"
+              class="form-control text-danger final-amount bill-amount" id="OutstandingAmount" placeholder="Outstanding Amount">
+            <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
+          </div>
+        </div>
+      </div>
+
       <div class="col-lg-4">
         <div class="form-group row my-2">
           <label for="SeasonAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">Previuos
