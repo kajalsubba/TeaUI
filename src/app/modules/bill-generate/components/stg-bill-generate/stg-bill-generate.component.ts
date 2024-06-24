@@ -103,6 +103,7 @@ export class StgBillGenerateComponent implements OnInit {
     this.StgAmountForm = this.fb.group({
       SeasonAmount: [0],
       PreviousAmount: [0],
+      PreOutstandingAmount:[0],
       BillDate: [new Date()],
       Incentive: [0],
       Transporting: [0],
@@ -111,7 +112,7 @@ export class StgBillGenerateComponent implements OnInit {
       LessSeasonAdv: [0],
       AmountToPay: [0],
       PaidAmount: [0],
-      OutstandingAmount:[]
+      OutstandingAmount:[0]
     });
 
     await this.loadClientNames();
@@ -277,15 +278,17 @@ export class StgBillGenerateComponent implements OnInit {
       this.AverageRate = grossAmount / challanWeight;
 
       if (OutStandingData && OutStandingData.length > 0) {
-        const { SeasonAdvance, PreviousBalance } = OutStandingData[0];
+        const { SeasonAdvance, PreviousBalance,OutStandingAmount } = OutStandingData[0];
         this.StgAmountForm.controls['SeasonAmount'].setValue(SeasonAdvance.toFixed(2));
         this.StgAmountForm.controls['PreviousAmount'].setValue(PreviousBalance.toFixed(2));
+        this.StgAmountForm.controls['PreOutstandingAmount'].setValue(OutStandingAmount.toFixed(2));
         this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
       }
       else {
         //this.toastr.warning('Please submit fisrt season advace!', 'Notification')
         this.StgAmountForm.controls['SeasonAmount'].setValue(0);
         this.StgAmountForm.controls['PreviousAmount'].setValue(0);
+        this.StgAmountForm.controls['PreOutstandingAmount'].setValue(0);
         this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
 
 

@@ -236,17 +236,17 @@
         </div>
       </div>
 
-      <div class="col-lg-4">
+      <!-- <div class="col-lg-4">
         <div class="form-group row my-2">
-          <label for="OutstandingAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
-              Outstanding Amount</b></label>
+          <label for="PreOutstandingAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
+             Previous Outstanding </b></label>
           <div class="col-lg-6 position-relative">
-            <input formControlName="OutstandingAmount" readonly #SeasonAmount type="number"
-              class="form-control text-danger final-amount bill-amount" id="OutstandingAmount" placeholder="Outstanding Amount">
+            <input formControlName="PreOutstandingAmount" readonly #SeasonAmount type="number"
+              class="form-control text-danger final-amount bill-amount" id="PreOutstandingAmount" placeholder="PreOutstanding Amount">
             <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
     <div class="row mt-2">
@@ -350,7 +350,8 @@
 
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="PaidAmount" class="col-lg-6 col-form-label">Paid Amount</label>
+              <label for="PaidAmount" class="col-lg-6 col-form-label">Paid Amount <span
+                class="text-danger">*</span></label>
               <div class="col-lg-6 position-relative">
                 <input #PaidAmount type="number" class="form-control" id="PaidAmount"
                   placeholder="Paid Amount" formControlName="PaidAmount">
@@ -360,8 +361,7 @@
           </div>
           <div class="col-lg-4">
             <div class="form-group row mb-3">
-              <label for="OutstandingAmount" class="col-lg-6 col-form-label highlight">Outstanding Amount <span
-                  class="text-danger">*</span></label>
+              <label for="OutstandingAmount" class="col-lg-6 col-form-label highlight">Outstanding Amount </label>
               <div class="col-lg-6 position-relative">
                 <input readonly #OutstandingAmount type="number" class="form-control" id="OutstandingAmount"
                   placeholder="OutstandingAmount" formControlName="OutstandingAmount">

@@ -237,6 +237,12 @@ textarea{
     font-size: 1.5rem;
   }
 }
+.model-title .text-center {
+  text-align: center;
+}
+.model-title .flex-grow-1 {
+  flex-grow: 1;
+}
 
 .mat-mdc-dialog-actions{
   box-shadow: var(--soft-box-shadow);

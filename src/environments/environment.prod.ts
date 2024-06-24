@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://www.glsportals.com:94',
+    apiUrl: 'https://www.glsportals.com:454',
   };
   
