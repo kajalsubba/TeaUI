@@ -205,7 +205,7 @@
 
             <!-- LessSeasonAdv Amount -->
             <ng-container matColumnDef="AmountToPay">
-              <th mat-header-cell *matHeaderCellDef> Paid Amount <i class="fa-solid fa-indian-rupee-sign"></i>
+              <th mat-header-cell *matHeaderCellDef> Amount to Pay <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
               <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.AmountToPay| currency:'INR':'':undefined:'en-IN'}} </td>
@@ -214,6 +214,30 @@
                   currency:'INR':'symbol':undefined:'en-IN' }}</b>
               </td>
             </ng-container>
+
+               <!-- PaidAmount Amount -->
+               <ng-container matColumnDef="PaidAmount">
+                <th mat-header-cell *matHeaderCellDef> Paid Amount <i class="fa-solid fa-indian-rupee-sign"></i>
+                </th>
+                <td class="weight-column" mat-cell *matCellDef="let row">
+                  {{row.PaidAmount| currency:'INR':'':undefined:'en-IN'}} </td>
+                <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                  <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('PaidAmount')|
+                    currency:'INR':'symbol':undefined:'en-IN' }}</b>
+                </td>
+              </ng-container>
+
+                <!-- OutstandingAmount Amount -->
+                <ng-container matColumnDef="OutstandingAmount">
+                  <th mat-header-cell *matHeaderCellDef> Future Amount to Pay <i class="fa-solid fa-indian-rupee-sign"></i>
+                  </th>
+                  <td class="weight-column" mat-cell *matCellDef="let row">
+                    {{row.OutstandingAmount| currency:'INR':'':undefined:'en-IN'}} </td>
+                  <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                    <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('OutstandingAmount')|
+                      currency:'INR':'symbol':undefined:'en-IN' }}</b>
+                  </td>
+                </ng-container>
 
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef>Actions</th>

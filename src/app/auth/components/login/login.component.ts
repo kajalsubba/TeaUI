@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { Subscription } from 'rxjs';
@@ -27,7 +27,8 @@ export class LoginComponent implements OnInit {
     private helper: HelperService,
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -43,8 +44,16 @@ export class LoginComponent implements OnInit {
     });
     this.GetTenant();
     this.authService.isLoggedIn = false;
+    this.loadScript();
   }
 
+
+  loadScript() {
+    const script = this.renderer.createElement('script');
+    script.src = 'https://seal.starfieldtech.com/getSeal?sealID=mhsTEc2SPWOTwt8oYega8bwznBbqe8yKxyXDljpDOYp2vWnzUbwggUNxWv37';
+    script.async = true;
+    this.renderer.appendChild(document.getElementById('siteseal'), script);
+  }
   onLogin() {
     this.adminLoginFail = false;
        if (this.loginForm.invalid) {

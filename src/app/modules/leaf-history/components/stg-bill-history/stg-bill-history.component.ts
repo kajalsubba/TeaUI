@@ -38,6 +38,8 @@ export class StgBillHistoryComponent implements OnInit {
     'CessAmount',
     'LessSeasonAdv',
     'AmountToPay',
+    'PaidAmount',
+    'OutstandingAmount',
     'actions',
 
   ];

@@ -21,6 +21,8 @@ export interface SaveStgBill {
     FinalBillAmount: number;
     LessSeasonAdv: number;
     AmountToPay: number;
+    PaidAmount: number;
+    OutstandingAmount: number;
     TenantId: number;
     CreatedBy: number;
     CollectionData: StgCollectionData[];

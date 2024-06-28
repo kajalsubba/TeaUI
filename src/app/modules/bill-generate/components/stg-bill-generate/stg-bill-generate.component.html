@@ -112,7 +112,7 @@
                   </td>
                 </ng-container>
 
-        
+
                 <!-- AverageRate -->
                 <ng-container matColumnDef="Rate">
                   <th mat-header-cell *matHeaderCellDef>Rate <i class="fa-solid fa-indian-rupee-sign"></i>
@@ -351,11 +351,16 @@
           <div class="col-lg-4">
             <div class="form-group row mb-3">
               <label for="PaidAmount" class="col-lg-6 col-form-label">Paid Amount <span
-                class="text-danger">*</span></label>
+                  class="text-danger">*</span></label>
               <div class="col-lg-6 position-relative">
-                <input #PaidAmount type="number" class="form-control" id="PaidAmount"
-                  placeholder="Paid Amount" formControlName="PaidAmount">
+                <input #PaidAmount type="number" class="form-control" id="PaidAmount" placeholder="Paid Amount"
+                  formControlName="PaidAmount" (input)="calculateOutstandingAmount()" (focusout)="onFocusOutEvent($event)">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+                <span
+                  *ngIf="StgAmountForm.get('PaidAmount')?.hasError('required') && StgAmountForm.get('PaidAmount')?.touched"
+                  class="text-danger d-block validation-message">
+                  Paid Amount is required.
+                </span>
               </div>
             </div>
           </div>
@@ -367,13 +372,14 @@
                   placeholder="OutstandingAmount" formControlName="OutstandingAmount">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
               </div>
+
             </div>
           </div>
 
           <div class="col-lg-2 offset-lg-10">
-              <div class="d-grid position-relative">
-                <button [disabled]="isSubmitting" (click)="BillSave()" class="btn btn-color">Submit</button>
-              </div>
+            <div class="d-grid position-relative">
+              <button [disabled]="isSubmitting" (click)="BillSave()" class="btn btn-color">Submit</button>
+            </div>
           </div>
         </div>
       </div>
