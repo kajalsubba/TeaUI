@@ -128,7 +128,7 @@
                                 <th mat-header-cell *matHeaderCellDef> Wet Leaf ( KG ) </th>
                                 <td class="weight-column" mat-cell *matCellDef="let row"> {{row.WetLeafKg}} KG </td>
                                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                                    <b>{{ getTotalCost('WetLeafKg') }} KG</b>
+                                    <b>{{ getTotalCost('WetLeafKg').toFixed(2)}} KG</b>
                                 </td>
                             </ng-container>
 
@@ -137,7 +137,7 @@
                                 <th mat-header-cell *matHeaderCellDef> Long Leaf ( KG ) </th>
                                 <td class="weight-column" mat-cell *matCellDef="let row"> {{row.LongLeafKg}} KG </td>
                                 <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                                    <b>{{ getTotalCost('LongLeafKg') }} KG</b>
+                                    <b>{{ getTotalCost('LongLeafKg').toFixed(2) }} KG</b>
                                 </td>
                             </ng-container>
 

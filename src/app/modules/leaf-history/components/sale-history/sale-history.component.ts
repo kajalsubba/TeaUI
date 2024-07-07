@@ -99,6 +99,7 @@ export class SaleHistoryComponent {
       FactoryName: [''],
       FactoryId: [null],
       AccountName: [''],
+      FineLeaf:[''],
       AccountId: [null],
       SaleTypeId: [null]
     });
@@ -246,6 +247,7 @@ export class SaleHistoryComponent {
       VehicleNo: this.SaleForm.value.VehicleNo,
       FactoryId: this.SaleForm.value.FactoryId??0,
       AccountId: this.SaleForm.value.AccountId??0,
+      FineLeaf:this.SaleForm.value.FineLeaf??'',
       SaleTypeId: this.SaleForm.value.SaleTypeId??0,
       TenantId: this.loginDetails.TenantId,
    
@@ -280,7 +282,7 @@ export class SaleHistoryComponent {
       this.SaleForm.controls['AccountName'].reset();
       this.SaleForm.controls['AccountId'].reset();
       this.SaleForm.controls["SaleTypeId"].reset();
-
+      this.SaleForm.controls["FineLeaf"].reset();
     }
 
   }

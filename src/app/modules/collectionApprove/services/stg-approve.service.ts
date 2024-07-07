@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
 import { IStgVehicle, IstgApprove } from '../interfaces/istg-approve';
 import { Observable } from 'rxjs';
-import { IGetSale, IStgPendingDate, IStgSaleSave, IsaleSave } from '../interfaces/isale-save';
+import { IGetSale, ILaterStgEntry, IStgPendingDate, IStgSaleSave, IsaleSave } from '../interfaces/isale-save';
 import { IGetSaleFactory } from '../../masters/interfaces/IFactory';
 
 @Injectable({
@@ -44,4 +44,7 @@ export class StgApproveService {
     return this.apiService.post('Collection/GetStgVehicleData', clientBody);
   }
 
+  SaveLateralSTGData(clientBody:ILaterStgEntry): Observable<string[]> {
+    return this.apiService.post('Collection/LateralStgSave', clientBody);
+  }
 }

@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { environment } from 'src/environments/environment';
-import { IGetTeaClient, IStg } from '../../interfaces/istg';
+import { IGetTeaClient, ILaterStg, IStg } from '../../interfaces/istg';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { DatePipe, formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -30,8 +30,8 @@ export class LaterAddEditStgComponent implements OnInit {
   GradeList: any[] = [];
   TripList: any[] = [];
   myDatepipe!: any;
-  statusList: string[] = ['Pending', 'Rejected','Approved']
-
+  addData: any = null;
+  statusList: string[] = ['Pending', 'Rejected', 'Approved']
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -50,7 +50,7 @@ export class LaterAddEditStgComponent implements OnInit {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.stgForm = this.fb.group({
       CollectionDate: [new Date()],
-      ApproveId:[],
+      ApproveId: [],
       VehicleNo: ['', Validators.required],
       ClientName: ['', Validators.required],
       ClientId: ['', Validators.required],
@@ -72,7 +72,7 @@ export class LaterAddEditStgComponent implements OnInit {
     this.GeTript();
 
     if (this.dialogData.value) {
-      console.log(this.dialogData,'this.dialogData');
+      //  console.log(this.dialogData, 'this.dialogData');
 
       this.stgForm.controls['CollectionDate'].setValue(formatDate(this.dialogData.value.SaleDate, 'yyyy-MM-dd', 'en-US'));
       //   this.stgForm.get('date').patchValue(new Date('2/14/2021')));
@@ -81,17 +81,7 @@ export class LaterAddEditStgComponent implements OnInit {
       this.stgForm.controls['ClientId'].setValue(this.dialogData.value.ClientId);
       this.stgForm.controls['VehicleNo'].setValue(this.dialogData.value.VehicleNo);
       this.stgForm.controls['ApproveId'].setValue(this.dialogData.approveId);
-      // this.stgForm.controls['WetLeaf'].setValue(this.dialogData.value.WetLeaf);
-      // this.stgForm.controls['LongLeaf'].setValue(this.dialogData.value.LongLeaf);
-      // this.stgForm.controls['Deduction'].setValue(this.dialogData.value.Deduction);
-      // this.stgForm.controls['FinalWeight'].setValue(this.dialogData.value.FinalWeight);
-      // this.stgForm.controls['GradeId'].setValue(this.dialogData.value.GradeId);
-      // this.stgForm.controls['TripId'].setValue(this.dialogData.value.TripId);
-      // this.stgForm.controls['Rate'].setValue(this.dialogData.value.Rate);
-      // this.stgForm.controls['Remarks'].setValue(this.dialogData.value.Remarks);
-      // this.stgForm.controls['Status'].setValue(this.dialogData.value.Status);
 
-   //   this.stgForm.controls['CollectionDate'].disable({ onlySelf: true });
     }
   }
 
@@ -156,14 +146,19 @@ export class LaterAddEditStgComponent implements OnInit {
       return;
     }
     // if(this.dialogData.buttonName == "Save"){
-    let data: IStg = {
+    const data: ILaterStg = {
       CollectionId: this.dialogData?.value?.CollectionId ? this.dialogData?.value?.CollectionId : 0,
-      CollectionDate: formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
+      ApproveId: this.dialogData?.approveId,
+      CollectionDate: formatDate(this.stgForm.value.CollectionDate, 'dd/MM/yyyy', 'en-IN'),
+      // CollDate:formatDate(this.stgForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
       VehicleNo: this.stgForm.value.VehicleNo,
       ClientId: this.stgForm.value.ClientId,
+      ClientName: this.stgForm.value.ClientName,
       FirstWeight: this.stgForm.value.FirstWeight,
       WetLeaf: this.stgForm.value.WetLeaf,
+      WetLeafKg: Math.round((this.stgForm.value.FirstWeight * this.stgForm.value.WetLeaf) / 100),
       LongLeaf: this.stgForm.value.LongLeaf,
+      LongLeafKg: Math.round((this.stgForm.value.FirstWeight * this.stgForm.value.LongLeaf) / 100),
       Deduction: this.stgForm.value.Deduction,
       FinalWeight: this.stgForm.value.FinalWeight,
       Rate: this.stgForm.value.Rate,
@@ -177,9 +172,10 @@ export class LaterAddEditStgComponent implements OnInit {
 
     }
     this.isSubmitting = true;
-   // this.SaveStgtData(data);
-
-
+    // this.SaveStgtData(data);
+    this.addData = data;
+    //  this.helper.setItem('AddLaterSTGData', data);
+    this.dialogRef.close(this.addData);
   }
 
 
@@ -204,7 +200,7 @@ export class LaterAddEditStgComponent implements OnInit {
         if (this.dialogData.buttonName == "Update") {
           this.dialogRef.close(true);
         }
-
+        this.dialogRef.close(true);
 
         this.ClientNoInput.nativeElement.focus();
         this.CleanFormControl();
@@ -268,9 +264,9 @@ export class LaterAddEditStgComponent implements OnInit {
       const res: any = await this.autocompleteService.GetClientNames(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
-
-      this.ClientNames = res.ClientDetails;
-
+      console.log(this.dialogData.clientList, 'this.11dialogData')
+      this.ClientNames = res.ClientDetails.filter((x: any) => !this.dialogData.clientList.includes(x.ClientId));
+      console.log(this.ClientNames, 'this.ClientNames')
 
     } catch (error) {
       console.error('Error:', error);
@@ -327,7 +323,7 @@ export class LaterAddEditStgComponent implements OnInit {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     })
-    this.dialogRef.close(true);
+    this.dialogRef.close(this.addData);
   }
 
   selectClient(client: any) {

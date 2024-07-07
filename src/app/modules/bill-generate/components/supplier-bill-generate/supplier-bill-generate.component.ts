@@ -139,7 +139,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     const lessCommAmount: number = (this.supplierAmountForm.controls['LessComission'].value || 0) * finalWeight;
     const cessAmount: number = (this.supplierAmountForm.controls['GreenLeafCess'].value || 0) * finalWeight;
 
-    const finalAmount: number = grossAmount - (lessCommAmount + cessAmount) - totalPaymentWithPreviusBalance;
+    const finalAmount: number = grossAmount - lessCommAmount - cessAmount - totalPaymentWithPreviusBalance;
     const amountToPay: number = finalAmount - (this.supplierAmountForm.controls['LessSeasonAdv'].value || 0);
 
     // Update the value of the final amount input field

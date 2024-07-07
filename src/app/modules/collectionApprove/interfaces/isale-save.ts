@@ -25,6 +25,7 @@ export interface IGetSale
     VehicleNo: any;
     FactoryId: any;
     AccountId:any;
+    FineLeaf:any;
     SaleTypeId: any;
     TenantId:any;
 }
@@ -83,4 +84,42 @@ export interface IDirectSale {
     DirectSale: boolean;
     TenantId: number;
     CreatedBy: number;
+  }
+
+  export interface ILaterStgEntry
+  { 
+    ApproveId: number;
+    CollectionDate: any;
+    VehicleNo: any;
+    TotalFirstWeight: number;
+    TotalWetLeaf: number;
+    TotalLongLeaf: number;
+    TotalDeduction: number;
+    TotalFinalWeight: number;
+    FineLeaf: number; 
+    ChallanWeight: number; 
+    Rate: number; 
+    Incentive: number; 
+    GrossAmount: number; 
+    Remarks: string; 
+    lateralStgLists: ILaterStgList[]; 
+    TenantId: number;
+    CreatedBy: number;
+
+  }
+
+  export interface ILaterStgList
+  {
+   
+    ClientId: number;
+    FirstWeight: number;
+    WetLeaf: number;
+    LongLeaf: number;
+    Deduction: number;
+    FinalWeight: number;
+    Rate: number;
+    GradeId: number;
+    Remarks: string;
+    TripId: number;
+    TenantId: number;
   }

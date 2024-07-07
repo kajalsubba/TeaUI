@@ -73,6 +73,9 @@ export class StgBillGenerateComponent implements OnInit {
   isSubmitting = false;
   StgBillForm!: FormGroup;
   StgAmountForm!: FormGroup;
+  PaidAmountErrorMsg: string = '';
+  PaidAmountValidate: boolean = false;
+  SeasonAdvValidate: boolean = false;
   minToDate!: any;
   currentDate: Date | null = new Date();
   ClientNames: any[] = [];
@@ -138,18 +141,19 @@ export class StgBillGenerateComponent implements OnInit {
   }
 
   calculateFinalAmount(): void {
+    debugger
     const grossAmount: number = this.getTotal('GrossAmount');
     const finalWeight: number = this.getTotal('FinalWeight');
     const totalPayment: number = this.getTotalPayment('Amount');
 
-    const totalPaymentWithPreviusBalance: number = totalPayment + Number(this.StgAmountForm.controls['PreviousAmount'].value);
+    const totalPaymentWithPreviusBalance: number = totalPayment - Number(this.StgAmountForm.controls['PreviousAmount'].value);
     const incentiveAmount: number = (this.StgAmountForm.controls['Incentive'].value || 0) * finalWeight;
     const transportingAmount: number = (this.StgAmountForm.controls['Transporting'].value || 0) * finalWeight;
     const cessAmount: number = (this.StgAmountForm.controls['GreenLeafCess'].value || 0) * finalWeight;
 
-    const finalAmount: number = grossAmount + incentiveAmount - (transportingAmount + cessAmount) - totalPaymentWithPreviusBalance;
+    const finalAmount: number = grossAmount + incentiveAmount - transportingAmount - cessAmount - totalPaymentWithPreviusBalance;
     const amountToPay: number = finalAmount - (this.StgAmountForm.controls['LessSeasonAdv'].value || 0);
-   
+
     amountToPay > 0 ? this.StgAmountForm.controls['PaidAmount'].setValue(amountToPay.toFixed(2)) : this.StgAmountForm.controls['PaidAmount'].setValue(0);
 
     const outStnadingAmount: number = amountToPay - (this.StgAmountForm.controls['PaidAmount'].value || 0);
@@ -170,8 +174,7 @@ export class StgBillGenerateComponent implements OnInit {
 
   }
 
-  calculateOutstandingAmount():void
-  {
+  calculateOutstandingAmount(): void {
     const outStnadingAmount: number = this.StgAmountForm.controls['AmountToPay'].value - (this.StgAmountForm.controls['PaidAmount'].value || 0);
     this.StgAmountForm.controls['OutstandingAmount'].setValue(outStnadingAmount.toFixed(2));
 
@@ -489,16 +492,43 @@ export class StgBillGenerateComponent implements OnInit {
     this.isSubmitting = false;
   }
 
+  onFocusOutSeasonEvent(event: any) {
+    if ((this.StgAmountForm.value.SeasonAmount > 0) && (this.StgAmountForm.value.AmountToPay > 0)) {
+      if (this.StgAmountForm.value.LessSeasonAdv == null) {
+        this.setValidation('LessSeasonAdv');
+        //this.StgAmountForm.controls["PaidAmount"].reset();
+        //this.PaidAmountErrorMsg='Amount should not more than Paybale!'
+        this.SeasonAdvValidate = true;
+      }
+      else{
+        this.clearEmailValidation('LessSeasonAdv')
+        this.SeasonAdvValidate = false;
+      }
+    }
+    else {
+      this.clearEmailValidation('LessSeasonAdv')
+      this.SeasonAdvValidate = false;
+    }
+  }
   onFocusOutEvent(event: any) {
 
-    if (this.StgAmountForm.value.AmountToPay >0) {
+    if (this.StgAmountForm.value.PaidAmount == null) {
       this.setValidation('PaidAmount');
+      this.StgAmountForm.controls["PaidAmount"].reset();
+      this.PaidAmountErrorMsg = 'Amount should not Blank!'
+      this.PaidAmountValidate = true;
+    }
+
+    else if (this.StgAmountForm.value.PaidAmount > this.StgAmountForm.value.AmountToPay) {
+      this.setValidation('PaidAmount');
+      this.StgAmountForm.controls["PaidAmount"].reset();
+      this.PaidAmountErrorMsg = 'Amount should not more than Paybale!'
+      this.PaidAmountValidate = true;
     }
     else {
       this.clearEmailValidation('PaidAmount')
-
+      this.PaidAmountValidate = false;
     }
-
   }
   clearEmailValidation(controlName: string) {
     this.StgAmountForm.get(controlName)?.clearValidators();

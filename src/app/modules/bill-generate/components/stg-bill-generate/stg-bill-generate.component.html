@@ -212,6 +212,19 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="form-group row my-2">
+          <!-- <label for="PreOutstandingAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
+              Previous Outstanding </b></label>
+          <div class="col-lg-6 position-relative">
+            <input formControlName="PreOutstandingAmount" readonly #SeasonAmount type="number"
+              class="form-control text-danger final-amount bill-amount" id="PreOutstandingAmount"
+              placeholder="PreOutstanding Amount">
+            <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
+          </div> -->
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="form-group row my-2">
           <label for="PreviousAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
               Standing Season Adv.</b></label>
           <div class="col-lg-6 position-relative">
@@ -221,6 +234,7 @@
           </div>
         </div>
       </div>
+
 
       <div class="col-lg-4">
         <div class="form-group row my-2">
@@ -235,18 +249,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="col-lg-4">
-        <div class="form-group row my-2">
-          <label for="PreOutstandingAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
-             Previous Outstanding </b></label>
-          <div class="col-lg-6 position-relative">
-            <input formControlName="PreOutstandingAmount" readonly #SeasonAmount type="number"
-              class="form-control text-danger final-amount bill-amount" id="PreOutstandingAmount" placeholder="PreOutstanding Amount">
-            <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
-          </div>
-        </div>
-      </div> -->
 
     </div>
     <div class="row mt-2">
@@ -327,9 +329,11 @@
               <label for="LessSeasonAdv" class="col-lg-6 col-form-label">Less Season Adv. </label>
               <div class="col-lg-6 position-relative">
                 <input (input)="calculateFinalAmount()" #LessSeasonAdv type="number" class="form-control"
-                  id="LessSeasonAdv" placeholder="Less Season Adv." formControlName="LessSeasonAdv">
+                  id="LessSeasonAdv" placeholder="Less Season Adv." formControlName="LessSeasonAdv"  (focusout)="onFocusOutSeasonEvent($event)">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-
+                <span *ngIf="SeasonAdvValidate" class="text-danger d-block validation-message">
+                  Enter Less Season Advance !
+                </span>
 
               </div>
             </div>
@@ -354,12 +358,11 @@
                   class="text-danger">*</span></label>
               <div class="col-lg-6 position-relative">
                 <input #PaidAmount type="number" class="form-control" id="PaidAmount" placeholder="Paid Amount"
-                  formControlName="PaidAmount" (input)="calculateOutstandingAmount()" (focusout)="onFocusOutEvent($event)">
+                  formControlName="PaidAmount" (input)="calculateOutstandingAmount()"
+                  (focusout)="onFocusOutEvent($event)">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                <span
-                  *ngIf="StgAmountForm.get('PaidAmount')?.hasError('required') && StgAmountForm.get('PaidAmount')?.touched"
-                  class="text-danger d-block validation-message">
-                  Paid Amount is required.
+                <span *ngIf="PaidAmountValidate" class="text-danger d-block validation-message">
+                  {{PaidAmountErrorMsg}}
                 </span>
               </div>
             </div>

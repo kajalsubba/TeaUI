@@ -16,7 +16,7 @@ import { SaleService } from '../../services/sale.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { ISaleStg } from '../../interfaces/isale-stg';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
-import { IStgSaleSave } from 'src/app/modules/collectionApprove/interfaces/isale-save';
+import { ILaterStgEntry, ILaterStgList, IStgSaleSave } from 'src/app/modules/collectionApprove/interfaces/isale-save';
 import { formatDate } from '@angular/common';
 import { LaterAddEditStgComponent } from 'src/app/modules/collection/models/later-add-edit-stg/later-add-edit-stg.component';
 
@@ -30,9 +30,11 @@ export class EditSaleEntryComponent implements OnInit {
 
   AccountList: any = [];
   FactoryList: any = [];
+  AddLateralStgData: any = [];
   filteredFactory: any = [];
   filteredAccounts: any = [];
   vehicleNumbers: any[] = [];
+  ClientList: any = [];
   private destroy$ = new Subject<void>();
   loginDetails: any;
   private subscriptions: Subscription[] = [];
@@ -41,7 +43,7 @@ export class EditSaleEntryComponent implements OnInit {
   displayedColumns: string[] = [
     'serialNumber',
     'CollectionDate',
-    //  'VehicleNo',
+    // 'ClientId',
     'ClientName',
     'FirstWeight',
     'WetLeaf',
@@ -55,10 +57,9 @@ export class EditSaleEntryComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    //  { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
+    // { columnDef: 'ClientId', header: 'Client Id' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
   ];
 
@@ -76,7 +77,7 @@ export class EditSaleEntryComponent implements OnInit {
     private accountService: FactoryAccountService,
     private stgapproveService: StgApproveService,
     private saleService: SaleService,
-    private dialog:MatDialog
+    private dialog: MatDialog
   ) { }
 
   async ngOnInit() {
@@ -155,7 +156,7 @@ export class EditSaleEntryComponent implements OnInit {
       if (this.data.stgData.TypeName == 'STG') {
         await this.GetSaleStgData(this.data.stgData.ApproveId);
       }
-      else  {
+      else {
         await this.GetSaleSupplierData(this.data.stgData.ApproveId);
       }
       this.saleEntryForm.controls['FieldCollectionWeight'].setValue(
@@ -195,6 +196,12 @@ export class EditSaleEntryComponent implements OnInit {
         .toPromise();
 
       this.dataSource.data = res.SaleStgData;
+      res.SaleStgData.forEach((element: any) => {
+        this.ClientList.push(element.ClientId);
+      });
+
+      console.log(this.ClientList, 'this.ClientList');
+
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -263,40 +270,105 @@ export class EditSaleEntryComponent implements OnInit {
       return;
     }
     // Create the data object to be saved
-    let data: IStgSaleSave = {
-      SaleId: this.data?.isEdit ? this.data.stgData.SaleId : 0,
-      TotalFirstWeight: this.data.stgData.TotalFirstWeight ?? 0,
-      TotalWetLeaf: this.data.stgData.TotalWetLeaf ?? 0,
-      TotalLongLeaf: this.data.stgData.TotalLongLeaf ?? 0,
-      TotalDeduction: this.data.stgData.TotalDeduction ?? 0,
-      TotalFinalWeight: this.data.stgData.TotalFinalWeight ?? 0,
 
-      ApproveList: this.data.stgData.ApproveList ?? [],
-      SaleDate: formatDate(
-        this.saleEntryForm.value.SaleDate,
-        'yyyy-MM-dd',
-        'en-US'
-      ),
-      AccountId: this.saleEntryForm.value.AccountId,
-      VehicleId: this.saleEntryForm.value.VehicleId,
-      FieldCollectionWeight: this.saleEntryForm.value.FieldCollectionWeight,
-      FineLeaf: this.saleEntryForm.value.FineLeaf,
-      ChallanWeight: this.saleEntryForm.value.ChallanWeight,
-      Rate: this.saleEntryForm.value.Rate,
-      Incentive: this.saleEntryForm.value.Incentive,
-      GrossAmount: this.saleEntryForm.value.GrossAmount,
-      Remarks: this.saleEntryForm.value.Remarks,
-      SaleTypeId: this.data.saleTypeId,
-      TenantId: this.loginDetails.TenantId,
-      CreatedBy: this.loginDetails.UserId,
-    };
+    //   console.log(this.data.stgData.TypeName, 'data');
+    if (this.data.stgData.TypeName == 'STG') {
+      const selectedObjects1: any[] = [];
+      this.AddLateralStgData.forEach((keys: any, index: any) => {
+        // Create the selected object based on the selected item
+        const selectedObject1: ILaterStgList = {
+          ClientId: keys[0].ClientId,
+          FirstWeight: keys[0].FirstWeight,
+          WetLeaf: keys[0].WetLeaf,
+          LongLeaf: keys[0].LongLeaf,
+          Deduction: keys[0].Deduction,
+          FinalWeight: keys[0].FinalWeight,
+          Rate: keys[0].Rate,
+          GradeId: keys[0].GradeId,
+          Remarks: keys[0].Remarks,
+          TripId: keys[0].TripId,
+          TenantId: this.loginDetails.TenantId
+        }
+        // Push the selected object to the array
+        selectedObjects1.push(selectedObject1);
+      });
 
-    this.SaveSaleData(data);
+      console.log(selectedObjects1, 'selectedObjects1');
+      let lateralData: ILaterStgEntry = {
+        ApproveId: this.data.stgData.ApproveId,
+        CollectionDate: formatDate(this.saleEntryForm.value.SaleDate, 'yyyy-MM-dd', 'en-US'),
+        VehicleNo: this.data.stgData.VehicleNo ?? "",
+        TotalFirstWeight: this.data.stgData.TotalFirstWeight ?? 0,
+        TotalWetLeaf: this.data.stgData.TotalWetLeaf ?? 0,
+        TotalLongLeaf: this.data.stgData.TotalLongLeaf ?? 0,
+        TotalDeduction: this.data.stgData.TotalDeduction ?? 0,
+        TotalFinalWeight: this.saleEntryForm.value.FieldCollectionWeight ?? 0,
+        FineLeaf: Number(this.saleEntryForm.value.FineLeaf) ?? 0,
+        ChallanWeight: this.saleEntryForm.value.ChallanWeight ?? 0,
+        Rate: this.saleEntryForm.value.Rate ?? 0,
+        Incentive: this.saleEntryForm.value.Incentive ?? 0,
+        GrossAmount: Number(this.saleEntryForm.value.GrossAmount) ?? 0,
+        Remarks: this.saleEntryForm.value.Remarks,
+        lateralStgLists: selectedObjects1 ?? [],
+        TenantId: this.loginDetails.TenantId,
+        CreatedBy: this.loginDetails.UserId,
+      }
+      console.log(lateralData, 'lateralData');
+
+      this.SaveLateralSTGData(lateralData);
+    }
+    else {
+      let data: IStgSaleSave = {
+        SaleId: this.data?.isEdit ? this.data.stgData.SaleId : 0,
+        TotalFirstWeight: this.data.stgData.TotalFirstWeight ?? 0,
+        TotalWetLeaf: this.data.stgData.TotalWetLeaf ?? 0,
+        TotalLongLeaf: this.data.stgData.TotalLongLeaf ?? 0,
+        TotalDeduction: this.data.stgData.TotalDeduction ?? 0,
+        TotalFinalWeight: this.data.stgData.TotalFinalWeight ?? 0,
+
+        ApproveList: this.data.stgData.ApproveList ?? [],
+        SaleDate: formatDate(
+          this.saleEntryForm.value.SaleDate,
+          'yyyy-MM-dd',
+          'en-US'
+        ),
+        AccountId: this.saleEntryForm.value.AccountId,
+        VehicleId: this.saleEntryForm.value.VehicleId,
+        FieldCollectionWeight: this.saleEntryForm.value.FieldCollectionWeight,
+        FineLeaf: this.saleEntryForm.value.FineLeaf,
+        ChallanWeight: this.saleEntryForm.value.ChallanWeight,
+        Rate: this.saleEntryForm.value.Rate,
+        Incentive: this.saleEntryForm.value.Incentive,
+        GrossAmount: this.saleEntryForm.value.GrossAmount,
+        Remarks: this.saleEntryForm.value.Remarks,
+        SaleTypeId: this.data.saleTypeId,
+        TenantId: this.loginDetails.TenantId,
+        CreatedBy: this.loginDetails.UserId,
+      };
+      this.SaveSaleData(data);
+    }
   }
 
   SaveSaleData(clientBody: IStgSaleSave) {
     this.stgapproveService
       .SaveStgSaleData(clientBody)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          console.error('Error:', error);
+          this.toastr.error('An error occurred', 'ERROR');
+          throw error;
+        })
+      )
+      .subscribe((res: any) => {
+        //console.log(res);
+        this.toastr.success(res.Message, 'SUCCESS');
+        this.dialogRef.close(true);
+      });
+  }
+  SaveLateralSTGData(clientBody: ILaterStgEntry) {
+    this.stgapproveService
+      .SaveLateralSTGData(clientBody)
       .pipe(
         takeUntil(this.destroy$),
         catchError((error) => {
@@ -434,21 +506,34 @@ export class EditSaleEntryComponent implements OnInit {
     }
   }
 
-  addSaleEntry(){
-      const dialogRef = this.dialog.open(LaterAddEditStgComponent, {
-        width: '80%',
-        data: {
-          title: 'Add STG Entry',
-          buttonName: 'Save',
-          value:  this.saleEntryForm.value,
-          approveId:this.data.stgData.ApproveId
-        },
-        disableClose: true,
-      });
-      dialogRef.afterClosed().subscribe((result: any) => {
-        if (result) {
-          
-        }
-      });
+  addSaleEntry() {
+    const dialogRef = this.dialog.open(LaterAddEditStgComponent, {
+      width: '80%',
+      data: {
+        title: 'Add STG Entry',
+        buttonName: 'Save',
+        value: this.saleEntryForm.value,
+        approveId: this.data.stgData.ApproveId,
+        clientList: this.ClientList
+      },
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result != null) {
+
+        //   const AddDataList:any = this.helper.getItem('AddLaterSTGData');
+        const AddStgObjects: any[] = [];
+        AddStgObjects.push(result);
+        this.AddLateralStgData.push(AddStgObjects);
+        this.dataSource.data = [...this.dataSource.data, ...AddStgObjects];
+        this.saleEntryForm.controls['FieldCollectionWeight'].setValue(
+          this.getTotalCost('FinalWeight')
+        );
+        this.saleEntryForm.controls['ChallanWeight'].setValue(
+          this.getTotalCost('FinalWeight')
+        );
+        // console.log(this.AddLateralStgData, 'AddLateralStgData');
+      }
+    });
   }
 }
