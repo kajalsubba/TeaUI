@@ -50,6 +50,7 @@ export interface IStgSelect
     VehicleNo: any;
     Status: string;
     TripId:number;
+    GradeId:number;
     ClientId:number;
     CreatedBy:number;
 }

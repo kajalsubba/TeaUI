@@ -21,6 +21,7 @@ import { IsupplierRateFixService } from '../../services/isupplier-rate-fix.servi
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { environment } from 'src/environments/environment';
 import enIN from '@angular/common/locales/en-IN';
+import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-rate-fix',
@@ -39,7 +40,7 @@ export class SupplierRateFixComponent implements OnInit {
     'ChallanWeight',
     'Rate',
     'GrossAmount',
-    'Remarks',
+    'actions',
    // 'TripName',
    // 'Status',
     //'actions'
@@ -57,7 +58,7 @@ export class SupplierRateFixComponent implements OnInit {
     { columnDef: 'FineLeaf', header: 'Fine Leaf' },
     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     { columnDef: 'Rate', header: 'Rate' },
-    { columnDef: 'Remarks', header: 'Remark' },
+    //{ columnDef: 'Remarks', header: 'Remark' },
  //   { columnDef: 'TripName', header: 'TripName ' },
     // { columnDef: 'Status', header: 'Status ' }
   ];
@@ -129,6 +130,45 @@ export class SupplierRateFixComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  EditRate(element: any) {
+    
+    const dialogRef = this.dialog.open(EditRateComponent, {
+      width: window.innerWidth <= 1024 ? '40%' : '30%',
+      data: {
+        title:element.CollectionDate+' - ' +element.ClientName,
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        //  this.GetPaymentData();
+        this.dataSource.data.forEach(item => {
+          // Replace 'someCondition' with your actual condition
+          if (item.CollectionId == result.CollectionId) {
+            // Update the necessary fields
+
+            item.Rate = result.Rate;
+
+          }
+        });
+        this.dataSource.data = [...this.dataSource.data];
+        this.dataSource.data.forEach((keys: any, val: any) => {
+     //     keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
+            keys.GrossAmount = Number(keys.ChallanWeight * keys.Rate).toFixed(2)
+         //   keys.Incentive = this.dateRangeForm.value.Incentive ??0,
+       //     keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
+           // keys.FinalAmount = Number(Number(keys.ChallanWeight * keys.Rate) + Number(keys.ChallanWeight * keys.Incentive)).toFixed(2)
+    
+        });
+      }
+    });
+
+   
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {

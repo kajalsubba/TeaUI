@@ -16,6 +16,7 @@ import enIN from '@angular/common/locales/en-IN';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEditStgComponent } from 'src/app/modules/collection/models/add-edit-stg/add-edit-stg.component';
 import { ExcelExportService } from '../../../../shared/services/excel-export.service';
+import { GradeService } from 'src/app/modules/masters/services/grade.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-stg-history',
@@ -68,6 +69,7 @@ export class StgHistoryComponent {
   dateRangeForm!: FormGroup;
   ClientNames: any[] = [];
   minToDate!: any;
+  GradeList:any=[];
   vehicleNumbers: any[] = [];
   statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
   selectedRowIndex: number = -1;
@@ -84,6 +86,7 @@ export class StgHistoryComponent {
     private excelService: ExcelExportService,
     private stgService: StgService,
     private dialog: MatDialog,
+    private gradeService: GradeService,
   ) { }
 
  async ngOnInit(){
@@ -94,10 +97,12 @@ export class StgHistoryComponent {
      // VehicleNo: [''],
       ClientName:[],
       ClientId: [0],
-      Status: ['']
+      Status: [''],
+      GradeId:[0]
     });
    // this.loadVehicleNumbers();
     await this.loadClientNames();
+    this.getGradeList();
   }
 
   ngAfterViewInit() {
@@ -106,6 +111,20 @@ export class StgHistoryComponent {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+  getGradeList() {
+    let bodyData: IGetGrade = {
+      TenantId: this.loginDetails.TenantId
+    }
+
+    const gradeGetService = this.gradeService.GetGrade(bodyData).subscribe((res: any) => {
+      this.GradeList = res.GradeDetails
+    });
+
+    this.subscriptions.push(gradeGetService);
+
+  }
+
 
   deleteItem(element: any) { }
 
@@ -193,6 +212,7 @@ export class StgHistoryComponent {
       VehicleNo: '',
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
       TripId: 0,
+      GradeId:this.dateRangeForm.value.GradeId??0,
       ClientId:this.dateRangeForm.value.ClientId,
       CreatedBy: this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
     }

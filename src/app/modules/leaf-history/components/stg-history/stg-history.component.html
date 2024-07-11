@@ -42,13 +42,34 @@
                 </mat-option>
               </mat-select>
             </div>
+            <div class="col-lg-3 mx-2" style="width: 162px;">
+              <mat-select placeholder="--Select Grade--" class="fromSelect" formControlName="GradeId">
+                <mat-option [value]="0">
+                  All Grade
+              </mat-option>
+                <mat-option *ngFor="let Grade of GradeList"[value]="Grade.GradeId">
+                  {{Grade.GradeName}}
+              </mat-option>
+              </mat-select>
+            </div>
+
+          
           </form>
         </div>
-        <div class="col-lg-2 d-grid">
-          <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
+        <!-- <div class="col-lg-3 d-grid my-2">
+          <button (click)="search()" class="btn btn-color ms-2">Search</button>
+        </div> -->
+      
+      </div>
+      <div class="row">
+        <div class="col-lg-10">
+          <!-- <button (click)="search()" class="btn btn-color ms-2">Search</button> -->
+        </div>
+        <div class="col-lg-2 d-grid my-1">
           <button (click)="search()" class="btn btn-color ms-2">Search</button>
         </div>
       </div>
+   
     </div>
     <div class="col-lg-2 my-2 border-left">
       <div class="top-container">
