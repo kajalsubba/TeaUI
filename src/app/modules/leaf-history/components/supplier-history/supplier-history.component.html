@@ -116,6 +116,17 @@
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Count : {{TotalVehicleCount}}</b> </td>
             </ng-container>
 
+            
+            <!-- FineLeaf Average -->
+            <ng-container matColumnDef="FineLeaf">
+              <th mat-header-cell *matHeaderCellDef> Fine Leaf </th>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.FineLeaf}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>{{ getFineLeafAvg('FineLeaf') }} </b>
+              </td>
+            </ng-container>
+
             <!-- First Weight -->
             <ng-container matColumnDef="ChallanWeight">
               <th mat-header-cell *matHeaderCellDef> Challan Weight(KG) </th>

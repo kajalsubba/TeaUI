@@ -61,7 +61,7 @@ export class SupplierHistoryComponent {
     //  { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
-    { columnDef: 'FineLeaf', header: 'Fine Leaf' },
+    //  { columnDef: 'FineLeaf', header: 'Fine Leaf' },
     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     //  { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Remarks', header: 'Remark' },
@@ -305,9 +305,31 @@ export class SupplierHistoryComponent {
 
     this.GetSupplierList();
   }
+
   getTotalCost(columnName: string): number {
     return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
 
+  }
+
+  getFineLeafAvg(columnName: string): number {
+    // return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
+    const filteredData = this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected');
+
+    // If there are no relevant entries, return zero
+    if (filteredData.length === 0) {
+      return 0;
+    }
+
+    // Sum up the values of the specified column
+    const sum = filteredData.reduce((acc, curr) => acc + curr[columnName], 0);
+
+    // Calculate the average
+    const average = sum / filteredData.length;
+    // Round the average to two decimal places and convert it back to a number
+    const roundedAverage = parseFloat(average.toFixed(2));
+
+    // Return the rounded average
+    return roundedAverage;
   }
 
   async loadVehicleNumbers() {
