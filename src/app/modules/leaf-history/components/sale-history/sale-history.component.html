@@ -119,6 +119,16 @@
                 <b>{{ getTotalCost('FieldWeight') }} KG</b>
               </td>
             </ng-container>
+              
+            <!-- FineLeaf Average -->
+            <ng-container matColumnDef="FineLeaf">
+              <th mat-header-cell *matHeaderCellDef> Fine Leaf (%)</th>
+              <td  class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.FineLeaf}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>Fine Avg. {{ getFineLeafAvg('FineLeaf') }} %</b>
+              </td>
+            </ng-container>
 
             <!-- ChallanWeight -->
             <ng-container matColumnDef="ChallanWeight">

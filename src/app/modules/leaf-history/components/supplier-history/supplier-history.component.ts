@@ -326,7 +326,7 @@ export class SupplierHistoryComponent {
     // Calculate the average
     const average = sum / filteredData.length;
     // Round the average to two decimal places and convert it back to a number
-    const roundedAverage = parseFloat(average.toFixed(2));
+    const roundedAverage = Math.round(average);
 
     // Return the rounded average
     return roundedAverage;

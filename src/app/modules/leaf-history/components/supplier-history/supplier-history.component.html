@@ -119,11 +119,11 @@
             
             <!-- FineLeaf Average -->
             <ng-container matColumnDef="FineLeaf">
-              <th mat-header-cell *matHeaderCellDef> Fine Leaf </th>
+              <th mat-header-cell *matHeaderCellDef> Fine Leaf (%)</th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
                 *matCellDef="let row"> {{row.FineLeaf}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getFineLeafAvg('FineLeaf') }} </b>
+                <b>Fine Avg. {{ getFineLeafAvg('FineLeaf') }} %</b>
               </td>
             </ng-container>
 
