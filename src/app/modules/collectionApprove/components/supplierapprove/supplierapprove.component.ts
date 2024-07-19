@@ -375,8 +375,8 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   }
   openImage(imageUrl: any) {
     const dialogRef = this.dialog.open(ImageViewerComponent, {
-      width: "80vw",
-      height: "95%",
+      // width: "80vw",
+      // height: "95%",
       disableClose: true,
       data: {
         title: "Image Viewer",

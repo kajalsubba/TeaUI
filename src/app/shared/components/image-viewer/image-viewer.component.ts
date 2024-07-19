@@ -8,28 +8,47 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ImageViewerComponent implements OnInit {
 
-  rotateDegrees = 'rotate(0deg)'; 
+  rotateDegrees: number = 0; 
+  zoomLevel: number = 1;
+  transformStyle: string = '';
+
   constructor(
     public dialogRef: MatDialogRef<ImageViewerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ){}
 
   ngOnInit(): void {
-      
+    this.updateTransformStyle();
   }
-  rotateImage() {
-    // Update the rotation angle
-    this.rotateDegrees = `rotate(${(parseInt(this.rotateDegrees.substring(7)) + 90) % 360}deg)`;
-  }
-  downloadImage() {
-   // window.open(this.data.imageUrl, '_blank');
 
+  rotateImage() {
+    this.rotateDegrees = (this.rotateDegrees + 90) % 360;
+    this.updateTransformStyle();
+  }
+
+  downloadImage() {
     const link = document.createElement('a');
-    link.href = this.data.imageUrl; // Use the image URL
-    link.target = '_blank'; // Open in a new tab
-    link.download = 'image.jpg'; // Set the file name for download
+    link.href = this.data.imageUrl;
+    link.target = '_blank';
+    link.download = 'image.jpg';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+
+  zoomIn() {
+    this.zoomLevel += 0.1;
+    this.updateTransformStyle();
+  }
+
+  zoomOut() {
+    if (this.zoomLevel > 0.1) {
+      this.zoomLevel -= 0.1;
+      this.updateTransformStyle();
+    }
+  }
+
+  updateTransformStyle() {
+    this.transformStyle = `scale(${this.zoomLevel}) rotate(${this.rotateDegrees}deg)`;
   }
 }
