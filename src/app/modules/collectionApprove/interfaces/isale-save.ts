@@ -88,6 +88,7 @@ export interface IDirectSale {
 
   export interface ILaterStgEntry
   { 
+    SaleId:any;
     ApproveId: number;
     CollectionDate: any;
     VehicleNo: any;
