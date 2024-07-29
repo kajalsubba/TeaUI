@@ -6,6 +6,7 @@ export interface ISaveClient {
   ClientAddress: string;
   Password:any;
   ContactNo: string;
+  WhatsAppNo:string,
   EmailId: string;
   CategoryID: number;
   TenantId: number;

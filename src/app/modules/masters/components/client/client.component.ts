@@ -35,6 +35,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
     'ClientAddress',
     'CategoryName',
     'ContactNo',
+    'WhatsAppNo',
     'EmailId',
     'LoginStatus',
     'actions',
@@ -46,14 +47,14 @@ export class ClientComponent implements OnInit, AfterViewInit {
     // { columnDef: 'ClientMiddleName', header: 'Middle Name' },
     { columnDef: 'ClientLastName', header: 'Last Name' },
     { columnDef: 'ClientAddress', header: 'Client Address' },
-    // { columnDef: 'CategoryID', header: 'CategoryID' },
     { columnDef: 'CategoryName', header: 'Category' },
     { columnDef: 'ContactNo', header: 'Contact No.' },
+    { columnDef: 'WhatsAppNo', header: 'WhatsApp No' },
     { columnDef: 'EmailId', header: 'Email ID' },
     { columnDef: 'LoginStatus', header: 'Client Login' },
   ];
 
-  ClientForm!:FormGroup;
+  ClientForm!: FormGroup;
   loginDetails: any;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -65,9 +66,9 @@ export class ClientComponent implements OnInit, AfterViewInit {
     private helper: HelperService,
     private categoryService: CategoryService,
     private toastr: ToastrService,
-    private fb:FormBuilder,
+    private fb: FormBuilder,
 
-  ) {}
+  ) { }
 
   ngAfterViewInit() {
     //    console.log(this.loginDetails);
@@ -90,10 +91,10 @@ export class ClientComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getClientList(category?:any) {
+  getClientList(category?: any) {
     let bodyData: IGetClient = {
       TenantId: this.loginDetails.TenantId,
-      Category:category
+      Category: category
     };
     const clientListService = this.clientService
       .getClient(bodyData)
@@ -103,9 +104,8 @@ export class ClientComponent implements OnInit, AfterViewInit {
       });
     this.subscriptions.push(clientListService);
   }
-  ClientSearch()
-  {
-    this.getClientList(this.ClientForm.value.CategoryId); 
+  ClientSearch() {
+    this.getClientList(this.ClientForm.value.CategoryId);
   }
   addClient() {
     const dialogRef = this.dialog.open(AddEditClientComponent, {

@@ -50,16 +50,19 @@ export class AddEditClientComponent implements OnInit {
       CategoryId:[null, Validators.required],
       IsActive:[true],
       EmailId: ['', Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)],
-      Password:['']
+      Password:[''],
+      WhatsAppNo:['']
     });
   
     await this.getCategoryList();
     if (this.dialogData.value) {
+
       this.clientForm.controls['ClientFirstName'].setValue(this.dialogData.value.ClientFirstName);
       this.clientForm.controls['ClientMiddleName'].setValue(this.dialogData.value.ClientMiddleName);
       this.clientForm.controls['ClientLastName'].setValue(this.dialogData.value.ClientLastName);
       this.clientForm.controls['ClientAddress'].setValue(this.dialogData.value.ClientAddress);
       this.clientForm.controls['ContactNo'].setValue(this.dialogData.value.ContactNo);
+      this.clientForm.controls['WhatsAppNo'].setValue(this.dialogData.value.WhatsAppNo);
       this.clientForm.controls['EmailId'].setValue(this.dialogData.value.EmailId);
       this.clientForm.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
       this.clientForm.controls['IsActive'].setValue(this.dialogData.value.IsActive);
@@ -112,6 +115,7 @@ onKeyPress(event: KeyboardEvent): void {
         ClientMiddleName:this.clientForm.value.ClientMiddleName,
         ClientLastName:this.clientForm.value.ClientLastName,
         ContactNo:this.clientForm.value.ContactNo.toString(),
+        WhatsAppNo:this.clientForm.value.WhatsAppNo.toString(),
         EmailId:this.clientForm.value.EmailId,
         Password:this.clientForm.value.Password,
         TenantId:this.loginDetails.TenantId,
