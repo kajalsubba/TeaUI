@@ -90,6 +90,7 @@ export interface IDirectSale {
   { 
     SaleId:any;
     ApproveId: number;
+    AccountId:number;
     CollectionDate: any;
     VehicleNo: any;
     TotalFirstWeight: number;

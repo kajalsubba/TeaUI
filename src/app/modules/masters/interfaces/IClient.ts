@@ -19,3 +19,10 @@ export interface IGetClient {
   Category:string;
 }
 
+export interface IClientChangePassword
+{
+  ClientId: number;
+  Password:any;
+  TenantId: number;
+  CreatedBy: number;
+}

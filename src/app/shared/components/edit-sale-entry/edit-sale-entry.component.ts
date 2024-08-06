@@ -296,6 +296,7 @@ export class EditSaleEntryComponent implements OnInit {
       console.log(selectedObjects1, 'selectedObjects1');
       let lateralData: ILaterStgEntry = {
         SaleId:this.data.stgData.SaleId,
+        AccountId:this.saleEntryForm.value.AccountId,
         ApproveId: this.data.stgData.ApproveId,
         CollectionDate: formatDate(this.saleEntryForm.value.SaleDate, 'yyyy-MM-dd', 'en-US'),
         VehicleNo: this.data.stgData.VehicleNo ?? "",

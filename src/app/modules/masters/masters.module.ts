@@ -27,6 +27,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { PaymentTypeComponent } from './components/payment-type/payment-type.component';
 import { AddEditPaymentTypeComponent } from './models/add-edit-payment-type/add-edit-payment-type.component';
+import { ClientPasswordChangeComponent } from './models/client-password-change/client-password-change.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AddEditPaymentTypeComponent } from './models/add-edit-payment-type/add-
     AddEditGradeComponent,
     CompanyComponent,
     PaymentTypeComponent,
-    AddEditPaymentTypeComponent
+    AddEditPaymentTypeComponent,
+    ClientPasswordChangeComponent
   ],
   imports: [
     CommonModule,

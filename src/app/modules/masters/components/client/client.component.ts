@@ -18,6 +18,7 @@ import { CategoryService } from '../../services/category.service';
 import { IGetCategory } from '../../interfaces/ICategory';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ClientPasswordChangeComponent } from '../../models/client-password-change/client-password-change.component';
 
 @Component({
   selector: 'app-client',
@@ -140,7 +141,24 @@ export class ClientComponent implements OnInit, AfterViewInit {
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
+  updatePassword(element:any):void
+  {
+    const dialogRef = this.dialog.open(ClientPasswordChangeComponent, {
+      width: '40%',
+      data: {
+        title: 'Change Password',
+        buttonName: 'Change',
+        value: element,
+      },
+      disableClose: true,
+    });
 
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.getClientList();
+      }
+    });
+  }
   editItem(element: any): void {
     const dialogRef = this.dialog.open(AddEditClientComponent, {
       width: '70%',

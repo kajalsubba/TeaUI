@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
 import { IChangePassword, IGetUser, IUserSave } from '../interfaces/iuser';
 import { Observable } from 'rxjs';
+import { IClientChangePassword } from '../../masters/interfaces/IClient';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class UserService {
 
   ChangePassword(clientBody:IChangePassword): Observable<any> {
     return this.apiService.post('Admin/ChangePassword', clientBody);
+  }
+
+  ClientChangePasswordByAdmin(clientBody:IClientChangePassword): Observable<any> {
+    return this.apiService.post('Master/UpdateClientPassword', clientBody);
   }
 }
