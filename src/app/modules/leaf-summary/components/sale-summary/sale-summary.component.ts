@@ -80,7 +80,7 @@ export class SaleSummaryComponent implements OnInit {
       FactoryName: [''],
       FactoryId: [0],
       AccountId: [0],
-      AccountName:['']
+      AccountName: ['']
     });
     await this.GetFactoryList();
     await this.GetFactoryAccountList();
@@ -134,10 +134,9 @@ export class SaleSummaryComponent implements OnInit {
       return;
     }
     await this.GetSummary();
-
-    const grossAmount: number = this.getTotal('GrossAmount');
+    const FinalAmount: number = this.getTotal('FinalAmount');
     const finalWeight: number = this.getTotal('ChallanWeight');
-    this.AverageRate = grossAmount / finalWeight;
+    this.AverageRate = FinalAmount / finalWeight;
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -151,7 +150,7 @@ export class SaleSummaryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.saleSummary.controls['toDate'].setValue(null);
+    // this.saleSummary.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -256,11 +255,11 @@ export class SaleSummaryComponent implements OnInit {
     );
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove

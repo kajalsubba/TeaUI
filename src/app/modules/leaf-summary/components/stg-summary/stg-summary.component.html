@@ -102,7 +102,7 @@
             <ng-container matColumnDef="Rate">
               <th mat-header-cell *matHeaderCellDef> Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row"> 
                 {{row.Rate.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate.toFixed(2) }}</b>
@@ -114,7 +114,7 @@
             <ng-container matColumnDef="GrossAmount">
               <th mat-header-cell *matHeaderCellDef> Leaf Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row"> 
                 {{row.GrossAmount.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('GrossAmount').toFixed(2) }}</b>
@@ -126,7 +126,7 @@
             <ng-container matColumnDef="Incentive">
               <th mat-header-cell *matHeaderCellDef> Inc. Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.Incentive.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('Incentive').toFixed(2) }}</b>
@@ -137,7 +137,7 @@
             <ng-container matColumnDef="Transporting">
               <th mat-header-cell *matHeaderCellDef> Transporting <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.Transporting.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('Transporting').toFixed(2) }}</b>
@@ -149,7 +149,7 @@
             <ng-container matColumnDef="GreenLeafCess">
               <th mat-header-cell *matHeaderCellDef> Cess Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row"> 
                 {{row.GreenLeafCess.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('GreenLeafCess').toFixed(2) }}</b>
@@ -161,7 +161,7 @@
             <ng-container matColumnDef="FinalAmount">
               <th mat-header-cell *matHeaderCellDef> Final Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row"> 
                 {{row.FinalAmount.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('FinalAmount').toFixed(2) }}</b>

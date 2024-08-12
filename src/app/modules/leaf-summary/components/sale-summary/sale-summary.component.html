@@ -89,7 +89,7 @@
             <!-- ChallanWeight -->
             <ng-container matColumnDef="ChallanWeight">
               <th mat-header-cell *matHeaderCellDef> Challan Weight(KG) </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight }} KG </td>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight }} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotal('ChallanWeight') }} KG </b>
               </td>
@@ -99,7 +99,7 @@
             <ng-container matColumnDef="Rate">
               <th mat-header-cell *matHeaderCellDef>Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row"> 
                 {{row.Rate.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate.toFixed(2) }}</b>
@@ -111,7 +111,7 @@
             <ng-container matColumnDef="GrossAmount">
               <th mat-header-cell *matHeaderCellDef> Gross Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row"> 
                 {{row.GrossAmount.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('GrossAmount').toFixed(2) }}</b>
@@ -122,7 +122,7 @@
             <ng-container matColumnDef="Incentive">
               <th mat-header-cell *matHeaderCellDef> Incentive Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.Incentive.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('Incentive').toFixed(2) }}</b>
@@ -133,7 +133,7 @@
             <ng-container matColumnDef="FinalAmount">
               <th mat-header-cell *matHeaderCellDef> Final Amount <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> <i class="fa-solid fa-indian-rupee-sign"></i>
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.FinalAmount.toFixed(2)}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotal('FinalAmount').toFixed(2) }}</b>
