@@ -111,10 +111,22 @@
                         <div class="form-group row mb-3">
                             <label for="Narration" class="col-lg-5 col-form-label">Narration </label>
                             <div class="col-lg-7 position-relative">
-                                <input #Narration type="text" class="form-control" id="Narration"
+
+                                <!-- <input #Narration type="text" class="form-control" id="Narration"
                                     placeholder="Narration" formControlName="Narration" autocomplete="on">
+                              -->
 
 
+                                <input #Narration type="text" class="form-control" id="Narration"
+                                    placeholder="Narration" formControlName="Narration"
+                                    [matAutocomplete]="NarrationAuto">
+
+                                <mat-autocomplete #NarrationAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                    <mat-option *ngFor="let _narrate of filterNarration(Narration.value)"
+                                        [value]="_narrate?.Narration">
+                                        {{ _narrate?.Narration }}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </div>
                         </div>
                     </div>

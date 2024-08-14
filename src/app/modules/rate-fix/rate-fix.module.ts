@@ -22,6 +22,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { EditRateComponent } from './models/edit-rate/edit-rate.component';
+import { EditSaleRateComponent } from './models/edit-sale-rate/edit-sale-rate.component';
+import { EditSupplierRateComponent } from './models/edit-supplier-rate/edit-supplier-rate.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -42,7 +44,9 @@ export const MY_FORMATS = {
     StgRateFixComponent,
     SupplierRateFixComponent,
     SaleRateFixComponent,
-    EditRateComponent
+    EditRateComponent,
+    EditSaleRateComponent,
+    EditSupplierRateComponent
   ],
   imports: [
     CommonModule,

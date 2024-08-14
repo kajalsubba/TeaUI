@@ -33,6 +33,7 @@ export class AddEditPaymentComponent implements OnInit {
   private destroy$ = new Subject<void>();
   categoryList: any[] = [];
   paymentTypeList: any[] = [];
+  narrationList: any[] = [];
   loginDetails: any;
   ClientNames: any[] = [];
   clientList: any[] = [];
@@ -71,7 +72,7 @@ export class AddEditPaymentComponent implements OnInit {
     await this.getPaymentType();
     await this.getCategoryList();
     await this.loadClientNames();
-
+    this.GetPaymentNarration();
     if (this.dialogData.value) {
       this.addEditPayment.controls['BillDate'].setValue(new Date(this.dialogData.value.BllDate));
       this.addEditPayment.controls['PaymentDate'].setValue(new Date(this.dialogData.value.PayDate));
@@ -118,6 +119,12 @@ export class AddEditPaymentComponent implements OnInit {
     const filterValue = value.toLowerCase();
     return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
   }
+
+  filterNarration(value: string): any[] {
+
+    const filterValue = value.toLowerCase();
+    return this.narrationList.filter((x: any) => x?.Narration?.toLowerCase()?.includes(filterValue));
+  }
   formatCurrency(event: any) {
     const value = event.target.value;
     const formattedValue = this.currencyPipe.transform(value, "INR",
@@ -137,6 +144,14 @@ export class AddEditPaymentComponent implements OnInit {
     this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
   }
 
+  // selectNarration(narrat: any) {
+  //   if (narrat == '') {
+  //     this.addEditPayment.controls['ClientId'].reset();
+  //   }
+  //   //console.log(client.ClientId, 'Client');
+
+  //   this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
+  // }
   async selectCategory(event: MatOptionSelectionChange, category: any) {
     if (event.source.selected) {
       this.addEditPayment.controls['CategoryName'].setValue(category.CategoryName);
@@ -145,6 +160,19 @@ export class AddEditPaymentComponent implements OnInit {
 
     }
 
+  }
+
+  GetPaymentNarration() {
+    let bodyData: IGetPaymentType = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    const NarrationtService = this.paymentService.GetPaymentNarration(bodyData)
+      .subscribe((res: any) => {
+         console.log(res.Narration,'Narration');
+        this.narrationList = res.Narration;
+      //  this.ClientNames = this.narrationList;
+      });
+    this.subscriptions.push(NarrationtService);
   }
 
   async getCategoryList() {

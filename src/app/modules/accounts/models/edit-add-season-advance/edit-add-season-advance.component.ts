@@ -54,20 +54,21 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       ClientName: ['', Validators.required],
       ClientId: [0],
       Amount: ['', Validators.required],
+      Narration: ['']
     });
     await this.loadClientNames();
     await this.getCategoryList();
 
-    
+
     if (this.dialogData.value) {
       this.addEditSeasonAdvance.controls['AdvancedDate'].setValue(new Date(this.dialogData.value.AdvDate));
       this.addEditSeasonAdvance.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
       this.addEditSeasonAdvance.controls['ClientId'].setValue(this.dialogData.value.ClientId);
       this.addEditSeasonAdvance.controls['ClientName'].setValue(this.dialogData.value.ClientName);
-      const formattedValue = this.currencyPipe.transform(this.dialogData.value.Amount,  "INR",
-      '',
-      undefined,
-      "en-IN");
+      const formattedValue = this.currencyPipe.transform(this.dialogData.value.Amount, "INR",
+        '',
+        undefined,
+        "en-IN");
       this.addEditSeasonAdvance.controls['Amount'].setValue(formattedValue);
 
     }
@@ -148,29 +149,30 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       this.addEditSeasonAdvance.markAllAsTouched();
       return;
     }
-    
+
     let data: ISaveSeasonAdvance = {
       SeasonAdvanceId: this.dialogData?.value?.SeasonAdvanceId ? this.dialogData?.value?.SeasonAdvanceId : 0,
       AdvancedDate: formatDate(this.addEditSeasonAdvance.value.AdvancedDate, 'yyyy-MM-dd', 'en-US'),
       ClientCategory: this.addEditSeasonAdvance.value.CategoryName,
       ClientId: this.addEditSeasonAdvance.value.ClientId,
-      Amount: this.addEditSeasonAdvance.value.Amount.toString().replace(/,/g,''),
-      CategoryId:this.addEditSeasonAdvance.value.CategoryId,
+      Amount: this.addEditSeasonAdvance.value.Amount.toString().replace(/,/g, ''),
+      Narration: this.addEditSeasonAdvance.value.Narration,
+      CategoryId: this.addEditSeasonAdvance.value.CategoryId,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId
 
     }
     this.isSubmitting = true;
-       this.SaveData(data);
+    this.SaveData(data);
   }
   formatCurrency(event: any) {
     const value = event.target.value;
-    const formattedValue = this.currencyPipe.transform(value,  "INR",
-    '',
-    undefined,
-    "en-IN");
-    console.log(formattedValue,'formattedValue');
-    
+    const formattedValue = this.currencyPipe.transform(value, "INR",
+      '',
+      undefined,
+      "en-IN");
+    console.log(formattedValue, 'formattedValue');
+
     this.addEditSeasonAdvance.controls["Amount"].setValue(formattedValue);
 
   }
@@ -208,7 +210,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
 
     this.addEditSeasonAdvance.controls['ClientName'].reset()
     this.addEditSeasonAdvance.controls['ClientId'].reset()
-  //  this.addEditSeasonAdvance.controls['CategoryId'].reset()
+    this.addEditSeasonAdvance.controls['Narration'].reset()
     this.addEditSeasonAdvance.controls['Amount'].reset()
 
   }

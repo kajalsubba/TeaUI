@@ -19,6 +19,7 @@ import { ISaveStgRate, IStgRateFix } from '../../interfaces/istg-rate-fix';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import enIN from '@angular/common/locales/en-IN';
 import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
+import { environment } from 'src/environments/environment';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-stg-rate-fix',
@@ -27,15 +28,15 @@ registerLocaleData(enIN);
 })
 export class StgRateFixComponent implements OnInit {
   displayedColumns: string[] = [
-  //  'CollectionId',
+    //  'CollectionId',
     'CollectionDate',
     'GradeName',
- //   'VehicleNo',
+    //   'VehicleNo',
     'ClientName',
-  //  'FirstWeight',
-  //  'WetLeaf',
-   // 'LongLeaf',
-   // 'Deduction',
+    //  'FirstWeight',
+    //  'WetLeaf',
+    // 'LongLeaf',
+    // 'Deduction',
     'FinalWeight',
 
     'Rate',
@@ -47,20 +48,20 @@ export class StgRateFixComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-   //  { columnDef: 'CollectionId', header: 'CollectionId ' },
-   // { columnDef: 'CollectionDate', header: 'Collection Date' },
+    //  { columnDef: 'CollectionId', header: 'CollectionId ' },
+    // { columnDef: 'CollectionDate', header: 'Collection Date' },
     { columnDef: 'GradeName', header: 'Grade' },
 
     //{ columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'ClientName', header: 'Client Name' },
     //{ columnDef: 'FirstWeight', header: 'First Weight ' },
-   // { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-   // { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
-   // { columnDef: 'Deduction', header: 'Deduction (KG)' },
-  //  { columnDef: 'FinalWeight', header: 'Final Weight (KG)' },
-     { columnDef: 'Rate', header: 'Rate' },
-   //{ columnDef: 'GrossAmount', header: 'Gross Amount' },
-  //  { columnDef: 'Remarks', header: 'Remarks' },
+    // { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
+    // { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
+    // { columnDef: 'Deduction', header: 'Deduction (KG)' },
+    //  { columnDef: 'FinalWeight', header: 'Final Weight (KG)' },
+    { columnDef: 'Rate', header: 'Rate' },
+    //{ columnDef: 'GrossAmount', header: 'Gross Amount' },
+    //  { columnDef: 'Remarks', header: 'Remarks' },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -84,8 +85,8 @@ export class StgRateFixComponent implements OnInit {
     private gradeService: GradeService,
     private autoCompleteService: AutoCompleteService,
     private fb: FormBuilder,
-    private rateFixService:StgRateFixService
-  ) {}
+    private rateFixService: StgRateFixService
+  ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -101,20 +102,18 @@ export class StgRateFixComponent implements OnInit {
     this.GetGrade();
   }
 
-  onSelectionChange(e:any)
-  {
- this.clearform()
+  onSelectionChange(e: any) {
+    this.clearform()
   }
-  clearform()
-  {
+  clearform() {
 
-  this.dateRangeForm.controls["ClientId"].reset();
-  this.dateRangeForm.controls["ClientName"].reset();
-  this.dateRangeForm.controls["Rate"].reset();
-}
-  
+    this.dateRangeForm.controls["ClientId"].reset();
+    this.dateRangeForm.controls["ClientName"].reset();
+    this.dateRangeForm.controls["Rate"].reset();
+  }
+
   ngAfterViewInit() {
-  
+
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -135,7 +134,7 @@ export class StgRateFixComponent implements OnInit {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.dateRangeForm.controls['toDate'].setValue(null);
+    // this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 
@@ -167,20 +166,23 @@ export class StgRateFixComponent implements OnInit {
     if (!this.dataSource.filteredData || this.dataSource.filteredData.length === 0) {
       return 0;
     }
-  
+
     const columnValues: number[] = this.dataSource.filteredData
       .map(item => +item[columnName])
       .filter(value => typeof value === 'number');
-  
+
     return columnValues.reduce((acc, curr) => acc + (curr as number), 0);
   }
 
   EditRate(element: any) {
-    
+
+    if (!environment.production) {
+      debugger
+    }
     const dialogRef = this.dialog.open(EditRateComponent, {
       width: window.innerWidth <= 1024 ? '40%' : '30%',
       data: {
-        title:element.CollectionDate+' - ' +element.ClientName,
+        title: element.CollectionDate + ' - ' + element.ClientName +' ('+element.GradeName+')',
         buttonName: 'Update',
         value: element,
       },
@@ -201,17 +203,17 @@ export class StgRateFixComponent implements OnInit {
         });
         this.dataSource.data = [...this.dataSource.data];
         this.dataSource.data.forEach((keys: any, val: any) => {
-     //     keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
-            keys.GrossAmount = Number(keys.FinalWeight * keys.Rate).toFixed(2)
-         //   keys.Incentive = this.dateRangeForm.value.Incentive ??0,
-       //     keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
-        //    keys.FinalAmount = Number(Number(keys.ChallanWeight * keys.Rate) + Number(keys.ChallanWeight * keys.Incentive)).toFixed(2)
-    
+          //     keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
+          keys.GrossAmount = Number(keys.FinalWeight * keys.Rate).toFixed(2)
+          //   keys.Incentive = this.dateRangeForm.value.Incentive ??0,
+          //     keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
+          //    keys.FinalAmount = Number(Number(keys.ChallanWeight * keys.Rate) + Number(keys.ChallanWeight * keys.Incentive)).toFixed(2)
+
         });
       }
     });
 
-   
+
   }
 
   GetGrade() {
@@ -231,8 +233,7 @@ export class StgRateFixComponent implements OnInit {
     this.subscriptions.push(gradeGetService);
   }
   filterClientNames(value: string): any[] {
-    if (value=='')
-    {
+    if (value == '') {
       this.dateRangeForm.controls['ClientId'].reset();
     }
 
@@ -248,28 +249,27 @@ export class StgRateFixComponent implements OnInit {
   }
 
   selectClient(client: any) {
-  
+
     this.dateRangeForm.controls['ClientId'].setValue(client?.ClientId);
   }
-  Search()
-  {
-   
-    this.GetStgData( );
- 
+  Search() {
+
+    this.GetStgData();
+
   }
 
-  GetStgData(){
+  GetStgData() {
     const currentDate = new Date();
-    let bodyData:IStgRateFix = {
-      FromDate:formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-      ToDate:formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
-      TenantId:this.loginDetails.TenantId,
-      ClientId:this.dateRangeForm.value.ClientId,
+    let bodyData: IStgRateFix = {
+      FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      TenantId: this.loginDetails.TenantId,
+      ClientId: this.dateRangeForm.value.ClientId,
       GradeId: this.dateRangeForm.value.GradeId
-   
+
     }
-    const categoryListService = this.rateFixService.GetStgRateFixData(bodyData).subscribe((res:any)=>{
-   
+    const categoryListService = this.rateFixService.GetStgRateFixData(bodyData).subscribe((res: any) => {
+
       this.dataSource.data = res.StgRateData;
     });
     this.subscriptions.push(categoryListService);
@@ -311,23 +311,21 @@ export class StgRateFixComponent implements OnInit {
     }
   }
 
-  RateAssign()
-  {
-    this.dataSource.data.forEach((keys:any,val:any) => {
-      keys.Rate=this.dateRangeForm.value.Rate
-     keys.GrossAmount=Number(keys.FinalWeight*this.dateRangeForm.value.Rate).toFixed(2)
+  RateAssign() {
+    this.dataSource.data.forEach((keys: any, val: any) => {
+      keys.Rate = this.dateRangeForm.value.Rate
+      keys.GrossAmount = Number(keys.FinalWeight * this.dateRangeForm.value.Rate).toFixed(2)
     });
     this.getTotalCost('GrossAmount')
     console.log(this.dataSource.data);
-    
+
     this.dateRangeForm.controls["Rate"].reset();
   }
-  FixRate()
-  {
+  FixRate() {
     const rateObjects: any[] = [];
     this.dataSource.data.forEach((selectedItem) => {
       // Create the selected object based on the selected item
-      
+
       const selectedObject = {
         CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
         Rate: selectedItem.Rate, // Assuming Status is present in your data
@@ -335,11 +333,11 @@ export class StgRateFixComponent implements OnInit {
       // Push the selected object to the array
       rateObjects.push(selectedObject);
       // Calculate totals
-    
+
     });
 
     let data: ISaveStgRate = {
-      
+
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
       RateData: rateObjects,
@@ -348,44 +346,43 @@ export class StgRateFixComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30vw',
-      minWidth:'25vw',
+      minWidth: '25vw',
       disableClose: true,
       data: {
         title: 'Confirm Action',
         message: 'Do you want to Confirm !',
         data: data,
-   
+
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.SaveStgRateFixData(data);
-      
+
 
       }
     });
 
-   
+
   }
 
-  SaveStgRateFixData(data:any)
-  {
+  SaveStgRateFixData(data: any) {
     this.rateFixService
-    .SavetgRateFixData(data)
-    .pipe(
-      takeUntil(this.destroy$),
-      catchError((error) => {
-        console.error('Error:', error);
-        this.toastr.error('An error occurred', 'ERROR');
-        throw error;
-      })
-    )
-    .subscribe((res: any) => {
-      
-      this.toastr.success(res.Message, "SUCCESS");
-      this.clearform();
-      this.GetStgData();
- 
-    });
+      .SavetgRateFixData(data)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          console.error('Error:', error);
+          this.toastr.error('An error occurred', 'ERROR');
+          throw error;
+        })
+      )
+      .subscribe((res: any) => {
+
+        this.toastr.success(res.Message, "SUCCESS");
+        this.clearform();
+        this.GetStgData();
+
+      });
   }
 }

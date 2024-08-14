@@ -21,6 +21,8 @@ import { SaleRateFixService } from '../../services/sale-rate-fix.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import enIN from '@angular/common/locales/en-IN';
 import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
+import { EditSaleRateComponent } from '../../models/edit-sale-rate/edit-sale-rate.component';
+import { environment } from 'src/environments/environment';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-sale-rate-fix',
@@ -349,8 +351,8 @@ export class SaleRateFixComponent implements OnInit {
     this.dataSource.data.forEach((keys: any, val: any) => {
       keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
         keys.GrossAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Rate).toFixed(2),
-        keys.Incentive = this.dateRangeForm.value.Incentive ??0,
-        keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
+        keys.Incentive = this.dateRangeForm.value.Incentive ?? 0,
+        keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive ?? 0).toFixed(2),
         keys.FinalAmount = Number(Number(keys.ChallanWeight * this.dateRangeForm.value.Rate) + Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive)).toFixed(2)
 
     });
@@ -427,10 +429,10 @@ export class SaleRateFixComponent implements OnInit {
 
 
   EditRate(element: any) {
-    const dialogRef = this.dialog.open(EditRateComponent, {
+    const dialogRef = this.dialog.open(EditSaleRateComponent, {
       width: window.innerWidth <= 1024 ? '40%' : '30%',
       data: {
-        title:element.SaleDate+' - ' +element.FactoryName,
+        title: element.SaleDate + ' - ' + element.FactoryName + ' (' + element.FineLeaf + '%)',
         buttonName: 'Update',
         value: element,
       },
@@ -439,28 +441,36 @@ export class SaleRateFixComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
+        if (!environment.production) {
+          debugger
+        }
         //  this.GetPaymentData();
         this.dataSource.data.forEach(item => {
           // Replace 'someCondition' with your actual condition
           if (item.SaleId == result.SaleId) {
             // Update the necessary fields
 
-            item.Rate = result.Rate;
-
+            item.Rate = result.Rate ?? 0;
+            item.Incentive = result.Incentive ?? 0;
           }
         });
         this.dataSource.data = [...this.dataSource.data];
         this.dataSource.data.forEach((keys: any, val: any) => {
-     //     keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
-            keys.GrossAmount = Number(keys.ChallanWeight * keys.Rate).toFixed(2),
-         //   keys.Incentive = this.dateRangeForm.value.Incentive ??0,
-       //     keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
+          //     keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
+          keys.GrossAmount = Number(keys.ChallanWeight * keys.Rate).toFixed(2),
+
+            keys.IncentiveAmount = Number(keys.ChallanWeight * keys.Incentive).toFixed(2),
             keys.FinalAmount = Number(Number(keys.ChallanWeight * keys.Rate) + Number(keys.ChallanWeight * keys.Incentive)).toFixed(2)
-    
+
+
+          // keys.Incentive = this.dateRangeForm.value.Incentive ?? 0,
+          // keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive ?? 0).toFixed(2),
+          // keys.FinalAmount = Number(Number(keys.ChallanWeight * this.dateRangeForm.value.Rate) + Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive)).toFixed(2)
+
         });
       }
     });
 
-   
+
   }
 }

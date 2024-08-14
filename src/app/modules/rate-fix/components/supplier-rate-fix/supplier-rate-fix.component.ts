@@ -22,6 +22,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog
 import { environment } from 'src/environments/environment';
 import enIN from '@angular/common/locales/en-IN';
 import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
+import { EditSupplierRateComponent } from '../../models/edit-supplier-rate/edit-supplier-rate.component';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-rate-fix',
@@ -30,10 +31,10 @@ registerLocaleData(enIN);
 })
 export class SupplierRateFixComponent implements OnInit {
   displayedColumns: string[] = [
-   // 'CollectionId',
+    // 'CollectionId',
     'CollectionDate',
     'ClientName',
-   // 'VehicleNo',
+    // 'VehicleNo',
     'FactoryName',
     'AccountName',
     'FineLeaf',
@@ -41,8 +42,8 @@ export class SupplierRateFixComponent implements OnInit {
     'Rate',
     'GrossAmount',
     'actions',
-   // 'TripName',
-   // 'Status',
+    // 'TripName',
+    // 'Status',
     //'actions'
   ];
 
@@ -59,7 +60,7 @@ export class SupplierRateFixComponent implements OnInit {
     // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     { columnDef: 'Rate', header: 'Rate' },
     //{ columnDef: 'Remarks', header: 'Remark' },
- //   { columnDef: 'TripName', header: 'TripName ' },
+    //   { columnDef: 'TripName', header: 'TripName ' },
     // { columnDef: 'Status', header: 'Status ' }
   ];
 
@@ -75,10 +76,10 @@ export class SupplierRateFixComponent implements OnInit {
   selectedRowIndex: number = -1;
   ClientList: any[] = [];
   ClientNames: any[] = [];
-  factoryNames: any[]=[];
-  AccountList: any[]=[];
-  accountNames: any[]=[];
- 
+  factoryNames: any[] = [];
+  AccountList: any[] = [];
+  accountNames: any[] = [];
+
 
   constructor(
     private dialog: MatDialog,
@@ -88,8 +89,8 @@ export class SupplierRateFixComponent implements OnInit {
     private gradeService: GradeService,
     private autoCompleteService: AutoCompleteService,
     private fb: FormBuilder,
-    private rateFixService:IsupplierRateFixService
-  ) {}
+    private rateFixService: IsupplierRateFixService
+  ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -99,17 +100,17 @@ export class SupplierRateFixComponent implements OnInit {
       ClientId: [0],
       ClientName: [''],
       Rate: [''],
-      AccountName:[''],
-      AccountId:[0],
-      FactoryName:[''],
-      FactoryId:[0],
-      FineLeaf:['']
+      AccountName: [''],
+      AccountId: [0],
+      FactoryName: [''],
+      FactoryId: [0],
+      FineLeaf: ['']
     });
     await this.loadClientNames();
 
     await this.loadFactoryNames();
     await this.loadAccountNames();
- //   this.GetGrade();
+    //   this.GetGrade();
   }
 
   ngAfterViewInit() {
@@ -133,11 +134,14 @@ export class SupplierRateFixComponent implements OnInit {
   }
 
   EditRate(element: any) {
-    
-    const dialogRef = this.dialog.open(EditRateComponent, {
+
+    if (!environment.production) {
+      debugger
+    }
+    const dialogRef = this.dialog.open(EditSupplierRateComponent, {
       width: window.innerWidth <= 1024 ? '40%' : '30%',
       data: {
-        title:element.CollectionDate+' - ' +element.ClientName,
+        title: element.CollectionDate+'-' + element.FactoryName +' ('+element.FineLeaf+'%)',
         buttonName: 'Update',
         value: element,
       },
@@ -158,21 +162,21 @@ export class SupplierRateFixComponent implements OnInit {
         });
         this.dataSource.data = [...this.dataSource.data];
         this.dataSource.data.forEach((keys: any, val: any) => {
-     //     keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
-            keys.GrossAmount = Number(keys.ChallanWeight * keys.Rate).toFixed(2)
-         //   keys.Incentive = this.dateRangeForm.value.Incentive ??0,
-       //     keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
-           // keys.FinalAmount = Number(Number(keys.ChallanWeight * keys.Rate) + Number(keys.ChallanWeight * keys.Incentive)).toFixed(2)
-    
+          //     keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
+          keys.GrossAmount = Number(keys.ChallanWeight * keys.Rate).toFixed(2)
+          //   keys.Incentive = this.dateRangeForm.value.Incentive ??0,
+          //     keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive??0).toFixed(2),
+          // keys.FinalAmount = Number(Number(keys.ChallanWeight * keys.Rate) + Number(keys.ChallanWeight * keys.Incentive)).toFixed(2)
+
         });
       }
     });
 
-   
+
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
- //   this.dateRangeForm.controls['toDate'].setValue(null);
+    //   this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 
@@ -223,7 +227,7 @@ export class SupplierRateFixComponent implements OnInit {
     try {
       const bodyData: IGetFactory = {
         TenantId: this.loginDetails.TenantId,
-        IsClientView:false
+        IsClientView: false
       };
 
       const res: any = await this.autoCompleteService
@@ -257,9 +261,9 @@ export class SupplierRateFixComponent implements OnInit {
   }
 
   selectFactory(factory: any) {
-    
+
     this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
-     this.accountNames =   this.AccountList.filter((x:any)=> x.FactoryId==factory.FactoryId)
+    this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.FactoryId)
   }
 
   selectAccount(account: any) {
@@ -286,13 +290,11 @@ export class SupplierRateFixComponent implements OnInit {
   }
 
   selectClient(client: any) {
-    if (client.ClientName=='')
-    {
+    if (client.ClientName == '') {
       this.dateRangeForm.controls['ClientId'].reset();
     }
-    else
-    {
-    this.dateRangeForm.controls['ClientId'].setValue(client?.ClientId);
+    else {
+      this.dateRangeForm.controls['ClientId'].setValue(client?.ClientId);
     }
   }
 
@@ -331,10 +333,9 @@ export class SupplierRateFixComponent implements OnInit {
       }
     }
   }
-  Search()
-  {
-    this.GetSupplierData( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
- 
+  Search() {
+    this.GetSupplierData(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
+
   }
 
   onInputChange(event: Event) {
@@ -342,52 +343,49 @@ export class SupplierRateFixComponent implements OnInit {
     // Do something when input changes
     if (!environment.production) {
 
-      console.log(input.value,'presss');
+      console.log(input.value, 'presss');
     }
-   
-    if(input.value=='')
-    {
-      this.accountNames=[];
+
+    if (input.value == '') {
+      this.accountNames = [];
       this.dateRangeForm.controls['AccountName'].reset();
       this.dateRangeForm.controls['AccountId'].reset();
     }
-   
+
   }
 
-  GetSupplierData(FromDate:any,ToDate:any){
+  GetSupplierData(FromDate: any, ToDate: any) {
     const currentDate = new Date();
-    let bodyData:IsupplierRateFix = {
-      FromDate:FromDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): FromDate,
-      ToDate:ToDate==null?formatDate(currentDate, 'yyyy-MM-dd', 'en-US'): ToDate,
-      TenantId:this.loginDetails.TenantId,
-      ClientId:this.dateRangeForm.value.ClientName==''?0:this.dateRangeForm.value.ClientId,
-      FactoryId: this.dateRangeForm.value.FactoryName==''?0:this.dateRangeForm.value.FactoryId,
-      AccountId:this.dateRangeForm.value.AccountName==''?0:this.dateRangeForm.value.AccountId,
-      FineLeaf:this.dateRangeForm.value.FineLeaf
+    let bodyData: IsupplierRateFix = {
+      FromDate: FromDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : FromDate,
+      ToDate: ToDate == null ? formatDate(currentDate, 'yyyy-MM-dd', 'en-US') : ToDate,
+      TenantId: this.loginDetails.TenantId,
+      ClientId: this.dateRangeForm.value.ClientName == '' ? 0 : this.dateRangeForm.value.ClientId,
+      FactoryId: this.dateRangeForm.value.FactoryName == '' ? 0 : this.dateRangeForm.value.FactoryId,
+      AccountId: this.dateRangeForm.value.AccountName == '' ? 0 : this.dateRangeForm.value.AccountId,
+      FineLeaf: this.dateRangeForm.value.FineLeaf
     }
-    const categoryListService = this.rateFixService.GetSupplierRateFixData(bodyData).subscribe((res:any)=>{
-     // console.log(res);
+    const categoryListService = this.rateFixService.GetSupplierRateFixData(bodyData).subscribe((res: any) => {
+      // console.log(res);
       this.dataSource.data = res.SupplierRateData;
     });
     this.subscriptions.push(categoryListService);
   }
 
-  RateAssign()
-  {
-    this.dataSource.data.forEach((keys:any,val:any) => {
-      keys.Rate=this.dateRangeForm.value.Rate
-     keys.GrossAmount=Number(keys.ChallanWeight*this.dateRangeForm.value.Rate).toFixed(2)
+  RateAssign() {
+    this.dataSource.data.forEach((keys: any, val: any) => {
+      keys.Rate = this.dateRangeForm.value.Rate
+      keys.GrossAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Rate).toFixed(2)
     });
     this.dateRangeForm.controls["Rate"].reset();
   }
 
-  FixRate()
-  {
+  FixRate() {
 
     const rateObjects: any[] = [];
     this.dataSource.data.forEach((selectedItem) => {
       // Create the selected object based on the selected item
-      
+
       const selectedObject = {
         CollectionId: selectedItem.CollectionId, // Assuming CollectionId is present in your data
         Rate: selectedItem.Rate, // Assuming Status is present in your data
@@ -395,32 +393,32 @@ export class SupplierRateFixComponent implements OnInit {
       // Push the selected object to the array
       rateObjects.push(selectedObject);
       // Calculate totals
-    
+
     });
 
     let data: ISaveSupplierRate = {
-      
+
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
       RateData: rateObjects,
     };
 
-  
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30vw',
-      minWidth:'25vw',
+      minWidth: '25vw',
       disableClose: true,
       data: {
         title: 'Confirm Action',
         message: 'Do you want to Confirm !',
         data: data,
-   
+
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.SaveRateFixData(data);
-      
+
 
       }
     });
@@ -428,37 +426,35 @@ export class SupplierRateFixComponent implements OnInit {
 
   }
 
-  SaveRateFixData(data:any)
-  {
+  SaveRateFixData(data: any) {
     this.rateFixService
-    .SaveSupplierRateFixData(data)
-    .pipe(
-      takeUntil(this.destroy$),
-      catchError((error) => {
-        console.error('Error:', error);
-        this.toastr.error('An error occurred', 'ERROR');
-        throw error;
-      })
-    )
-    .subscribe((res: any) => {
-      
-      this.toastr.success(res.Message, "SUCCESS");
-      this.clearform();
-      this.GetSupplierData( formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
- 
-    });
-}
+      .SaveSupplierRateFixData(data)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => {
+          console.error('Error:', error);
+          this.toastr.error('An error occurred', 'ERROR');
+          throw error;
+        })
+      )
+      .subscribe((res: any) => {
 
-clearform()
-{
+        this.toastr.success(res.Message, "SUCCESS");
+        this.clearform();
+        this.GetSupplierData(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
 
-this.dateRangeForm.controls["ClientId"].reset();
-this.dateRangeForm.controls["ClientName"].reset();
-this.dateRangeForm.controls["FactoryId"].reset();
-this.dateRangeForm.controls["FactoryName"].reset();
-this.dateRangeForm.controls["AccountId"].reset();
-this.dateRangeForm.controls["FineLeaf"].reset();
-this.dateRangeForm.controls["AccountName"].reset();
-this.dateRangeForm.controls["Rate"].reset();
-}
+      });
+  }
+
+  clearform() {
+
+    this.dateRangeForm.controls["ClientId"].reset();
+    this.dateRangeForm.controls["ClientName"].reset();
+    this.dateRangeForm.controls["FactoryId"].reset();
+    this.dateRangeForm.controls["FactoryName"].reset();
+    this.dateRangeForm.controls["AccountId"].reset();
+    this.dateRangeForm.controls["FineLeaf"].reset();
+    this.dateRangeForm.controls["AccountName"].reset();
+    this.dateRangeForm.controls["Rate"].reset();
+  }
 }

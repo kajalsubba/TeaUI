@@ -129,7 +129,7 @@
                         <ng-container matColumnDef="ChallanWeight">
                             <th mat-header-cell *matHeaderCellDef> Challan Weight ( KG ) </th>
                             <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                                *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
+                                *matCellDef="let row"> {{row.ChallanWeight}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
                                 <b>{{ getTotalCost('ChallanWeight') }} KG</b>
                             </td>
@@ -138,7 +138,7 @@
                         <!-- Rate -->
                         <ng-container matColumnDef="Rate">
                             <th mat-header-cell *matHeaderCellDef> Rate </th>
-                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                            <td  class="weight-column" mat-cell
                                 *matCellDef="let row"> {{row.Rate}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
 
