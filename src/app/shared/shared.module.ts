@@ -21,10 +21,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ImageViewerComponent } from './components/image-viewer/image-viewer.component';
 import { EditSaleEntryComponent } from './components/edit-sale-entry/edit-sale-entry.component';
 import { ConfirmDialogRemarksComponent } from './components/confirm-dialog-remarks/confirm-dialog-remarks.component';
+import { CurrencyDirective } from './currency.directive';
 //import { CharacterRestrictionDirective } from './character-restriction.directive';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent, ConfirmDialogRemarksComponent],
+  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent, ConfirmDialogRemarksComponent, CurrencyDirective],
   exports: [ConfirmDialogComponent],
   imports: [
     CommonModule,
