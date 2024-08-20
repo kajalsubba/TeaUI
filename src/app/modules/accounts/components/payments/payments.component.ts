@@ -36,8 +36,8 @@ export class PaymentsComponent implements OnInit {
     'PaySource',
     'ClientName',
     'PaymentType',
-    'Amount',
     'Narration',
+    'Amount',
     'actions'
 
   ];

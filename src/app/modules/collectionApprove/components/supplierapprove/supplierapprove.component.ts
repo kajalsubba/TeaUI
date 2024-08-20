@@ -373,14 +373,15 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
 
     this.subscriptions.push(gradeGetService);
   }
-  openImage(imageUrl: any) {
+  openImage(data: any) {
+    debugger
     const dialogRef = this.dialog.open(ImageViewerComponent, {
       // width: "80vw",
       // height: "95%",
       disableClose: true,
       data: {
         title: "Image Viewer",
-        imageUrl: imageUrl
+        rowData: data
       }
     })
   }

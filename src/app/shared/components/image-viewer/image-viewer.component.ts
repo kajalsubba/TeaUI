@@ -27,8 +27,9 @@ export class ImageViewerComponent implements OnInit {
   }
 
   downloadImage() {
+    
     const link = document.createElement('a');
-    link.href = this.data.imageUrl;
+    link.href = this.data.rowData.imageUrl;
     link.target = '_blank';
     link.download = 'image.jpg';
     document.body.appendChild(link);
