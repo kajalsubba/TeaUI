@@ -9,6 +9,7 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { AddEditUserComponent } from '../../models/add-edit-user/add-edit-user.component';
 import { UserService } from '../../services/user.service';
 import { IGetUser } from '../../interfaces/iuser';
+import { UserPasswordChangeComponent } from '../../models/user-password-change/user-password-change.component';
 
 @Component({
   selector: 'app-user',
@@ -131,5 +132,22 @@ export class UserComponent implements OnInit {
     });
   }
 
-  deleteItem(row: any) {}
+  updatePassword(element:any):void
+  {
+    const dialogRef = this.dialog.open(UserPasswordChangeComponent, {
+      width: '40%',
+      data: {
+        title: 'Change Password',
+        buttonName: 'Change',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+      //  this.getClientList();
+      }
+    });
+  }
 }

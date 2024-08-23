@@ -21,6 +21,7 @@ import { RolePermissionComponent } from './components/role-permission/role-permi
 import { AddEditUserComponent } from './models/add-edit-user/add-edit-user.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { UserPasswordChangeComponent } from './models/user-password-change/user-password-change.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     RolePermissionComponent,
     AddEditUserComponent,
     ChangePasswordComponent,
+    UserPasswordChangeComponent,
     
     
   ],

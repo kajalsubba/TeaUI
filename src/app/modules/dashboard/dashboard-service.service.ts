@@ -11,7 +11,7 @@ export class DashboardServiceService {
   constructor(private apiService: ApiService) { }
 
   GetCompanyWiseChart(Body:Idashboard): Observable<any> {
-    return this.apiService.post('Admin/GetComapanyWiseSaleChart', Body);
+    return this.apiService.post('Admin/GetCompanyWiseSaleChart', Body);
   }
   GetSTGWiseChart(Body:Idashboard): Observable<any> {
     return this.apiService.post('Admin/GetSTGWiseSaleChart', Body);
