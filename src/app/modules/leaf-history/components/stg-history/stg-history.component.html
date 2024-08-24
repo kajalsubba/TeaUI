@@ -181,46 +181,6 @@
             </ng-container>
 
 
-            <!-- Incentive Amount -->
-            <!-- <ng-container matColumnDef="IncAmount">
-              <th mat-header-cell *matHeaderCellDef> Inc. Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.IncAmount |
-                currency:'INR':'':undefined:'en-IN'}} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotal('IncAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
-              </td>
-            </ng-container> -->
-
-            <!-- Transporting Amount -->
-            <!-- <ng-container matColumnDef="TransportingAmount">
-              <th mat-header-cell *matHeaderCellDef> Trans. Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.TransportingAmount |
-                currency:'INR':'':undefined:'en-IN'}} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotal('TransportingAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
-              </td>
-            </ng-container> -->
-
-            <!-- GL Cess Amount -->
-            <!-- <ng-container matColumnDef="GLCessAmount">
-              <th mat-header-cell *matHeaderCellDef> GL Cess. Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.GLCessAmount |
-                currency:'INR':'':undefined:'en-IN'}} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotal('GLCessAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
-              </td>
-            </ng-container> -->
-
-            <!-- Final Amount -->
-            <!-- <ng-container matColumnDef="FinalAmount">
-              <th mat-header-cell *matHeaderCellDef> Final Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalAmount |
-                currency:'INR':'':undefined:'en-IN'}} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotal('FinalAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
-              </td>
-            </ng-container> -->
-
             <!-- Actions column -->
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef>Actions</th>
@@ -229,8 +189,8 @@
                 <div *ngIf="row.Status!='Rejected' && row.BillGenerated!=true ">
                   <i (click)="editItem(row)" matTooltip="Edit" matTooltipPosition="left"
                     class="fa-solid edit-delete-button fa-pen-to-square"></i>
-                  <!-- <i (click)="deleteItem(row)" matTooltip="Delete" matTooltipPosition="right"
-              class="fa-solid text-danger edit-delete-button fa-trash-can"></i> -->
+                  <i (click)="ViewBag(row)" matTooltip="View Bag" matTooltipPosition="right"
+              class="fa-solid fa-bag-shopping"></i>
                   <!-- <i (click)="openImage(row.imageUrl)" matTooltip="View Challan" matTooltipPosition="right"
             class="fa-solid fa-eye edit-delete-button "></i> -->
                 </div>

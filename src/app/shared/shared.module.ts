@@ -22,10 +22,11 @@ import { ImageViewerComponent } from './components/image-viewer/image-viewer.com
 import { EditSaleEntryComponent } from './components/edit-sale-entry/edit-sale-entry.component';
 import { ConfirmDialogRemarksComponent } from './components/confirm-dialog-remarks/confirm-dialog-remarks.component';
 import { CurrencyDirective } from './currency.directive';
+import { ViewCollectionBagComponent } from './components/view-collection-bag/view-collection-bag.component';
 //import { CharacterRestrictionDirective } from './character-restriction.directive';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent, ConfirmDialogRemarksComponent, CurrencyDirective],
+  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent, ConfirmDialogRemarksComponent, CurrencyDirective, ViewCollectionBagComponent],
   exports: [ConfirmDialogComponent],
   imports: [
     CommonModule,

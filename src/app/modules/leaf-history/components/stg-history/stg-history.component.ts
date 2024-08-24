@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddEditStgComponent } from 'src/app/modules/collection/models/add-edit-stg/add-edit-stg.component';
 import { ExcelExportService } from '../../../../shared/services/excel-export.service';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
+import { ViewCollectionBagComponent } from 'src/app/shared/components/view-collection-bag/view-collection-bag.component';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-stg-history',
@@ -266,6 +267,26 @@ export class StgHistoryComponent {
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
+
+  ViewBag(element?: any) {
+    const dialogRef = this.dialog.open(ViewCollectionBagComponent, {
+      width: '40%',
+      data: {
+        title: 'View Bags',
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+      //  this.GetStgList();
+
+      }
+    });
+  }
+
   editItem(element?: any) {
     const dialogRef = this.dialog.open(AddEditStgComponent, {
       width: '80%',
