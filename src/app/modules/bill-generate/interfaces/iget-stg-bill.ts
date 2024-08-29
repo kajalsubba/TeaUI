@@ -4,6 +4,10 @@ export interface IGetStgBill {
     ClientId: number;
     TenantId: number;
 }
+export interface IClient {
+  ClientId: number;
+  ClientName: string;
+}
 
 export interface SaveStgBill {
     BillDate: any;

@@ -177,7 +177,7 @@ export class StgRateFixComponent implements OnInit {
   EditRate(element: any) {
 
     if (!environment.production) {
-      debugger
+      
     }
     const dialogRef = this.dialog.open(EditRateComponent, {
       width: window.innerWidth <= 1024 ? '40%' : '30%',

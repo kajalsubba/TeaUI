@@ -23,7 +23,7 @@
               </div>
               <div class="col-lg-3 my-1">
                 <div class="position-relative">
-                  <input #ClientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
+                  <!-- <input #ClientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
                     formControlName="ClientName" [matAutocomplete]="clientAuto">
 
                   <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
@@ -31,7 +31,19 @@
                       (onSelectionChange)="selectClient(client)">
                       {{ client?.ClientName }}
                     </mat-option>
-                  </mat-autocomplete>
+                  </mat-autocomplete> -->
+                  <!-- <mat-form-field appearance="fill"> -->
+                    <mat-select class="fromSelect" formControlName="ClientName" placeholder="Select Client" #singleSelect>
+                      <mat-option >
+                        <ngx-mat-select-search formControlName="ClienFilterCrtl" ></ngx-mat-select-search>
+                      </mat-option>
+
+                      <mat-option *ngFor="let client of filteredClients|async" [value]="client">
+                        {{client.ClientName}}
+                      </mat-option>
+                    </mat-select>
+                  <!-- </mat-form-field> -->
+
                   <!-- Validation message -->
                   <span
                     *ngIf="StgBillForm.get('ClientName')?.hasError('required') && StgBillForm.get('ClientName')?.touched"
@@ -329,7 +341,8 @@
               <label for="LessSeasonAdv" class="col-lg-6 col-form-label">Less Season Adv. </label>
               <div class="col-lg-6 position-relative">
                 <input (input)="calculateFinalAmount()" #LessSeasonAdv type="number" class="form-control"
-                  id="LessSeasonAdv" placeholder="Less Season Adv." formControlName="LessSeasonAdv"  (focusout)="onFocusOutSeasonEvent($event)">
+                  id="LessSeasonAdv" placeholder="Less Season Adv." formControlName="LessSeasonAdv"
+                  (focusout)="onFocusOutSeasonEvent($event)">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
                 <span *ngIf="SeasonAdvValidate" class="text-danger d-block validation-message">
                   Enter Less Season Advance !

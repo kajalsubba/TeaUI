@@ -20,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 export const MY_FORMATS = {
   parse: {
@@ -56,7 +57,9 @@ export const MY_FORMATS = {
     MatInputModule,
     MatFormFieldModule,
     MatSlideToggleModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule,
+    NgxMatSelectSearchModule
   ],
   providers : [
     DatePipe,

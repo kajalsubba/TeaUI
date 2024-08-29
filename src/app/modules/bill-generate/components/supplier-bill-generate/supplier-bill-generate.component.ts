@@ -7,16 +7,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { _MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgBillService } from '../../services/stg-bill.service';
-import { IGetStgBill, SaveStgBill, StgCollectionData, StgPaymentData } from '../../interfaces/iget-stg-bill';
+import { IClient, IGetStgBill, SaveStgBill, StgCollectionData, StgPaymentData } from '../../interfaces/iget-stg-bill';
 import { environment } from 'src/environments/environment';
 import { SupplierBillService } from '../../services/supplier-bill.service';
 import { SaveSupplierBill } from '../../interfaces/iget-supplier-bill';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-supplier-bill-generate',
@@ -49,25 +50,23 @@ export class SupplierBillGenerateComponent implements OnInit {
   paymentDataSource = new _MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    // { columnDef: 'CollectionDate', header: 'Collection Date' },
+
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'VehicleNo', header: 'Vehicle No ' },
-    // { columnDef: 'Deduction', header: 'Deduction(KG)' },
-    // { columnDef: 'Final', header: 'Final(KG)' },
-    // { columnDef: 'Rate', header: 'Rate' },
-    //  { columnDef: 'Amount', header: 'Amount' }
-
+   
   ];
   paymentColumns: { columnDef: string; header: string }[] = [
     { columnDef: 'EntryDate', header: 'Entry Date' },
     { columnDef: 'PaymentType', header: 'Payment Type' },
     { columnDef: 'Narration', header: 'Narration' },
-    //  { columnDef: 'Amount', header: 'Amount' }
-
+   
   ];
 
   @ViewChild('ClientName') ClientNoInput!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
+  public filteredClients: ReplaySubject<IClient[]> = new ReplaySubject<IClient[]>(1);
+
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
@@ -77,7 +76,7 @@ export class SupplierBillGenerateComponent implements OnInit {
   supplierAmountForm!: FormGroup;
   minToDate!: any;
   currentDate: Date | null = new Date();
-  ClientNames: any[] = [];
+  ClientNames:  IClient[] =[];
   OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
@@ -99,7 +98,8 @@ export class SupplierBillGenerateComponent implements OnInit {
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
       ClientId: [0],
-      ClientName: ['', Validators.required]
+      ClientName: ['', Validators.required],
+      ClienFilterCrtl:['']
     });
     this.supplierAmountForm = this.fb.group({
       SeasonAmount: [0],
@@ -113,6 +113,32 @@ export class SupplierBillGenerateComponent implements OnInit {
     });
 
     await this.loadClientNames();
+    this.filteredClients.next(this.ClientNames.slice());
+
+    // // listen for search field value changes
+    this.supplierBillForm.controls["ClienFilterCrtl"].valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.filteredClientsData();
+      });
+  }
+  private filteredClientsData() {
+   // debugger
+    if (!this.ClientNames) {
+      return;
+    }
+    // get the search keyword
+    let search = this.supplierBillForm.controls["ClienFilterCrtl"].value;
+    if (!search) {
+      this.filteredClients.next(this.ClientNames.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredClients.next(
+      this.ClientNames.filter(x => x.ClientName.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   cleanAmountController(): void {
@@ -260,7 +286,8 @@ export class SupplierBillGenerateComponent implements OnInit {
         FromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
         ToDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         TenantId: this.loginDetails.TenantId,
-        ClientId: this.supplierBillForm.value.ClientId ?? 0
+       // ClientId: this.supplierBillForm.value.ClientId ?? 0
+       ClientId: this.supplierBillForm.value.ClientName?.ClientId ?? 0
       };
 
       const res: any = await this.billService.GetSupplierBill(bodyData).toPromise();
@@ -382,7 +409,7 @@ export class SupplierBillGenerateComponent implements OnInit {
       BillDate: formatDate(this.supplierAmountForm.value.BillDate, 'yyyy-MM-dd', 'en-US'),
       FromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
-      ClientId: this.supplierBillForm.value.ClientId,
+      ClientId:this.supplierBillForm.value.ClientName?.ClientId ,// this.supplierBillForm.value.ClientId,
       FinalWeight: this.getTotal('ChallanWeight') ?? 0,
       TotalStgAmount: this.getTotal('GrossAmount') ?? 0,
       TotalStgPayment: this.getTotalPayment('Amount') ?? 0,
@@ -457,7 +484,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     this.paymentDataSource.data = [];
     this.cleanAmountController();
 
-    this.ClientNoInput.nativeElement.focus();
+   // this.ClientNoInput.nativeElement.focus();
     this.isSubmitting = false;
   }
 

@@ -442,7 +442,7 @@ export class SaleRateFixComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         if (!environment.production) {
-          debugger
+          
         }
         //  this.GetPaymentData();
         this.dataSource.data.forEach(item => {

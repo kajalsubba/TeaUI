@@ -213,6 +213,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
 
   approveEntry() {
 
+    
     const selectedObjects: any[] = [];
     const selectedObjects1: any[] = [];
     var ApproveList: any[] = [];
@@ -275,7 +276,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     if (this.dataSource.data.length > 0) {
       // this.SaveStgtData(data);
 
-      this.saleEntry(data, this.selection.selected);
+      this.saleEntry(data, this.selection.selected,this.selection.selected[0].Comment);
     }
   }
 
@@ -359,7 +360,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     );
   }
 
-  saleEntry(StgData: any, approveData: any) {
+  saleEntry(StgData: any, approveData: any,serverComments:any) {
     const dialogRef = this.dialog.open(SaleEntryComponent, {
       width: '90vw',
       height: '95%',
@@ -377,6 +378,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         AccountId: 0,
         ChallanWeight: 0,
         saleTypeId: 1,
+        Comments:serverComments
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {
