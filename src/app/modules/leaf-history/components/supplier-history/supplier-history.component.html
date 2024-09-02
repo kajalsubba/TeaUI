@@ -116,7 +116,7 @@
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Count : {{TotalVehicleCount}}</b> </td>
             </ng-container>
 
-            
+
             <!-- FineLeaf Average -->
             <ng-container matColumnDef="FineLeaf">
               <th mat-header-cell *matHeaderCellDef> Fine Leaf (%)</th>
@@ -148,18 +148,30 @@
                   currency:'INR':'symbol':undefined:'en-IN' }}</b>
               </td>
             </ng-container>
+            <!-- Rate Status -->
+            <ng-container matColumnDef="RateStatus">
+              <th mat-header-cell *matHeaderCellDef>Rate Status</th>
+              <td class="weight-column" mat-cell *matCellDef="let row" [ngClass]="{
+                'status-confirm': row.RateStatus === 'Confirm',
+                'status-not-confirm': row.RateStatus === 'Not Confirm',
+                'status-default': row.RateStatus !== 'Confirm' && row.RateStatus !== 'Not Confirm'
+              }">
+                {{ row.RateStatus }}
+              </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
 
-              <!-- Sale AverageRate -->
-              <ng-container matColumnDef="SaleRate"  *ngIf="!hideSaleRateColumn">
-                <th mat-header-cell *matHeaderCellDef>Sale Price <i class="fa-solid fa-indian-rupee-sign"></i>
-                </th>
-                <td class="weight-column red-font" mat-cell *matCellDef="let row">
-                  {{row.SaleRate | currency:'INR':'':undefined:'en-IN'}} </td>
-                <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                  <!-- <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
+            <!-- Sale AverageRate -->
+            <ng-container matColumnDef="SaleRate" *ngIf="!hideSaleRateColumn">
+              <th mat-header-cell *matHeaderCellDef>Sale Price <i class="fa-solid fa-indian-rupee-sign"></i>
+              </th>
+              <td class="weight-column red-font" mat-cell *matCellDef="let row">
+                {{row.SaleRate | currency:'INR':'':undefined:'en-IN'}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <!-- <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
                     currency:'INR':'symbol':undefined:'en-IN' }}</b> -->
-                </td>
-              </ng-container>
+              </td>
+            </ng-container>
 
             <!-- GrossAmount -->
             <ng-container matColumnDef="GrossAmount">
@@ -172,37 +184,6 @@
                   currency:'INR':'symbol':undefined:'en-IN'}}</b>
               </td>
             </ng-container>
-
-            
-            <!-- Commission Amount -->
-            <!-- <ng-container matColumnDef="CommAmount">
-              <th mat-header-cell *matHeaderCellDef> Comm. Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CommAmount |
-                currency:'INR':'':undefined:'en-IN'}} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotalCost('CommAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
-              </td>
-            </ng-container> -->
-
-            <!-- GL Cess Amount -->
-            <!-- <ng-container matColumnDef="GLCessAmount">
-              <th mat-header-cell *matHeaderCellDef> GL Cess. Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.GLCessAmount |
-                currency:'INR':'':undefined:'en-IN'}} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotalCost('GLCessAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
-              </td>
-            </ng-container> -->
-
-            <!-- Final Amount -->
-            <!-- <ng-container matColumnDef="FinalAmount">
-              <th mat-header-cell *matHeaderCellDef> Final Amount <i class="fa-solid fa-indian-rupee-sign"></i></th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalAmount |
-                currency:'INR':'':undefined:'en-IN'}} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotalCost('FinalAmount') | currency:'INR':'symbol':undefined:'en-IN'}} </b>
-              </td>
-            </ng-container> -->
 
             <!-- Actions column -->
             <ng-container matColumnDef="actions">

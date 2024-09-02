@@ -40,30 +40,17 @@ export class SupplierHistoryComponent {
     'FineLeaf',
     'ChallanWeight',
     'Rate',
-    // 'SaleRate',
-    // 'GrossAmount',
-    // 'Remarks',
-    // 'TripName',
-    // 'CreatedBy',
-    // 'CreatedDate',
-    // 'ModifyBy',
-    // 'ModifyDate',
-    // 'Status',
-    // 'actions'
+    'RateStatus'
+ 
   ];
 
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionId', header: 'Id ' },
-    // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    //  { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
-    //  { columnDef: 'FineLeaf', header: 'Fine Leaf' },
-    // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
-    //  { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Remarks', header: 'Remark' },
     { columnDef: 'TripName', header: 'TripName ' },
     { columnDef: 'CreatedBy', header: 'Created By' },
