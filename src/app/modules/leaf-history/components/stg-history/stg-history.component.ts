@@ -27,6 +27,7 @@ registerLocaleData(enIN);
 export class StgHistoryComponent {
   displayedColumns: string[] = [
     'CollectionDate',
+    'CollectionTime',
     'VehicleNo',
     'ClientName',
     'GradeName',
@@ -51,7 +52,7 @@ export class StgHistoryComponent {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    //{ columnDef: 'VehicleNo', header: 'Vehicle NO.' },
+    { columnDef: 'CollectionTime', header: 'Collection Time' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
@@ -70,12 +71,12 @@ export class StgHistoryComponent {
   dateRangeForm!: FormGroup;
   ClientNames: any[] = [];
   minToDate!: any;
-  GradeList:any=[];
+  GradeList: any = [];
   vehicleNumbers: any[] = [];
   statusList: string[] = ['All', 'Pending', 'Rejected', 'Approved']
   selectedRowIndex: number = -1;
   AverageRate: number = 0;
-  TotalVehicleCount:number=0;
+  TotalVehicleCount: number = 0;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -90,18 +91,18 @@ export class StgHistoryComponent {
     private gradeService: GradeService,
   ) { }
 
- async ngOnInit(){
+  async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-     // VehicleNo: [''],
-      ClientName:[],
+      // VehicleNo: [''],
+      ClientName: [],
       ClientId: [0],
       Status: [''],
-      GradeId:[0]
+      GradeId: [0]
     });
-   // this.loadVehicleNumbers();
+    // this.loadVehicleNumbers();
     await this.loadClientNames();
     this.getGradeList();
   }
@@ -169,7 +170,7 @@ export class StgHistoryComponent {
     }
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.dateRangeForm.controls['toDate'].setValue(null);
+    // this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value
   }
 
@@ -189,9 +190,9 @@ export class StgHistoryComponent {
     // Do something when input changes
     console.log(input.value, 'presss');
     if (input.value == '') {
-     
+
       this.dateRangeForm.controls['ClientId'].reset();
-  
+
 
     }
 
@@ -213,9 +214,9 @@ export class StgHistoryComponent {
       VehicleNo: '',
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
       TripId: 0,
-      GradeId:this.dateRangeForm.value.GradeId??0,
-      ClientId:this.dateRangeForm.value.ClientId,
-      CreatedBy: this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
+      GradeId: this.dateRangeForm.value.GradeId ?? 0,
+      ClientId: this.dateRangeForm.value.ClientId,
+      CreatedBy: this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res: any) => {
       // console.log(res);
@@ -227,7 +228,7 @@ export class StgHistoryComponent {
 
       const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
 
-      this.TotalVehicleCount=uniqueCategories;
+      this.TotalVehicleCount = uniqueCategories;
     });
     this.subscriptions.push(categoryListService);
   }
@@ -281,7 +282,7 @@ export class StgHistoryComponent {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-      //  this.GetStgList();
+        //  this.GetStgList();
 
       }
     });
@@ -337,11 +338,11 @@ export class StgHistoryComponent {
     }
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove

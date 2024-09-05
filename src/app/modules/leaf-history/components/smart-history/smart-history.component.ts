@@ -29,6 +29,7 @@ export class SmartHistoryComponent implements OnInit {
     'CollectionDate',
     'FinalWeight',
     'Rate',
+    'RateStatus',
     'Amount',
     'Status'
 
