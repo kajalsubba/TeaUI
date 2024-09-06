@@ -11,15 +11,17 @@ export class SuppilerHistoryService {
 
   constructor(private apiService: ApiService) { }
 
-  GetSupplierBillHistory(Body:IGetsupplierBill): Observable<any> {
+  GetSupplierBillHistory(Body: IGetsupplierBill): Observable<any> {
     return this.apiService.post('Accounts/GetSupplierBillHistory', Body);
   }
 
-  GetSmartHistory(Body:ISmartHistory): Observable<any> {
+  GetSmartHistory(Body: ISmartHistory): Observable<any> {
     return this.apiService.post('Accounts/GetSmartHistory', Body);
   }
 
-  PrintBill(Body:IPrint): Observable<any> {
+  PrintBill(Body: IPrint): Observable<any> {
     return this.apiService.postPdf('Print/SupplierBillPrint', Body);
   }
+
+
 }

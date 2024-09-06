@@ -47,4 +47,8 @@ export class StgApproveService {
   SaveLateralSTGData(clientBody:ILaterStgEntry): Observable<string[]> {
     return this.apiService.post('Collection/LateralStgSave', clientBody);
   }
+
+  SaleStatementPrint(Body: IGetSale): Observable<any> {
+    return this.apiService.postPdf('Print/SalePrint', Body);
+  }
 }

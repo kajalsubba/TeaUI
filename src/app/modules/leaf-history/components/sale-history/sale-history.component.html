@@ -34,6 +34,9 @@
                     {{ factory?.FactoryName }}
                   </mat-option>
                 </mat-autocomplete>
+                <span *ngIf="SaleStatementValidate" class="text-danger d-block validation-message">
+                  {{SaleStatementErrorMsg}}
+                </span>
               </div>
               <div class="position-relative col-lg-3 my-2">
                 <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
@@ -45,6 +48,9 @@
                     {{ account?.AccountName }}
                   </mat-option>
                 </mat-autocomplete>
+                <span *ngIf="SaleStatementValidate" class="text-danger d-block validation-message">
+                  {{SaleStatementErrorMsg}}
+                </span>
               </div>
               <div class="col-lg-3 position-relative my-2">
                 <mat-select placeholder="--Sale Type--" class="fromSelect" formControlName="SaleTypeId">
@@ -63,8 +69,10 @@
       
               </div>
               <div class="col-lg-3 d-grid my-2">
-                <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
                 <button (click)="search()" class="btn btn-color">Search</button>
+              </div>
+              <div class="col-lg-3 d-grid my-2">
+                <button (click)="print()" class="btn btn-color">Sale Stat. Print</button>
               </div>
             </div>
           </form>

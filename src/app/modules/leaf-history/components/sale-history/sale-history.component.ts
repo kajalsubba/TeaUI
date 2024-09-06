@@ -51,9 +51,9 @@ export class SaleHistoryComponent {
     //   { columnDef: 'SaleDate', header: 'Sale Date' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'AccountName', header: 'Account Name' },
-   // { columnDef: 'VehicleNo', header: 'Vehicle No' },
-  //  { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-   // { columnDef: 'Rate', header: 'Rate' },
+    // { columnDef: 'VehicleNo', header: 'Vehicle No' },
+    //  { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
+    // { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Incentive', header: 'Incentive (%)' },
     // { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
     //  { columnDef: 'FinalAmount', header: 'Final Amount' },
@@ -66,6 +66,8 @@ export class SaleHistoryComponent {
   private destroy$ = new Subject<void>();
   vehicleNumbers: any[] = [];
   minToDate!: any;
+  SaleStatementValidate: boolean = false;
+  SaleStatementErrorMsg: string = '';
   private subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -74,8 +76,8 @@ export class SaleHistoryComponent {
   AccountList: any = [];
   saleTypeList: any;
   selectedRowIndex: number = -1;
-  AverageRate:number=0;
-  TotalVehicleCount:number=0;
+  AverageRate: number = 0;
+  TotalVehicleCount: number = 0;
   constructor(
     private helper: HelperService,
     private datePipe: DatePipe,
@@ -99,12 +101,12 @@ export class SaleHistoryComponent {
       FactoryName: [''],
       FactoryId: [null],
       AccountName: [''],
-      FineLeaf:[''],
+      FineLeaf: [''],
       AccountId: [null],
       SaleTypeId: [null]
     });
     //  this.loadVehicleNumbers();
- //   this.loadFactoryNames();
+    //   this.loadFactoryNames();
     this.loadAccountNames();
     this.GetSaleType();
   }
@@ -135,16 +137,95 @@ export class SaleHistoryComponent {
       x?.VehicleNo?.toLowerCase()?.includes(filterValue)
     );
   }
+  setValidation(controlName: string) {
+    this.SaleForm.get(controlName)?.setValidators([Validators.required]);
+    this.SaleForm.get(controlName)?.updateValueAndValidity();
+  }
+  clearalidation(controlName: string) {
+    this.SaleForm.get(controlName)?.clearValidators();
+    this.SaleForm.get(controlName)?.updateValueAndValidity();
+  }
 
+  print() {
+    //debugger
+    if (this.SaleForm.value.FactoryName == '' || this.SaleForm.value.FactoryName == null) {
+      this.setValidation('FactoryName');
+      this.SaleStatementValidate = true;
+      this.SaleStatementErrorMsg = 'Select Factory!'
+      return
+    }
+    else {
+      this.clearalidation('FactoryName')
+      this.SaleStatementValidate = false;
+      this.SaleStatementErrorMsg = ''
+
+    }
+
+    if (this.SaleForm.value.AccountName == '' || this.SaleForm.value.AccountName == null) {
+      this.setValidation('AccountName');
+
+      this.SaleStatementValidate = true;
+      this.SaleStatementErrorMsg = 'Select Account!'
+      return
+    }
+    else {
+      this.clearalidation('AccountName')
+      this.SaleStatementValidate = false;
+      this.SaleStatementErrorMsg = ''
+    }
+
+
+    let bodyData: IGetSale = {
+
+      FromDate: formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      VehicleNo: '',
+      FactoryId: this.SaleForm.value.FactoryId ?? 0,
+      AccountId: this.SaleForm.value.AccountId ?? 0,
+      FineLeaf: '',
+      SaleTypeId: 0,
+      TenantId: this.loginDetails.TenantId,
+    };
+
+    const categoryListService = this.saleService
+      .SaleStatementPrint(bodyData)
+      .subscribe((response: Blob) => {
+        const blobUrl = URL.createObjectURL(response);
+
+        // Open PDF in a new browser tab
+        window.open(blobUrl, '_blank');
+      });
+    this.subscriptions.push(categoryListService);
+  }
+
+  // ViewSaleStateMent(e: any) {
+  //   let bodyData: IPrint = {
+
+  //     TenantId: this.loginDetails.TenantId,
+  //     BillNo: e.BillId
+
+  //   };
+  //  // console.log(e, 'bodyData bodyData');
+
+  //   const categoryListService = this.billService
+  //     .PrintBill(bodyData)
+  //     .subscribe((response: Blob) => {
+  //       const blobUrl = URL.createObjectURL(response);
+
+  //       // Open PDF in a new browser tab
+  //       window.open(blobUrl, '_blank');
+  //     });
+  //   this.subscriptions.push(categoryListService);
+  // }
   filterFactoryNames(value: string): any {
-  // if (value!="")
-  //   {
+    // if (value!="")
+    //   {
     const filterValue = value.toLowerCase();
     return this.factoryNames.filter((x: any) =>
       x?.FactoryName?.toLowerCase()?.includes(filterValue)
     );
-//  }
-  
+    //  }
+
   }
 
   filterAccountNames(value: string): any {
@@ -204,7 +285,7 @@ export class SaleHistoryComponent {
       const bodyData: IGetSaleFactory = {
         TenantId: this.loginDetails.TenantId,
         FromDate: formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-        ToDate:formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       };
 
       const res: any = await this.saleService
@@ -242,15 +323,15 @@ export class SaleHistoryComponent {
   GetSaleDeatils() {
     const currentDate = new Date();
     let bodyData: IGetSale = {
-      FromDate:formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-      ToDate:formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      FromDate: formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       VehicleNo: this.SaleForm.value.VehicleNo,
-      FactoryId: this.SaleForm.value.FactoryId??0,
-      AccountId: this.SaleForm.value.AccountId??0,
-      FineLeaf:this.SaleForm.value.FineLeaf??'',
-      SaleTypeId: this.SaleForm.value.SaleTypeId??0,
+      FactoryId: this.SaleForm.value.FactoryId ?? 0,
+      AccountId: this.SaleForm.value.AccountId ?? 0,
+      FineLeaf: this.SaleForm.value.FineLeaf ?? '',
+      SaleTypeId: this.SaleForm.value.SaleTypeId ?? 0,
       TenantId: this.loginDetails.TenantId,
-   
+
     };
     const categoryListService = this.saleService
       .GetSaleDetails(bodyData)
@@ -258,15 +339,15 @@ export class SaleHistoryComponent {
         // console.log(res);
         this.dataSource.data = res.SaleDetails;
 
-        
-      const grossAmount: number = this.getTotalCost('GrossAmount');
-      const finalWeight: number = this.getTotalCost('ChallanWeight');
-      this.AverageRate = grossAmount / finalWeight;
 
-      
-      const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
+        const grossAmount: number = this.getTotalCost('GrossAmount');
+        const finalWeight: number = this.getTotalCost('ChallanWeight');
+        this.AverageRate = grossAmount / finalWeight;
 
-      this.TotalVehicleCount=uniqueCategories;
+
+        const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
+
+        this.TotalVehicleCount = uniqueCategories;
       });
     this.subscriptions.push(categoryListService);
   }
@@ -326,11 +407,11 @@ export class SaleHistoryComponent {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-  //  this.SaleForm.controls['toDate'].setValue(null);
+    //  this.SaleForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 
-  GetFactory  (event: MatDatepickerInputEvent<Date>): void {
+  GetFactory(event: MatDatepickerInputEvent<Date>): void {
     this.loadSaleFactoryNames();
   }
 
@@ -343,7 +424,7 @@ export class SaleHistoryComponent {
       minWidth: '90vw',
       disableClose: true,
       data: {
-        title: 'Sale Edit Form-'+row.TypeName,
+        title: 'Sale Edit Form-' + row.TypeName,
         stgData: row,
         approveData: null,
         isEdit: true,
@@ -386,11 +467,11 @@ export class SaleHistoryComponent {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove
