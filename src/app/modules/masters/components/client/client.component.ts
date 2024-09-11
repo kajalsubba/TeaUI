@@ -37,6 +37,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
     'CategoryName',
     'ContactNo',
     'WhatsAppNo',
+    'BioMatrixNo',
     'EmailId',
     'LoginStatus',
     'actions',
@@ -51,6 +52,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
     { columnDef: 'CategoryName', header: 'Category' },
     { columnDef: 'ContactNo', header: 'Contact No.' },
     { columnDef: 'WhatsAppNo', header: 'WhatsApp No' },
+    { columnDef: 'BioMatrixNo', header: 'Bio-Matric No' },
     { columnDef: 'EmailId', header: 'Email ID' },
     { columnDef: 'LoginStatus', header: 'Client Login' },
   ];

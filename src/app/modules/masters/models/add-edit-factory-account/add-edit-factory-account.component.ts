@@ -18,37 +18,36 @@ export class AddEditFactoryAccountComponent {
 
   FactoryAccountForm!: FormGroup;
   private destroy$ = new Subject<void>();
-  loginDetails:any;
-  factoryList:any;
+  loginDetails: any;
+  factoryList: any;
   private subscriptions: Subscription[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     public dialogRef: MatDialogRef<AddEditFactoryAccountComponent>,
-    private fb:FormBuilder,
-    private accountService:FactoryAccountService,
-    private helper:HelperService,
-    private factoryService:FactoryService,
-    private toastr:ToastrService
+    private fb: FormBuilder,
+    private accountService: FactoryAccountService,
+    private helper: HelperService,
+    private factoryService: FactoryService,
+    private toastr: ToastrService
 
-  ) {}
+  ) { }
 
-async  ngOnInit()
-  {
+  async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.FactoryAccountForm = this.fb.group({
-    //  AccountId: [''],
       AccountName: ['', Validators.required],
-      FactoryId: ['', Validators.required]
- 
+      FactoryId: ['', Validators.required],
+      BioMatrixNo: ['']
     });
-   await this.GetFactoryList();
+    await this.GetFactoryList();
 
     if (this.dialogData.value) {
       this.FactoryAccountForm.controls['AccountName'].setValue(this.dialogData.value.AccountName);
       this.FactoryAccountForm.controls['FactoryId'].setValue(this.dialogData.value.FactoryId);
-  
-    }    
+      this.FactoryAccountForm.controls['BioMatrixNo'].setValue(this.dialogData.value.BioMatrixNo);
+
+    }
   }
   // GetFactoryList(){
   //   let bodyData:IGetFactory = {
@@ -62,48 +61,48 @@ async  ngOnInit()
 
   async GetFactoryList() {
     try {
-        const bodyData: IGetFactory = {
-            TenantId: this.loginDetails.TenantId,
-            IsClientView:false
-        };
+      const bodyData: IGetFactory = {
+        TenantId: this.loginDetails.TenantId,
+        IsClientView: false
+      };
 
-        const res: any = await this.factoryService.GetFactory(bodyData)
-            .pipe(takeUntil(this.destroy$))
-            .toPromise();
+      const res: any = await this.factoryService.GetFactory(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
 
-        this.factoryList = res.FactoryDetails;
+      this.factoryList = res.FactoryDetails;
 
-        // if (this.dialogData.value) {
-        //     this.clientForm.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
-        // }
+      // if (this.dialogData.value) {
+      //     this.clientForm.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
+      // }
 
     } catch (error) {
-        console.error('Error:', error);
-        this.toastr.error('Something went wrong.', 'ERROR');
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
     }
-}
+  }
 
-  onSubmit()
-  {
-    if(this.FactoryAccountForm.invalid){
+  onSubmit() {
+    if (this.FactoryAccountForm.invalid) {
       this.FactoryAccountForm.markAllAsTouched();
       return;
-    }else{
-      let bodyData:ISaveFactoryAccount = {
-        TenantId:this.loginDetails.TenantId,
-        CreatedBy:this.loginDetails.UserId,
-        AccountId :this.dialogData?.value?.AccountId? this.dialogData?.value?.AccountId : 0,
-        AccountName : this.FactoryAccountForm.value.AccountName,
-        FactoryId:this.FactoryAccountForm.value.FactoryId,
-        IsActive:true
+    } else {
+      let bodyData: ISaveFactoryAccount = {
+        TenantId: this.loginDetails.TenantId,
+        CreatedBy: this.loginDetails.UserId,
+        AccountId: this.dialogData?.value?.AccountId ? this.dialogData?.value?.AccountId : 0,
+        AccountName: this.FactoryAccountForm.value.AccountName,
+        BioMatrixNo: this.FactoryAccountForm.value.BioMatrixNo,
+        FactoryId: this.FactoryAccountForm.value.FactoryId,
+        IsActive: true
       }
-      const saveCategory = this.accountService.SaveFactoryAccount(bodyData).subscribe((res:any)=>{
+      const saveCategory = this.accountService.SaveFactoryAccount(bodyData).subscribe((res: any) => {
         // console.log(res, "Save Response");
         // if(this.dialogData.buttonName == 'Save'){
         //   this.toastr.success(res.Message, "SUCCESS");
         // }else if(this.dialogData.buttonName == "Update"){
-          this.toastr.success(res.Message, "SUCCESS")
-       // }
+        this.toastr.success(res.Message, "SUCCESS")
+        // }
         this.dialogRef.close(true)
       })
     }
@@ -113,7 +112,7 @@ async  ngOnInit()
     this.destroy$.next();
     this.destroy$.complete();
     this.dialogRef.close(true);
-    this.subscriptions.forEach((sub)=>{
+    this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     })
   }

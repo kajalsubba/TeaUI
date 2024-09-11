@@ -3,6 +3,7 @@ export interface ISaveFactoryAccount {
   AccountName: string;
   FactoryId: number;
   TenantId: number;
+  BioMatrixNo: string;
   IsActive: boolean;
   CreatedBy: number;
 }

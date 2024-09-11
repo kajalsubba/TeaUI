@@ -51,7 +51,8 @@ export class AddEditClientComponent implements OnInit {
       IsActive:[true],
       EmailId: ['', Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)],
       Password:[''],
-      WhatsAppNo:['']
+      WhatsAppNo:[''],
+      BioMatrixNo:[]
     });
   
     await this.getCategoryList();
@@ -63,6 +64,8 @@ export class AddEditClientComponent implements OnInit {
       this.clientForm.controls['ClientAddress'].setValue(this.dialogData.value.ClientAddress);
       this.clientForm.controls['ContactNo'].setValue(this.dialogData.value.ContactNo);
       this.clientForm.controls['WhatsAppNo'].setValue(this.dialogData.value.WhatsAppNo);
+      this.clientForm.controls['BioMatrixNo'].setValue(this.dialogData.value.BioMatrixNo);
+
       this.clientForm.controls['EmailId'].setValue(this.dialogData.value.EmailId);
       this.clientForm.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
       this.clientForm.controls['IsActive'].setValue(this.dialogData.value.IsActive);
@@ -116,6 +119,7 @@ onKeyPress(event: KeyboardEvent): void {
         ClientLastName:this.clientForm.value.ClientLastName,
         ContactNo:this.clientForm.value.ContactNo.toString(),
         WhatsAppNo:this.clientForm.value.WhatsAppNo.toString(),
+        BioMatrixNo:this.clientForm.value.BioMatrixNo.toString(),
         EmailId:this.clientForm.value.EmailId,
         Password:this.clientForm.value.Password,
         TenantId:this.loginDetails.TenantId,

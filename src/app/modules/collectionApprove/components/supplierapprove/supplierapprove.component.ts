@@ -78,6 +78,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   minToDate!: any;
+  IsApprove:boolean=false;
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
   selectedRowIndex: number = -1;
@@ -130,6 +131,8 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
         //  const result=res.STGDetails.filter((x:any)=>x.Status=='Pending');
         this.dataSource.data = res.SupplierDefaultData;
         this.dataSource.data.forEach((row) => this.selection.select(row));
+        this.IsApprove=false;
+
       });
     this.subscriptions.push(supplierService);
   }
@@ -209,10 +212,12 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     }
   }
   RejectClick(row: any) {
+    this.IsApprove=true;
     this.SaveFuntion(row, 'Reject');
   }
 
   ApproveClick(row: any) {
+    this.IsApprove=true;
     this.SaveFuntion(row, 'Approve');
   }
 
@@ -245,13 +250,14 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
         },
       });
       dialogRef.afterClosed().subscribe((result: any) => {
-        if (result != "") {
+        if ( result!=null) {
           data.Remarks = result;
           this.SaveApproveData(data);
-
-
+         
         }
-
+        else{
+          this.IsApprove=false;
+        }
       });
     } else {
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -268,8 +274,11 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result) {
           this.SaveApproveData(data);
+      
 
-
+        }
+        else{
+          this.IsApprove=false;
         }
       });
     }

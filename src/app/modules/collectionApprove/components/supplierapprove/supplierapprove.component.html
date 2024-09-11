@@ -1,36 +1,36 @@
 <div class="container-fluid mt-2">
-    <div class="row">
-      <div class="col-lg-10 my-2">
-        <div class="row">
-          <div class="col-lg-12">
-            <form [formGroup]="dateRangeForm">
-              <div class="row">
-                <div class="col-lg-3">
-                  <mat-form-field>
-                    <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
-                      placeholder="Collection Date" formControlName="fromDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <div class="position-relative col-lg-3 d-grid ms-2">
-                  <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control"
-                    id="VehicleNo" placeholder="Vehicle No." formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
-                  <!-- Autocomplete options -->
-                  <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
-                    <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
-                      (onSelectionChange)="selectVehicle(number)" [value]="number.VehicleNo">
-                      {{ number.VehicleNo }}
-                    </mat-option>
-                  </mat-autocomplete>
-                  <!-- Validation message -->
-                  <!-- <span
+  <div class="row">
+    <div class="col-lg-10 my-2">
+      <div class="row">
+        <div class="col-lg-12">
+          <form [formGroup]="dateRangeForm">
+            <div class="row">
+              <div class="col-lg-3">
+                <mat-form-field>
+                  <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
+                    placeholder="Collection Date" formControlName="fromDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="position-relative col-lg-3 d-grid ms-2">
+                <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control"
+                  id="VehicleNo" placeholder="Vehicle No." formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
+                <!-- Autocomplete options -->
+                <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
+                  <mat-option *ngFor="let number of filterVehicleNumbers(vehicleNo.value)"
+                    (onSelectionChange)="selectVehicle(number)" [value]="number.VehicleNo">
+                    {{ number.VehicleNo }}
+                  </mat-option>
+                </mat-autocomplete>
+                <!-- Validation message -->
+                <!-- <span
                     *ngIf="dateRangeForm.get('VehicleNo')?.hasError('required') && dateRangeForm.get('VehicleNo')?.touched"
                     class="text-danger d-block validation-message">
                     Vehicle No is required.
                   </span> -->
-                </div>
-                  <!-- <div class="position-relative d-grid col-lg-3">
+              </div>
+              <!-- <div class="position-relative d-grid col-lg-3">
                     <mat-select placeholder="--Select Trip--" class="fromSelect" formControlName="TripId">
                       <mat-option *ngFor="let trip of TripList" [value]="trip.TripId">
                         {{trip.TripName}}
@@ -42,109 +42,100 @@
                       Trip is required.
                     </span>
                   </div> -->
-                <div class="col-lg-2 d-grid">
-                  <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
-                  <button (click)="search()" class="btn btn-color ms-2">Search</button>
-                </div>
+              <div class="col-lg-2 d-grid">
+                <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
+                <button (click)="search()" class="btn btn-color ms-2">Search</button>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
-      <div class="col-lg-2 my-2">
-        <div class="top-container d-flex justify-content-end">
-          <!-- <div class="search-field px-2">
+    </div>
+    <div class="col-lg-2 my-2">
+      <div class="top-container d-flex justify-content-end">
+        <!-- <div class="search-field px-2">
               <input readonly (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
               <i class="fa-solid fa-magnifying-glass"></i>
             </div> -->
-          <div class="add-button">
-            <!-- <button (click)="approveEntry()" class="btn btn-color">Approve</button> -->
-            <!-- <button (click)="saleEntry('','')" class="btn btn-color">Sale Entry</button> -->
-          </div>
+        <div class="add-button">
+          <!-- <button (click)="approveEntry()" class="btn btn-color">Approve</button> -->
+          <!-- <button (click)="saleEntry('','')" class="btn btn-color">Sale Entry</button> -->
         </div>
       </div>
-      <hr>
-      <div class="col-lg-12">
-        <div class="table-container">
-          <div>
-            <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
-              <!-- Displayed columns -->
-              <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-                <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
-                <td [ngClass]="{'reject-row': row.Status=='Rejected'}" mat-cell *matCellDef="let row; let i = index;">
-                  {{ row[column.columnDef] }}
-                </td>
-                <td mat-footer-cell *matFooterCellDef></td>
-                </ng-container>
-             
-                   <!-- Actions column -->
-                   <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef>Actions</th>
-                    <td mat-cell *matCellDef="let row">
-                      <!-- <div *ngIf="row.Status=='Pending'"> -->
-                      <div>
-                       
-                          <i (click)="openImage(row)" matTooltip="View Challan" matTooltipPosition="right" class="fa-solid fa-eye edit-delete-button "></i>
-                      </div>
-                    </td>
-                    <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
-                  </ng-container>
+    </div>
+    <hr>
+    <div class="col-lg-12">
+      <div class="table-container">
+        <div>
+          <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
+            <!-- Displayed columns -->
+            <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" mat-cell *matCellDef="let row; let i = index;">
+                {{ row[column.columnDef] }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
 
-                 <ng-container matColumnDef="ChallanWeight">
-                  <th mat-header-cell *matHeaderCellDef> Challan Weight( KG ) </th>
-                  <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
-                  <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                    <b>{{ getTotalCost('ChallanWeight') }} KG</b>
-                  </td>
-                </ng-container> 
- 
-              
-  
-                <ng-container matColumnDef="Status">
-                  <th mat-header-cell *matHeaderCellDef>Status</th>
-                  <td mat-cell *matCellDef="let row">
-                    <!-- <div *ngIf="row.Status != 'Pending'" class="statusBtn">
+            <!-- Actions column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <!-- <div *ngIf="row.Status=='Pending'"> -->
+                <div>
+
+                  <i (click)="openImage(row)" matTooltip="View Challan" matTooltipPosition="right"
+                    class="fa-solid fa-eye edit-delete-button "></i>
+                </div>
+              </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ChallanWeight">
+              <th mat-header-cell *matHeaderCellDef> Challan Weight( KG ) </th>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.ChallanWeight}} KG </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>{{ getTotalCost('ChallanWeight') }} KG</b>
+              </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let row">
+                <!-- <div *ngIf="row.Status != 'Pending'" class="statusBtn">
                       <span *ngIf="row.Status == 'Reject'" class="btn-reject">Reject</span>
                    
                       <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
                     </div> -->
-                    <div  class="approve-reject-btn">
-                      <span (click)="RejectClick(row)" class="btn btn-sm btn-outline-danger m-1">Reject</span>
-                      <span (click)="ApproveClick(row)"  class="btn btn-sm btn-outline-success m-1">Approved</span>
-                    </div>
-                  </td>
-                  <td mat-footer-cell *matFooterCellDef></td>
-                </ng-container>
-                <!-- <ng-container matColumnDef="select">
-                  <th class="select-check" mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox matTooltip="Select All" matTooltipPosition="right"
-                      (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-                    </mat-checkbox>
-                  </th>
-                  <td class="select-check" mat-cell *matCellDef="let row">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
-                    </mat-checkbox>
-                  </td>
-                  <td class="text-center" mat-footer-cell *matFooterCellDef><i matTooltip="Calcutation"
-                      class="fa-solid fa-scale-unbalanced"></i></td>
-                </ng-container> -->
-  
-             
-  
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
-                    [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
-                </tr>
-                <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
-                <tr class="mat-row" *matNoDataRow>
-                  <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is not found !</td>
-                </tr>
-            </table>
-          </div>
+                <div class="approve-reject-btn">
+                  <span (click)="RejectClick(row)"  [ngClass]="{'disabled-span': IsApprove}"
+                    class="btn btn-sm btn-outline-danger m-1">Reject</span>
+                  <span (click)="ApproveClick(row)"  [ngClass]="{'disabled-span': IsApprove}"
+                    class="btn btn-sm btn-outline-success m-1">Approved</span>
+                </div>
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+          
+
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+              [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+            </tr>
+            <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is not
+                found !</td>
+            </tr>
+          </table>
         </div>
-        <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator>
       </div>
+      <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
+</div>

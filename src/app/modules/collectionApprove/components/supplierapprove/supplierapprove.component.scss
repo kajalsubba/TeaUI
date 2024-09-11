@@ -238,4 +238,8 @@ th:first-child{
   .selected-row {
     background-color: #cacaca; /* Change this to the desired background color */
   }
-  
+  .disabled-span {
+    pointer-events: none; /* Disables click events */
+    opacity: 0.6;         /* Makes it look disabled */
+    cursor: not-allowed;  /* Changes the cursor to indicate disabled state */
+  }

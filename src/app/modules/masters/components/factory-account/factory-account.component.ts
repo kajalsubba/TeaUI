@@ -25,13 +25,14 @@ export class FactoryAccountComponent implements OnInit, AfterViewInit {
     'AccountId',
     'AccountName',
     'FactoryName',
+    'BioMatrixNo',
     'actions',
   ];
   dataSource = new MatTableDataSource<any>();
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'AccountId', header: 'Account Id' },
     { columnDef: 'AccountName', header: 'Account Name' },
-    // { columnDef: 'FactoryId', header: 'Factory Id' },
+    { columnDef: 'BioMatrixNo', header: 'Bio Matric No' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
   ];
 
