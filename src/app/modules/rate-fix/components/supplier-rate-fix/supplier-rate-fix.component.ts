@@ -366,7 +366,7 @@ export class SupplierRateFixComponent implements OnInit {
       FineLeaf: this.dateRangeForm.value.FineLeaf
     }
     const categoryListService = this.rateFixService.GetSupplierRateFixData(bodyData).subscribe((res: any) => {
-      // console.log(res);
+     
       this.dataSource.data = res.SupplierRateData;
     });
     this.subscriptions.push(categoryListService);

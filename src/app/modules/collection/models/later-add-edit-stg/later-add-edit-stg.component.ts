@@ -264,9 +264,7 @@ export class LaterAddEditStgComponent implements OnInit {
       const res: any = await this.autocompleteService.GetClientNames(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
-      console.log(this.dialogData.clientList, 'this.11dialogData')
       this.ClientNames = res.ClientDetails.filter((x: any) => !this.dialogData.clientList.includes(x.ClientId));
-      console.log(this.ClientNames, 'this.ClientNames')
 
     } catch (error) {
       console.error('Error:', error);

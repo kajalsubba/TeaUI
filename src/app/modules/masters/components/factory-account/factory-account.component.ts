@@ -70,7 +70,7 @@ export class FactoryAccountComponent implements OnInit, AfterViewInit {
     const dataService = this.accountService
       .GetFactoryAccount(bodyData)
       .subscribe((res: any) => {
-        console.log(res);
+      
         this.dataSource.data = res.AccountDetails;
       });
     this.subscriptions.push(dataService);

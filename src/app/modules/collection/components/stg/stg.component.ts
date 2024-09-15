@@ -102,7 +102,6 @@ export class StgComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.loginDetails);
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -130,7 +129,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     const categoryListService = this.stgService
       .GetStg(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+
         this.dataSource.data = res.STGDetails;
       });
     this.subscriptions.push(categoryListService);
@@ -217,15 +216,12 @@ export class StgComponent implements OnInit, AfterViewInit {
     // Your code to handle the change event
     if (event.target.checked) {
       // Checkbox is checked, do something
-      console.log('Checkbox is checked');
     } else {
       // Checkbox is unchecked, do something else
-      console.log('Checkbox is unchecked');
     }
   }
 
   setStatus(status: string, row: any) {
-    console.log(row);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '30%',
       data: {

@@ -72,7 +72,7 @@ export class FactoryComponent implements OnInit, AfterViewInit {
     const GetService = this.factoryService
       .GetFactory(bodyData)
       .subscribe((res: any) => {
-        //   console.log(res);
+     
         this.dataSource.data = res.FactoryDetails;
       });
     this.subscriptions.push(GetService);

@@ -52,7 +52,7 @@ export class AddEditClientComponent implements OnInit {
       EmailId: ['', Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)],
       Password:[''],
       WhatsAppNo:[''],
-      BioMatrixNo:[]
+      BioMatrixNo:['']
     });
   
     await this.getCategoryList();
@@ -119,7 +119,7 @@ onKeyPress(event: KeyboardEvent): void {
         ClientLastName:this.clientForm.value.ClientLastName,
         ContactNo:this.clientForm.value.ContactNo.toString(),
         WhatsAppNo:this.clientForm.value.WhatsAppNo.toString(),
-        BioMatrixNo:this.clientForm.value.BioMatrixNo.toString(),
+        BioMatrixNo:this.clientForm.value.BioMatrixNo??"",
         EmailId:this.clientForm.value.EmailId,
         Password:this.clientForm.value.Password,
         TenantId:this.loginDetails.TenantId,

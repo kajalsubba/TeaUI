@@ -41,6 +41,7 @@ export const MY_FORMATS = {
     BrowserAnimationsModule,
     CoreModule,
     SharedModule,
+    // QRCodeModule,
     ToastrModule.forRoot({
       timeOut: 3000, 
       positionClass: 'toast-top-center',

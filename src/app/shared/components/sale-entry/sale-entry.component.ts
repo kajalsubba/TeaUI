@@ -317,7 +317,7 @@ export class SaleEntryComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log(res);
+    
         this.toastr.success(res.Message, 'SUCCESS');
         this.dialogRef.close(true);
       });

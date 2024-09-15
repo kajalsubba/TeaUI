@@ -308,7 +308,6 @@ export class AddEditSupplierComponent implements OnInit {
 
   restrictInput(event: KeyboardEvent) {
     const charCode = event.charCode;
-    console.log(charCode);
     if (charCode >= 48 && charCode <= 57) {
       return true;
     } else {

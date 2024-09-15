@@ -336,7 +336,7 @@ export class SaleHistoryComponent {
     const categoryListService = this.saleService
       .GetSaleDetails(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+   
         this.dataSource.data = res.SaleDetails;
 
 

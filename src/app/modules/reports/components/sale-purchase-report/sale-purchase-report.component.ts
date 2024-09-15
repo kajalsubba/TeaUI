@@ -182,7 +182,7 @@ export class SalePurchaseReportComponent implements OnInit {
     const categoryListService = this.reportService
       .GetPurchaseSaleReport(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+
         this.stgPurchaseDataSource.data = res.StgPurchase;
         this.stgSaleDataSource.data = res.StgSale;
         this.supplierPurchaseDataSource.data = res.SupplierPurchase;

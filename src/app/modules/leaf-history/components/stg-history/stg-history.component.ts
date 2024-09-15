@@ -219,7 +219,7 @@ export class StgHistoryComponent {
       CreatedBy: this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
     }
     const categoryListService = this.stgService.GetStg(bodyData).subscribe((res: any) => {
-      // console.log(res);
+
       this.dataSource.data = res.STGDetails;
 
       const grossAmount: number = this.getTotal('GrossAmount');

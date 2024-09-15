@@ -109,7 +109,6 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
     if (client == '') {
       this.addEditSeasonAdvance.controls['ClientId'].reset();
     }
-    console.log(client, 'client?.ClientId');
 
     this.addEditSeasonAdvance.controls['ClientId'].setValue(client?.ClientId);
   }
@@ -120,7 +119,6 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       this.addEditSeasonAdvance.controls['CategoryName'].setValue(category.CategoryName);
       var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditSeasonAdvance.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
       this.ClientNames = dataList;
-      console.log(dataList, 'this.clientList');
 
       // await this.loadClientNames();
     }
@@ -171,7 +169,6 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
       '',
       undefined,
       "en-IN");
-    console.log(formattedValue, 'formattedValue');
 
     this.addEditSeasonAdvance.controls["Amount"].setValue(formattedValue);
 
@@ -188,7 +185,7 @@ export class EditAddSeasonAdvanceComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-        //console.log(res);
+   
         if (res.Id == 0) {
           this.toastr.warning(res.Message, 'Warning');
         }

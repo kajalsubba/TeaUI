@@ -168,7 +168,7 @@ export class AddEditPaymentComponent implements OnInit {
     };
     const NarrationtService = this.paymentService.GetPaymentNarration(bodyData)
       .subscribe((res: any) => {
-         console.log(res.Narration,'Narration');
+      
         this.narrationList = res.Narration;
       //  this.ClientNames = this.narrationList;
       });

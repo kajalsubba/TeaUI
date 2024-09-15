@@ -97,12 +97,9 @@ export class AddEditFactoryAccountComponent {
         IsActive: true
       }
       const saveCategory = this.accountService.SaveFactoryAccount(bodyData).subscribe((res: any) => {
-        // console.log(res, "Save Response");
-        // if(this.dialogData.buttonName == 'Save'){
-        //   this.toastr.success(res.Message, "SUCCESS");
-        // }else if(this.dialogData.buttonName == "Update"){
+
         this.toastr.success(res.Message, "SUCCESS")
-        // }
+     
         this.dialogRef.close(true)
       })
     }

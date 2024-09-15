@@ -104,7 +104,6 @@ export class SupplierComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.loginDetails);
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -126,7 +125,7 @@ export class SupplierComponent implements OnInit {
     const categoryListService = this.supplierService
       .GetSupplierData(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+   
         this.dataSource.data = res.SupplierDetails;
       });
     this.subscriptions.push(categoryListService);
@@ -205,10 +204,8 @@ export class SupplierComponent implements OnInit {
     // Your code to handle the change event
     if (event.target.checked) {
       // Checkbox is checked, do something
-      console.log('Checkbox is checked');
     } else {
       // Checkbox is unchecked, do something else
-      console.log('Checkbox is unchecked');
     }
   }
 

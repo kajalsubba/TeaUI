@@ -120,7 +120,7 @@ export class PaymentHistoryComponent implements OnInit {
     const categoryListService = this.paymentService
       .GetPaymentData(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+  
         this.dataSource.data = res.PaymentDetails;
       });
     this.subscriptions.push(categoryListService);
@@ -152,7 +152,7 @@ export class PaymentHistoryComponent implements OnInit {
     const categoryListService = this.paymentTypeService
       .GetPaymentType(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+   
         this.PaymentTypeList = res.PaymentTypeDetails;
       });
     this.subscriptions.push(categoryListService);
@@ -164,7 +164,7 @@ export class PaymentHistoryComponent implements OnInit {
     const categoryListService = this.userService
       .GetUser(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+
         this.UserList = res.UserDetails;
       });
     this.subscriptions.push(categoryListService);

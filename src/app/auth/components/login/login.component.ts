@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit {
     const dataService = this.loginService.GetTenant().subscribe((res: any) => {
      
       if (!environment.production) {
-        console.log(res,'tenant');
+      //  console.log(res,'tenant');
       }
      
       this.TenantList = res.TenantDetails;

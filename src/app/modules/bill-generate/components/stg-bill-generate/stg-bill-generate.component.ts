@@ -295,7 +295,6 @@ export class StgBillGenerateComponent implements OnInit {
     if (client == '') {
       this.StgBillForm.controls['ClientId'].reset();
     }
-    console.log(client.ClientId, 'Client');
 
     this.StgBillForm.controls['ClientId'].setValue(client?.ClientId);
   }

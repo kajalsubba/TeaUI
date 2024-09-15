@@ -23,10 +23,12 @@ import { EditSaleEntryComponent } from './components/edit-sale-entry/edit-sale-e
 import { ConfirmDialogRemarksComponent } from './components/confirm-dialog-remarks/confirm-dialog-remarks.component';
 import { CurrencyDirective } from './currency.directive';
 import { ViewCollectionBagComponent } from './components/view-collection-bag/view-collection-bag.component';
+import { QRViewerComponent } from './components/qr-viewer/qr-viewer.component';
+import { QRCodeModule } from 'angularx-qrcode';
 //import { CharacterRestrictionDirective } from './character-restriction.directive';
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent, ConfirmDialogRemarksComponent, CurrencyDirective, ViewCollectionBagComponent],
+  declarations: [ConfirmDialogComponent, ColumnTotalPipe, SaleEntryComponent, ImageViewerComponent, EditSaleEntryComponent, ConfirmDialogRemarksComponent, CurrencyDirective, ViewCollectionBagComponent, QRViewerComponent],
   exports: [ConfirmDialogComponent],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { ViewCollectionBagComponent } from './components/view-collection-bag/vie
     MatSlideToggleModule,
     MatAutocompleteModule,
     MatCheckboxModule,
+    QRCodeModule
   ],
 })
 export class SharedModule {}

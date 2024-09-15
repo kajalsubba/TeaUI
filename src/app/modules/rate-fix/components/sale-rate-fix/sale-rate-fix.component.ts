@@ -126,7 +126,7 @@ export class SaleRateFixComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.loginDetails);
+  
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -164,7 +164,7 @@ export class SaleRateFixComponent implements OnInit {
 
     }
     const categoryListService = this.rateFixService.GetSaleRateFixData(bodyData).subscribe((res: any) => {
-      // console.log(res);
+   
       this.dataSource.data = res.SaleRateData;
     });
     this.subscriptions.push(categoryListService);

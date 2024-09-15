@@ -19,6 +19,7 @@ import { IGetCategory } from '../../interfaces/ICategory';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ClientPasswordChangeComponent } from '../../models/client-password-change/client-password-change.component';
+import { QRViewerComponent } from 'src/app/shared/components/qr-viewer/qr-viewer.component';
 
 @Component({
   selector: 'app-client',
@@ -102,7 +103,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
     const clientListService = this.clientService
       .getClient(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+     
         this.dataSource.data = res.ClientDetails;
       });
     this.subscriptions.push(clientListService);
@@ -209,4 +210,22 @@ export class ClientComponent implements OnInit, AfterViewInit {
       }
     }
   }
+  generateQR(element:any): void {
+    const dialogRef = this.dialog.open(QRViewerComponent, {
+      width: '30%',
+      data: {
+        title: 'Update Client',
+        buttonName: 'Download',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+       // this.getClientList();
+      }
+    });
+  }
+
 }

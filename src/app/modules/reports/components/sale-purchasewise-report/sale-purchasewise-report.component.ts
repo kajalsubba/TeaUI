@@ -100,34 +100,14 @@ export class SalePurchasewiseReportComponent implements OnInit {
     const categoryListService = this.reportService
       .GetSalePurchaseWiseReport(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+
         this.dataSource.data = res.SaleWiseReport;
 
-     //   this.monthWiseData =  res.SaleWiseReport;
-      //  this.dataSource.data=this.monthWiseData;
       });
     this.subscriptions.push(categoryListService);
   }
 
 
-  // preprocessData(data: MonthWiseData[]): MonthWiseData[] {
-  //   const groupedData = data.reduce((acc:any, curr) => {
-  //     const month = curr.Months;
-  //     if (!acc[month]) {
-  //       acc[month] = { ...curr, rowspan: 1, showRow: true };
-  //     } else {
-  //       acc[month].rowspan++;
-  //       curr.showRow = false;
-  //     }
-  //     return acc;
-  //   }, {});
-
-  //   return Object.values(groupedData);
-  // }
-
-  // getTotalWeight(): number {
-  //   return this.monthWiseData.map((t:any) => t.ChallanWeight).reduce((acc, value) => acc + value, 0);
-  // }
   getTotal(columnName: string): number {
     return this.dataSource.filteredData.reduce(
       (acc, curr) => acc + curr[columnName],

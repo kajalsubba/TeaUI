@@ -63,7 +63,7 @@ export class PaymentTypeComponent  implements OnInit, AfterViewInit, OnDestroy {
     const categoryListService = this.paymentTypeService
       .GetPaymentType(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+    
         this.dataSource.data = res.PaymentTypeDetails;
       });
     this.subscriptions.push(categoryListService);

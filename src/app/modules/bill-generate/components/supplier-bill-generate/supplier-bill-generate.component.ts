@@ -264,7 +264,6 @@ export class SupplierBillGenerateComponent implements OnInit {
     if (client == '') {
       this.supplierBillForm.controls['ClientId'].reset();
     }
-    console.log(client.ClientId, 'Client');
 
     this.supplierBillForm.controls['ClientId'].setValue(client?.ClientId);
   }

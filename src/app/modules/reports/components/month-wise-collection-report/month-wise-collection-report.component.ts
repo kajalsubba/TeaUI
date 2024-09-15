@@ -130,16 +130,10 @@ export class MonthWiseCollectionReportComponent {
 
     }
     const categoryListService = this.reportService.GetMonthWiseCollectionReport(bodyData).subscribe((res: any) => {
-      // console.log(res);
+   
       this.dataSource.data = res.MonthWiseReport;
 
-      // const grossAmount: number = this.getTotal('GrossAmount');
-      // const finalWeight: number = this.getTotal('FinalWeight');
-      // this.AverageRate = grossAmount / finalWeight;
-
-      // const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
-
-      // this.TotalVehicleCount = uniqueCategories;
+      
     });
     this.subscriptions.push(categoryListService);
   }

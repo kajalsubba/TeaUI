@@ -61,7 +61,7 @@ export class GradeComponent implements OnInit, AfterViewInit {
     const gradeListService = this.gradeService
       .GetGrade(bodyData)
       .subscribe((res: any) => {
-        console.log(res);
+
         this.dataSource.data = res.GradeDetails;
       });
     this.subscriptions.push(gradeListService);

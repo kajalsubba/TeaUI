@@ -172,7 +172,7 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
     const categoryListService = this.advanceService
       .GetSeasonAdvance(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+     
         this.dataSource.data = res.SeasonDetails;
       });
     this.subscriptions.push(categoryListService);

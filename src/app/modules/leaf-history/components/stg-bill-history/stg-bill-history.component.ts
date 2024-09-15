@@ -133,7 +133,7 @@ export class StgBillHistoryComponent implements OnInit {
     const categoryListService = this.billService
       .GetStgBillHistory(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+ 
         this.dataSource.data = res.BillHistory;
       });
     this.subscriptions.push(categoryListService);

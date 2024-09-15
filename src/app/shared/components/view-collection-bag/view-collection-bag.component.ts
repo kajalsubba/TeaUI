@@ -66,7 +66,7 @@ export class ViewCollectionBagComponent {
       CreatedBy: this.loginDetails.UserId,
     }
     const categoryListService = this.stgBagService.GetStgBagData(bodyData).subscribe((res: any) => {
-      // console.log(res);
+     
       this.dataSource.data = res.BagDetails;
 
 

@@ -179,7 +179,6 @@ export class SupplierHistoryComponent {
   onFactoryInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
     // Do something when input changes
-    console.log(input.value, 'presss');
     if (input.value == '') {
 
       this.dateRangeForm.controls['FactoryId'].reset();
@@ -231,7 +230,6 @@ export class SupplierHistoryComponent {
   onInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
     // Do something when input changes
-    console.log(input.value, 'presss');
     if (input.value == '') {
 
       this.dateRangeForm.controls['ClientId'].reset();
@@ -259,7 +257,7 @@ export class SupplierHistoryComponent {
       CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : this.dateRangeForm.value.UserId,
     }
     const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res: any) => {
-      // console.log(res);
+      
       this.dataSource.data = res.SupplierDetails;
 
       const grossAmount: number = this.getTotalCost('GrossAmount');
@@ -280,7 +278,7 @@ export class SupplierHistoryComponent {
     const categoryListService = this.userService
       .GetUser(bodyData)
       .subscribe((res: any) => {
-        // console.log(res);
+  
         this.UserList = res.UserDetails;
       });
     this.subscriptions.push(categoryListService);
