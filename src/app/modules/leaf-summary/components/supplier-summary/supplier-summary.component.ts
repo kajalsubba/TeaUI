@@ -28,6 +28,7 @@ export class SupplierSummaryComponent implements OnInit {
     'Rate',
     'GrossAmount',
     'LessCommison',
+    'CommisonAvg',
     'GreenLeafCess',
     'FinalAmount'
   ];
@@ -37,7 +38,7 @@ export class SupplierSummaryComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'ClientName', header: 'Client Name' },
-    // { columnDef: 'Collection', header: 'Collection' },
+    { columnDef: 'CommisonAvg', header: 'Coom. Avg' },
     // { columnDef: 'Reject', header: 'Reject' },
     // { columnDef: 'Final', header: 'Final' },
     // { columnDef: 'Average', header: 'Average' },
