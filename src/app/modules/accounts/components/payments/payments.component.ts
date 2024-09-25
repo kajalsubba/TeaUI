@@ -107,29 +107,30 @@ export class PaymentsComponent implements OnInit {
     const categoryListService = this.paymentTypeService
       .GetPaymentType(bodyData)
       .subscribe((res: any) => {
-     
+
         this.PaymentTypeList = res.PaymentTypeDetails;
       });
     this.subscriptions.push(categoryListService);
   }
 
   GetPaymentData() {
+    
     const currentDate = new Date();
     let bodyData: IGetPayment = {
-      FromDate:  formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-      ToDate:formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      FromDate: formatDate(this.PaymentForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.PaymentForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
       ClientCategory: this.PaymentForm.value.CategoryName,
       ClientId: this.PaymentForm.value.ClientId ?? 0,
       PaymentTypeId: 0,
-      CreatedBy:0
+      CreatedBy: 0
     };
     console.log(bodyData, 'bodyData bodyData');
 
     const categoryListService = this.paymentService
       .GetPaymentData(bodyData)
       .subscribe((res: any) => {
-    
+
         this.dataSource.data = res.PaymentDetails;
       });
     this.subscriptions.push(categoryListService);
@@ -244,7 +245,7 @@ export class PaymentsComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
- //   this.PaymentForm.controls['toDate'].setValue(null);
+    //   this.PaymentForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -262,7 +263,7 @@ export class PaymentsComponent implements OnInit {
 
   AddPayment() {
     const dialogRef = this.dialog.open(AddEditPaymentComponent, {
-      width: window.innerWidth <= 1024 ?'40%' : '30%',
+      width: window.innerWidth <= 1024 ? '40%' : '30%',
       data: {
         title: 'Add Payment Entry',
         buttonName: 'Save',
@@ -279,7 +280,7 @@ export class PaymentsComponent implements OnInit {
 
   editItem(element: any) {
     const dialogRef = this.dialog.open(AddEditPaymentComponent, {
-      width: window.innerWidth <= 1024 ?'40%' : '30%',
+      width: window.innerWidth <= 1024 ? '40%' : '30%',
       data: {
         title: 'Update Payment Entry',
         buttonName: 'Update',

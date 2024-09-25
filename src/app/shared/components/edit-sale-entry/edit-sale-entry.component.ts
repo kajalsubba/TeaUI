@@ -531,9 +531,9 @@ export class EditSaleEntryComponent implements OnInit {
         this.saleEntryForm.controls['FieldCollectionWeight'].setValue(
           this.getTotalCost('FinalWeight')
         );
-        this.saleEntryForm.controls['ChallanWeight'].setValue(
-          this.getTotalCost('FinalWeight')
-        );
+        // this.saleEntryForm.controls['ChallanWeight'].setValue(
+        //   this.getTotalCost('FinalWeight')
+        // );
         // console.log(this.AddLateralStgData, 'AddLateralStgData');
       }
     });
