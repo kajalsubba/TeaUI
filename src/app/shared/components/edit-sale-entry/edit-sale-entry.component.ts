@@ -27,7 +27,7 @@ import { LaterAddEditStgComponent } from 'src/app/modules/collection/models/late
 })
 export class EditSaleEntryComponent implements OnInit {
   saleEntryForm!: FormGroup;
-
+  IsApprove: boolean = false;
   AccountList: any = [];
   FactoryList: any = [];
   AddLateralStgData: any = [];
@@ -264,14 +264,12 @@ export class EditSaleEntryComponent implements OnInit {
   }
 
   SaleEntry() {
-
+    this.IsApprove = true;
     if (this.saleEntryForm.invalid) {
       this.saleEntryForm.markAllAsTouched();
       return;
     }
-    // Create the data object to be saved
-
-    //   console.log(this.data.stgData.TypeName, 'data');
+  
     if (this.data.stgData.TypeName == 'STG') {
       const selectedObjects1: any[] = [];
       this.AddLateralStgData.forEach((keys: any, index: any) => {
@@ -295,8 +293,8 @@ export class EditSaleEntryComponent implements OnInit {
 
       console.log(selectedObjects1, 'selectedObjects1');
       let lateralData: ILaterStgEntry = {
-        SaleId:this.data.stgData.SaleId,
-        AccountId:this.saleEntryForm.value.AccountId,
+        SaleId: this.data.stgData.SaleId,
+        AccountId: this.saleEntryForm.value.AccountId,
         ApproveId: this.data.stgData.ApproveId,
         CollectionDate: formatDate(this.saleEntryForm.value.SaleDate, 'yyyy-MM-dd', 'en-US'),
         VehicleNo: this.data.stgData.VehicleNo ?? "",
@@ -363,9 +361,11 @@ export class EditSaleEntryComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-    
+
         this.toastr.success(res.Message, 'SUCCESS');
+        this.IsApprove = false;
         this.dialogRef.close(true);
+    
       });
   }
   SaveLateralSTGData(clientBody: ILaterStgEntry) {
@@ -380,8 +380,9 @@ export class EditSaleEntryComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-    
+
         this.toastr.success(res.Message, 'SUCCESS');
+        this.IsApprove = false;
         this.dialogRef.close(true);
       });
   }

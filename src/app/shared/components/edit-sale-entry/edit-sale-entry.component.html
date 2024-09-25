@@ -1,6 +1,7 @@
 <h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
     <span>{{data.title}}</span>
-    <i *ngIf="this.data.approveData==null" matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+    <i *ngIf="this.data.approveData==null" matTooltip="Close" mat-dialog-close
+        class="fa-solid fa-circle-xmark cursor-pointer"></i>
 </h2>
 
 <mat-dialog-content>
@@ -83,8 +84,8 @@
             <div *ngIf="data.stgData.TypeName == 'STG'" class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-2 pt-2">
-                        <i matTooltip="Add" (click)="addSaleEntry()"
-                        matTooltipPosition="right" class="fa-solid edit-delete-button fa-circle-plus"></i>
+                        <i matTooltip="Add" (click)="addSaleEntry()" matTooltipPosition="right"
+                            class="fa-solid edit-delete-button fa-circle-plus"></i>
                     </div>
                 </div>
             </div>
@@ -273,8 +274,9 @@
                 <div class="row">
                     <div class="col-lg-5"></div>
                     <div class="col-lg-7 d-grid">
-                        <button class="btn-color" mat-raised-button cdkFocusInitial (click)="SaleEntry()"> <i
-                                class="fa-solid fa-indian-rupee-sign px-2"></i> Sale</button>
+                        <button class="btn-color" mat-raised-button cdkFocusInitial (click)="SaleEntry()"
+                            [ngClass]="{'disabled-span': IsApprove}"> <i class="fa-solid fa-indian-rupee-sign px-2"></i>
+                            Sale</button>
                     </div>
                 </div>
             </div>

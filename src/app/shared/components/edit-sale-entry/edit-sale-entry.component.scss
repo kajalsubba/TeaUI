@@ -81,3 +81,9 @@
 .edit-delete-button{
   font-size: 1.5rem;
 }
+
+.disabled-span {
+  pointer-events: none; /* Disables click events */
+  opacity: 0.6;         /* Makes it look disabled */
+  cursor: not-allowed;  /* Changes the cursor to indicate disabled state */
+}
