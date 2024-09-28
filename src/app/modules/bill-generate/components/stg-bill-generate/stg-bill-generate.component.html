@@ -33,15 +33,16 @@
                     </mat-option>
                   </mat-autocomplete> -->
                   <!-- <mat-form-field appearance="fill"> -->
-                    <mat-select class="fromSelect" formControlName="ClientName" placeholder="Select Client" #singleSelect>
-                      <mat-option >
-                        <ngx-mat-select-search formControlName="ClienFilterCrtl" ></ngx-mat-select-search>
-                      </mat-option>
+                  <mat-select class="fromSelect" formControlName="ClientName" placeholder="Select Client" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search formControlName="ClienFilterCrtl"
+                        noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
+                    </mat-option>
 
-                      <mat-option *ngFor="let client of filteredClients|async" [value]="client">
-                        {{client.ClientName}}
-                      </mat-option>
-                    </mat-select>
+                    <mat-option *ngFor="let client of filteredClients|async" [value]="client">
+                      {{client.ClientName}}
+                    </mat-option>
+                  </mat-select>
                   <!-- </mat-form-field> -->
 
                   <!-- Validation message -->

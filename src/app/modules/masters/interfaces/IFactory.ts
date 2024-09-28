@@ -19,3 +19,9 @@ export interface IGetSaleFactory {
   ToDate: String;
   TenantId: number;
 }
+
+export interface IFactoryFilter
+{
+  FactoryId: number;
+  FactoryName: string;
+}

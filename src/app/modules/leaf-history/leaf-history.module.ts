@@ -27,6 +27,7 @@ import { SeasonAdvanceHistoryComponent } from './components/season-advance-histo
 import { StgBillHistoryComponent } from './components/stg-bill-history/stg-bill-history.component';
 import { SupplierBillHistoryComponent } from './components/supplier-bill-history/supplier-bill-history.component';
 import { SmartHistoryComponent } from './components/smart-history/smart-history.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 export const MY_FORMATS = {
   parse: {
@@ -57,6 +58,7 @@ export const MY_FORMATS = {
     CommonModule,
     LeafHistoryRoutingModule,
     MatSelectModule,
+    NgxMatSelectSearchModule,
     MatNativeDateModule,
     MatDatepickerModule,
     ReactiveFormsModule,

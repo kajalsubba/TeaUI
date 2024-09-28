@@ -11,3 +11,8 @@ export interface ISaveFactoryAccount {
 export interface IGetFactoryAccount {
   TenantId: number;
 }
+
+export interface IAccountFilter {
+  AccountId: number;
+  AccountName: string;
+}

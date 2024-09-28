@@ -49,7 +49,7 @@ export class StgBillGenerateComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'GradeName', header: 'Grade' },
-   
+
   ];
   paymentColumns: { columnDef: string; header: string }[] = [
     { columnDef: 'EntryDate', header: 'Entry Date' },
@@ -61,8 +61,8 @@ export class StgBillGenerateComponent implements OnInit {
   @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
   public filteredClients: ReplaySubject<IClient[]> = new ReplaySubject<IClient[]>(1);
 
- 
-   @ViewChild('ClientName') ClientNoInput!: ElementRef;
+
+  @ViewChild('ClientName') ClientNoInput!: ElementRef;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
@@ -76,7 +76,7 @@ export class StgBillGenerateComponent implements OnInit {
   SeasonAdvValidate: boolean = false;
   minToDate!: any;
   currentDate: Date | null = new Date();
-  ClientNames: IClient[] =[];
+  ClientNames: IClient[] = [];
   OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
@@ -100,7 +100,7 @@ export class StgBillGenerateComponent implements OnInit {
       toDate: [new Date(), Validators.required],
       ClientId: [0],
       ClientName: ['', Validators.required],
-      ClienFilterCrtl:['']
+      ClienFilterCrtl: ['']
     });
     this.StgAmountForm = this.fb.group({
       SeasonAmount: [0],
@@ -131,7 +131,7 @@ export class StgBillGenerateComponent implements OnInit {
       });
   }
   private filteredClientsData() {
-   // debugger
+    // debugger
     if (!this.ClientNames) {
       return;
     }
@@ -219,7 +219,7 @@ export class StgBillGenerateComponent implements OnInit {
   }
 
   async loadClientNames() {
-   // debugger
+    // debugger
     try {
       const bodyData: IGetTeaClient = {
         TenantId: this.loginDetails.TenantId,
@@ -311,14 +311,13 @@ export class StgBillGenerateComponent implements OnInit {
   }
 
   async GetStgBillData() {
-   // debugger
+    // debugger
     try {
       const bodyData: IGetStgBill = {
         FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
         ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         TenantId: this.loginDetails.TenantId,
-       // ClientId: this.StgBillForm.value.ClientId ?? 0
-       ClientId: this.StgBillForm.value.ClientName?.ClientId ?? 0
+        ClientId: this.StgBillForm.value.ClientName?.ClientId ?? 0
       };
 
       const res: any = await this.stgBillService.GetStgBill(bodyData).toPromise();
@@ -441,7 +440,7 @@ export class StgBillGenerateComponent implements OnInit {
       BillDate: formatDate(this.StgAmountForm.value.BillDate, 'yyyy-MM-dd', 'en-US'),
       FromDate: formatDate(this.StgBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.StgBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
-      ClientId: this.StgBillForm.value.ClientName?.ClientId ,//this.StgBillForm.value.ClientId,
+      ClientId: this.StgBillForm.value.ClientName?.ClientId,//this.StgBillForm.value.ClientId,
       FinalWeight: this.getTotal('FinalWeight') ?? 0,
       TotalStgAmount: this.getTotal('GrossAmount') ?? 0,
       TotalStgPayment: this.getTotalPayment('Amount') ?? 0,
@@ -531,7 +530,7 @@ export class StgBillGenerateComponent implements OnInit {
         //this.PaidAmountErrorMsg='Amount should not more than Paybale!'
         this.SeasonAdvValidate = true;
       }
-      else{
+      else {
         this.clearEmailValidation('LessSeasonAdv')
         this.SeasonAdvValidate = false;
       }

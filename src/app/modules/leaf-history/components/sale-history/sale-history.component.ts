@@ -7,17 +7,18 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { IGetSale } from 'src/app/modules/collectionApprove/interfaces/isale-save';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
-import { IGetFactory, IGetSaleFactory } from 'src/app/modules/masters/interfaces/IFactory';
-import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
+import { IFactoryFilter, IGetFactory, IGetSaleFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { IAccountFilter, IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { EditSaleEntryComponent } from 'src/app/shared/components/edit-sale-entry/edit-sale-entry.component';
 import enIN from '@angular/common/locales/en-IN';
 import { ExcelExportService } from '../../../../shared/services/excel-export.service';
+import { MatSelect } from '@angular/material/select';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-sale-history',
@@ -44,19 +45,18 @@ export class SaleHistoryComponent {
     'actions',
   ];
 
+  @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
+  public filteredFactory: ReplaySubject<IFactoryFilter[]> = new ReplaySubject<IFactoryFilter[]>(1);
+  public filteredAccounts: ReplaySubject<IAccountFilter[]> = new ReplaySubject<IAccountFilter[]>(1);
+
+
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'SaleId', header: 'Sale Id' },
-    //   { columnDef: 'SaleDate', header: 'Sale Date' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'AccountName', header: 'Account Name' },
-    // { columnDef: 'VehicleNo', header: 'Vehicle No' },
-    //  { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-    // { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'Incentive', header: 'Incentive (%)' },
-    // { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
-    //  { columnDef: 'FinalAmount', header: 'Final Amount' },
     { columnDef: 'Remarks', header: 'Remarks' },
     { columnDef: 'TypeName', header: 'Sale Type' },
   ];
@@ -77,6 +77,7 @@ export class SaleHistoryComponent {
   saleTypeList: any;
   selectedRowIndex: number = -1;
   AverageRate: number = 0;
+  filteredFactories: any[] = [];
   TotalVehicleCount: number = 0;
   constructor(
     private helper: HelperService,
@@ -92,7 +93,7 @@ export class SaleHistoryComponent {
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.SaleForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
@@ -103,13 +104,87 @@ export class SaleHistoryComponent {
       AccountName: [''],
       FineLeaf: [''],
       AccountId: [null],
-      SaleTypeId: [null]
+      SaleTypeId: [null],
+      FactoryFilterCrtl: [''],
+      AccountFilterCrtl: ['']
     });
-    //  this.loadVehicleNumbers();
-    //   this.loadFactoryNames();
-    this.loadAccountNames();
+
+    await this.loadSaleFactoryNames();
+    await this.loadAccountNames();
     this.GetSaleType();
+
+    this.filteredFactory.next(this.factoryNames.slice());
+
+    this.SaleForm.controls["FactoryFilterCrtl"].valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.filteredFactoryData();
+      });
+
+
   }
+
+  selectFactory(factory: any) {
+
+    // debugger
+    // if (factory) {
+    //   this.SaleForm.controls['FactoryName'].setValue(factory);
+    //    this.SaleForm.controls['FactoryFilterCrtl'].setValue(''); // Clear the filter value
+    //     //this.filteredFactory.setValue('');
+    // }this.SaleForm.value.AccountName.AccountId ?? 0,
+
+    // this.SaleForm.controls['FactoryId'].setValue(factory?.FactoryId);
+    console.log(factory, 'factory');
+    // if (factory == undefined) {
+    //   this.SaleForm.controls["AccountId"].setValue(0);
+    // }
+
+    this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.value.FactoryId);
+    //console.log(this.accountNames,'accountNames');
+    this.filteredAccounts.next(this.accountNames.slice());
+
+    this.SaleForm.controls["AccountFilterCrtl"].valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.filteredAccountsData();
+      });
+  }
+
+  private filteredFactoryData() {
+    // debugger
+    if (!this.factoryNames) {
+      return;
+    }
+    // get the search keyword
+    let search = this.SaleForm.controls["FactoryFilterCrtl"].value;
+    if (!search) {
+      this.filteredFactory.next(this.factoryNames.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredFactory.next(
+      this.factoryNames.filter(x => x.FactoryName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  private filteredAccountsData() {
+    if (!this.accountNames) {
+      return;
+    }
+    let search = this.SaleForm.controls["FactoryFilterCrtl"].value;
+    if (!search) {
+      this.filteredAccounts.next(this.accountNames.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredAccounts.next(
+      this.accountNames.filter((x: any) => x.AccountName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
   search() {
     this.GetSaleDeatils();
   }
@@ -180,8 +255,9 @@ export class SaleHistoryComponent {
       FromDate: formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       VehicleNo: '',
-      FactoryId: this.SaleForm.value.FactoryId ?? 0,
-      AccountId: this.SaleForm.value.AccountId ?? 0,
+      FactoryId: this.SaleForm.value.FactoryName?.FactoryId ?? 0,
+      //  AccountId: this.SaleForm.value.AccountId ?? 0,
+      AccountId: this.SaleForm.value.AccountName.AccountId ?? 0,
       FineLeaf: '',
       SaleTypeId: 0,
       TenantId: this.loginDetails.TenantId,
@@ -198,33 +274,16 @@ export class SaleHistoryComponent {
     this.subscriptions.push(categoryListService);
   }
 
-  // ViewSaleStateMent(e: any) {
-  //   let bodyData: IPrint = {
 
-  //     TenantId: this.loginDetails.TenantId,
-  //     BillNo: e.BillId
-
-  //   };
-  //  // console.log(e, 'bodyData bodyData');
-
-  //   const categoryListService = this.billService
-  //     .PrintBill(bodyData)
-  //     .subscribe((response: Blob) => {
-  //       const blobUrl = URL.createObjectURL(response);
-
-  //       // Open PDF in a new browser tab
-  //       window.open(blobUrl, '_blank');
-  //     });
-  //   this.subscriptions.push(categoryListService);
-  // }
   filterFactoryNames(value: string): any {
-    // if (value!="")
-    //   {
+
     const filterValue = value.toLowerCase();
+    console.log(filterValue, 'filterValue');
+
     return this.factoryNames.filter((x: any) =>
       x?.FactoryName?.toLowerCase()?.includes(filterValue)
     );
-    //  }
+
 
   }
 
@@ -281,6 +340,7 @@ export class SaleHistoryComponent {
   }
 
   async loadSaleFactoryNames() {
+    debugger
     try {
       const bodyData: IGetSaleFactory = {
         TenantId: this.loginDetails.TenantId,
@@ -326,17 +386,20 @@ export class SaleHistoryComponent {
       FromDate: formatDate(this.SaleForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       VehicleNo: this.SaleForm.value.VehicleNo,
-      FactoryId: this.SaleForm.value.FactoryId ?? 0,
-      AccountId: this.SaleForm.value.AccountId ?? 0,
+      FactoryId: this.SaleForm.value.FactoryName?.FactoryId ?? 0,
+      AccountId: this.SaleForm.value.FactoryName?.FactoryId == undefined ? 0 : this.SaleForm.value.AccountName?.AccountId,
       FineLeaf: this.SaleForm.value.FineLeaf ?? '',
       SaleTypeId: this.SaleForm.value.SaleTypeId ?? 0,
       TenantId: this.loginDetails.TenantId,
 
     };
+
+    console.log(bodyData, 'salefilter');
+
     const categoryListService = this.saleService
       .GetSaleDetails(bodyData)
       .subscribe((res: any) => {
-   
+
         this.dataSource.data = res.SaleDetails;
 
 
@@ -352,11 +415,12 @@ export class SaleHistoryComponent {
     this.subscriptions.push(categoryListService);
   }
 
-  onInputChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    // Do something when input changes
-    console.log(input.value, 'presss');
-    if (input.value == '') {
+  onInputChange(event: string) {
+    //   const input = event.target as HTMLInputElement;
+    this.filteredFactories = this.filterFactoryNames(event);
+
+    console.log(event, 'presss');
+    if (event == '') {
       this.accountNames = [];
       this.SaleForm.controls['FactoryId'].reset();
       this.SaleForm.controls['FactoryName'].reset();
@@ -397,12 +461,11 @@ export class SaleHistoryComponent {
     this.SaleForm.controls['VehicleNo'].setValue(newVal);
   }
 
-  selectFactory(factory: any) {
-    this.SaleForm.controls['FactoryId'].setValue(factory?.FactoryId);
-    this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.FactoryId)
-  }
+
 
   selectAccount(account: any) {
+    debugger
+    console.log(account?.AccountId, 'factory?.AccountId');
     this.SaleForm.controls['AccountId'].setValue(account?.AccountId);
   }
 
@@ -411,8 +474,16 @@ export class SaleHistoryComponent {
     this.minToDate = event.value;
   }
 
-  GetFactory(event: MatDatepickerInputEvent<Date>): void {
-    this.loadSaleFactoryNames();
+  async GetFactory(event: MatDatepickerInputEvent<Date>) {
+    await this.loadSaleFactoryNames();
+    this.filteredFactory.next(this.factoryNames.slice());
+
+    this.SaleForm.controls["FactoryFilterCrtl"].valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.filteredFactoryData();
+      });
+
   }
 
   editItem(row: any) {

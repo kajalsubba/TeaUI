@@ -24,10 +24,9 @@
                 </mat-form-field>
               </div>
 
-              <div class="position-relative col-lg-3 my-2">
+              <!-- <div class="position-relative col-lg-3 my-2">
                 <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
                   formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onInputChange($event)">
-                <!-- Autocomplete options -->
                 <mat-autocomplete #factoryAuto="matAutocomplete" [displayWith]="displayWithFn">
                   <mat-option *ngFor="let factory of filterFactoryNames(factoryName.value)"
                     [value]="factory?.FactoryName" (onSelectionChange)="selectFactory(factory)">
@@ -37,17 +36,52 @@
                 <span *ngIf="SaleStatementValidate" class="text-danger d-block validation-message">
                   {{SaleStatementErrorMsg}}
                 </span>
-              </div>
+              </div> -->
+
               <div class="position-relative col-lg-3 my-2">
-                <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
+                <mat-select (selectionChange)="selectFactory($event)" class="fromSelect" formControlName="FactoryName"
+                  placeholder="Select Factory" #singleSelect>
+
+                  <mat-option>
+                    <ngx-mat-select-search formControlName="FactoryFilterCrtl"
+                      noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]="0">
+                    All Factories
+                  </mat-option>
+                  <mat-option *ngFor="let factory of filteredFactory|async" [value]="factory">
+                    {{ factory?.FactoryName }}
+                  </mat-option>
+                </mat-select>
+
+                <span *ngIf="SaleStatementValidate" class="text-danger d-block validation-message">
+                  {{ SaleStatementErrorMsg }}
+                </span>
+              </div>
+
+              <div class="position-relative col-lg-3 my-2">
+                <!-- <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
                   formControlName="AccountName" [matAutocomplete]="accountAuto">
-                <!-- Autocomplete options -->
                 <mat-autocomplete #accountAuto="matAutocomplete" [displayWith]="displayWithFn">
                   <mat-option *ngFor="let account of filterAccountNames(accountName.value)"
                     [value]="account?.AccountName" (onSelectionChange)="selectAccount(account)">
                     {{ account?.AccountName }}
                   </mat-option>
-                </mat-autocomplete>
+                </mat-autocomplete> -->
+                <mat-select class="fromSelect" formControlName="AccountName" placeholder="Select Account" #singleSelect>
+
+                  <mat-option>
+                    <ngx-mat-select-search formControlName="AccountFilterCrtl"
+                      noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]="0">
+                    All Accounts
+                  </mat-option>
+                  <mat-option *ngFor="let account of filteredAccounts|async" [value]="account">
+                    {{ account?.AccountName }}
+                  </mat-option>
+                </mat-select>
+
                 <span *ngIf="SaleStatementValidate" class="text-danger d-block validation-message">
                   {{SaleStatementErrorMsg}}
                 </span>
@@ -65,8 +99,8 @@
               </div>
               <div class="col-lg-3 position-relative my-2">
                 <input type="text" class="form-control" id="FineLeaf" placeholder="Fine Leaf (10-30)"
-                formControlName="FineLeaf">
-      
+                  formControlName="FineLeaf">
+
               </div>
               <div class="col-lg-3 d-grid my-2">
                 <button (click)="search()" class="btn btn-color">Search</button>
@@ -94,7 +128,8 @@
     <div class="col-lg-12">
       <div class="table-container">
         <div>
-          <table id="material-table" matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
+          <table id="material-table" matSort mat-table [dataSource]="dataSource"
+            (keydown)="handleKeyboardNavigation($event)">
             <!-- Displayed columns -->
             <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
               <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
@@ -122,17 +157,16 @@
             <ng-container matColumnDef="FieldWeight">
               <th mat-header-cell *matHeaderCellDef> Field Weight ( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.FieldWeight}}  </td>
+                *matCellDef="let row"> {{row.FieldWeight}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('FieldWeight') }} KG</b>
               </td>
             </ng-container>
-              
+
             <!-- FineLeaf Average -->
             <ng-container matColumnDef="FineLeaf">
               <th mat-header-cell *matHeaderCellDef> Fine Leaf (%)</th>
-              <td  class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.FineLeaf}} </td>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FineLeaf}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>Fine Avg. {{ getFineLeafAvg('FineLeaf') }} %</b>
               </td>
@@ -142,7 +176,7 @@
             <ng-container matColumnDef="ChallanWeight">
               <th mat-header-cell *matHeaderCellDef> Challan Weight ( KG ) </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.ChallanWeight}}  </td>
+                *matCellDef="let row"> {{row.ChallanWeight}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('ChallanWeight') }} KG</b>
               </td>
@@ -161,7 +195,7 @@
             <ng-container matColumnDef="Rate">
               <th mat-header-cell *matHeaderCellDef>Avg. Rate <i class="fa-solid fa-indian-rupee-sign"></i>
               </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> 
+              <td class="weight-column" mat-cell *matCellDef="let row">
                 {{row.Rate | currency:'INR':'':undefined:'en-IN'}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ AverageRate |
