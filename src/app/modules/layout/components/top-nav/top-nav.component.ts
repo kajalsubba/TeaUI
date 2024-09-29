@@ -6,6 +6,7 @@ import { IGetNotifications } from '../../interfaces/iget-notifications';
 import { NotificationsService } from '../../services/notifications.service';
 import { NotificationDataService } from '../../services/notification-data.service';
 import { Subscription } from 'rxjs';
+import { SignalRService } from '../../services/signal-r.service';
 
 @Component({
   selector: 'app-top-nav',
@@ -26,7 +27,7 @@ export class TopNavComponent implements OnInit {
     public helper: HelperService,
     private router: Router,
     private datePipe: DatePipe,
-    //private notificationService: NotificationsService
+    private signalRService: SignalRService,
     private notificationDataService: NotificationDataService
   ) { }
 
@@ -44,7 +45,24 @@ export class TopNavComponent implements OnInit {
       this.countOfPendingNotifications = data.length;
     });
 
+    this.signalRService.messages$.subscribe(data => {
+      // Handle the received message
+      //   this.GetNotificationData();
+      if (data.tenantId == this.loginDetails.TenantId) {
+        console.log(`Received in component: ${data.message}, TenantId: ${data.tenantId}`);
+
+        this.notificationDataSubscription = this.notificationDataService.notificationData$.subscribe((data) => {
+          // Update NotificationData and countOfPendingNotifications
+          this.NotificationData = data;
+          this.countOfPendingNotifications = data.length;
+        });
+    
+      }
+
+    });
+
     this.GetNotificationData();
+
   }
 
   toggleSideNav(): void {
@@ -64,7 +82,7 @@ export class TopNavComponent implements OnInit {
     };
     this.notificationDataService.getNotificationData(data);
   }
- 
+
   formatCurrentRoute(): string {
     const currentRoute = this.helper.getCurrentRoute();
     const parts = currentRoute.split('/');

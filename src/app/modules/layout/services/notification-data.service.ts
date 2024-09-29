@@ -14,6 +14,8 @@ export class NotificationDataService {
   getNotificationData(data: IGetNotifications): void {
     this.notificationService.GetStgBillHistory(data).subscribe((res) => {
       const pendingNotifications = res.NotificationData.filter((item:any) => item.TotalPending > 0);
+      console.log(pendingNotifications,'pendingNotifications');
+      
       this._notificationData.next(pendingNotifications);
     });
   }
