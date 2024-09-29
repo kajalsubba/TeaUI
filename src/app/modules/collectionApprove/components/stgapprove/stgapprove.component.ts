@@ -213,7 +213,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
 
   approveEntry() {
 
-    
+    debugger
     const selectedObjects: any[] = [];
     const selectedObjects1: any[] = [];
     var ApproveList: any[] = [];
@@ -276,7 +276,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     if (this.dataSource.data.length > 0) {
       // this.SaveStgtData(data);
 
-      this.saleEntry(data, this.selection.selected,this.selection.selected[0].Comment);
+      this.saleEntry(data, this.selection.selected);
     }
   }
 
@@ -360,7 +360,8 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     );
   }
 
-  saleEntry(StgData: any, approveData: any,serverComments:any) {
+  saleEntry(StgData: any, approveData: any) {
+    debugger
     const dialogRef = this.dialog.open(SaleEntryComponent, {
       width: '90vw',
       height: '95%',
@@ -374,11 +375,12 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         VehicleId: this.dateRangeForm.value.VehicleId,
         CollectionDate: this.dateRangeForm.value.fromDate,
         FactoryName: this.selection.selected[0].FactoryName,
-        FactoryId: 0,
-        AccountId: 0,
-        ChallanWeight: 0,
+        FactoryId: approveData[0].FactoryId,
+        AccountId: approveData[0].AccountId,
+        ChallanWeight: approveData[0].ChallanWeight,
+        FineLeaf:approveData[0].FineLeaf,
         saleTypeId: 1,
-        Comments:serverComments
+        Comments:approveData[0].Comment
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {

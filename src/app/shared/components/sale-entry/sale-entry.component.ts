@@ -133,6 +133,12 @@ export class SaleEntryComponent implements OnInit {
       this.getTotalCost('FinalWeight')
     );
 
+    this.saleEntryForm.controls['FactoryName'].setValue(this.data.FactoryId);
+
+    this.saleEntryForm.controls['FineLeaf'].setValue(this.data.FineLeaf);
+    this.saleEntryForm.controls['ChallanWeight'].setValue(this.data.ChallanWeight);
+    this.saleEntryForm.controls['Remarks'].setValue(this.data.Comments);
+
     this.saleEntryForm.controls['VehicleNo'].setValue(this.data.VehicleNo);
     this.saleEntryForm.controls['VehicleId'].setValue(this.data.VehicleId);
     this.saleEntryForm.controls['SaleDate'].setValue(
@@ -140,10 +146,10 @@ export class SaleEntryComponent implements OnInit {
     );
     // this.saleEntryForm.controls['FactoryName'].setValue(this.data.stgData.FactoryId);
 
-    // this.filteredAccounts = this.AccountList.filter(
-    //   (x: any) => x.FactoryId == this.data.stgData.FactoryId
-    // );
-    // this.saleEntryForm.controls['AccountId'].setValue(this.data.stgData.AccountId);
+    this.filteredAccounts = this.AccountList.filter(
+      (x: any) => x.FactoryId == this.data.FactoryId
+    );
+    this.saleEntryForm.controls['AccountId'].setValue(this.data.AccountId);
 
 
     if (this.data.isEdit) {
@@ -166,7 +172,7 @@ export class SaleEntryComponent implements OnInit {
       if (this.data.stgData.TypeName == 'STG') {
         await this.GetSaleStgData(this.data.stgData.ApproveId);
       }
-      else  {
+      else {
         await this.GetSaleSupplierData(this.data.stgData.ApproveId);
       }
       this.saleEntryForm.controls['FieldCollectionWeight'].setValue(
@@ -317,7 +323,7 @@ export class SaleEntryComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
-    
+
         this.toastr.success(res.Message, 'SUCCESS');
         this.dialogRef.close(true);
       });

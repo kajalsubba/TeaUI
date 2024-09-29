@@ -394,7 +394,7 @@ export class SaleHistoryComponent {
 
     };
 
-    console.log(bodyData, 'salefilter');
+   // console.log(bodyData, 'salefilter');
 
     const categoryListService = this.saleService
       .GetSaleDetails(bodyData)
