@@ -28,10 +28,11 @@ export class AddEditStgComponent implements OnInit {
   vehicleNumbers: any[] = [];
   loginDetails: any;
   ClientNames: any[] = [];
+  filteredClient: any[] = [];
   GradeList: any[] = [];
   TripList: any[] = [];
   myDatepipe!: any;
-  statusList: string[] = ['Pending', 'Rejected','Approved']
+  statusList: string[] = ['Pending', 'Rejected', 'Approved']
 
   private subscriptions: Subscription[] = [];
 
@@ -52,7 +53,7 @@ export class AddEditStgComponent implements OnInit {
     this.stgForm = this.fb.group({
       CollectionDate: [new Date()],
       VehicleNo: ['', Validators.required],
-      ClientName: ['', Validators.required],
+      ClientName: [''],
       ClientId: ['', Validators.required],
       FirstWeight: [0, Validators.required],
       WetLeaf: [0],
@@ -153,6 +154,7 @@ export class AddEditStgComponent implements OnInit {
       this.stgForm.markAllAsTouched();
       return;
     }
+    debugger
     // if(this.dialogData.buttonName == "Save"){
     let data: IStg = {
       CollectionId: this.dialogData?.value?.CollectionId ? this.dialogData?.value?.CollectionId : 0,
@@ -268,7 +270,7 @@ export class AddEditStgComponent implements OnInit {
         .toPromise();
 
       this.ClientNames = res.ClientDetails;
-
+      this.filteredClient = res.ClientDetails;
 
     } catch (error) {
       console.error('Error:', error);
@@ -284,9 +286,11 @@ export class AddEditStgComponent implements OnInit {
 
   // Autocomplete function
   filterClientNames(value: string): any[] {
-
+    debugger
     const filterValue = value.toLowerCase();
-    return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
+   // return this.filteredClient.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
+  return this.filteredClient = this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
+
   }
 
   displayWithFn(value: string): string {
@@ -328,20 +332,20 @@ export class AddEditStgComponent implements OnInit {
     this.dialogRef.close(true);
   }
 
-  selectClient(client: any) {
-    if (client == '') {
-      this.stgForm.controls['ClientId'].reset();
-    }
+  // selectClient(client: any) {
+  //   if (client == '') {
+  //     this.stgForm.controls['ClientId'].reset();
+  //   }
 
 
-    if (!environment.production) {
+  //   if (!environment.production) {
 
-      console.log(client.ClientId, 'Client');
-    }
+  //     console.log(client.ClientId, 'Client');
+  //   }
 
 
-    this.stgForm.controls['ClientId'].setValue(client?.ClientId);
-  }
+  //   this.stgForm.controls['ClientId'].setValue(client?.ClientId);
+  // }
 
   VehicleInput(value: string) {
     let newVal = value.toUpperCase();

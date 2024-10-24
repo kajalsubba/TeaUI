@@ -225,6 +225,7 @@ export class AddEditSupplierComponent implements OnInit {
         .toPromise();
 
       this.filteredFactory = res.FactoryDetails;
+      this.FactoryList=res.FactoryDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -238,6 +239,7 @@ export class AddEditSupplierComponent implements OnInit {
   }
 
   filterFactory(value: string) {
+    debugger
     const filterValue = value.toLowerCase();
     this.filteredFactory = this.FactoryList.filter((buyer: any) => buyer.FactoryName.toLowerCase().includes(filterValue));
   }

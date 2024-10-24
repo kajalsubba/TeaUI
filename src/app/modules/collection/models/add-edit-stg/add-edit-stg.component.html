@@ -13,12 +13,13 @@
                                 <label for="CollectionDate" class="col-lg-5 col-form-label">Collection Date <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                          
-                                        <mat-form-field>
-                                            <input matInput [matDatepicker]="picker" placeholder="CollectionDate" formControlName="CollectionDate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker></mat-datepicker>
-                                        </mat-form-field>
+
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="picker" placeholder="CollectionDate"
+                                            formControlName="CollectionDate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
                                 </div>
                             </div>
                         </div>
@@ -33,7 +34,8 @@
                                             {{trip.TripName}}
                                         </mat-option>
                                     </mat-select>
-                                    <span *ngIf="stgForm.get('TripId')?.hasError('required') && stgForm.get('TripId')?.touched"
+                                    <span
+                                        *ngIf="stgForm.get('TripId')?.hasError('required') && stgForm.get('TripId')?.touched"
                                         class="text-danger d-block validation-message">
                                         Trip is required.
                                     </span>
@@ -45,7 +47,8 @@
                                 <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control" id="VehicleNo" placeholder="Vehicle No."
+                                    <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text"
+                                        class="form-control" id="VehicleNo" placeholder="Vehicle No."
                                         formControlName="VehicleNo" [matAutocomplete]="vehicleAuto">
                                     <!-- Autocomplete options -->
                                     <mat-autocomplete #vehicleAuto="matAutocomplete" [displayWith]="displayWithFn">
@@ -65,7 +68,7 @@
 
                             </div>
                         </div>
-                      
+
                     </div>
 
                     <div class="row">
@@ -74,16 +77,21 @@
                                 <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
+                                    <!-- <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
                                         formControlName="ClientName" [matAutocomplete]="clientAuto">
-                                    <!-- Autocomplete options -->
                                     <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
                                         <mat-option *ngFor="let client of filterClientNames(clientName.value)"
                                             [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
                                             {{ client?.ClientName }}
                                         </mat-option>
-                                    </mat-autocomplete>
-
+                                    </mat-autocomplete> -->
+                                    <mat-select placeholder="--Select name--" class="fromSelect"
+                                        formControlName="ClientId" >
+                                        <input #clientName (input)="filterClientNames(clientName.value)" type="text"
+                                            class="form-control inset-shadow" placeholder="Search client">
+                                        <mat-option *ngFor="let client of filteredClient"
+                                            [value]="client?.ClientId">{{client?.ClientName}}</mat-option>
+                                    </mat-select>
                                     <!-- Validation message -->
                                     <span
                                         *ngIf="stgForm.get('ClientName')?.hasError('required') && stgForm.get('ClientName')?.touched"
@@ -99,9 +107,10 @@
                                 <label for="FirstWeight" class="col-lg-5 col-form-label">First Weight <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #FirstWeight (input)="FirstWeightInput(FirstWeight.value)" type="number" class="form-control" id="FirstWeight" placeholder="FirstWeight"
+                                    <input #FirstWeight (input)="FirstWeightInput(FirstWeight.value)" type="number"
+                                        class="form-control" id="FirstWeight" placeholder="FirstWeight"
                                         formControlName="FirstWeight">
-                                        <span class="kg-text">KG</span>
+                                    <span class="kg-text">KG</span>
                                     <span
                                         *ngIf="stgForm.get('FirstWeight')?.hasError('required') && stgForm.get('FirstWeight')?.touched"
                                         class="text-danger d-block validation-message">
@@ -114,9 +123,10 @@
                             <div class="form-group row mb-3">
                                 <label for="WetLeaf" class="col-lg-5 col-form-label">Wet Leaf </label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #LongLeaf (input)="LongLeafInput(LongLeaf.value)" type="number" class="form-control" id="WetLeaf" placeholder="WetLeaf"
+                                    <input #LongLeaf (input)="LongLeafInput(LongLeaf.value)" type="number"
+                                        class="form-control" id="WetLeaf" placeholder="WetLeaf"
                                         formControlName="WetLeaf">
-                                        <i class="fa-solid fa-percent"></i>
+                                    <i class="fa-solid fa-percent"></i>
                                     <!-- <span
                                         *ngIf="stgForm.get('WetLeaf')?.hasError('required') && stgForm.get('WetLeaf')?.touched"
                                         class="text-danger d-block validation-message">
@@ -125,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-                      
+
                     </div>
                     <div class="row">
                         <div class="col-lg-4">
@@ -133,9 +143,10 @@
                             <div class="form-group row mb-3">
                                 <label for="LongLeaf" class="col-lg-5 col-form-label">Long Leaf </label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #WetLeaf (input)="WetLeafInput(WetLeaf.value)" type="number" class="form-control" id="LongLeaf" placeholder="LongLeaf"
+                                    <input #WetLeaf (input)="WetLeafInput(WetLeaf.value)" type="number"
+                                        class="form-control" id="LongLeaf" placeholder="LongLeaf"
                                         formControlName="LongLeaf">
-                                        <i class="fa-solid fa-percent"></i>
+                                    <i class="fa-solid fa-percent"></i>
                                     <!-- <span
                                         *ngIf="stgForm.get('LongLeaf')?.hasError('required') && stgForm.get('LongLeaf')?.touched"
                                         class="text-danger d-block validation-message">
@@ -149,8 +160,8 @@
                             <div class="form-group row mb-3">
                                 <label for="Deduction" class="col-lg-5 col-form-label">Deduction</label>
                                 <div class="col-lg-7 position-relative">
-                                    <input type="number" class="form-control" id="Deduction" readonly placeholder="Deduction"
-                                        formControlName="Deduction">
+                                    <input type="number" class="form-control" id="Deduction" readonly
+                                        placeholder="Deduction" formControlName="Deduction">
                                     <span class="kg-text">KG</span>
                                 </div>
                             </div>
@@ -169,7 +180,7 @@
                                 </div>
                             </div>
                         </div>
-                       
+
                     </div>
 
                     <div class="row">
@@ -196,51 +207,55 @@
                                             {{Grade.GradeName}}
                                         </mat-option>
                                     </mat-select>
-                                    <span *ngIf="stgForm.get('GradeId')?.hasError('required') && stgForm.get('GradeId')?.touched"
+                                    <span
+                                        *ngIf="stgForm.get('GradeId')?.hasError('required') && stgForm.get('GradeId')?.touched"
                                         class="text-danger d-block validation-message">
                                         Grade is required.
                                     </span>
                                 </div>
                             </div>
                         </div>
-                    
+
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>
                                 <div class="col-lg-7 position-relative">
-                                    <textarea class="form-control" name="Remarks" id="Remarks" formControlName="Remarks"></textarea>
+                                    <textarea class="form-control" name="Remarks" id="Remarks"
+                                        formControlName="Remarks"></textarea>
                                     <span
-                                    *ngIf="stgForm.get('Remarks')?.hasError('required') && stgForm.get('Remarks')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Challan Weight is less than field collection! Please Enter reason.
-                                </span>
+                                        *ngIf="stgForm.get('Remarks')?.hasError('required') && stgForm.get('Remarks')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Challan Weight is less than field collection! Please Enter reason.
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                     
-                    
+
+
                     </div>
 
                     <div class="row">
-                        
+
 
                         <div class="col-lg-4" *ngIf="dialogData.buttonName=='Update'">
                             <div class="form-group row mb-3">
-                                <label for="CategoryId" class="col-lg-5 col-form-label">Status <span class="text-danger">*</span></label>
+                                <label for="CategoryId" class="col-lg-5 col-form-label">Status <span
+                                        class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <mat-select aria-placeholder="--Select Status--" class="fromSelect" formControlName="Status">
+                                    <mat-select aria-placeholder="--Select Status--" class="fromSelect"
+                                        formControlName="Status">
                                         <mat-option *ngFor="let item of statusList" [value]="item">
-                                          {{item}}
+                                            {{item}}
                                         </mat-option>
-                                      </mat-select>
+                                    </mat-select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4">
-                       
+
                         </div>
                         <div class="col-lg-4" *ngIf="dialogData.buttonName=='Update'">
-                        
+
                         </div>
                     </div>
                 </form>
@@ -250,5 +265,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
-    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
+    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button
+        cdkFocusInitial>{{dialogData.buttonName}}</button>
 </mat-dialog-actions>
