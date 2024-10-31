@@ -1,6 +1,7 @@
 import { Component, HostListener, Input, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { IModulePermissions } from '../../interfaces/iget-notifications';
 
 @Component({
   selector: 'app-side-nav',
@@ -13,7 +14,7 @@ export class SideNavComponent {
   panelOpenState = false;
   currentOpenMenu: string | null = null;
   loginDetails: any;
-  PermissionDetails: any;
+  PermissionDetails:any;
   /**
    *
    */
@@ -22,10 +23,12 @@ export class SideNavComponent {
   }
 
   ngOnInit(): void {
-
+    debugger
     if (this.helper.getItem('loginDetails') != null) {
       this.loginDetails = this.helper.getItem('loginDetails');
       this.PermissionDetails = this.helper.getItem('PermissionDetails');
+       
+      
     }
     else {
       this.router.navigateByUrl('login');
@@ -50,7 +53,7 @@ export class SideNavComponent {
 
 
   toggleWidth() {
-    this.isExpanded?false:true;
+    this.isExpanded ? false : true;
   }
 
   toggleMenu(event: MouseEvent, menuIdentifier: string): void {

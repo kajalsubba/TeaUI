@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
       };
       const login = this.loginService.login(loginBody).subscribe((res: any) => {
         if (res.LoginDetails.length > 0) {
+          debugger
           this.adminLoginFail = false;
           this.helper.setItem('loginDetails', res.LoginDetails[0]);
           this.helper.setItem('PermissionDetails', res.PermissionDetails);
