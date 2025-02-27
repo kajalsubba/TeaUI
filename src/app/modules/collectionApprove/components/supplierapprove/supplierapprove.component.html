@@ -115,6 +115,8 @@
                     class="btn btn-sm btn-outline-danger m-1">Reject</span>
                   <span (click)="ApproveClick(row)"  [ngClass]="{'disabled-span': IsApprove}"
                     class="btn btn-sm btn-outline-success m-1">Approved</span>
+                    <span (click)="RectifyClick(row)"  [ngClass]="{'disabled-span': IsApprove}"
+                    class="btn btn-sm btn-outline-warning m-1">Rectify</span>
                 </div>
               </td>
               <td mat-footer-cell *matFooterCellDef></td>

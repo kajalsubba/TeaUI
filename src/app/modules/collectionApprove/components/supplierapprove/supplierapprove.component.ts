@@ -21,6 +21,7 @@ import { IDefaultData, ISupplierSelect } from 'src/app/modules/collection/interf
 import { ConfirmDialogRemarksComponent } from 'src/app/shared/components/confirm-dialog-remarks/confirm-dialog-remarks.component';
 import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
 import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
+import { AddEditSupplierComponent } from 'src/app/modules/collection/models/add-edit-supplier/add-edit-supplier.component';
 
 @Component({
   selector: 'app-supplierapprove',
@@ -69,7 +70,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     { columnDef: 'CreatedDate', header: 'Created DateTime' },
   ];
 
- // @ViewChild('child') navComponent!: TopNavComponent;
+  // @ViewChild('child') navComponent!: TopNavComponent;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -78,7 +79,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   minToDate!: any;
-  IsApprove:boolean=false;
+  IsApprove: boolean = false;
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
   selectedRowIndex: number = -1;
@@ -103,7 +104,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       VehicleNo: [''],
       VehicleId: [''],
       TripId: [null],
-      FactoryId:[0]
+      FactoryId: [0]
     });
 
     await this.loadVehicleNumbers(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
@@ -131,7 +132,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
         //  const result=res.STGDetails.filter((x:any)=>x.Status=='Pending');
         this.dataSource.data = res.SupplierDefaultData;
         this.dataSource.data.forEach((row) => this.selection.select(row));
-        this.IsApprove=false;
+        this.IsApprove = false;
 
       });
     this.subscriptions.push(supplierService);
@@ -148,7 +149,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       Status: 'Pending',
       ClientId: 0,
       TripId: this.dateRangeForm.value.TripId,
-      FactoryId:0,
+      FactoryId: 0,
       CreatedBy: 0
     };
     const categoryListService = this.supplierService
@@ -212,15 +213,36 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     }
   }
   RejectClick(row: any) {
-    this.IsApprove=true;
+    this.IsApprove = true;
     this.SaveFuntion(row, 'Reject');
   }
 
   ApproveClick(row: any) {
-    this.IsApprove=true;
+    this.IsApprove = true;
     this.SaveFuntion(row, 'Approve');
   }
 
+  RectifyClick(element: any) {
+    this.IsApprove = true;
+    //this.SaveFuntion(row, 'Approve');
+
+    const dialogRef = this.dialog.open(AddEditSupplierComponent, {
+      width: '80%',
+      data: {
+        title: 'Rectify Supplier',
+        buttonName: 'Rectify',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.GetSupplierDefaultList();
+
+      }
+    });
+  }
 
   SaveFuntion(row: any, saleStatus: any) {
     let data: IsupplierApprove = {
@@ -250,13 +272,13 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
         },
       });
       dialogRef.afterClosed().subscribe((result: any) => {
-        if ( result!=null) {
+        if (result != null) {
           data.Remarks = result;
           this.SaveApproveData(data);
-         
+
         }
-        else{
-          this.IsApprove=false;
+        else {
+          this.IsApprove = false;
         }
       });
     } else {
@@ -274,11 +296,11 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result) {
           this.SaveApproveData(data);
-      
+
 
         }
-        else{
-          this.IsApprove=false;
+        else {
+          this.IsApprove = false;
         }
       });
     }
@@ -383,7 +405,7 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     this.subscriptions.push(gradeGetService);
   }
   openImage(data: any) {
-    
+
     const dialogRef = this.dialog.open(ImageViewerComponent, {
       // width: "80vw",
       // height: "95%",
