@@ -6,7 +6,7 @@ import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { AutoCompleteService } from '../../services/auto-complete.service';
 import { DatePipe, formatDate } from '@angular/common';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, Subscription, takeUntil } from 'rxjs';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { ImageViewerComponent } from 'src/app/shared/components/image-viewer/image-viewer.component';
 import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
@@ -14,6 +14,8 @@ import { StgService } from '../../services/stg.service';
 import { ISupplier, IUploadChallan } from '../../interfaces/isupplier';
 import { SupplierService } from '../../services/supplier.service';
 import { IGetTeaClient } from '../../interfaces/istg';
+import { MatSelect } from '@angular/material/select';
+import { IClient } from 'src/app/modules/bill-generate/interfaces/iget-stg-bill';
 
 
 @Component({
@@ -34,12 +36,15 @@ export class AddEditSupplierComponent implements OnInit {
   vehicleNumbers: any[] = [];
   filteredFactory: any[] = [];
   FactoryList: any[] = [];
-  statusList: string[] = ['Pending', 'Rejected','Approved']
+  statusList: string[] = ['Pending', 'Rejected', 'Approved']
   TripList: any[] = [];
   @ViewChild('CollectDate') CollDateInput!: ElementRef;
   @ViewChild('VehicleNo') VehicleNoInput!: ElementRef;
   private subscriptions: Subscription[] = [];
   FileData: any;
+  @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
+  public filteredClients: ReplaySubject<IClient[]> = new ReplaySubject<IClient[]>(1);
+  @ViewChild('ClientName') ClientNoInput!: ElementRef;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
     public dialogRef: MatDialogRef<AddEditSupplierComponent>,
@@ -56,7 +61,7 @@ export class AddEditSupplierComponent implements OnInit {
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
 
-  //  var dd = this.dialogData.value;
+    //  var dd = this.dialogData.value;
     this.supplierForm = this.fb.group({
       CollectionDate: [new Date()],
       ClientName: ['', Validators.required],
@@ -72,7 +77,8 @@ export class AddEditSupplierComponent implements OnInit {
       Status: ['Pending'],
       TripId: ['', Validators.required],
       ChallanImage: ['', this.loginDetails.LoginType == 'Client' && this.dialogData.value?.imageUrl == '' ? Validators.required : ''],
-      Remarks: []
+      Remarks: [],
+      ClienFilterCrtl: ['']
     });
     await this.loadClientNames();
     await this.loadFactoryNames();
@@ -110,6 +116,35 @@ export class AddEditSupplierComponent implements OnInit {
         this.imageUrl = this.dialogData.value.imageUrl;
       }
     }
+
+    // load the initial bank list
+    this.filteredClients.next(this.ClientNames.slice());
+
+    // // listen for search field value changes
+    this.supplierForm.controls["ClienFilterCrtl"].valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.filteredClientsData();
+      });
+  }
+
+  private filteredClientsData() {
+    // debugger
+    if (!this.ClientNames) {
+      return;
+    }
+    // get the search keyword
+    let search = this.supplierForm.controls["ClienFilterCrtl"].value;
+    if (!search) {
+      this.filteredClients.next(this.ClientNames.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredClients.next(
+      this.ClientNames.filter(x => x.ClientName.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   CleanFormControl() {
@@ -225,7 +260,7 @@ export class AddEditSupplierComponent implements OnInit {
         .toPromise();
 
       this.filteredFactory = res.FactoryDetails;
-      this.FactoryList=res.FactoryDetails;
+      this.FactoryList = res.FactoryDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -341,8 +376,10 @@ export class AddEditSupplierComponent implements OnInit {
   }
 
   async onSubmit() {
+    debugger
+    console.log(this.supplierForm, 'this.supplierForm');
 
-    if (this.supplierForm.invalid || this.supplierForm.value.ClientId == 0) {
+    if (this.supplierForm.invalid ) {
       this.supplierForm.markAllAsTouched();
       return;
     }
@@ -351,7 +388,7 @@ export class AddEditSupplierComponent implements OnInit {
       CollectionId: this.dialogData?.value?.CollectionId ? this.dialogData?.value?.CollectionId : 0,
       CollectionDate: formatDate(this.supplierForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
       VehicleNo: this.supplierForm.value.VehicleNo,
-      ClientId: this.supplierForm.value.ClientId,
+      ClientId: this.supplierForm.value.ClientName?.ClientId ?? 0,
       AccountId: this.supplierForm.value.AccountId,
       FineLeaf: this.supplierForm.value.FineLeaf,
       ChallanWeight: this.supplierForm.value.ChallanWeight,
@@ -392,12 +429,12 @@ export class AddEditSupplierComponent implements OnInit {
       }
       this.CollDateInput.nativeElement.focus();
       this.CleanFormControl();
+
       this.supplierForm.controls['ClientName'].reset()
-      this.supplierForm.controls['ClientId'].reset()
+      this.supplierForm.controls['ClientId'].reset(0);
       this.isSubmitting = false;
-      this.dialogRef.close(true);
+      //  this.dialogRef.close(true);
     }
-   // this.dialogRef.close(true)
 
   }
 

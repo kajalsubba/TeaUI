@@ -63,7 +63,7 @@ export class ApiService {
   private logResponse(method: string, endpoint: string, response: any): void {
     if (!environment.production) {
       console.log(`Received ${method} response from ${this.config.apiUrl}/${endpoint}`);
-      console.log('Response Data:', response);
+  //    console.log('Response Data:', response);
 
     }
 

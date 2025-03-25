@@ -23,6 +23,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { ColumnTotalPipe } from 'src/app/shared/pipes/column-total.pipe';
 import { AddEditSupplierComponent } from './models/add-edit-supplier/add-edit-supplier.component';
 import { LaterAddEditStgComponent } from './models/later-add-edit-stg/later-add-edit-stg.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 export const MY_FORMATS = {
   parse: {
@@ -63,7 +64,8 @@ export const MY_FORMATS = {
     MatInputModule,
     MatFormFieldModule,
     MatSlideToggleModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    NgxMatSelectSearchModule
   ],
   providers : [
     DatePipe,

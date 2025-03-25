@@ -23,16 +23,7 @@
               </div>
               <div class="col-lg-3 my-1">
                 <div class="position-relative">
-                  <!-- <input #ClientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
-                    formControlName="ClientName" [matAutocomplete]="clientAuto">
 
-                  <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
-                    <mat-option *ngFor="let client of filterClientNames(ClientName.value)" [value]="client?.ClientName"
-                      (onSelectionChange)="selectClient(client)">
-                      {{ client?.ClientName }}
-                    </mat-option>
-                  </mat-autocomplete> -->
-                  <!-- <mat-form-field appearance="fill"> -->
                   <mat-select class="fromSelect" formControlName="ClientName" placeholder="Select Client" #singleSelect>
                     <mat-option>
                       <ngx-mat-select-search formControlName="ClienFilterCrtl"

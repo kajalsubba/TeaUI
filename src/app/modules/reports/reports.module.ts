@@ -24,6 +24,7 @@ import { DatewiseGradeReportComponent } from './components/datewise-grade-report
 import { SalePurchaseReportComponent } from './components/sale-purchase-report/sale-purchase-report.component';
 import { MonthWiseCollectionReportComponent } from './components/month-wise-collection-report/month-wise-collection-report.component';
 import { SalePurchasewiseReportComponent } from './components/sale-purchasewise-report/sale-purchasewise-report.component';
+import { MatIconModule } from '@angular/material/icon';
 
 export const MY_FORMATS = {
   parse: {
@@ -63,7 +64,8 @@ export const MY_FORMATS = {
     MatInputModule,
     MatFormFieldModule,
     MatSlideToggleModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatIconModule,
   ],
   providers : [
     CurrencyPipe,

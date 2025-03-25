@@ -15,30 +15,40 @@
                                 <div class="col-lg-7 position-relative">
 
                                     <mat-form-field>
-                                        <input #CollectDate  matInput [matDatepicker]="picker" placeholder="CollectionDate"
-                                            formControlName="CollectionDate">
+                                        <input #CollectDate matInput [matDatepicker]="picker"
+                                            placeholder="CollectionDate" formControlName="CollectionDate">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>
                                 </div>
                             </div>
                         </div>
-                      
-                          <div class="col-lg-4">
+
+                        <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <input #clientName type="text" class="form-control" id="ClientName"
+                                    <!-- <input #clientName type="text" class="form-control" id="ClientName"
                                         placeholder="Client Name" formControlName="ClientName"
                                         [matAutocomplete]="clientAuto">
-                                    <!-- Autocomplete options -->
                                     <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
                                         <mat-option *ngFor="let client of filterClientNames(clientName.value)"
                                             [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
                                             {{ client?.ClientName }}
                                         </mat-option>
-                                    </mat-autocomplete>
+                                    </mat-autocomplete> -->
+
+                                    <mat-select class="fromSelect" formControlName="ClientName" placeholder="Select Client" #singleSelect>
+                                        <mat-option>
+                                          <ngx-mat-select-search formControlName="ClienFilterCrtl"
+                                            noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
+                                        </mat-option>
+                    
+                                        <mat-option *ngFor="let client of filteredClients|async" [value]="client">
+                                          {{client.ClientName}}
+                                        </mat-option>
+                                      </mat-select>
 
                                     <!-- Validation message -->
                                     <span
@@ -79,7 +89,7 @@
                         </div>
                     </div>
                     <div class="row">
-                          <div class="col-lg-4">
+                        <div class="col-lg-4">
                             <div class="form-group row py-1 mb-3">
                                 <label for="Factory" class="col-lg-5 col-form-label">Factory Name</label>
                                 <div class="col-lg-7 position-relative">
@@ -124,7 +134,7 @@
 
                             </div>
                         </div>
-                    
+
                         <div class="col-lg-4">
                             <div class="form-group row mb-3">
                                 <label for="FineLeaf" class="col-lg-5 col-form-label">Fine Leaf </label>
@@ -192,13 +202,15 @@
                     <div class="row">
                         <div class="col-lg-4" *ngIf="dialogData.buttonName=='Update'">
                             <div class="form-group row mb-3">
-                                <label for="CategoryId" class="col-lg-5 col-form-label">Status <span class="text-danger">*</span></label>
+                                <label for="CategoryId" class="col-lg-5 col-form-label">Status <span
+                                        class="text-danger">*</span></label>
                                 <div class="col-lg-7 position-relative">
-                                    <mat-select aria-placeholder="--Select Status--" class="fromSelect" formControlName="Status">
+                                    <mat-select aria-placeholder="--Select Status--" class="fromSelect"
+                                        formControlName="Status">
                                         <mat-option *ngFor="let item of statusList" [value]="item">
-                                          {{item}}
+                                            {{item}}
                                         </mat-option>
-                                      </mat-select>
+                                    </mat-select>
                                 </div>
                             </div>
                         </div>
@@ -213,7 +225,8 @@
                                             {{trip.TripName}}
                                         </mat-option>
                                     </mat-select>
-                                    <span *ngIf="supplierForm.get('TripId')?.hasError('required') && supplierForm.get('TripId')?.touched"
+                                    <span
+                                        *ngIf="supplierForm.get('TripId')?.hasError('required') && supplierForm.get('TripId')?.touched"
                                         class="ps-2 text-danger d-block validation-message">
                                         Trip is required.
                                     </span>
@@ -224,7 +237,8 @@
                             <div class="form-group row mb-3">
                                 <label for="Remarks" class="col-lg-5 col-form-label">Remarks</label>
                                 <div class="col-lg-7 position-relative">
-                                    <textarea class="form-control" name="Remarks" id="Remarks" formControlName="Remarks"></textarea>
+                                    <textarea class="form-control" name="Remarks" id="Remarks"
+                                        formControlName="Remarks"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -239,24 +253,24 @@
                                         <div class="col-lg-10 position-relative">
                                             <input type="file" class="form-control" id="imageUpload" accept="image/*"
                                                 (change)="onFileSelected($event)" formControlName="ChallanImage">
-                                                <span
+                                            <span
                                                 *ngIf="supplierForm.get('ChallanImage')?.hasError('required') && supplierForm.get('ChallanImage')?.touched"
                                                 class="ps-2 text-danger d-block validation-message">
                                                 Challan Copy is required.
-                                                </span>
+                                            </span>
                                         </div>
                                         <div class="col-lg-2">
                                             <!-- Image preview container -->
                                             <div class="image-preview mx-2 w-100" *ngIf="imageUrl">
-                                                <img (click)="openImage(imageUrl)" [src]="imageUrl"
-                                                    alt="Selected Image" class="img-thumbnail">
+                                                <img (click)="openImage(imageUrl)" [src]="imageUrl" alt="Selected Image"
+                                                    class="img-thumbnail">
                                             </div>
                                         </div>
-                                      
+
                                     </div>
 
 
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -268,5 +282,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
-    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
+    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button
+        cdkFocusInitial>{{dialogData.buttonName}}</button>
 </mat-dialog-actions>

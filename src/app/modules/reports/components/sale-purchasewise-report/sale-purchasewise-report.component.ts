@@ -12,16 +12,20 @@ import { IReports } from '../../interfaces/ireports';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ToastrService } from 'ngx-toastr';
 
-// interface MonthWiseData {
-//   Months: string;
-//   FactoryName: string;
-//   AccountName: string;
-//   ChallanWeight: number;
-//   AvgRate: number;
-//   TotalWeight: number;
-//   rowspan: number;
-//   showRow: boolean;
-// }
+
+export class Group {
+  level = 0;
+  parent: Group | undefined;
+  expanded = true;
+  totalCounts = 0;
+  totalChallanWeight = 0;
+  totalGrossAmount = 0;
+  avgRate = 0;
+  get visible(): boolean {
+    return !this.parent || (this.parent.visible && this.parent.expanded);
+  }
+}
+
 
 @Component({
   selector: 'app-sale-purchasewise-report',
@@ -31,27 +35,31 @@ import { ToastrService } from 'ngx-toastr';
 
 
 export class SalePurchasewiseReportComponent implements OnInit {
-  
+
   displayedColumns: string[] = [
-    'Months',
+    'MonthYear',
     'FactoryName',
     'AccountName',
     'ChallanWeight',
     'AvgRate',
-    'TotalWeight'
-  
+    'GrossAmount'
 
   ];
 
-  dataSource = new _MatTableDataSource<any>();
+  dataSource = new _MatTableDataSource<any | Group>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-   // { columnDef: 'Months', header: 'Months' },
-    // { columnDef: 'BillDate', header: 'Bill Date' },
-    // { columnDef: 'FactoryName', header: 'FactoryName' },
-    // { columnDef: 'AccountName', header: 'AccountName' },
+    { columnDef: 'MonthYear', header: 'Month Year' },
+    { columnDef: 'FactoryName', header: 'Factory' },
+    { columnDef: 'AccountName', header: 'Account' },
+    { columnDef: 'ChallanWeight', header: 'Challan Weight' },
+    { columnDef: 'AvgRate', header: 'Avg. Rate' },
+    { columnDef: 'GrossAmount', header: 'Final Amount' },
+
 
   ];
+
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -64,8 +72,10 @@ export class SalePurchasewiseReportComponent implements OnInit {
   selectedRowIndex: number = -1;
   clientList: any[] = [];
   categoryList: any[] = [];
- // monthWiseData:MonthWiseData[]=[];
-
+  // monthWiseData:MonthWiseData[]=[];
+  groupByColumns: string[] = [];
+  _alldata: any[] = [];
+  AverageRate: number = 0;
   constructor(
 
     private helper: HelperService,
@@ -76,7 +86,10 @@ export class SalePurchasewiseReportComponent implements OnInit {
     private toastr: ToastrService,
 
 
-  ) { }
+  ) {
+
+
+  }
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.SalePurchaseForm = this.fb.group({
@@ -87,7 +100,7 @@ export class SalePurchasewiseReportComponent implements OnInit {
 
   }
 
-  
+
   GetBillHistory() {
     const currentDate = new Date();
     let bodyData: IReports = {
@@ -100,16 +113,131 @@ export class SalePurchasewiseReportComponent implements OnInit {
     const categoryListService = this.reportService
       .GetSalePurchaseWiseReport(bodyData)
       .subscribe((res: any) => {
+        this._alldata = res.SaleWiseReport;
+        this.dataSource.data = this.addGroups(
+          this._alldata, this.groupByColumns);
 
-        this.dataSource.data = res.SaleWiseReport;
+        
+          const grossAmount: number = this.getTotal('GrossAmount');
+          const finalWeight: number = this.getTotal('ChallanWeight');
+          this.AverageRate = grossAmount / finalWeight;
+          console.log(this._alldata, '   this.AverageRate ');
 
       });
+    this.dataSource.filterPredicate = this.customFilterPredicate.bind(this);
+    this.dataSource.filter = performance.now().toString();
+    this.displayedColumns = this.columns.map((column) => column.columnDef);
+    this.groupByColumns = ['MonthYear'];
+
+
+
     this.subscriptions.push(categoryListService);
   }
 
+  // below is for grid row grouping
+  customFilterPredicate(data: any | Group, filter: string): boolean {
+    return data instanceof Group ? data.visible : this.getDataRowVisible(data);
+  }
+
+  getDataRowVisible(data: any): boolean {
+    const groupRows = this.dataSource.data.filter((row) => {
+      // if (!(row instanceof Group)) {
+      //   return false;
+      // }
+      let match = true;
+
+      this.groupByColumns.forEach((column: any) => {
+        if (!row[column] || !data[column] || row[column] !== data[column]) {
+          match = false;
+        }
+      });
+      return match;
+    });
+
+    if (groupRows.length === 0) {
+      return true;
+    }
+    const parent = groupRows[0] as Group;
+    return parent.visible && parent.expanded;
+  }
+
+  groupHeaderClick(row: any) {
+    row.expanded = !row.expanded;
+    this.dataSource.filter = performance.now().toString(); // bug here need to fix
+  }
+
+  addGroups(data: any[], groupByColumns: string[]): any[] {
+    const rootGroup = new Group();
+    rootGroup.expanded = true;
+    return this.getSublevel(data, 0, groupByColumns, rootGroup);
+  }
+
+  getSublevel(data: any[], level: number, groupByColumns: string[], parent: Group): any[] {
+    if (level >= groupByColumns.length) {
+      return data;
+    }
+    const groups = this.uniqueBy(
+      data.map((row) => {
+        const result: any = new Group();
+        result.level = level + 1;
+        result.parent = parent;
+        for (let i = 0; i <= level; i++) {
+          result[groupByColumns[i]] = row[groupByColumns[i]];
+        }
+        return result;
+      }),
+      JSON.stringify
+    );
+
+    const currentColumn = groupByColumns[level];
+    let subGroups: any[] = [];
+    groups.forEach((group: any) => {
+      const rowsInGroup = data.filter(
+        (row) => group[currentColumn] === row[currentColumn]
+      );
+
+      // Calculate totals for the group
+      group.totalChallanWeight = rowsInGroup.reduce((acc, curr) => acc + curr.ChallanWeight, 0);
+      group.totalGrossAmount = rowsInGroup.reduce((acc, curr) => acc + curr.GrossAmount, 0);
+      group.avgRate = group.totalChallanWeight !== 0 ? group.totalGrossAmount / group.totalChallanWeight : 0;
+
+      group.totalCounts = rowsInGroup.length;
+      const subGroup = this.getSublevel(rowsInGroup, level + 1, groupByColumns, group);
+
+      subGroup.unshift(group);
+      // Add total row with calculated values
+      const totalRow = {
+        isTotalRow: true,
+        totalChallanWeight: group.totalChallanWeight,
+        totalGrossAmount: group.totalGrossAmount,
+        avgRate: group.avgRate,
+      };
+      subGroup.push(totalRow); // Add total row with calculated values
+
+
+      subGroups = subGroups.concat(subGroup);
+      //  console.log(subGroups,'subGroups');
+    });
+    return subGroups;
+  }
+
+  uniqueBy(a: any, key: any) {
+    const seen: any = {};
+    return a.filter((item: any) => {
+      const k = key(item);
+      return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    });
+  }
+
+  isTotalRow(index: any, item: any): boolean {
+    return item.isTotalRow;
+  }
+  isGroup(index: any, item: any): boolean {
+    return item.level;
+  }
 
   getTotal(columnName: string): number {
-    return this.dataSource.filteredData.reduce(
+    return this._alldata.reduce(
       (acc, curr) => acc + curr[columnName],
       0
     );
@@ -127,7 +255,7 @@ export class SalePurchasewiseReportComponent implements OnInit {
   }
   ngAfterViewInit() {
 
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
@@ -187,7 +315,7 @@ export class SalePurchasewiseReportComponent implements OnInit {
           }
         });
 
-        this.excelService.exportToExcel('material-table', 'Supplier Bill History');
+        this.excelService.exportToExcel('material-table', 'SaleBreakUp Report');
       } else {
         console.error("Table element not found or not an HTML table.");
       }
@@ -195,4 +323,8 @@ export class SalePurchasewiseReportComponent implements OnInit {
       this.toastr.warning("NO DATA TO EXPORT", "WARNING");
     }
   }
+
+
+
+
 }
