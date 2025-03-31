@@ -45,7 +45,7 @@
                                             noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
                                         </mat-option>
                     
-                                        <mat-option *ngFor="let client of filteredClients|async" [value]="client">
+                                        <mat-option *ngFor="let client of filteredClients|async" [value]="client.ClientId">
                                           {{client.ClientName}}
                                         </mat-option>
                                       </mat-select>

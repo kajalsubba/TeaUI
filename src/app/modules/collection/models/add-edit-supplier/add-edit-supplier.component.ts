@@ -86,17 +86,32 @@ export class AddEditSupplierComponent implements OnInit {
     await this.loadVehicleNumbers();
     await this.GeTript();
     if (this.loginDetails.LoginType == 'Client') {
-      this.supplierForm.controls['ClientName'].setValue(this.loginDetails.ClientName);
-      this.supplierForm.controls['ClientId'].setValue(this.loginDetails.ClientId);
+      // this.supplierForm.controls['ClientName'].setValue(this.loginDetails.ClientName);
+      // this.supplierForm.controls['ClientId'].setValue(this.loginDetails.ClientId);
+
+      const selectedClient = { ClientName: this.loginDetails.ClientName, ClientId: this.loginDetails.ClientId }; // Example selected client
+      this.supplierForm.patchValue({
+        ClientName: selectedClient.ClientId,
+      });
+
       this.supplierForm.controls['ClientName'].disable({ onlySelf: true });
       this.supplierForm.controls['Rate'].disable({ onlySelf: true });
     }
     //  this.FilteredTranscationType = this.TranscationTypeList;
 
     if (this.dialogData.value) {
+      // debugger
+    //  console.log(this.dialogData.value, 'this.dialogData.value');
+      this.SelectFactory(this.dialogData.value.FactoryId);
+      // ClientId: this.supplierForm.value.ClientName?.ClientId ?? 0,
       this.supplierForm.controls['CollectionDate'].setValue(new Date(this.dialogData.value.CollDate));
-      this.supplierForm.controls['ClientName'].setValue(this.dialogData.value.ClientName);
+      this.supplierForm.controls['ClientName'].setValue(this.dialogData.value.ClientId);
       this.supplierForm.controls['ClientId'].setValue(this.dialogData.value.ClientId);
+
+      // const selectedClient = { ClientName: this.dialogData.value.ClientName, ClientId: this.dialogData.value.ClientId }; // Example selected client
+      // this.supplierForm.patchValue({
+      //   ClientName: selectedClient.ClientId,
+      // });
       this.supplierForm.controls['VehicleNo'].setValue(this.dialogData.value.VehicleNo);
       this.supplierForm.controls['FactoryName'].setValue(this.dialogData.value.FactoryId);
       this.supplierForm.controls['AccountName'].setValue(this.dialogData.value.AccountName);
@@ -115,6 +130,8 @@ export class AddEditSupplierComponent implements OnInit {
       if (this.loginDetails.LoginType == 'Client') {
         this.imageUrl = this.dialogData.value.imageUrl;
       }
+
+    
     }
 
     // load the initial bank list
@@ -377,18 +394,18 @@ export class AddEditSupplierComponent implements OnInit {
 
   async onSubmit() {
     debugger
-    console.log(this.supplierForm, 'this.supplierForm');
 
-    if (this.supplierForm.invalid ) {
+    if (this.supplierForm.invalid) {
       this.supplierForm.markAllAsTouched();
       return;
     }
+    //  console.log(this.supplierForm.value, ' this.supplierForm.value');
 
     let data: ISupplier = {
       CollectionId: this.dialogData?.value?.CollectionId ? this.dialogData?.value?.CollectionId : 0,
       CollectionDate: formatDate(this.supplierForm.value.CollectionDate, 'yyyy-MM-dd', 'en-US'),
       VehicleNo: this.supplierForm.value.VehicleNo,
-      ClientId: this.supplierForm.value.ClientName?.ClientId ?? 0,
+      ClientId: this.supplierForm.value.ClientName ?? 0,
       AccountId: this.supplierForm.value.AccountId,
       FineLeaf: this.supplierForm.value.FineLeaf,
       ChallanWeight: this.supplierForm.value.ChallanWeight,
@@ -402,6 +419,8 @@ export class AddEditSupplierComponent implements OnInit {
       CreatedBy: this.loginDetails.UserId
 
     }
+    // console.log(data, 'data');
+    // return
     this.isSubmitting = true;
     var CollId = await this.SaveSupplier(data);
 
