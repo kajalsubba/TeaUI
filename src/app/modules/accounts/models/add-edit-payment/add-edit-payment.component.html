@@ -55,16 +55,22 @@
                             <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
                                     class="text-danger">*</span></label>
                             <div class="col-lg-7 position-relative">
-                                <input #clientName type="text" class="form-control" id="ClientName"
+                                <!-- <input #clientName type="text" class="form-control" id="ClientName"
                                     placeholder="Client Name" formControlName="ClientName"
-                                    [matAutocomplete]="clientAuto">
+                                    [matAutocomplete]="clientAuto"> -->
 
-                                <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                <!-- <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
                                     <mat-option *ngFor="let client of filterClientNames(clientName.value)"
                                         [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
                                         {{ client?.ClientName }}
                                     </mat-option>
-                                </mat-autocomplete>
+                                </mat-autocomplete> -->
+                                <mat-select placeholder="--Select name--" class="fromSelect" formControlName="ClientId">
+                                    <input #clientName (input)="filterClientNames(clientName.value)" type="text"
+                                        class="form-control inset-shadow" placeholder="Search client">
+                                    <mat-option *ngFor="let client of filteredClient"
+                                        [value]="client?.ClientId">{{client?.ClientName}}</mat-option>
+                                </mat-select>
                                 <span
                                     *ngIf="addEditPayment.get('ClientName')?.hasError('required') && addEditPayment.get('ClientName')?.touched"
                                     class="text-danger d-block validation-message">
@@ -96,7 +102,7 @@
                                     class="text-danger">*</span></label>
                             <div class="col-lg-7 position-relative">
                                 <input #Amount type="text" class="form-control" id="Amount" placeholder="Amount"
-                                    formControlName="Amount" (blur)="formatCurrency($event)" appCharacterRestriction >
+                                    formControlName="Amount" (blur)="formatCurrency($event)" appCharacterRestriction>
                                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
                                 <!-- Validation message -->

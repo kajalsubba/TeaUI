@@ -27,6 +27,7 @@ registerLocaleData(enIN);
 export class AddEditPaymentComponent implements OnInit {
 
   isSubmitting = false;
+  @ViewChild('clientName') ClientNoInput!: ElementRef;
   addEditPayment!: FormGroup;
   minToDate!: Date | null;
   private subscriptions: Subscription[] = [];
@@ -38,7 +39,7 @@ export class AddEditPaymentComponent implements OnInit {
   ClientNames: any[] = [];
   clientList: any[] = [];
   formattedAmount: any;
-
+  filteredClient: any[] = [];
   @ViewChild('PaymentDate') PaymentDateInput!: ElementRef;
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
@@ -63,8 +64,8 @@ export class AddEditPaymentComponent implements OnInit {
       BillDate: [new Date(), Validators.required],
       CategoryId: ['', Validators.required],
       CategoryName: [''],
-      ClientId: [''],
-      ClientName: ['', Validators.required],
+      ClientId: ['', Validators.required],
+      ClientName: [''],
       PaymentTypeId: ['', Validators.required],
       Amount: ['', Validators.required],
       Narration: [''],
@@ -106,7 +107,7 @@ export class AddEditPaymentComponent implements OnInit {
         .toPromise();
 
       this.clientList = res.ClientDetails;
-
+      this.filteredClient = res.ClientDetails;
 
     } catch (error) {
       console.error('Error:', error);
@@ -114,11 +115,11 @@ export class AddEditPaymentComponent implements OnInit {
     }
   }
 
-  filterClientNames(value: string): any[] {
+  // filterClientNames(value: string): any[] {
 
-    const filterValue = value.toLowerCase();
-    return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
-  }
+  //   const filterValue = value.toLowerCase();
+  //   return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
+  // }
 
   filterNarration(value: string): any[] {
 
@@ -156,8 +157,8 @@ export class AddEditPaymentComponent implements OnInit {
     if (event.source.selected) {
       this.addEditPayment.controls['CategoryName'].setValue(category.CategoryName);
       var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditPayment.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
-      this.ClientNames = dataList;
-
+      // this.ClientNames = dataList;
+      this.filteredClient = dataList
     }
 
   }
@@ -168,9 +169,9 @@ export class AddEditPaymentComponent implements OnInit {
     };
     const NarrationtService = this.paymentService.GetPaymentNarration(bodyData)
       .subscribe((res: any) => {
-      
+
         this.narrationList = res.Narration;
-      //  this.ClientNames = this.narrationList;
+        //  this.ClientNames = this.narrationList;
       });
     this.subscriptions.push(NarrationtService);
   }
@@ -217,6 +218,13 @@ export class AddEditPaymentComponent implements OnInit {
     console.error('Error:', error);
     this.toastr.error(message, 'ERROR');
   }
+  filterClientNames(value: string): any[] {
+
+    const filterValue = value.toLowerCase();
+    return this.filteredClient = this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
+
+  }
+
 
   onSubmit() {
     if (this.addEditPayment.invalid || this.addEditPayment.value.ClientId == 0) {
@@ -282,7 +290,7 @@ export class AddEditPaymentComponent implements OnInit {
 
     this.addEditPayment.controls['ClientName'].reset()
     this.addEditPayment.controls['ClientId'].reset()
-    this.addEditPayment.controls['CategoryId'].reset()
+    // this.addEditPayment.controls['CategoryId'].reset()
     this.addEditPayment.controls['Amount'].reset()
     this.addEditPayment.controls['PaymentTypeId'].reset()
     this.addEditPayment.controls['Narration'].reset()

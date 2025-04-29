@@ -286,10 +286,9 @@ export class AddEditStgComponent implements OnInit {
 
   // Autocomplete function
   filterClientNames(value: string): any[] {
-    debugger
+    
     const filterValue = value.toLowerCase();
-   // return this.filteredClient.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
-  return this.filteredClient = this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
+    return this.filteredClient = this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
 
   }
 

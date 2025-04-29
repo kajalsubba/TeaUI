@@ -203,6 +203,7 @@ export class StgBillHistoryComponent implements OnInit {
     const categoryListService = this.billService
       .PrintBill(bodyData)
       .subscribe((response: Blob) => {
+     
         const blobUrl = URL.createObjectURL(response);
 
         // Open PDF in a new browser tab
