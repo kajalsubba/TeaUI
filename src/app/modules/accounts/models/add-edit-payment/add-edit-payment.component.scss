@@ -4,3 +4,7 @@
     top: 50%;
     transform: translateY(-50%);
   }
+  input[type="text"] {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }

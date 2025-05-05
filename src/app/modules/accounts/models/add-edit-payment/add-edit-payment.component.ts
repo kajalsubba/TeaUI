@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
@@ -17,6 +17,8 @@ import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-typ
 import { PaymentService } from '../../services/payment.service';
 import { environment } from 'src/environments/environment';
 import enIN from '@angular/common/locales/en-IN';
+import { MatSelect } from '@angular/material/select';
+import { IClient } from 'src/app/modules/bill-generate/interfaces/iget-stg-bill';
 registerLocaleData(enIN);
 
 @Component({
@@ -27,6 +29,8 @@ registerLocaleData(enIN);
 export class AddEditPaymentComponent implements OnInit {
 
   isSubmitting = false;
+  @ViewChild('clientSelect') clientSelect!: MatSelect;
+
   @ViewChild('clientName') ClientNoInput!: ElementRef;
   addEditPayment!: FormGroup;
   minToDate!: Date | null;
@@ -74,6 +78,7 @@ export class AddEditPaymentComponent implements OnInit {
     await this.getCategoryList();
     await this.loadClientNames();
     this.GetPaymentNarration();
+
     if (this.dialogData.value) {
       this.addEditPayment.controls['BillDate'].setValue(new Date(this.dialogData.value.BllDate));
       this.addEditPayment.controls['PaymentDate'].setValue(new Date(this.dialogData.value.PayDate));
@@ -106,8 +111,9 @@ export class AddEditPaymentComponent implements OnInit {
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.clientList = res.ClientDetails;
-      this.filteredClient = res.ClientDetails;
+      this.ClientNames = res.ClientDetails;
+      //  this.filteredClient = res.ClientDetails;
+     // this.clientList = res.ClientDetails;
 
     } catch (error) {
       console.error('Error:', error);
@@ -115,12 +121,14 @@ export class AddEditPaymentComponent implements OnInit {
     }
   }
 
-  // filterClientNames(value: string): any[] {
-
-  //   const filterValue = value.toLowerCase();
-  //   return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
-  // }
-
+  onClientSelectOpened(opened: boolean, input: HTMLInputElement) {
+    if (opened) {
+      // Timeout is needed to wait for the panel to be fully rendered
+      setTimeout(() => {
+        input.focus();
+      }, 0);
+    }
+  }
   filterNarration(value: string): any[] {
 
     const filterValue = value.toLowerCase();
@@ -155,10 +163,13 @@ export class AddEditPaymentComponent implements OnInit {
   // }
   async selectCategory(event: MatOptionSelectionChange, category: any) {
     if (event.source.selected) {
+      this.filteredClient = [];
+      this.clientList = [];
+      this.addEditPayment.controls["ClientId"].reset();
       this.addEditPayment.controls['CategoryName'].setValue(category.CategoryName);
-      var dataList = this.clientList.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditPayment.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
-      // this.ClientNames = dataList;
-      this.filteredClient = dataList
+      var dataList = this.ClientNames.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditPayment.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
+      this.clientList = dataList;
+      this.filteredClient = this.clientList
     }
 
   }
@@ -218,10 +229,12 @@ export class AddEditPaymentComponent implements OnInit {
     console.error('Error:', error);
     this.toastr.error(message, 'ERROR');
   }
-  filterClientNames(value: string): any[] {
 
+
+  filterClientNames(value: string): any[] {
+    debugger
     const filterValue = value.toLowerCase();
-    return this.filteredClient = this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
+    return this.filteredClient = this.clientList.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
 
   }
 

@@ -65,14 +65,17 @@
                                         {{ client?.ClientName }}
                                     </mat-option>
                                 </mat-autocomplete> -->
-                                <mat-select placeholder="--Select name--" class="fromSelect" formControlName="ClientId">
+                                <mat-select placeholder="--Select name--" class="fromSelect" formControlName="ClientId" 
+                                (openedChange)="onClientSelectOpened($event, clientName)">
                                     <input #clientName (input)="filterClientNames(clientName.value)" type="text"
                                         class="form-control inset-shadow" placeholder="Search client">
                                     <mat-option *ngFor="let client of filteredClient"
                                         [value]="client?.ClientId">{{client?.ClientName}}</mat-option>
                                 </mat-select>
+
+                          
                                 <span
-                                    *ngIf="addEditPayment.get('ClientName')?.hasError('required') && addEditPayment.get('ClientName')?.touched"
+                                    *ngIf="addEditPayment.get('ClientId')?.hasError('required') && addEditPayment.get('ClientId')?.touched"
                                     class="text-danger d-block validation-message">
                                     Client is required.
                                 </span>
