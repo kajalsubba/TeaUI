@@ -24,7 +24,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./category.component.scss'],
 })
 export class CategoryComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['CategoryId', 'CategoryName', 'actions'];
+  displayedColumns: string[] = ['CategoryId', 'CategoryName'];
   dataSource = new MatTableDataSource<any>();
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CategoryId', header: 'Category ID' },
