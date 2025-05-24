@@ -1,5 +1,5 @@
 export interface IGetNotifications {
-    TenantId:number;
+    TenantId: number;
 }
 
 export interface IModulePermissions {
@@ -14,5 +14,10 @@ export interface IModulePermissions {
     TenantId: number;
     Upload: boolean;
     ViewData: boolean;
-    subModuleId:number;
+    subModuleId: number;
+}
+
+export interface IRenewNotification {
+    TenantId: number;
+
 }

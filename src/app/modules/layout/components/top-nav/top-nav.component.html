@@ -3,24 +3,31 @@
     <i (click)="toggleSideNav()" *ngIf="switchSideNav" class="fa-solid openCloseIcon fa-xmark"></i> -->
     <div class="running-time-date">
         {{ currentDateTime }}
-      </div>
+    </div>
     <div class="top-navbar">
         <div class="logo"></div>
         <div class="company-name">
             <span>{{loginDetails.CompanyName }}</span>
             <span class="router">{{formatCurrentRoute()}}</span>
         </div>
-        <div *ngIf="loginDetails.LoginType=='Agent'" matTooltip="Notification" matTooltipPosition="below" class="notification-icon" [matMenuTriggerFor]="notificationMenu">
-            <i [ngClass]="{'fa-shake':NotificationData.length > 0}" class="fa-solid fa-bell fa-2x text-light"></i>
-            <span *ngIf="NotificationData.length > 0" class="notification-badge">{{countOfPendingNotifications}}</span> <!-- Badge for notification count -->
+        <div *ngIf="NotificationStatus=='Expired'" class="expire-Notification">
+            <span>Your subscription expired on {{ExpireDate}}. </span>
+            <span>Please renew to avoid interruption.</span>
         </div>
-        <mat-menu #notificationMenu="matMenu" class="notification-menu p-0" >
+        <div *ngIf="loginDetails.LoginType=='Agent'" matTooltip="Notification" matTooltipPosition="below"
+            class="notification-icon" [matMenuTriggerFor]="notificationMenu">
+            <i [ngClass]="{'fa-shake':NotificationData.length > 0}" class="fa-solid fa-bell fa-2x text-light"></i>
+            <span *ngIf="NotificationData.length > 0" class="notification-badge">{{countOfPendingNotifications}}</span>
+            <!-- Badge for notification count -->
+        </div>
+        <mat-menu #notificationMenu="matMenu" class="notification-menu p-0">
             <div class="notification-header">
                 Notifications
             </div>
             <ng-container *ngIf="NotificationData.length > 0; else noNotifications">
-                <button (click)="redirectToNotification(notification.Link)" class="notification-button" mat-menu-item *ngFor="let notification of NotificationData">
-                    <div class="notification-item" >
+                <button (click)="redirectToNotification(notification.Link)" class="notification-button" mat-menu-item
+                    *ngFor="let notification of NotificationData">
+                    <div class="notification-item">
                         <div class="notification-content">
                             <div class="notification-module">{{ notification.Module }}</div>
                             <div class="notification-info">{{ notification.TotalPending }} pending</div>
@@ -34,11 +41,11 @@
                     No notifications available.
                 </div>
             </ng-template>
-            
+
             <!-- Add more notification items as needed -->
         </mat-menu>
-        
-        
+
+
         <div class="user-profile rounded">
             <div class="profile-image">
                 <i class="fa-solid fa-2x fa-user"></i>

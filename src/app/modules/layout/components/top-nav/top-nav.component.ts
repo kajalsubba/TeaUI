@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { HelperService } from 'src/app/core/services/helper.service';
-import { IGetNotifications } from '../../interfaces/iget-notifications';
+import { IGetNotifications, IRenewNotification } from '../../interfaces/iget-notifications';
 import { NotificationsService } from '../../services/notifications.service';
 import { NotificationDataService } from '../../services/notification-data.service';
 import { Subscription } from 'rxjs';
@@ -21,6 +21,8 @@ export class TopNavComponent implements OnInit {
   currentDateTime: string | null = null;
   NotificationData: any[] = [];
   countOfPendingNotifications: any;
+  NotificationStatus!: String;
+  ExpireDate: any;
   private notificationDataSubscription!: Subscription;
 
   constructor(
@@ -28,7 +30,8 @@ export class TopNavComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private signalRService: SignalRService,
-    private notificationDataService: NotificationDataService
+    private notificationDataService: NotificationDataService,
+    private notificationsService: NotificationsService
   ) { }
 
   ngOnInit(): void {
@@ -56,13 +59,13 @@ export class TopNavComponent implements OnInit {
           this.NotificationData = data;
           this.countOfPendingNotifications = data.length;
         });
-    
+
       }
 
     });
 
     this.GetNotificationData();
-
+    this.GetRenewNotification();
   }
 
   toggleSideNav(): void {
@@ -104,4 +107,19 @@ export class TopNavComponent implements OnInit {
     const now = new Date();
     this.currentDateTime = this.datePipe.transform(now, 'dd-MMM-yyyy HH:mm:ss');
   }
+
+
+  GetRenewNotification() {
+    const bodyData: IRenewNotification = {
+      TenantId: this.loginDetails.TenantId,
+
+    }
+    debugger
+    const categoryListService = this.notificationsService.GetRenewNotification(bodyData).subscribe((res: any) => {
+
+      this.NotificationStatus = res.RenewInfo[0].RenewStatus;
+      this.ExpireDate = res.RenewInfo[0].ExpirayDate;
+    });
+  }
+
 }
