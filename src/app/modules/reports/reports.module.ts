@@ -25,6 +25,7 @@ import { SalePurchaseReportComponent } from './components/sale-purchase-report/s
 import { MonthWiseCollectionReportComponent } from './components/month-wise-collection-report/month-wise-collection-report.component';
 import { SalePurchasewiseReportComponent } from './components/sale-purchasewise-report/sale-purchasewise-report.component';
 import { MatIconModule } from '@angular/material/icon';
+import { SeasonAdvanceReportComponent } from './components/season-advance-report/season-advance-report.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -45,7 +46,8 @@ export const MY_FORMATS = {
     DatewiseGradeReportComponent,
     SalePurchaseReportComponent,
     MonthWiseCollectionReportComponent,
-    SalePurchasewiseReportComponent
+    SalePurchasewiseReportComponent,
+    SeasonAdvanceReportComponent
   ],
   imports: [
     CommonModule,

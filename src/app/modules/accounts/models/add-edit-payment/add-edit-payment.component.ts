@@ -28,6 +28,58 @@ registerLocaleData(enIN);
 })
 export class AddEditPaymentComponent implements OnInit {
 
+  keyword = 'ClientName';
+  public countries = [
+    {
+      id: 1,
+      name: 'Albania',
+    },
+    {
+      id: 2,
+      name: 'Belgium',
+    },
+    {
+      id: 3,
+      name: 'Denmark',
+    },
+    {
+      id: 4,
+      name: 'Montenegro',
+    },
+    {
+      id: 5,
+      name: 'Turkey',
+    },
+    {
+      id: 6,
+      name: 'Ukraine',
+    },
+    {
+      id: 7,
+      name: 'Macedonia',
+    },
+    {
+      id: 8,
+      name: 'Slovenia',
+    },
+    {
+      id: 9,
+      name: 'Georgia',
+    },
+    {
+      id: 10,
+      name: 'India',
+    },
+    {
+      id: 11,
+      name: 'Russia',
+    },
+    {
+      id: 12,
+      name: 'Switzerland',
+    },
+  ];
+
   isSubmitting = false;
   @ViewChild('clientSelect') clientSelect!: MatSelect;
 
@@ -68,8 +120,8 @@ export class AddEditPaymentComponent implements OnInit {
       BillDate: [new Date(), Validators.required],
       CategoryId: ['', Validators.required],
       CategoryName: [''],
-      ClientId: ['', Validators.required],
-      ClientName: [''],
+      ClientId: [''],
+      ClientName: ['', Validators.required],
       PaymentTypeId: ['', Validators.required],
       Amount: ['', Validators.required],
       Narration: [''],
@@ -93,6 +145,20 @@ export class AddEditPaymentComponent implements OnInit {
       this.addEditPayment.controls['Amount'].setValue(formattedValue);
       this.addEditPayment.controls['Narration'].setValue(this.dialogData.value.Narration);
     }
+  }
+
+  selectEvent(item:any) {
+    // do something with selected item
+    console.log(item, 'item');
+  }
+
+  onChangeSearch(search: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+
+  onFocused(e:any) {
+    // do something
   }
 
   displayWithFn(value: string): string {
@@ -240,6 +306,7 @@ export class AddEditPaymentComponent implements OnInit {
 
 
   onSubmit() {
+    debugger
     if (this.addEditPayment.invalid || this.addEditPayment.value.ClientId == 0) {
       this.addEditPayment.markAllAsTouched();
       return;
@@ -249,7 +316,7 @@ export class AddEditPaymentComponent implements OnInit {
       PaymentDate: formatDate(this.addEditPayment.value.PaymentDate, 'yyyy-MM-dd', 'en-US'),
       BillDate: formatDate(this.addEditPayment.value.BillDate, 'yyyy-MM-dd', 'en-US'),
       ClientCategory: this.addEditPayment.value.CategoryName,
-      ClientId: this.addEditPayment.value.ClientId,
+      ClientId: this.addEditPayment.value.ClientName.ClientId,
       PaymentTypeId: this.addEditPayment.value.PaymentTypeId,
       Amount: this.addEditPayment.value.Amount.toString().replace(/,/g, ''),
       Narration: this.addEditPayment.value.Narration,
@@ -264,9 +331,9 @@ export class AddEditPaymentComponent implements OnInit {
       console.log(data, 'add');
     }
 
-    this.isSubmitting = true;
+   this.isSubmitting = true;
 
-    this.SaveData(data);
+   this.SaveData(data);
   }
 
   SaveData(clientBody: ISavePayment) {

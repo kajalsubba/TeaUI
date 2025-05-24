@@ -22,6 +22,7 @@ import { EditAddSeasonAdvanceComponent } from './models/edit-add-season-advance/
 import { AccountsComponent } from './accounts.component';
 import { AddEditPaymentComponent } from './models/add-edit-payment/add-edit-payment.component';
 import { CharacterRestrictionDirective } from 'src/app/shared/character-restriction.directive';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 export const MY_FORMATS = {
   parse: {
@@ -48,6 +49,7 @@ export const MY_FORMATS = {
     CommonModule,
     AccountsRoutingModule,
     MatSelectModule,
+    AutocompleteLibModule,
     MatNativeDateModule,
     MatDatepickerModule,
     ReactiveFormsModule,

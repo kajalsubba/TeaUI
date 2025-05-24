@@ -8,3 +8,12 @@
     white-space: normal;
     overflow-wrap: break-word;
   }
+  ::ng-deep .autocomplete-item:hover {
+    background-color: #c0bebe!important; /* Or any highlight color */
+    cursor: pointer;
+  }
+
+  ::ng-deep ng-autocomplete .autocomplete-container .autocomplete-items .selected {
+    background-color: #c0bebe!important; /* Deeper teal */
+    color: #000;
+  }

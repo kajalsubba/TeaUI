@@ -10,3 +10,9 @@ export interface IMonthWiseCollection {
     Category: string;
 }
 
+export interface ISeasonAdvance {
+    TenantId: number;
+    Category: string;
+}
+
+
