@@ -80,8 +80,8 @@
                                     formControlName="ClientName">
                                 </ng-autocomplete>
 
-                                <ng-template #itemTemplate let-item>
-                                    <div class="autocomplete-item">
+                                <ng-template #itemTemplate let-item let-selected="selected">
+                                    <div class="autocomplete-item" [class.active]="selected">
                                     <a [innerHTML]="item.ClientName" ></a>
                                     </div>
                                 </ng-template>

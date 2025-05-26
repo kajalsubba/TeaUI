@@ -26,6 +26,7 @@ import { MonthWiseCollectionReportComponent } from './components/month-wise-coll
 import { SalePurchasewiseReportComponent } from './components/sale-purchasewise-report/sale-purchasewise-report.component';
 import { MatIconModule } from '@angular/material/icon';
 import { SeasonAdvanceReportComponent } from './components/season-advance-report/season-advance-report.component';
+import { FieldBalanceReportComponent } from './components/field-balance-report/field-balance-report.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -47,7 +48,8 @@ export const MY_FORMATS = {
     SalePurchaseReportComponent,
     MonthWiseCollectionReportComponent,
     SalePurchasewiseReportComponent,
-    SeasonAdvanceReportComponent
+    SeasonAdvanceReportComponent,
+    FieldBalanceReportComponent
   ],
   imports: [
     CommonModule,

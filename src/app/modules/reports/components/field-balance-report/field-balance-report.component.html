@@ -3,22 +3,8 @@
     <div class="col-lg-10 my-2">
       <div class="row">
         <div class="col-lg-10">
-          <form [formGroup]="SeasonAdvanceForm" class="d-flex">
-            <!-- <div class="col-lg-3 d-grid me-2">
-
-                            <mat-select placeholder="--Select Year--" class="fromSelect" formControlName="Year">
-                                <mat-option *ngFor="let year of YearList" [value]="year">
-                                    {{year}}
-                                </mat-option>
-                            </mat-select>
-                            <span
-                                *ngIf="SeasonAdvanceForm.get('Year')?.hasError('required') && SeasonAdvanceForm.get('Year')?.touched"
-                                class="text-danger d-block validation-message">
-                                Year is required.
-                            </span>
-                        </div> -->
-
-            <div class="position-relative col-lg-3 d-grid">
+          <form [formGroup]="FieldBalanceForm" class="d-flex">
+            <div class="position-relative gap-div col-lg-3 d-grid">
               <mat-select
                 placeholder="--Select Categoty--"
                 class="fromSelect"
@@ -33,12 +19,32 @@
               </mat-select>
               <span
                 *ngIf="
-                  SeasonAdvanceForm.get('Category')?.hasError('required') &&
-                  SeasonAdvanceForm.get('Category')?.touched
+                  FieldBalanceForm.get('Category')?.hasError('required') &&
+                  FieldBalanceForm.get('Category')?.touched
                 "
                 class="text-danger d-block validation-message"
               >
                 Category is required.
+              </span>
+            </div>
+            <div class="position-relative col-lg-3 d-grid">
+              <mat-select
+                placeholder="--Select Report Type--"
+                class="fromSelect"
+                formControlName="ReportType"
+              >
+                <mat-option *ngFor="let type of ReportTypeList" [value]="type">
+                  {{ type }}
+                </mat-option>
+              </mat-select>
+              <span
+                *ngIf="
+                  FieldBalanceForm.get('ReportType')?.hasError('required') &&
+                  FieldBalanceForm.get('ReportType')?.touched
+                "
+                class="text-danger d-block validation-message"
+              >
+                Report Type is required.
               </span>
             </div>
 

@@ -2,21 +2,21 @@ import { Component, HostListener, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
+import { ISeasonAdvance } from '../../interfaces/ireports';
+import { HelperService } from 'src/app/core/services/helper.service';
 import { Subject } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
-import { HelperService } from 'src/app/core/services/helper.service';
 import { ExcelExportService } from 'src/app/shared/services/excel-export.service';
 import { ReportsServiceService } from '../../services/reports-service.service';
-import { ISeasonAdvance } from '../../interfaces/ireports';
-import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-season-advance-report',
-  templateUrl: './season-advance-report.component.html',
-  styleUrls: ['./season-advance-report.component.scss']
+  selector: 'app-field-balance-report',
+  templateUrl: './field-balance-report.component.html',
+  styleUrls: ['./field-balance-report.component.scss']
 })
-export class SeasonAdvanceReportComponent {
+export class FieldBalanceReportComponent {
 
   displayedColumns: string[] = [
     'clientid',
@@ -37,7 +37,7 @@ export class SeasonAdvanceReportComponent {
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
   loginDetails: any;
-  SeasonAdvanceForm!: FormGroup;
+  FieldBalanceForm!: FormGroup;
   ClientNames: any[] = [];
   minToDate!: any;
   vehicleNumbers: any[] = [];
@@ -46,7 +46,7 @@ export class SeasonAdvanceReportComponent {
   TotalVehicleCount: number = 0;
   private destroy$ = new Subject<void>();
   CategotyList: string[] = ['STG', 'Supplier']
-  // YearList: string[] = ['2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033', '2034', '2035']
+  ReportTypeList: string[] = ['Season Advance', 'Field Balance']
 
   constructor(
     private helper: HelperService,
@@ -59,8 +59,8 @@ export class SeasonAdvanceReportComponent {
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
-    this.SeasonAdvanceForm = this.fb.group({
-      // Year: ['', Validators.required],
+    this.FieldBalanceForm = this.fb.group({
+      ReportType: ['', Validators.required],
       Category: ['', Validators.required],
 
     });
@@ -73,6 +73,8 @@ export class SeasonAdvanceReportComponent {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+
 
   deleteItem(element: any) { }
 
@@ -90,24 +92,44 @@ export class SeasonAdvanceReportComponent {
 
 
   search() {
-    if (this.SeasonAdvanceForm.invalid) {
-      this.SeasonAdvanceForm.markAllAsTouched();
+    if (this.FieldBalanceForm.invalid) {
+      this.FieldBalanceForm.markAllAsTouched();
       return;
     }
+    if (this.FieldBalanceForm.value.ReportType == 'Season Advance') {
+      this.GetSeasonAdvance();
+    }
+    else if (this.FieldBalanceForm.value.ReportType == 'Field Balance') {
+      this.GetFieldBalance()
+    }
 
-    this.GetSeasonAdvance();
+
 
   }
-
   GetSeasonAdvance() {
     const bodyData: ISeasonAdvance = {
       TenantId: this.loginDetails.TenantId,
-      Category: this.SeasonAdvanceForm.value.Category
+      Category: this.FieldBalanceForm.value.Category
 
     }
     const categoryListService = this.reportService.GetSeasonAdvanceReport(bodyData).subscribe((res: any) => {
 
       this.dataSource.data = res.GetAdvance;
+
+
+    });
+    this.subscriptions.push(categoryListService);
+  }
+
+  GetFieldBalance() {
+    const bodyData: ISeasonAdvance = {
+      TenantId: this.loginDetails.TenantId,
+      Category: this.FieldBalanceForm.value.Category
+
+    }
+    const categoryListService = this.reportService.GetFieldBalanceReport(bodyData).subscribe((res: any) => {
+
+      this.dataSource.data = res.FieldBalance;
 
 
     });
@@ -177,7 +199,7 @@ export class SeasonAdvanceReportComponent {
           }
         });
 
-        this.excelService.exportToExcel('material-table', 'Season Advance');
+        this.excelService.exportToExcel('material-table', 'Field Balance');
       } else {
         console.error("Table element not found or not an HTML table.");
       }
@@ -187,3 +209,4 @@ export class SeasonAdvanceReportComponent {
   }
 
 }
+
