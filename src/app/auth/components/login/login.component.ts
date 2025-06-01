@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private renderer: Renderer2
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -45,6 +45,9 @@ export class LoginComponent implements OnInit {
     this.GetTenant();
     this.authService.isLoggedIn = false;
     this.loadScript();
+    if (this.helper.getItem('Expired') == 'Expired') {
+      this.toastr.error("Your product has expired. Please contact your dealer for assistance");
+    }
   }
 
 
@@ -56,7 +59,7 @@ export class LoginComponent implements OnInit {
   }
   onLogin() {
     this.adminLoginFail = false;
-       if (this.loginForm.invalid) {
+    if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     } else {
@@ -83,17 +86,17 @@ export class LoginComponent implements OnInit {
   }
   GetTenant() {
     const dataService = this.loginService.GetTenant().subscribe((res: any) => {
-     
+
       if (!environment.production) {
-      //  console.log(res,'tenant');
+        //  console.log(res,'tenant');
       }
-     
+
       this.TenantList = res.TenantDetails;
     });
   }
- 
+
   onClientLogin() {
-    
+
     this.clientLoginFail = false;
     if (this.ClientloginForm.invalid) {
       this.ClientloginForm.markAllAsTouched();
@@ -124,11 +127,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  closeAlert(type:string){
-    if(type == 'Client'){
+  closeAlert(type: string) {
+    if (type == 'Client') {
       this.clientLoginFail = false;
     }
-    if(type == 'Admin'){
+    if (type == 'Admin') {
       this.adminLoginFail = false;
     }
   }
