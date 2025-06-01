@@ -10,8 +10,8 @@
             <span>{{loginDetails.CompanyName }}</span>
             <span class="router">{{formatCurrentRoute()}}</span>
         </div>
-        <div *ngIf="NotificationStatus=='Expired'" class="expire-Notification">
-            <span>Your subscription expired on {{ExpireDate}}. </span>
+        <div *ngIf="NotificationStatus=='Notify'" class="expire-Notification">
+            <span>{{DisplayMessage}} </span>
             <span>Please renew to avoid interruption.</span>
         </div>
         <div *ngIf="loginDetails.LoginType=='Agent'" matTooltip="Notification" matTooltipPosition="below"

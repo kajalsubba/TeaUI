@@ -22,6 +22,9 @@ export class TopNavComponent implements OnInit {
   NotificationData: any[] = [];
   countOfPendingNotifications: any;
   NotificationStatus!: String;
+  DaysRemaining!: String;
+  DisplayMessage!: string;
+  ProductStatus!: string;
   ExpireDate: any;
   private notificationDataSubscription!: Subscription;
 
@@ -117,8 +120,14 @@ export class TopNavComponent implements OnInit {
     debugger
     const categoryListService = this.notificationsService.GetRenewNotification(bodyData).subscribe((res: any) => {
 
-      this.NotificationStatus = res.RenewInfo[0].RenewStatus;
+      this.ProductStatus = res.RenewInfo[0].RenewStatus;
       this.ExpireDate = res.RenewInfo[0].ExpirayDate;
+      this.NotificationStatus = res.RenewInfo[0].Notify;
+      this.DisplayMessage = res.RenewInfo[0].DisplayMessage;
+      if (this.ProductStatus == 'Expired') {
+        this.helper.setItem('Expired', this.ProductStatus);
+        this.router.navigateByUrl('login');
+      }
     });
   }
 

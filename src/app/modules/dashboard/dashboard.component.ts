@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
 
   Highcharts: typeof Highcharts = Highcharts;
   companyWiseSaleDetails!: Highcharts.Options;
+  totalCompanyWiseSaleDetails!: Highcharts.Options;
+
   stgAndSale!: Highcharts.Options;
   supplierWiseSaleDetails!: Highcharts.Options;
   loginDetails: any;
@@ -56,7 +58,11 @@ export class DashboardComponent implements OnInit {
         const categoriesData: string[] = res.CompanyWiseChart.map((item: any) => item.FactoryName);
         const salesData: number[] = res.CompanyWiseChart.map((item: any) => item.ChallanWeight);
 
+        const categoryYear: string[] = res.YearWiseChart.map((item: any) => item.ChallanWeight);
+        const totalSalesData: number[] = res.YearWiseChart.map((item: any) => item.ChallanYear);
+
         this.GetCompanyWiseSaleChart(categoriesData, salesData);
+        this.GetTotalCompanyWiseSaleChart(categoryYear, totalSalesData);
       });
     this.subscriptions.push(categoryListService);
   }
@@ -137,18 +143,54 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  GetTotalCompanyWiseSaleChart(categories: any = [], datas: any = []) {
+    const currentYear = new Date().getFullYear();
+
+    this.totalCompanyWiseSaleDetails = {
+      title: {
+        text: 'Total Sale for the year - ' + currentYear
+      },
+      subtitle: {
+        text: ''
+      },
+      xAxis: {
+        categories: categories,
+        crosshair: true,
+        accessibility: {
+          description: 'Total sale'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'KG'
+        }
+      },
+      tooltip: {
+        valueSuffix: ''
+      },
+      series: [
+        {
+          name: 'Total SALE',
+          color: '#018353',
+          type: 'column', // Set the type property to 'column' for column chart
+          data: datas
+        },
+      ]
+    };
+  }
+
   GetStgWiseChart(categories: any = [], stgData: any = [], saleData: any = []) {
 
-// Function to determine color based on condition
-function getSaleColor(stgValue: number, saleValue: number): string {
-  return stgValue > saleValue ? '#ff0000' : '#018353'; // Red if saleData > stgData, otherwise original color
-}
+    // Function to determine color based on condition
+    function getSaleColor(stgValue: number, saleValue: number): string {
+      return stgValue > saleValue ? '#ff0000' : '#018353'; // Red if saleData > stgData, otherwise original color
+    }
 
-// Process saleData to include color based on condition
-const processedSaleData = saleData.map((saleValue: number, index: number) => ({
-  y: saleValue,
-  color: getSaleColor(stgData[index], saleValue)
-}));
+    // Process saleData to include color based on condition
+    const processedSaleData = saleData.map((saleValue: number, index: number) => ({
+      y: saleValue,
+      color: getSaleColor(stgData[index], saleValue)
+    }));
     this.stgAndSale = {
       title: {
         text: 'STG and SALE Comapre for last 10 days'

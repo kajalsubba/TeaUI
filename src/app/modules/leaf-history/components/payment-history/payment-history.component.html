@@ -55,7 +55,7 @@
                     {{payment.PaymentType}}
                   </mat-option>
                 </mat-select>
-           
+
               </div>
               <div class="col-lg-3 position-relative my-2">
                 <mat-select placeholder="--Users--" class="fromSelect" formControlName="UserId">
@@ -64,7 +64,7 @@
                     {{user.FullName}}
                   </mat-option>
                 </mat-select>
-           
+
               </div>
               <div class="col-lg-2 d-grid my-2">
                 <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
@@ -90,7 +90,8 @@
     <div class="col-lg-12">
       <div class="table-container">
         <div>
-          <table id="material-table" matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
+          <table id="material-table" matSort mat-table [dataSource]="dataSource"
+            (keydown)="handleKeyboardNavigation($event)">
             <!-- Displayed columns -->
             <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
               <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
@@ -99,16 +100,43 @@
               </td>
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
+            <!-- ClientName -->
+            <ng-container matColumnDef="ClientName">
+              <th mat-header-cell *matHeaderCellDef> Client Name </th>
+              <td class="weight-column" mat-cell *matCellDef="let row">
+                {{ row.ClientName }}
+              </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>Transmit Amount : {{ getTransmitTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN'
+                  }} </b>
+              </td>
+            </ng-container>
+
+            <!-- PaymentType -->
+            <ng-container matColumnDef="PaymentType">
+              <th mat-header-cell *matHeaderCellDef> Payment Type </th>
+              <td class="weight-column" mat-cell *matCellDef="let row">
+                {{ row.PaymentType }}
+              </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>Non-Transmit Amount : {{ getNonTransmitTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN'
+                  }} </b>
+              </td>
+            </ng-container>
 
             <!-- Amount -->
             <ng-container matColumnDef="Amount">
               <th mat-header-cell *matHeaderCellDef> Amount </th>
-              <td class="weight-column" mat-cell *matCellDef="let row"> 
-                  {{ row.Amount| currency:'INR':'':undefined:'en-IN' }} 
-                        
+              <td class="weight-column" mat-cell *matCellDef="let row">
+                <div [ngClass]="row.BillGenerated ? 'amount-color' : ''">
+                  {{ row.Amount| currency:'INR':'':undefined:'en-IN' }}
+                </div>
               </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>{{ getTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN' }} </b>
+
+                <span>
+                  <b>Total : {{ getTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN' }} </b>
+                </span>
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>

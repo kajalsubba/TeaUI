@@ -48,9 +48,9 @@ export class PaymentHistoryComponent implements OnInit {
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'BillDate', header: 'Bill Date' },
     { columnDef: 'PaymentDate', header: 'Payment Date' },
-    { columnDef: 'ClientName', header: 'Client Name' },
+    // { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'PaySource', header: 'Pay Source' },
-    { columnDef: 'PaymentType', header: 'Payment Type' },
+    // { columnDef: 'PaymentType', header: 'Payment Type' },
     { columnDef: 'Narration', header: 'Narration' },
     { columnDef: 'CreatedBy', header: 'Created By' },
     { columnDef: 'CreatedDate', header: 'Created DateTime' },
@@ -113,14 +113,14 @@ export class PaymentHistoryComponent implements OnInit {
       ClientCategory: this.PaymentForm.value.CategoryName ?? '',
       ClientId: this.PaymentForm.value.ClientId ?? 0,
       PaymentTypeId: this.PaymentForm.value.PaymentTypeId ?? 0,
-      CreatedBy:this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId :this.PaymentForm.value.UserId ,
+      CreatedBy: this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : this.PaymentForm.value.UserId,
 
     };
- 
+
     const categoryListService = this.paymentService
       .GetPaymentData(bodyData)
       .subscribe((res: any) => {
-  
+
         this.dataSource.data = res.PaymentDetails;
       });
     this.subscriptions.push(categoryListService);
@@ -152,7 +152,7 @@ export class PaymentHistoryComponent implements OnInit {
     const categoryListService = this.paymentTypeService
       .GetPaymentType(bodyData)
       .subscribe((res: any) => {
-   
+
         this.PaymentTypeList = res.PaymentTypeDetails;
       });
     this.subscriptions.push(categoryListService);
@@ -219,6 +219,21 @@ export class PaymentHistoryComponent implements OnInit {
       0
     );
   }
+  getTransmitTotal(columnName: string): number {
+    return this.dataSource.filteredData.filter(x => x.BillGenerated === true).reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
+  }
+  getNonTransmitTotal(columnName: string): number {
+    return this.dataSource.filteredData.filter(x => x.BillGenerated != true).reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
+  }
+
+
+
   filterClientNames(value: string): any[] {
 
     const filterValue = value.toLowerCase();
@@ -258,7 +273,7 @@ export class PaymentHistoryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-  //  this.PaymentForm.controls['toDate'].setValue(null);
+    //  this.PaymentForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -277,11 +292,11 @@ export class PaymentHistoryComponent implements OnInit {
 
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove
