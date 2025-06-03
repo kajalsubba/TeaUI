@@ -1,0 +1,148 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.title}}</span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="addEditUserWallet">
+                    <div class="row">
+                        <!-- <div class="form-group row mb-3">
+                            <label for="BillDate" class="col-lg-5 col-form-label">Bill Date <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-form-field>
+                                    <input #BillDate class="date-select" readonly matInput [matDatepicker]="picker1"
+                                        placeholder="BillDate" formControlName="BillDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div> -->
+                        <div class="form-group row mb-3">
+                            <label for="PaymentDate" class="col-lg-5 col-form-label">Payment Date <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-form-field>
+                                    <input #PaymentDate class="date-select" readonly matInput [matDatepicker]="picker"
+                                        placeholder="PaymentDate" formControlName="PaymentDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group row mb-3">
+                            <label for="ClientCategory" class="col-lg-5 col-form-label">Client Category <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-select placeholder="--Client Category--" class="fromSelect"
+                                    formControlName="CategoryId">
+                                    <mat-option *ngFor="let category of categoryList" [value]="category.CategoryId"
+                                        (onSelectionChange)="selectCategory($event, category)">
+                                        {{category.CategoryName}}
+                                    </mat-option>
+                                </mat-select>
+                                <span
+                                    *ngIf="addEditUserWallet.get('CategoryId')?.hasError('required') && addEditUserWallet.get('CategoryId')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Category is required.
+                                </span>
+                            </div>
+                        </div> -->
+
+                        <div class="form-group row mb-3">
+                            <label for="FullName" class="col-lg-5 col-form-label">User Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <ng-autocomplete [data]="filteredClient" [searchKeyword]="keyword"
+                                    placeholder="Enter the User Name" (selected)='selectEvent($event)'
+                                    (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocused($event)'
+                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate"
+                                    formControlName="FullName">
+                                </ng-autocomplete>
+
+                                <ng-template #itemTemplate let-item let-selected="selected">
+                                    <div class="autocomplete-item" [class.active]="selected">
+                                        <a [innerHTML]="item.FullName"></a>
+                                    </div>
+                                </ng-template>
+
+                                <ng-template #notFoundTemplate let-notFound>
+                                    <div [innerHTML]="notFound"></div>
+                                </ng-template>
+                                <span
+                                    *ngIf="addEditUserWallet.get('FullName')?.hasError('required') && addEditUserWallet.get('FullName')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    User is required.
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- <div class="form-group row mb-3">
+                            <label for="PaymentType" class="col-lg-5 col-form-label">Payment Type <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-select placeholder="--Payment Type--" class="fromSelect"
+                                    formControlName="PaymentTypeId">
+                                    <mat-option *ngFor="let item of paymentTypeList" [value]="item.PaymentTypeId">
+                                        {{item.PaymentType}}
+                                    </mat-option>
+                                </mat-select>
+                                <span
+                                    *ngIf="addEditUserWallet.get('PaymentTypeId')?.hasError('required') && addEditUserWallet.get('PaymentTypeId')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Payment Type is required.
+                                </span>
+                            </div>
+                        </div> -->
+
+                        <div class="form-group row mb-3">
+                            <label for="Amount" class="col-lg-5 col-form-label">Amount <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <input #Amount type="text" class="form-control" id="Amount" placeholder="Amount"
+                                    formControlName="Amount" (blur)="formatCurrency($event)" appCharacterRestriction>
+                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+
+                                <!-- Validation message -->
+                                <span
+                                    *ngIf="addEditUserWallet.get('Amount')?.hasError('required') && addEditUserWallet.get('Amount')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Amount is required.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label for="Narration" class="col-lg-5 col-form-label">Narration </label>
+                            <div class="col-lg-7 position-relative">
+
+                                <input type="text" class="form-control" id="Narration" placeholder="Narration"
+                                    formControlName="Narration">
+
+
+
+                                <!-- <input #Narration type="text" class="form-control" id="Narration"
+                                    placeholder="Narration" formControlName="Narration"
+                                    [matAutocomplete]="NarrationAuto"> -->
+
+                                <!-- <mat-autocomplete #NarrationAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                    <mat-option *ngFor="let _narrate of filterNarration(Narration.value)"
+                                        [value]="_narrate?.Narration">
+                                        {{ _narrate?.Narration }}
+                                    </mat-option>
+                                </mat-autocomplete> -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
+    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button
+        cdkFocusInitial>{{dialogData.buttonName}}</button>
+</mat-dialog-actions>

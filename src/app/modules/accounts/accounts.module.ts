@@ -23,6 +23,9 @@ import { AccountsComponent } from './accounts.component';
 import { AddEditPaymentComponent } from './models/add-edit-payment/add-edit-payment.component';
 import { CharacterRestrictionDirective } from 'src/app/shared/character-restriction.directive';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { WalletCreationComponent } from './components/wallet-creation/wallet-creation.component';
+import { AddEditWalletComponent } from './models/add-edit-wallet/add-edit-wallet.component';
+import { WalletPaymentbyuserComponent } from './components/wallet-paymentbyuser/wallet-paymentbyuser.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -43,7 +46,10 @@ export const MY_FORMATS = {
     EditAddSeasonAdvanceComponent,
     AccountsComponent,
     AddEditPaymentComponent,
-    CharacterRestrictionDirective
+    CharacterRestrictionDirective,
+    WalletCreationComponent,
+    AddEditWalletComponent,
+    WalletPaymentbyuserComponent
   ],
   imports: [
     CommonModule,

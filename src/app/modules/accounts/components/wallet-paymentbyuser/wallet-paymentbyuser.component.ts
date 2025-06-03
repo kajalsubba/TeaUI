@@ -1,32 +1,29 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { ReplaySubject, Subject, Subscription, catchError, takeUntil } from 'rxjs';
-import { HelperService } from 'src/app/core/services/helper.service';
-import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
-import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
-import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
-import { ISavePayment } from '../../interfaces/ipayment';
-import { CurrencyPipe, formatDate, registerLocaleData } from '@angular/common';
-import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
-import { CategoryService } from 'src/app/modules/masters/services/category.service';
-import { MatOptionSelectionChange } from '@angular/material/core';
-import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
-import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
-import { PaymentService } from '../../services/payment.service';
-import { environment } from 'src/environments/environment';
-import enIN from '@angular/common/locales/en-IN';
 import { MatSelect } from '@angular/material/select';
-import { IClient } from 'src/app/modules/bill-generate/interfaces/iget-stg-bill';
-registerLocaleData(enIN);
+import { ToastrService } from 'ngx-toastr';
+import { catchError, Subject, Subscription, takeUntil } from 'rxjs';
+import { HelperService } from 'src/app/core/services/helper.service';
+import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
+import { CategoryService } from 'src/app/modules/masters/services/category.service';
+import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
+import { PaymentService } from '../../services/payment.service';
+import { CurrencyPipe, formatDate } from '@angular/common';
+import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
+import { MatOptionSelectionChange } from '@angular/material/core';
+import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
+import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
+import { ISavePayment } from '../../interfaces/ipayment';
+import { environment } from 'src/environments/environment';
+import { IWalletBalance } from '../../interfaces/iwallet';
+import { WalletService } from '../../services/wallet.service';
 
 @Component({
-  selector: 'app-add-edit-payment',
-  templateUrl: './add-edit-payment.component.html',
-  styleUrls: ['./add-edit-payment.component.scss']
+  selector: 'app-wallet-paymentbyuser',
+  templateUrl: './wallet-paymentbyuser.component.html',
+  styleUrls: ['./wallet-paymentbyuser.component.scss']
 })
-export class AddEditPaymentComponent implements OnInit {
+export class WalletPaymentbyuserComponent implements OnInit {
 
   keyword = 'ClientName';
   isSubmitting = false;
@@ -40,6 +37,7 @@ export class AddEditPaymentComponent implements OnInit {
   categoryList: any[] = [];
   paymentTypeList: any[] = [];
   narrationList: any[] = [];
+  walletBalance: any[] = [];
   loginDetails: any;
   ClientNames: any[] = [];
   clientList: any[] = [];
@@ -47,8 +45,6 @@ export class AddEditPaymentComponent implements OnInit {
   filteredClient: any[] = [];
   @ViewChild('PaymentDate') PaymentDateInput!: ElementRef;
   constructor(
-    @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    public dialogRef: MatDialogRef<AddEditPaymentComponent>,
     private fb: FormBuilder,
     private categoryService: CategoryService,
     private helper: HelperService,
@@ -56,7 +52,8 @@ export class AddEditPaymentComponent implements OnInit {
     private autocompleteService: AutoCompleteService,
     private paymentTypeService: PaymenttypeService,
     private paymentService: PaymentService,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private walletService: WalletService
 
   ) {
 
@@ -73,30 +70,16 @@ export class AddEditPaymentComponent implements OnInit {
       ClientName: ['', Validators.required],
       PaymentTypeId: ['', Validators.required],
       Amount: ['', Validators.required],
-      Narration: [''],
+      Narration: ['', Validators.required],
     });
     await this.getPaymentType();
     await this.getCategoryList();
     await this.loadClientNames();
     this.GetPaymentNarration();
-
-    if (this.dialogData.value) {
-      this.addEditPayment.controls['BillDate'].setValue(new Date(this.dialogData.value.BllDate));
-      this.addEditPayment.controls['PaymentDate'].setValue(new Date(this.dialogData.value.PayDate));
-      this.addEditPayment.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
-      this.addEditPayment.controls['ClientId'].setValue(this.dialogData.value.ClientId);
-      this.addEditPayment.controls['ClientName'].setValue(this.dialogData.value.ClientName);
-      this.addEditPayment.controls['PaymentTypeId'].setValue(this.dialogData.value.PaymentTypeId);
-      const formattedValue = this.currencyPipe.transform(this.dialogData.value.Amount, "INR",
-        '',
-        undefined,
-        "en-IN");
-      this.addEditPayment.controls['Amount'].setValue(formattedValue);
-      this.addEditPayment.controls['Narration'].setValue(this.dialogData.value.Narration);
-    }
+    await this.GetWalletBalance();
   }
 
-  selectEvent(item:any) {
+  selectEvent(item: any) {
     // do something with selected item
     console.log(item, 'item');
   }
@@ -106,7 +89,7 @@ export class AddEditPaymentComponent implements OnInit {
     // And reassign the 'data' which is binded to 'data' property.
   }
 
-  onFocused(e:any) {
+  onFocused(e: any) {
     // do something
   }
 
@@ -128,7 +111,7 @@ export class AddEditPaymentComponent implements OnInit {
 
       this.ClientNames = res.ClientDetails;
       //  this.filteredClient = res.ClientDetails;
-     // this.clientList = res.ClientDetails;
+      // this.clientList = res.ClientDetails;
 
     } catch (error) {
       console.error('Error:', error);
@@ -168,14 +151,7 @@ export class AddEditPaymentComponent implements OnInit {
     this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
   }
 
-  // selectNarration(narrat: any) {
-  //   if (narrat == '') {
-  //     this.addEditPayment.controls['ClientId'].reset();
-  //   }
-  //   //console.log(client.ClientId, 'Client');
 
-  //   this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
-  // }
   async selectCategory(event: MatOptionSelectionChange, category: any) {
     if (event.source.selected) {
       this.filteredClient = [];
@@ -240,6 +216,26 @@ export class AddEditPaymentComponent implements OnInit {
     }
   }
 
+
+
+  async GetWalletBalance(): Promise<void> {
+    try {
+      const categoryBody: IWalletBalance = {
+        TenantId: this.loginDetails.TenantId,
+        UserId: this.loginDetails.UserId,
+      };
+      const res = await this.walletService.GetWalletBalanceData(categoryBody)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.walletBalance = res.WalletBalance[0].Amount;
+      // console.log(this.walletBalance,'res.WalletBalance')
+ 
+    } catch (error) {
+      this.handleError(error, 'Failed to fetch payment types');
+    }
+  }
+
   private handleError(error: any, message: string): void {
     console.error('Error:', error);
     this.toastr.error(message, 'ERROR');
@@ -261,7 +257,7 @@ export class AddEditPaymentComponent implements OnInit {
       return;
     }
     let data: ISavePayment = {
-      PaymentId: this.dialogData?.value?.PaymentId ? this.dialogData?.value?.PaymentId : 0,
+      PaymentId: 0,
       PaymentDate: formatDate(this.addEditPayment.value.PaymentDate, 'yyyy-MM-dd', 'en-US'),
       BillDate: formatDate(this.addEditPayment.value.BillDate, 'yyyy-MM-dd', 'en-US'),
       ClientCategory: this.addEditPayment.value.CategoryName,
@@ -272,7 +268,7 @@ export class AddEditPaymentComponent implements OnInit {
       CategoryId: this.addEditPayment.value.CategoryId,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
-      PaymentSource:''
+      PaymentSource: 'Wallet'
 
     }
 
@@ -281,10 +277,11 @@ export class AddEditPaymentComponent implements OnInit {
       console.log(data, 'add');
     }
 
-   this.isSubmitting = true;
+    this.isSubmitting = true;
 
-   this.SaveData(data);
+    this.SaveData(data);
   }
+
 
   SaveData(clientBody: ISavePayment) {
     this.paymentService.SavePaymentData(clientBody)
@@ -304,11 +301,10 @@ export class AddEditPaymentComponent implements OnInit {
         else {
           this.toastr.success(res.Message, 'SUCCESS');
         }
-        if (this.dialogData.buttonName == "Update") {
-          this.dialogRef.close(true);
-        }
+
 
         this.CleanFormControl();
+        this.GetWalletBalance();
         this.PaymentDateInput.nativeElement.focus();
 
         this.isSubmitting = false;
@@ -331,7 +327,6 @@ export class AddEditPaymentComponent implements OnInit {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     })
-    this.dialogRef.close(true);
   }
 
 }

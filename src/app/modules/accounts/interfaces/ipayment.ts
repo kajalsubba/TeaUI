@@ -11,6 +11,7 @@ export interface ISavePayment {
     CategoryId:number;
     TenantId: number;
     CreatedBy: number;
+    PaymentSource:string;
 }
 
 export interface IGetPayment {

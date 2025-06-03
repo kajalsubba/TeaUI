@@ -1,10 +1,5 @@
-<div
-  class="sidenav"
-  (mouseenter)="isDesktop && onMouseEnter()"
-  (mouseleave)="isDesktop && onMouseLeave()"
-  (click)="!isDesktop && toggleWidth()"
-  [style.width.px]="isExpanded ? 210 : 62"
->
+<div class="sidenav" (mouseenter)="isDesktop && onMouseEnter()" (mouseleave)="isDesktop && onMouseLeave()"
+  (click)="!isDesktop && toggleWidth()" [style.width.px]="isExpanded ? 210 : 62">
   <div [ngClass]="{ close: !isExpanded }" class="sidebar">
     <div class="logo-details">
       <!-- <i class='bx bxl-c-plus-plus'></i> -->
@@ -24,12 +19,8 @@
           </li>
         </ul>
       </li>
-      <li
-        *ngIf="loginDetails.LoginType == 'Agent'"
-        [class.showMenu]="currentOpenMenu === 'Masters'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'Masters'" class="main-menu"
+        routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Masters')">
           <a>
             <i class="bx bxs-cylinder"></i>
@@ -38,77 +29,49 @@
           <i class="bx bxs-chevron-down arrow"></i>
         </div>
         <ul class="sub-menu">
-          <li
-            routerLink="master/company"
-            routerLinkActive="active"
-            *ngIf="
+          <li routerLink="master/company" routerLinkActive="active" *ngIf="
               PermissionDetails[0].ModuleId == 2 &&
               PermissionDetails[0].HideModule == false
-            "
-          >
+            ">
             <a class="sub-menu-title">Company Setup</a>
           </li>
-          <li
-            routerLink="master/category"
-            routerLinkActive="active"
-            *ngIf="
+          <li routerLink="master/category" routerLinkActive="active" *ngIf="
               PermissionDetails[1].ModuleId == 3 &&
               PermissionDetails[1].HideModule == false
-            "
-          >
+            ">
             <a class="sub-menu-title">Client Category</a>
           </li>
-          <li
-            routerLink="master/client"
-            routerLinkActive="active"
-            *ngIf="
+          <li routerLink="master/client" routerLinkActive="active" *ngIf="
               PermissionDetails[2].ModuleId == 4 &&
               PermissionDetails[2].HideModule == false
-            "
-          >
+            ">
             <a class="sub-menu-title">Client</a>
           </li>
-          <li
-            routerLink="master/grade"
-            routerLinkActive="active"
-            *ngIf="
+          <li routerLink="master/grade" routerLinkActive="active" *ngIf="
               PermissionDetails[3].ModuleId == 5 &&
               PermissionDetails[3].HideModule == false
-            "
-          >
+            ">
             <a class="sub-menu-title">Leaf Grade</a>
           </li>
           <li routerLink="master/paymentType" routerLinkActive="active">
             <a class="sub-menu-title">Payment Type</a>
           </li>
-          <li
-            routerLink="master/factory"
-            routerLinkActive="active"
-            *ngIf="
+          <li routerLink="master/factory" routerLinkActive="active" *ngIf="
               PermissionDetails[4].ModuleId == 6 &&
               PermissionDetails[4].HideModule == false
-            "
-          >
+            ">
             <a class="sub-menu-title">Factory</a>
           </li>
-          <li
-            routerLink="master/factory-account"
-            routerLinkActive="active"
-            *ngIf="
+          <li routerLink="master/factory-account" routerLinkActive="active" *ngIf="
               PermissionDetails[5].ModuleId == 7 &&
               PermissionDetails[5].HideModule == false
-            "
-          >
+            ">
             <a class="sub-menu-title">Factory Account</a>
           </li>
         </ul>
       </li>
 
-      <li
-        [class.showMenu]="currentOpenMenu === 'LeafEntry'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li [class.showMenu]="currentOpenMenu === 'LeafEntry'" class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'LeafEntry')">
           <a>
             <i class="bx bx-list-ul"></i>
@@ -117,39 +80,27 @@
           <i class="bx bxs-chevron-down arrow"></i>
         </div>
         <ul class="sub-menu">
-          <li
-            *ngIf="
+          <li *ngIf="
               loginDetails.LoginType == 'Agent' &&
               PermissionDetails[7].ModuleId == 9 &&
               PermissionDetails[7].HideModule == false
-            "
-            routerLink="leafEntry/stg"
-            routerLinkActive="active"
-          >
+            " routerLink="leafEntry/stg" routerLinkActive="active">
             <a class="sub-menu-title">STG</a>
           </li>
 
-          <li
-            *ngIf="
+          <li *ngIf="
               loginDetails.LoginType != 'Agent'
                 ? true
                 : PermissionDetails[8].ModuleId == 10 &&
                   PermissionDetails[8].HideModule == false
-            "
-            routerLink="leafEntry/supplier"
-            routerLinkActive="active"
-          >
+            " routerLink="leafEntry/supplier" routerLinkActive="active">
             <a class="sub-menu-title">Supplier</a>
           </li>
         </ul>
       </li>
 
-      <li
-        *ngIf="loginDetails.LoginType == 'Agent'"
-        [class.showMenu]="currentOpenMenu === 'LeafApprove'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'LeafApprove'"
+        class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'LeafApprove')">
           <a>
             <i class="bx bx-check-shield"></i>
@@ -158,45 +109,29 @@
           <i class="bx bxs-chevron-down arrow"></i>
         </div>
         <ul class="sub-menu">
-          <li
-            *ngIf="
+          <li *ngIf="
               PermissionDetails[9].ModuleId == 12 &&
               PermissionDetails[9].HideModule == false
-            "
-            routerLink="LeafApprove/stgapprove"
-            routerLinkActive="active"
-          >
+            " routerLink="LeafApprove/stgapprove" routerLinkActive="active">
             <a class="sub-menu-title">STG</a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               PermissionDetails[10].ModuleId == 13 &&
               PermissionDetails[10].HideModule == false
-            "
-            routerLink="LeafApprove/supplierapprove"
-            routerLinkActive="active"
-          >
+            " routerLink="LeafApprove/supplierapprove" routerLinkActive="active">
             <a class="sub-menu-title">Supplier</a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               PermissionDetails[11].ModuleId == 27 &&
               PermissionDetails[11].HideModule == false
-            "
-            routerLink="LeafApprove/directsale"
-            routerLinkActive="active"
-          >
+            " routerLink="LeafApprove/directsale" routerLinkActive="active">
             <a class="sub-menu-title">Direct Sale</a>
           </li>
         </ul>
       </li>
 
-      <li
-        *ngIf="loginDetails.LoginType == 'Agent'"
-        [class.showMenu]="currentOpenMenu === 'rate-fix'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'rate-fix'" class="main-menu"
+        routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'rate-fix')">
           <a>
             <i class="bx bx-rupee"></i>
@@ -211,25 +146,17 @@
           <li routerLink="rate-fix/supplier-rate-fix" routerLinkActive="active">
             <a class="sub-menu-title">Supplier</a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               PermissionDetails[24].ModuleId == 25 &&
               PermissionDetails[24].HideModule == false
-            "
-            routerLink="rate-fix/sale-rate-fix"
-            routerLinkActive="active"
-          >
+            " routerLink="rate-fix/sale-rate-fix" routerLinkActive="active">
             <a class="sub-menu-title">Sale</a>
           </li>
         </ul>
       </li>
 
-      <li
-        *ngIf="loginDetails.LoginType == 'Agent'"
-        [class.showMenu]="currentOpenMenu === 'Accounts'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'Accounts'" class="main-menu"
+        routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Accounts')">
           <a>
             <i class="bx bxs-user-account"></i>
@@ -248,12 +175,35 @@
           <!-- </li> -->
         </ul>
       </li>
-      <li
-        *ngIf="loginDetails.LoginType == 'Agent'"
-        [class.showMenu]="currentOpenMenu === 'Bill'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+
+      <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'Wallet'" class="main-menu"
+        routerLinkActive="main-menu-active">
+        <div class="iocn-link" (click)="toggleMenu($event, 'Wallet')">
+          <a>
+            
+            <!-- <i class="bx bxs-user-account"></i> -->
+             <i class="bx bxs-wallet" ></i> 
+            <span class="link_name">Wallet</span>
+          </a>
+          <i class="bx bxs-chevron-down arrow"></i>
+        </div>
+        <ul class="sub-menu">
+          <li routerLink="Accounts/wallet-creation" routerLinkActive="active">
+            <a class="sub-menu-title">User Payment</a>
+          </li>
+          <li routerLink="Accounts/wallet-payment-user" routerLinkActive="active">
+            <a class="sub-menu-title">Payment</a>
+          </li>
+            <li routerLink="Accounts/payment" routerLinkActive="active">
+            <a class="sub-menu-title">Other Payment</a>
+          </li>
+          <!-- <li routerLink="Accounts/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a> -->
+          <!-- </li> -->
+        </ul>
+      </li>
+
+      <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'Bill'" class="main-menu"
+        routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Bill')">
           <a>
             <i class="fa-solid fa-file-invoice"></i>
@@ -273,11 +223,7 @@
         </ul>
       </li>
 
-      <li
-        [class.showMenu]="currentOpenMenu === 'LeafHistory'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li [class.showMenu]="currentOpenMenu === 'LeafHistory'" class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'LeafHistory')">
           <a>
             <i class="bx bx-history"></i>
@@ -286,56 +232,33 @@
           <i class="bx bxs-chevron-down arrow"></i>
         </div>
         <ul class="sub-menu">
-          <li
-            *ngIf="loginDetails.LoginType == 'Agent'"
-            routerLink="LeafHistory/stg-history"
-            routerLinkActive="active"
-          >
+          <li *ngIf="loginDetails.LoginType == 'Agent'" routerLink="LeafHistory/stg-history" routerLinkActive="active">
             <a class="sub-menu-title">STG Leaf History</a>
           </li>
-          <li
-            routerLink="LeafHistory/supplier-history"
-            routerLinkActive="active"
-          >
+          <li routerLink="LeafHistory/supplier-history" routerLinkActive="active">
             <a class="sub-menu-title">Supplier Leaf History</a>
           </li>
-          <li
-            *ngIf="
+          <li *ngIf="
               loginDetails.LoginType == 'Agent' &&
               PermissionDetails[14].ModuleId == 17 &&
               PermissionDetails[14].HideModule == false
-            "
-            routerLink="LeafHistory/sale-history"
-            routerLinkActive="active"
-          >
+            " routerLink="LeafHistory/sale-history" routerLinkActive="active">
             <a class="sub-menu-title">Sale History</a>
           </li>
-          <li
-            *ngIf="loginDetails.LoginType == 'Agent'"
-            routerLink="LeafHistory/season-advance-history"
-            routerLinkActive="active"
-          >
+          <li *ngIf="loginDetails.LoginType == 'Agent'" routerLink="LeafHistory/season-advance-history"
+            routerLinkActive="active">
             <a class="sub-menu-title">Season Adv. History</a>
           </li>
-          <li
-            *ngIf="loginDetails.LoginType == 'Agent'"
-            routerLink="LeafHistory/payment-history"
-            routerLinkActive="active"
-          >
+          <li *ngIf="loginDetails.LoginType == 'Agent'" routerLink="LeafHistory/payment-history"
+            routerLinkActive="active">
             <a class="sub-menu-title">Payment History</a>
           </li>
-          <li
-            *ngIf="loginDetails.LoginType == 'Agent'"
-            routerLink="LeafHistory/stg-bill-history"
-            routerLinkActive="active"
-          >
+          <li *ngIf="loginDetails.LoginType == 'Agent'" routerLink="LeafHistory/stg-bill-history"
+            routerLinkActive="active">
             <a class="sub-menu-title">STG Bill History</a>
           </li>
-          <li
-            *ngIf="loginDetails.LoginType == 'Agent'"
-            routerLink="LeafHistory/supplier-bill-history"
-            routerLinkActive="active"
-          >
+          <li *ngIf="loginDetails.LoginType == 'Agent'" routerLink="LeafHistory/supplier-bill-history"
+            routerLinkActive="active">
             <a class="sub-menu-title">Supplier Bill History</a>
           </li>
           <li routerLink="LeafHistory/smart-history" routerLinkActive="active">
@@ -343,12 +266,8 @@
           </li>
         </ul>
       </li>
-      <li
-        *ngIf="loginDetails.LoginType == 'Agent'"
-        [class.showMenu]="currentOpenMenu === 'leaf-summary'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'leaf-summary'"
+        class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'leaf-summary')">
           <a>
             <i class="fa-regular fa-rectangle-list"></i>
@@ -360,10 +279,7 @@
           <li routerLink="leaf-summary/stg-summary" routerLinkActive="active">
             <a class="sub-menu-title">STG Summary</a>
           </li>
-          <li
-            routerLink="leaf-summary/supplier-summary"
-            routerLinkActive="active"
-          >
+          <li routerLink="leaf-summary/supplier-summary" routerLinkActive="active">
             <a class="sub-menu-title">Supplier Summary</a>
           </li>
           <li routerLink="leaf-summary/sale-summary" routerLinkActive="active">
@@ -371,12 +287,8 @@
           </li>
         </ul>
       </li>
-      <li
-        *ngIf="loginDetails.LoginType == 'Agent'"
-        [class.showMenu]="currentOpenMenu === 'leaf-report'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'leaf-report'"
+        class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'leaf-report')">
           <a>
             <i class="bx bxs-report"></i>
@@ -388,44 +300,25 @@
           <li routerLink="leaf-report/grade-report" routerLinkActive="active">
             <a class="sub-menu-title">ClientWise Grade Report</a>
           </li>
-          <li
-            routerLink="leaf-report/dategrade-report"
-            routerLinkActive="active"
-          >
+          <li routerLink="leaf-report/dategrade-report" routerLinkActive="active">
             <a class="sub-menu-title">DateWise Grade Report</a>
           </li>
-          <li
-            routerLink="leaf-report/sale-purchase-report"
-            routerLinkActive="active"
-          >
+          <li routerLink="leaf-report/sale-purchase-report" routerLinkActive="active">
             <a class="sub-menu-title">Sale & Purchase Report </a>
           </li>
-          <li
-            routerLink="leaf-report/month-wise-collection-report"
-            routerLinkActive="active"
-          >
+          <li routerLink="leaf-report/month-wise-collection-report" routerLinkActive="active">
             <a class="sub-menu-title">Month Wise Report </a>
           </li>
-          <li
-            routerLink="leaf-report/sale-breakup-report"
-            routerLinkActive="active"
-          >
+          <li routerLink="leaf-report/sale-breakup-report" routerLinkActive="active">
             <a class="sub-menu-title">Sale Breakup Report </a>
           </li>
 
-          <li
-            routerLink="leaf-report/field-balance-report"
-            routerLinkActive="active"
-          >
+          <li routerLink="leaf-report/field-balance-report" routerLinkActive="active">
             <a class="sub-menu-title">Field Bal. Report </a>
           </li>
         </ul>
       </li>
-      <li
-        [class.showMenu]="currentOpenMenu === 'Settings'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li [class.showMenu]="currentOpenMenu === 'Settings'" class="main-menu" routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Settings')">
           <a>
             <i class="fa-solid fa-sliders"></i>
@@ -434,15 +327,11 @@
           <i class="bx bxs-chevron-down arrow"></i>
         </div>
         <ul class="sub-menu">
-          <li
-            *ngIf="
+          <li *ngIf="
               loginDetails.LoginType == 'Agent' &&
               PermissionDetails[19].ModuleId == 19 &&
               PermissionDetails[19].HideModule == false
-            "
-            routerLink="user-management/role"
-            routerLinkActive="active"
-          >
+            " routerLink="user-management/role" routerLinkActive="active">
             <a class="sub-menu-title">Create Role</a>
           </li>
 
@@ -450,35 +339,21 @@
             routerLinkActive="active"><a class="sub-menu-title">Role
               Permission</a></li> -->
 
-          <li
-            routerLink="user-management/role-permission"
-            routerLinkActive="active"
-          >
+          <li routerLink="user-management/role-permission" routerLinkActive="active">
             <a class="sub-menu-title">Role Permission</a>
           </li>
 
-          <li
-            *ngIf="loginDetails.LoginType == 'Agent'"
-            routerLink="user-management/user"
-            routerLinkActive="active"
-          >
+          <li *ngIf="loginDetails.LoginType == 'Agent'" routerLink="user-management/user" routerLinkActive="active">
             <a class="sub-menu-title">Create User</a>
           </li>
-          <li
-            routerLink="user-management/change-password"
-            routerLinkActive="active"
-          >
+          <li routerLink="user-management/change-password" routerLinkActive="active">
             <a class="sub-menu-title">Change Password</a>
           </li>
         </ul>
       </li>
 
-      <li
-        *ngIf="loginDetails.TenantId == 0"
-        [class.showMenu]="currentOpenMenu === 'SuperAdmin'"
-        class="main-menu"
-        routerLinkActive="main-menu-active"
-      >
+      <li *ngIf="loginDetails.TenantId == 0" [class.showMenu]="currentOpenMenu === 'SuperAdmin'" class="main-menu"
+        routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'SuperAdmin')">
           <a>
             <i class="bx bxs-cog"></i>

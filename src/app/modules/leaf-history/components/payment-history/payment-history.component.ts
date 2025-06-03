@@ -38,6 +38,7 @@ export class PaymentHistoryComponent implements OnInit {
     'PaymentType',
     'Amount',
     'Narration',
+    'PaymentSource',
     'CreatedBy',
     'CreatedDate'
 
@@ -49,9 +50,10 @@ export class PaymentHistoryComponent implements OnInit {
     { columnDef: 'BillDate', header: 'Bill Date' },
     { columnDef: 'PaymentDate', header: 'Payment Date' },
     // { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'PaySource', header: 'Pay Source' },
+    { columnDef: 'PaySource', header: 'Category' },
     // { columnDef: 'PaymentType', header: 'Payment Type' },
     { columnDef: 'Narration', header: 'Narration' },
+    { columnDef: 'PaymentSource', header: 'Source' },
     { columnDef: 'CreatedBy', header: 'Created By' },
     { columnDef: 'CreatedDate', header: 'Created DateTime' },
   ];
@@ -122,6 +124,7 @@ export class PaymentHistoryComponent implements OnInit {
       .subscribe((res: any) => {
 
         this.dataSource.data = res.PaymentDetails;
+        console.log(res.PaymentDetails,'res.PaymentDetails;')
       });
     this.subscriptions.push(categoryListService);
   }
