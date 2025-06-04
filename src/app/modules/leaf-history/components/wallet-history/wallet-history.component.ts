@@ -35,18 +35,23 @@ export class WalletHistoryComponent implements OnInit {
   displayedColumns: string[] = [
     'WalletId',
     'TransactionDate',
-    'FullName',
+    // 'FullName',
     'Narration',
-    'Amount',
+    'Received',
+    'Payment',
+    'Balance',
   ];
 
   dataSource = new _MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'WalletId', header: 'Transcation Id' },
-    { columnDef: 'TransactionDate', header: 'Transcation Date' },
-    { columnDef: 'FullName', header: 'User Name' },
-    { columnDef: 'Narration', header: 'Narration' },
+    { columnDef: 'TransactionDate', header: 'Date' },
+    // { columnDef: 'FullName', header: 'User Name' },
+    // { columnDef: 'Narration', header: 'Narration' },
+    // { columnDef: 'Received', header: 'Received' },
+    // { columnDef: 'Payment', header: 'Payment' },
+    // { columnDef: 'Balance', header: 'Balance' },
 
   ];
 
@@ -164,11 +169,25 @@ export class WalletHistoryComponent implements OnInit {
   }
 
 
-  getTotal(columnName: string): number {
+  getRecivedTotal(columnName: string): number {
     return this.dataSource.filteredData.reduce(
       (acc, curr) => acc + curr[columnName],
       0
     );
+  }
+
+  getPaymentTotal(columnName: string): number {
+    return this.dataSource.filteredData.reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
+  }
+  getBalance(): number {
+    return this.dataSource.filteredData.reduce((acc, curr) => {
+      const received = curr['Received'] || 0;
+      const payment = curr['Payment'] || 0;
+      return acc + (received - payment);
+    }, 0);
   }
 
 
