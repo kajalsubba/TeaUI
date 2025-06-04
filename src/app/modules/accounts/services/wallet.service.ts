@@ -20,4 +20,7 @@ export class WalletService {
   GetWalletBalanceData(clientBody: IWalletBalance): Observable<any> {
     return this.apiService.post('Accounts/GetWalletBalanace', clientBody);
   }
+  GetWalletStatement(clientBody: IGetWalletHistory): Observable<any> {
+    return this.apiService.post('Accounts/GetWalletStatement', clientBody);
+  }
 }

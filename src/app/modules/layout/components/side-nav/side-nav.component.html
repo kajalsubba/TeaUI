@@ -148,8 +148,7 @@
           </li>
           <li *ngIf="
               PermissionDetails[24].ModuleId == 25 &&
-              PermissionDetails[24].HideModule == false
-            " routerLink="rate-fix/sale-rate-fix" routerLinkActive="active">
+              PermissionDetails[24].HideModule == false" routerLink="rate-fix/sale-rate-fix" routerLinkActive="active">
             <a class="sub-menu-title">Sale</a>
           </li>
         </ul>
@@ -180,22 +179,28 @@
         routerLinkActive="main-menu-active">
         <div class="iocn-link" (click)="toggleMenu($event, 'Wallet')">
           <a>
-            
+
             <!-- <i class="bx bxs-user-account"></i> -->
-             <i class="bx bxs-wallet" ></i> 
+            <i class="bx bxs-wallet"></i>
             <span class="link_name">Wallet</span>
           </a>
           <i class="bx bxs-chevron-down arrow"></i>
         </div>
         <ul class="sub-menu">
-          <li routerLink="Accounts/wallet-creation" routerLinkActive="active">
+          <li *ngIf="
+              loginDetails.LoginType == 'Agent' &&
+              PermissionDetails[32].ModuleId == 43 &&
+              PermissionDetails[32].HideModule == false"  routerLink="Accounts/wallet-creation" routerLinkActive="active">
             <a class="sub-menu-title">User Payment</a>
           </li>
-          <li routerLink="Accounts/wallet-payment-user" routerLinkActive="active">
+          <li *ngIf="
+              loginDetails.LoginType == 'Agent' &&
+              PermissionDetails[33].ModuleId == 44 &&
+              PermissionDetails[33].HideModule == false" routerLink="Accounts/wallet-payment-user" routerLinkActive="active">
             <a class="sub-menu-title">Payment</a>
           </li>
-            <li routerLink="Accounts/payment" routerLinkActive="active">
-            <a class="sub-menu-title">Other Payment</a>
+          <li routerLink="LeafHistory/wallet-history" routerLinkActive="active">
+            <a class="sub-menu-title">Wallet Statement</a>
           </li>
           <!-- <li routerLink="Accounts/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a> -->
           <!-- </li> -->

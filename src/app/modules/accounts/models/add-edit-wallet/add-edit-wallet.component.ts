@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, formatDate } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -179,6 +179,7 @@ export class AddEditWalletComponent implements OnInit {
     }
     let data: ISaveWallet = {
       WalletId: this.dialogData?.value?.WalletId ? this.dialogData?.value?.WalletId : 0,
+      PaymentDate:formatDate(this.addEditUserWallet.value.PaymentDate, 'yyyy-MM-dd', 'en-US'),
       UserId: this.addEditUserWallet.value.FullName.UserId,
       Amount: this.addEditUserWallet.value.Amount.toString().replace(/,/g, ''),
       Narration: this.addEditUserWallet.value.Narration,

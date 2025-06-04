@@ -28,6 +28,7 @@ import { StgBillHistoryComponent } from './components/stg-bill-history/stg-bill-
 import { SupplierBillHistoryComponent } from './components/supplier-bill-history/supplier-bill-history.component';
 import { SmartHistoryComponent } from './components/smart-history/smart-history.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { WalletHistoryComponent } from './components/wallet-history/wallet-history.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -52,7 +53,8 @@ export const MY_FORMATS = {
     SeasonAdvanceHistoryComponent,
     StgBillHistoryComponent,
     SupplierBillHistoryComponent,
-    SmartHistoryComponent
+    SmartHistoryComponent,
+    WalletHistoryComponent
   ],
   imports: [
     CommonModule,

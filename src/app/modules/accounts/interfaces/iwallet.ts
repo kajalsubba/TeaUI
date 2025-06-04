@@ -1,11 +1,12 @@
 export interface ISaveWallet {
 
-    WalletId: number;
-    UserId: number;
-    Amount: number;
-    Narration: string;
-    TenantId: number;
-    CreatedBy: number;
+  WalletId: number;
+  UserId: number;
+  PaymentDate: string;
+  Amount: number;
+  Narration: string;
+  TenantId: number;
+  CreatedBy: number;
 }
 
 export interface IGetWalletHistory {

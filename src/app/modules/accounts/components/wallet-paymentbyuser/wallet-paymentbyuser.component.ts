@@ -230,7 +230,7 @@ export class WalletPaymentbyuserComponent implements OnInit {
 
       this.walletBalance = res.WalletBalance[0].Amount;
       // console.log(this.walletBalance,'res.WalletBalance')
- 
+
     } catch (error) {
       this.handleError(error, 'Failed to fetch payment types');
     }
@@ -279,7 +279,13 @@ export class WalletPaymentbyuserComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    this.SaveData(data);
+    if (Number(this.addEditPayment.value.Amount.toString().replace(/,/g, '')) <= Number(this.walletBalance)) {
+      this.SaveData(data);
+    }
+    else {
+      this.toastr.warning("You does't have sufficient balance.", "Wallet")
+    }
+
   }
 
 

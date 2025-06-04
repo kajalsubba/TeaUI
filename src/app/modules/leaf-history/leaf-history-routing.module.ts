@@ -9,21 +9,25 @@ import { PaymentHistoryComponent } from './components/payment-history/payment-hi
 import { StgBillHistoryComponent } from './components/stg-bill-history/stg-bill-history.component';
 import { SupplierBillHistoryComponent } from './components/supplier-bill-history/supplier-bill-history.component';
 import { SmartHistoryComponent } from './components/smart-history/smart-history.component';
+import { WalletHistoryComponent } from './components/wallet-history/wallet-history.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
-  {path:'', component: LeafHistoryComponent, children:[
-    {path:'', redirectTo: 'stg-history', pathMatch: 'full'},
-    {path:'stg-history', component: StgHistoryComponent},
-    {path:'supplier-history', component: SupplierHistoryComponent},
-    {path:'sale-history', component: SaleHistoryComponent},
-    {path:'season-advance-history', component: SeasonAdvanceHistoryComponent},
-    {path:'payment-history', component: PaymentHistoryComponent},
-    {path:'stg-bill-history', component: StgBillHistoryComponent},
-    {path:'supplier-bill-history', component: SupplierBillHistoryComponent},
-    {path:'smart-history', component: SmartHistoryComponent},
-    
-  ]}
+  {
+    path: '', component: LeafHistoryComponent, children: [
+      { path: '', redirectTo: 'stg-history', pathMatch: 'full' },
+      { path: 'stg-history', component: StgHistoryComponent },
+      { path: 'supplier-history', component: SupplierHistoryComponent },
+      { path: 'sale-history', component: SaleHistoryComponent },
+      { path: 'season-advance-history', component: SeasonAdvanceHistoryComponent },
+      { path: 'payment-history', component: PaymentHistoryComponent },
+      { path: 'stg-bill-history', component: StgBillHistoryComponent },
+      { path: 'supplier-bill-history', component: SupplierBillHistoryComponent },
+      { path: 'smart-history', component: SmartHistoryComponent },
+      { path: 'wallet-history', component: WalletHistoryComponent },
+
+    ]
+  }
 ];
 
 @NgModule({
