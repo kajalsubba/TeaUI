@@ -20,6 +20,8 @@ import { ISaveWallet } from '../../interfaces/iwallet';
 export class AddEditWalletComponent implements OnInit {
 
   keyword = 'FullName';
+  formattedAmount: string = '';
+  amountInWords: string = '';
 
   isSubmitting = false;
   @ViewChild('clientSelect') clientSelect!: MatSelect;
@@ -28,12 +30,12 @@ export class AddEditWalletComponent implements OnInit {
   minToDate!: Date | null;
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
- 
+
   narrationList: any[] = [];
   loginDetails: any;
 
   userList: any[] = [];
-  formattedAmount: any;
+
   filteredClient: any[] = [];
   @ViewChild('PaymentDate') PaymentDateInput!: ElementRef;
   constructor(
@@ -179,7 +181,7 @@ export class AddEditWalletComponent implements OnInit {
     }
     let data: ISaveWallet = {
       WalletId: this.dialogData?.value?.WalletId ? this.dialogData?.value?.WalletId : 0,
-      PaymentDate:formatDate(this.addEditUserWallet.value.PaymentDate, 'yyyy-MM-dd', 'en-US'),
+      PaymentDate: formatDate(this.addEditUserWallet.value.PaymentDate, 'yyyy-MM-dd', 'en-US'),
       UserId: this.addEditUserWallet.value.FullName.UserId,
       Amount: this.addEditUserWallet.value.Amount.toString().replace(/,/g, ''),
       Narration: this.addEditUserWallet.value.Narration,
@@ -193,7 +195,16 @@ export class AddEditWalletComponent implements OnInit {
       console.log(data, 'add');
     }
 
-    this.SaveData(data);
+    const rawAmount = this.addEditUserWallet.value.Amount;
+    const numericAmount = parseFloat(rawAmount?.toString().replace(/,/g, '') || '0');
+
+    if (numericAmount > 0) {
+      this.isSubmitting = true;
+      this.SaveData(data);
+    } else {
+      this.toastr.warning("Please enter a valid Amount", "Amount");
+    }
+
   }
 
   SaveData(clientBody: ISaveWallet) {
@@ -230,7 +241,7 @@ export class AddEditWalletComponent implements OnInit {
 
     this.addEditUserWallet.controls['FullName'].reset()
     this.addEditUserWallet.controls['UserId'].reset()
-    // this.addEditUserWallet.controls['CategoryId'].reset()
+    this.amountInWords = '';
     this.addEditUserWallet.controls['Amount'].reset()
     this.addEditUserWallet.controls['Narration'].reset()
 
@@ -241,6 +252,35 @@ export class AddEditWalletComponent implements OnInit {
       sub.unsubscribe();
     })
     this.dialogRef.close(true);
+  }
+
+  updateAmountInWords(event: Event): void {
+    const input = (event.target as HTMLInputElement).value.replace(/,/g, '');
+    const number = parseInt(input, 10);
+    if (!isNaN(number)) {
+      this.amountInWords = this.convertNumberToWords(number) + ' only';
+    } else {
+      this.amountInWords = '';
+    }
+  }
+  convertNumberToWords(amount: number): string {
+    const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+    const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+    const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+      "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+
+    const numToWords = (num: number): string => {
+      if (num === 0) return "Zero";
+      if (num < 10) return ones[num];
+      if (num >= 10 && num < 20) return teens[num - 10];
+      if (num < 100) return tens[Math.floor(num / 10)] + (num % 10 ? " " + ones[num % 10] : "");
+      if (num < 1000) return ones[Math.floor(num / 100)] + " Hundred" + (num % 100 ? " and " + numToWords(num % 100) : "");
+      if (num < 100000) return numToWords(Math.floor(num / 1000)) + " Thousand" + (num % 1000 ? " " + numToWords(num % 1000) : "");
+      if (num < 10000000) return numToWords(Math.floor(num / 100000)) + " Lakh" + (num % 100000 ? " " + numToWords(num % 100000) : "");
+      return numToWords(Math.floor(num / 10000000)) + " Crore" + (num % 10000000 ? " " + numToWords(num % 10000000) : "");
+    };
+
+    return numToWords(amount);
   }
 
 }

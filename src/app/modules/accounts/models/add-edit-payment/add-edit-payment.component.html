@@ -82,7 +82,7 @@
 
                                 <ng-template #itemTemplate let-item let-selected="selected">
                                     <div class="autocomplete-item" [class.active]="selected">
-                                    <a [innerHTML]="item.ClientName" ></a>
+                                        <a [innerHTML]="item.ClientName"></a>
                                     </div>
                                 </ng-template>
 
@@ -120,7 +120,8 @@
                                     class="text-danger">*</span></label>
                             <div class="col-lg-7 position-relative">
                                 <input #Amount type="text" class="form-control" id="Amount" placeholder="Amount"
-                                    formControlName="Amount" (blur)="formatCurrency($event)" appCharacterRestriction>
+                                    formControlName="Amount" (input)="updateAmountInWords($event)"
+                                    (blur)="formatCurrency($event)" appCharacterRestriction>
                                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
                                 <!-- Validation message -->
@@ -129,6 +130,10 @@
                                     class="text-danger d-block validation-message">
                                     Amount is required.
                                 </span>
+
+                                <div *ngIf="amountInWords" class="text-muted mt-1 currency-word">
+                                    {{ amountInWords }}
+                                </div>
                             </div>
                         </div>
 

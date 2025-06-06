@@ -107,7 +107,7 @@
                 {{ row.ClientName }}
               </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>Transmit Amount : {{ getTransmitTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN'
+                <b>Billed Amount : {{ getTransmitTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN'
                   }} </b>
               </td>
             </ng-container>
@@ -119,7 +119,7 @@
                 {{ row.PaymentType }}
               </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                <b>Non-Transmit Amount : {{ getNonTransmitTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN'
+                <b>Un-Billed Amount : {{ getNonTransmitTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN'
                   }} </b>
               </td>
             </ng-container>

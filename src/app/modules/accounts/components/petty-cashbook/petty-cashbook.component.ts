@@ -1,37 +1,37 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
-import { ToastrService } from 'ngx-toastr';
 import { catchError, Subject, Subscription, takeUntil } from 'rxjs';
-import { HelperService } from 'src/app/core/services/helper.service';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
 import { PaymentService } from '../../services/payment.service';
+import { WalletService } from '../../services/wallet.service';
+import { HelperService } from 'src/app/core/services/helper.service';
+import { ToastrService } from 'ngx-toastr';
 import { CurrencyPipe, formatDate } from '@angular/common';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
+import { IPettyCashBook, IWalletBalance } from '../../interfaces/iwallet';
 import { ISavePayment } from '../../interfaces/ipayment';
 import { environment } from 'src/environments/environment';
-import { IWalletBalance } from '../../interfaces/iwallet';
-import { WalletService } from '../../services/wallet.service';
 
 @Component({
-  selector: 'app-wallet-paymentbyuser',
-  templateUrl: './wallet-paymentbyuser.component.html',
-  styleUrls: ['./wallet-paymentbyuser.component.scss']
+  selector: 'app-petty-cashbook',
+  templateUrl: './petty-cashbook.component.html',
+  styleUrls: ['./petty-cashbook.component.scss']
 })
-export class WalletPaymentbyuserComponent implements OnInit {
-
+export class PettyCashbookComponent implements OnInit {
+  today: Date = new Date();
   keyword = 'ClientName';
+  amountInWords: string = '';
   isSubmitting = false;
   @ViewChild('clientSelect') clientSelect!: MatSelect;
-  amountInWords: string = '';
 
   @ViewChild('clientName') ClientNoInput!: ElementRef;
-  addEditPayment!: FormGroup;
+  PettyCashBookForm!: FormGroup;
   minToDate!: Date | null;
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
@@ -62,21 +62,16 @@ export class WalletPaymentbyuserComponent implements OnInit {
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
-    this.addEditPayment = this.fb.group({
+    this.PettyCashBookForm = this.fb.group({
+      CashBookId: [0],
       PaymentDate: [new Date(), Validators.required],
-      BillDate: [new Date(), Validators.required],
-      CategoryId: ['', Validators.required],
-      CategoryName: [''],
-      ClientId: [''],
-      ClientName: ['', Validators.required],
+      UserId: [0],
       PaymentTypeId: ['', Validators.required],
       Amount: ['', Validators.required],
       Narration: ['', Validators.required],
     });
     await this.getPaymentType();
-    await this.getCategoryList();
-    await this.loadClientNames();
-    this.GetPaymentNarration();
+    // this.GetPaymentNarration();
     await this.GetWalletBalance();
   }
 
@@ -98,36 +93,7 @@ export class WalletPaymentbyuserComponent implements OnInit {
     return value || '';
   }
 
-  async loadClientNames() {
-    try {
-      const bodyData: IGetTeaClient = {
-        TenantId: this.loginDetails.TenantId,
-        Category: ''
 
-      };
-
-      const res: any = await this.autocompleteService.GetClientNames(bodyData)
-        .pipe(takeUntil(this.destroy$))
-        .toPromise();
-
-      this.ClientNames = res.ClientDetails;
-      //  this.filteredClient = res.ClientDetails;
-      // this.clientList = res.ClientDetails;
-
-    } catch (error) {
-      console.error('Error:', error);
-      this.toastr.error('Something went wrong.', 'ERROR');
-    }
-  }
-
-  onClientSelectOpened(opened: boolean, input: HTMLInputElement) {
-    if (opened) {
-      // Timeout is needed to wait for the panel to be fully rendered
-      setTimeout(() => {
-        input.focus();
-      }, 0);
-    }
-  }
   filterNarration(value: string): any[] {
 
     const filterValue = value.toLowerCase();
@@ -140,31 +106,11 @@ export class WalletPaymentbyuserComponent implements OnInit {
       undefined,
       "en-IN");
 
-    this.addEditPayment.controls["Amount"].setValue(formattedValue);
+    this.PettyCashBookForm.controls["Amount"].setValue(formattedValue);
 
   }
-  selectClient(client: any) {
-    if (client == '') {
-      this.addEditPayment.controls['ClientId'].reset();
-    }
-    //console.log(client.ClientId, 'Client');
-
-    this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
-  }
 
 
-  async selectCategory(event: MatOptionSelectionChange, category: any) {
-    if (event.source.selected) {
-      this.filteredClient = [];
-      this.clientList = [];
-      this.addEditPayment.controls["ClientId"].reset();
-      this.addEditPayment.controls['CategoryName'].setValue(category.CategoryName);
-      var dataList = this.ClientNames.filter((x: any) => x.CategoryName.toLowerCase() == this.addEditPayment.value.CategoryName.toLowerCase() || x.CategoryName.toLowerCase() == 'Both'.toLowerCase())
-      this.clientList = dataList;
-      this.filteredClient = this.clientList
-    }
-
-  }
 
   GetPaymentNarration() {
     let bodyData: IGetPaymentType = {
@@ -177,25 +123,6 @@ export class WalletPaymentbyuserComponent implements OnInit {
         //  this.ClientNames = this.narrationList;
       });
     this.subscriptions.push(NarrationtService);
-  }
-
-  async getCategoryList() {
-    try {
-      const categoryBody: IGetCategory = {
-        TenantId: this.loginDetails.TenantId
-      };
-
-      const res: any = await this.categoryService.getCategory(categoryBody)
-        .pipe(takeUntil(this.destroy$))
-        .toPromise();
-
-      this.categoryList = res.CategoryDetails.filter((x: any) => x.CategoryName != 'Both');
-
-
-    } catch (error) {
-      console.error('Error:', error);
-      this.toastr.error('Something went wrong.', 'ERROR');
-    }
   }
 
 
@@ -243,33 +170,23 @@ export class WalletPaymentbyuserComponent implements OnInit {
   }
 
 
-  filterClientNames(value: string): any[] {
-    debugger
-    const filterValue = value.toLowerCase();
-    return this.filteredClient = this.clientList.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
-
-  }
 
 
   onSubmit() {
     debugger
-    if (this.addEditPayment.invalid || this.addEditPayment.value.ClientId == 0) {
-      this.addEditPayment.markAllAsTouched();
+    if (this.PettyCashBookForm.invalid || this.PettyCashBookForm.value.ClientId == 0) {
+      this.PettyCashBookForm.markAllAsTouched();
       return;
     }
-    let data: ISavePayment = {
-      PaymentId: 0,
-      PaymentDate: formatDate(this.addEditPayment.value.PaymentDate, 'yyyy-MM-dd', 'en-US'),
-      BillDate: formatDate(this.addEditPayment.value.BillDate, 'yyyy-MM-dd', 'en-US'),
-      ClientCategory: this.addEditPayment.value.CategoryName,
-      ClientId: this.addEditPayment.value.ClientName.ClientId,
-      PaymentTypeId: this.addEditPayment.value.PaymentTypeId,
-      Amount: this.addEditPayment.value.Amount.toString().replace(/,/g, ''),
-      Narration: this.addEditPayment.value.Narration,
-      CategoryId: this.addEditPayment.value.CategoryId,
+    let data: IPettyCashBook = {
+      CashBookId: 0,
+      PaymentDate: formatDate(this.PettyCashBookForm.value.PaymentDate, 'yyyy-MM-dd', 'en-US'),
+      PaymentTypeId: this.PettyCashBookForm.value.PaymentTypeId,
+      Amount: this.PettyCashBookForm.value.Amount.toString().replace(/,/g, ''),
+      Narration: this.PettyCashBookForm.value.Narration,
+      UserId: this.loginDetails.UserId,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
-      PaymentSource: 'Wallet'
 
     }
 
@@ -280,8 +197,9 @@ export class WalletPaymentbyuserComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    if (Number(this.addEditPayment.value.Amount.toString().replace(/,/g, '')) <= Number(this.walletBalance)) {
-      const rawAmount = this.addEditPayment.value.Amount;
+    if (Number(this.PettyCashBookForm.value.Amount.toString().replace(/,/g, '')) <= Number(this.walletBalance)) {
+
+      const rawAmount = this.PettyCashBookForm.value.Amount;
       const numericAmount = parseFloat(rawAmount?.toString().replace(/,/g, '') || '0');
 
       if (numericAmount > 0) {
@@ -298,8 +216,8 @@ export class WalletPaymentbyuserComponent implements OnInit {
   }
 
 
-  SaveData(clientBody: ISavePayment) {
-    this.paymentService.SavePaymentData(clientBody)
+  SaveData(clientBody: IPettyCashBook) {
+    this.walletService.SavePettyCashBook(clientBody)
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
@@ -329,13 +247,17 @@ export class WalletPaymentbyuserComponent implements OnInit {
 
   CleanFormControl() {
 
-    this.addEditPayment.controls['ClientName'].reset()
-    this.addEditPayment.controls['ClientId'].reset()
+    this.PettyCashBookForm.controls['Amount'].reset()
+    this.PettyCashBookForm.controls['PaymentTypeId'].reset()
     this.amountInWords = '';
-    this.addEditPayment.controls['Amount'].reset()
-    this.addEditPayment.controls['PaymentTypeId'].reset()
-    this.addEditPayment.controls['Narration'].reset()
+    this.PettyCashBookForm.controls['Narration'].reset()
 
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => {
+      sub.unsubscribe();
+    })
   }
 
   updateAmountInWords(event: Event): void {
@@ -364,13 +286,19 @@ export class WalletPaymentbyuserComponent implements OnInit {
       return numToWords(Math.floor(num / 10000000)) + " Crore" + (num % 10000000 ? " " + numToWords(num % 10000000) : "");
     };
 
-    return numToWords(amount);
-  }
+    const amountParts = amount.toString().split('.');
+    const rupees = parseInt(amountParts[0], 10);
+    const paise = amountParts[1] ? parseInt(amountParts[1].slice(0, 2).padEnd(2, '0'), 10) : 0;
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => {
-      sub.unsubscribe();
-    })
+    let words = '';
+    if (rupees > 0) {
+      words += numToWords(rupees) + " Rupee" + (rupees > 1 ? "s" : "");
+    }
+    if (paise > 0) {
+      words += (rupees > 0 ? " and " : "") + numToWords(paise) + " Paise";
+    }
+
+    return words ? words : "Zero Rupees only";
   }
 
 }

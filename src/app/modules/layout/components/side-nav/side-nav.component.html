@@ -147,8 +147,8 @@
             <a class="sub-menu-title">Supplier</a>
           </li>
           <li *ngIf="
-              PermissionDetails[24].ModuleId == 25 &&
-              PermissionDetails[24].HideModule == false" routerLink="rate-fix/sale-rate-fix" routerLinkActive="active">
+              PermissionDetails[25].ModuleId == 25 &&
+              PermissionDetails[25].HideModule == false" routerLink="rate-fix/sale-rate-fix" routerLinkActive="active">
             <a class="sub-menu-title">Sale</a>
           </li>
         </ul>
@@ -189,21 +189,27 @@
         <ul class="sub-menu">
           <li *ngIf="
               loginDetails.LoginType == 'Agent' &&
-              PermissionDetails[32].ModuleId == 43 &&
-              PermissionDetails[32].HideModule == false"  routerLink="Accounts/wallet-creation" routerLinkActive="active">
+              PermissionDetails[33].ModuleId == 43 &&
+              PermissionDetails[33].HideModule == false" routerLink="Accounts/wallet-creation"
+            routerLinkActive="active">
             <a class="sub-menu-title">User Payment</a>
           </li>
           <li *ngIf="
               loginDetails.LoginType == 'Agent' &&
-              PermissionDetails[33].ModuleId == 44 &&
-              PermissionDetails[33].HideModule == false" routerLink="Accounts/wallet-payment-user" routerLinkActive="active">
+              PermissionDetails[34].ModuleId == 44 &&
+              PermissionDetails[34].HideModule == false" routerLink="Accounts/wallet-payment-user"
+            routerLinkActive="active">
             <a class="sub-menu-title">Payment</a>
           </li>
           <li routerLink="LeafHistory/wallet-history" routerLinkActive="active">
             <a class="sub-menu-title">Wallet Statement</a>
           </li>
-          <!-- <li routerLink="Accounts/directsale" routerLinkActive="active"><a class="sub-menu-title">Direct Sale</a> -->
-          <!-- </li> -->
+          <li *ngIf="
+              loginDetails.LoginType == 'Agent' &&
+              PermissionDetails[35].ModuleId == 46 &&
+              PermissionDetails[35].HideModule == false" routerLink="Accounts/petty-cashbook" routerLinkActive="active">
+            <a class="sub-menu-title">Petty Cash Book</a>
+          </li>
         </ul>
       </li>
 
@@ -269,6 +275,11 @@
           <li routerLink="LeafHistory/smart-history" routerLinkActive="active">
             <a class="sub-menu-title">Smart History</a>
           </li>
+          <li routerLink="LeafHistory/pettycashbook-history" routerLinkActive="active">
+            <a class="sub-menu-title">Petty CashBook History</a>
+          </li>
+
+
         </ul>
       </li>
       <li *ngIf="loginDetails.LoginType == 'Agent'" [class.showMenu]="currentOpenMenu === 'leaf-summary'"
@@ -334,8 +345,8 @@
         <ul class="sub-menu">
           <li *ngIf="
               loginDetails.LoginType == 'Agent' &&
-              PermissionDetails[19].ModuleId == 19 &&
-              PermissionDetails[19].HideModule == false
+              PermissionDetails[20].ModuleId == 19 &&
+              PermissionDetails[20].HideModule == false
             " routerLink="user-management/role" routerLinkActive="active">
             <a class="sub-menu-title">Create Role</a>
           </li>

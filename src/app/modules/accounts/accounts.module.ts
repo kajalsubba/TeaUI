@@ -26,6 +26,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { WalletCreationComponent } from './components/wallet-creation/wallet-creation.component';
 import { AddEditWalletComponent } from './models/add-edit-wallet/add-edit-wallet.component';
 import { WalletPaymentbyuserComponent } from './components/wallet-paymentbyuser/wallet-paymentbyuser.component';
+import { PettyCashbookComponent } from './components/petty-cashbook/petty-cashbook.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -49,7 +50,8 @@ export const MY_FORMATS = {
     CharacterRestrictionDirective,
     WalletCreationComponent,
     AddEditWalletComponent,
-    WalletPaymentbyuserComponent
+    WalletPaymentbyuserComponent,
+    PettyCashbookComponent
   ],
   imports: [
     CommonModule,

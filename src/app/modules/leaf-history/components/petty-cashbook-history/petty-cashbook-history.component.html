@@ -1,0 +1,111 @@
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-lg-10 my-2 align-items-center">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form [formGroup]="PettyCashBookHistoryForm">
+                        <div class="row">
+                            <div class="col-lg-3 my-2 d-grid">
+                                <mat-form-field>
+                                    <input readonly matInput [matDatepicker]="picker" placeholder="From Date"
+                                        formControlName="fromDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 my-2 d-grid">
+                                <mat-form-field class="">
+                                    <input readonly matInput [min]="minToDate" [matDatepicker]="picker1"
+                                        min="PettyCashBookHistoryForm.value.fromDate" placeholder="To Date"
+                                        formControlName="toDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-lg-3 position-relative my-2">
+                                <mat-select placeholder="--Users--" class="fromSelect" formControlName="UserId">
+                                    <!-- <mat-option value="0">All User</mat-option> -->
+                                    <mat-option *ngFor="let user of UserList" [value]="user.UserId">
+                                        {{user.FullName}}
+                                    </mat-option>
+                                </mat-select>
+                                <span
+                                    *ngIf="PettyCashBookHistoryForm.get('UserId')?.hasError('required') && PettyCashBookHistoryForm.get('UserId')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    User is required.
+                                </span>
+                            </div>
+                            <div class="col-lg-2 d-grid my-2">
+                                <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
+                                <button (click)="search()" class="btn btn-color ms-2">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 border-left my-2">
+            <div class="top-container my-2">
+                <div class="search-field px-2">
+                    <input (input)="applyFilter($event)" type="text" placeholder="Find" class="form-control">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <button matTooltip="Excel Export" (click)="exportToExcel()" class="btn btn-outline-dark">
+                    <i class="fa-solid py-2 px-1 fa-file-excel"></i>
+                </button>
+            </div>
+        </div>
+        <hr>
+        <div class="col-lg-12">
+            <div class="table-container">
+                <div>
+                    <table id="material-table" matSort mat-table [dataSource]="dataSource"
+                        (keydown)="handleKeyboardNavigation($event)">
+                        <!-- Displayed columns -->
+                        <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" mat-cell
+                                *matCellDef="let row; let i = index;">
+                                {{ row[column.columnDef] }}
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+
+
+
+                        <!-- Amount -->
+                        <ng-container matColumnDef="Amount">
+                            <th mat-header-cell *matHeaderCellDef> Amount </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{ row.Amount| currency:'INR':'':undefined:'en-IN' }}
+                            </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+
+                                <span>
+                                    <b> {{ getPaymentTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN'
+                                        }}
+                                    </b>
+                                </span>
+                            </td>
+                        </ng-container>
+
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+                            [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+                        </tr>
+                        <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">
+                                Record is not
+                                found !</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

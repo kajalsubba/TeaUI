@@ -7,8 +7,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { _MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
+import { IGetPayment } from 'src/app/modules/accounts/interfaces/ipayment';
 import { IGetWalletHistory } from 'src/app/modules/accounts/interfaces/iwallet';
 import { PaymentService } from 'src/app/modules/accounts/services/payment.service';
 import { WalletService } from 'src/app/modules/accounts/services/wallet.service';
@@ -17,30 +18,29 @@ import { UserService } from 'src/app/modules/user-management/services/user.servi
 import { ExcelExportService } from 'src/app/shared/services/excel-export.service';
 
 @Component({
-  selector: 'app-wallet-history',
-  templateUrl: './wallet-history.component.html',
-  styleUrls: ['./wallet-history.component.scss']
+  selector: 'app-petty-cashbook-history',
+  templateUrl: './petty-cashbook-history.component.html',
+  styleUrls: ['./petty-cashbook-history.component.scss']
 })
-export class WalletHistoryComponent implements OnInit {
+export class PettyCashbookHistoryComponent implements OnInit {
 
 
   displayedColumns: string[] = [
-    'WalletId',
-    'TransactionDate',
-    // 'FullName',
+    'CashBookId',
+    'PaymentDate',
+    'PaymentType',
     'Narration',
-    'Received',
-    'Payment',
-    'Balance',
+    'Amount',
+
   ];
 
   dataSource = new _MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'WalletId', header: 'Transcation Id' },
-    { columnDef: 'TransactionDate', header: 'Date' },
-    // { columnDef: 'FullName', header: 'User Name' },
-    // { columnDef: 'Narration', header: 'Narration' },
+    { columnDef: 'CashBookId', header: 'Transcation Id' },
+    { columnDef: 'PaymentDate', header: 'Date' },
+    { columnDef: 'PaymentType', header: 'Payment Type' },
+    { columnDef: 'Narration', header: 'Narration' },
     // { columnDef: 'Received', header: 'Received' },
     // { columnDef: 'Payment', header: 'Payment' },
     // { columnDef: 'Balance', header: 'Balance' },
@@ -53,7 +53,7 @@ export class WalletHistoryComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
   loginDetails: any;
-  WalletHistoryForm!: FormGroup;
+  PettyCashBookHistoryForm!: FormGroup;
   minToDate!: any;
   ClientNames: any[] = [];
   selectedRowIndex: number = -1;
@@ -62,19 +62,17 @@ export class WalletHistoryComponent implements OnInit {
   categoryList: any[] = [];
   PaymentTypeList: any[] = [];
   constructor(
-    private dialog: MatDialog,
     private toastr: ToastrService,
     private helper: HelperService,
     private fb: FormBuilder,
     private excelService: ExcelExportService,
     private walletService: WalletService,
-    private paymentService: PaymentService,
     private userService: UserService,
   ) { }
 
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
-    this.WalletHistoryForm = this.fb.group({
+    this.PettyCashBookHistoryForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), Validators.required],
       UserId: ['', Validators.required]
@@ -85,34 +83,38 @@ export class WalletHistoryComponent implements OnInit {
     if (this.loginDetails.RoleName.toLowerCase() != 'admin') {
 
       const selectedClient = { UserId: this.loginDetails.UserId }; // Example selected client
-      this.WalletHistoryForm.patchValue({
+      this.PettyCashBookHistoryForm.patchValue({
         UserId: selectedClient.UserId,
       });
 
-      this.WalletHistoryForm.controls['UserId'].disable({ onlySelf: true });
+      this.PettyCashBookHistoryForm.controls['UserId'].disable({ onlySelf: true });
     }
   }
 
 
-  GetWalletHistory() {
+  GetPettyCashBook() {
+
     const currentDate = new Date();
     let bodyData: IGetWalletHistory = {
-      FromDate: formatDate(this.WalletHistoryForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-      ToDate: formatDate(this.WalletHistoryForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+      FromDate: formatDate(this.PettyCashBookHistoryForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+      ToDate: formatDate(this.PettyCashBookHistoryForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
-      UserId: this.WalletHistoryForm.controls["UserId"].value ?? 0,
+      UserId: this.PettyCashBookHistoryForm.controls["UserId"].value ?? 0,
       CreatedBy: this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
 
     };
 
     const categoryListService = this.walletService
-      .GetWalletStatement(bodyData)
+      .GetPettyCashBook(bodyData)
       .subscribe((res: any) => {
 
-        this.dataSource.data = res.WalletStatement;
+        this.dataSource.data = res.CashBookData;
       });
     this.subscriptions.push(categoryListService);
   }
+
+
+
 
 
   async GetUserList() {
@@ -169,14 +171,20 @@ export class WalletHistoryComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+  selectClient(client: any) {
+    if (client == '') {
+      this.PettyCashBookHistoryForm.controls['ClientId'].reset();
+    }
 
+    this.PettyCashBookHistoryForm.controls['ClientId'].setValue(client?.ClientId);
+  }
 
   search() {
-    if (this.WalletHistoryForm.invalid) {
-      this.WalletHistoryForm.markAllAsTouched();
+    if (this.PettyCashBookHistoryForm.invalid) {
+      this.PettyCashBookHistoryForm.markAllAsTouched();
       return;
     }
-    this.GetWalletHistory();
+    this.GetPettyCashBook();
 
 
   }
@@ -192,6 +200,7 @@ export class WalletHistoryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
+    //  this.PettyCashBookHistoryForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -239,3 +248,4 @@ export class WalletHistoryComponent implements OnInit {
   }
 
 }
+

@@ -29,6 +29,7 @@ registerLocaleData(enIN);
 export class AddEditPaymentComponent implements OnInit {
 
   keyword = 'ClientName';
+  amountInWords: string = '';
   isSubmitting = false;
   @ViewChild('clientSelect') clientSelect!: MatSelect;
 
@@ -70,6 +71,7 @@ export class AddEditPaymentComponent implements OnInit {
       CategoryId: ['', Validators.required],
       CategoryName: [''],
       ClientId: [''],
+      PaymentSource: [''],
       ClientName: ['', Validators.required],
       PaymentTypeId: ['', Validators.required],
       Amount: ['', Validators.required],
@@ -79,13 +81,17 @@ export class AddEditPaymentComponent implements OnInit {
     await this.getCategoryList();
     await this.loadClientNames();
     this.GetPaymentNarration();
-
+    debugger
     if (this.dialogData.value) {
       this.addEditPayment.controls['BillDate'].setValue(new Date(this.dialogData.value.BllDate));
       this.addEditPayment.controls['PaymentDate'].setValue(new Date(this.dialogData.value.PayDate));
       this.addEditPayment.controls['CategoryId'].setValue(this.dialogData.value.CategoryId);
       this.addEditPayment.controls['ClientId'].setValue(this.dialogData.value.ClientId);
-      this.addEditPayment.controls['ClientName'].setValue(this.dialogData.value.ClientName);
+      this.addEditPayment.controls['PaymentSource'].setValue(this.dialogData.value.PaymentSource);
+      this.addEditPayment.controls['ClientName'].setValue({
+        ClientId: this.dialogData.value.ClientId,
+        ClientName: this.dialogData.value.ClientName
+      });
       this.addEditPayment.controls['PaymentTypeId'].setValue(this.dialogData.value.PaymentTypeId);
       const formattedValue = this.currencyPipe.transform(this.dialogData.value.Amount, "INR",
         '',
@@ -96,7 +102,7 @@ export class AddEditPaymentComponent implements OnInit {
     }
   }
 
-  selectEvent(item:any) {
+  selectEvent(item: any) {
     // do something with selected item
     console.log(item, 'item');
   }
@@ -106,7 +112,7 @@ export class AddEditPaymentComponent implements OnInit {
     // And reassign the 'data' which is binded to 'data' property.
   }
 
-  onFocused(e:any) {
+  onFocused(e: any) {
     // do something
   }
 
@@ -128,7 +134,7 @@ export class AddEditPaymentComponent implements OnInit {
 
       this.ClientNames = res.ClientDetails;
       //  this.filteredClient = res.ClientDetails;
-     // this.clientList = res.ClientDetails;
+      // this.clientList = res.ClientDetails;
 
     } catch (error) {
       console.error('Error:', error);
@@ -163,19 +169,11 @@ export class AddEditPaymentComponent implements OnInit {
     if (client == '') {
       this.addEditPayment.controls['ClientId'].reset();
     }
-    //console.log(client.ClientId, 'Client');
 
     this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
   }
 
-  // selectNarration(narrat: any) {
-  //   if (narrat == '') {
-  //     this.addEditPayment.controls['ClientId'].reset();
-  //   }
-  //   //console.log(client.ClientId, 'Client');
 
-  //   this.addEditPayment.controls['ClientId'].setValue(client?.ClientId);
-  // }
   async selectCategory(event: MatOptionSelectionChange, category: any) {
     if (event.source.selected) {
       this.filteredClient = [];
@@ -272,7 +270,7 @@ export class AddEditPaymentComponent implements OnInit {
       CategoryId: this.addEditPayment.value.CategoryId,
       TenantId: this.loginDetails.TenantId,
       CreatedBy: this.loginDetails.UserId,
-      PaymentSource:''
+      PaymentSource: this.addEditPayment.value.PaymentSource,
 
     }
 
@@ -281,9 +279,15 @@ export class AddEditPaymentComponent implements OnInit {
       console.log(data, 'add');
     }
 
-   this.isSubmitting = true;
+    const rawAmount = this.addEditPayment.value.Amount;
+    const numericAmount = parseFloat(rawAmount?.toString().replace(/,/g, '') || '0');
 
-   this.SaveData(data);
+    if (numericAmount > 0) {
+      this.isSubmitting = true;
+      this.SaveData(data);
+    } else {
+      this.toastr.warning("Please enter a valid Amount", "Amount");
+    }
   }
 
   SaveData(clientBody: ISavePayment) {
@@ -325,6 +329,35 @@ export class AddEditPaymentComponent implements OnInit {
     this.addEditPayment.controls['PaymentTypeId'].reset()
     this.addEditPayment.controls['Narration'].reset()
 
+  }
+
+  updateAmountInWords(event: Event): void {
+    const input = (event.target as HTMLInputElement).value.replace(/,/g, '');
+    const number = parseInt(input, 10);
+    if (!isNaN(number)) {
+      this.amountInWords = this.convertNumberToWords(number) + ' only';
+    } else {
+      this.amountInWords = '';
+    }
+  }
+  convertNumberToWords(amount: number): string {
+    const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+    const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+    const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+      "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+
+    const numToWords = (num: number): string => {
+      if (num === 0) return "Zero";
+      if (num < 10) return ones[num];
+      if (num >= 10 && num < 20) return teens[num - 10];
+      if (num < 100) return tens[Math.floor(num / 10)] + (num % 10 ? " " + ones[num % 10] : "");
+      if (num < 1000) return ones[Math.floor(num / 100)] + " Hundred" + (num % 100 ? " and " + numToWords(num % 100) : "");
+      if (num < 100000) return numToWords(Math.floor(num / 1000)) + " Thousand" + (num % 1000 ? " " + numToWords(num % 1000) : "");
+      if (num < 10000000) return numToWords(Math.floor(num / 100000)) + " Lakh" + (num % 100000 ? " " + numToWords(num % 100000) : "");
+      return numToWords(Math.floor(num / 10000000)) + " Crore" + (num % 10000000 ? " " + numToWords(num % 10000000) : "");
+    };
+
+    return numToWords(amount);
   }
 
   ngOnDestroy(): void {

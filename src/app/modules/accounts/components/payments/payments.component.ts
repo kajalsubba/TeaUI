@@ -37,6 +37,7 @@ export class PaymentsComponent implements OnInit {
     'ClientName',
     'PaymentType',
     'Narration',
+    'PaymentSource',
     'Amount',
     'actions'
 
@@ -48,10 +49,10 @@ export class PaymentsComponent implements OnInit {
     { columnDef: 'BillDate', header: 'Bill Date' },
     { columnDef: 'PaymentDate', header: 'Payment Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'PaySource', header: 'Pay Source' },
+    { columnDef: 'PaySource', header: 'Category' },
     { columnDef: 'PaymentType', header: 'Payment Type' },
     { columnDef: 'Narration', header: 'Narration' },
-    //  { columnDef: 'Amount', header: 'Amount' }
+    { columnDef: 'PaymentSource', header: 'Source' }
 
   ];
 

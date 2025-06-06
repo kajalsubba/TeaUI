@@ -10,6 +10,7 @@ import { StgBillHistoryComponent } from './components/stg-bill-history/stg-bill-
 import { SupplierBillHistoryComponent } from './components/supplier-bill-history/supplier-bill-history.component';
 import { SmartHistoryComponent } from './components/smart-history/smart-history.component';
 import { WalletHistoryComponent } from './components/wallet-history/wallet-history.component';
+import { PettyCashbookHistoryComponent } from './components/petty-cashbook-history/petty-cashbook-history.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: 'supplier-bill-history', component: SupplierBillHistoryComponent },
       { path: 'smart-history', component: SmartHistoryComponent },
       { path: 'wallet-history', component: WalletHistoryComponent },
+      { path: 'pettycashbook-history', component: PettyCashbookHistoryComponent }
 
     ]
   }

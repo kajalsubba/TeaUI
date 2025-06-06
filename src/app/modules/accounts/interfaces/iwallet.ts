@@ -23,3 +23,13 @@ export interface IWalletBalance {
 
 }
 
+export interface IPettyCashBook {
+  CashBookId?: number;
+  PaymentDate?: string;
+  PaymentTypeId?: number;
+  Amount?: number;
+  UserId?: number;
+  Narration?: string;
+  TenantId?: number;
+  CreatedBy?: number;
+}

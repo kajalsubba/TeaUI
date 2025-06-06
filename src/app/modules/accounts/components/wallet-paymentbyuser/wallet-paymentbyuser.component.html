@@ -3,8 +3,8 @@
         <div class="row mx-2">
             <div class="col-lg-12 back-primary">
                 <h3 class="sale-spprove-title my-2 grid-container">
-                    <span class="payment-text">Payment</span>
-                    <span class="balance-text">- Bal. Amount: {{walletBalance}} /-</span>
+                    <span class="payment-text">Wallet Balance : {{walletBalance}} /- </span>
+                    <!-- <span class="balance-text"> {{walletBalance}} /-</span> -->
                 </h3>
             </div>
             <hr class="m-0">
@@ -107,7 +107,8 @@
                                     class="text-danger">*</span></label>
                             <div class="col-lg-7 position-relative">
                                 <input #Amount type="text" class="form-control" id="Amount" placeholder="Amount"
-                                    formControlName="Amount" (blur)="formatCurrency($event)" appCharacterRestriction>
+                                    formControlName="Amount" (input)="updateAmountInWords($event)"
+                                    (blur)="formatCurrency($event)" appCharacterRestriction>
                                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
                                 <span
@@ -115,6 +116,9 @@
                                     class="text-danger d-block validation-message">
                                     Amount is required.
                                 </span>
+                                <div *ngIf="amountInWords" class="text-muted mt-1 currency-word">
+                                    {{ amountInWords }}
+                                </div>
                             </div>
                         </div>
 

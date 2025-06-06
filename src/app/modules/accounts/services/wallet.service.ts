@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IGetWalletHistory, ISaveWallet, IWalletBalance } from '../interfaces/iwallet';
+import { IGetWalletHistory, IPettyCashBook, ISaveWallet, IWalletBalance } from '../interfaces/iwallet';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -22,5 +22,13 @@ export class WalletService {
   }
   GetWalletStatement(clientBody: IGetWalletHistory): Observable<any> {
     return this.apiService.post('Accounts/GetWalletStatement', clientBody);
+  }
+
+  SavePettyCashBook(clientBody: IPettyCashBook): Observable<string[]> {
+    return this.apiService.post('Accounts/SavePettyCashBook', clientBody);
+  }
+
+   GetPettyCashBook(clientBody: IGetWalletHistory): Observable<any> {
+    return this.apiService.post('Accounts/GetPettyCashBoook', clientBody);
   }
 }

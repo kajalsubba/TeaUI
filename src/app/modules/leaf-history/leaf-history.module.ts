@@ -29,6 +29,7 @@ import { SupplierBillHistoryComponent } from './components/supplier-bill-history
 import { SmartHistoryComponent } from './components/smart-history/smart-history.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { WalletHistoryComponent } from './components/wallet-history/wallet-history.component';
+import { PettyCashbookHistoryComponent } from './components/petty-cashbook-history/petty-cashbook-history.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -54,7 +55,8 @@ export const MY_FORMATS = {
     StgBillHistoryComponent,
     SupplierBillHistoryComponent,
     SmartHistoryComponent,
-    WalletHistoryComponent
+    WalletHistoryComponent,
+    PettyCashbookHistoryComponent
   ],
   imports: [
     CommonModule,
