@@ -27,21 +27,25 @@ registerLocaleData(enIN);
 export class SeasonAdvanceHistoryComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'AdvancedDate',
+    'TransactionDate',
     'PaySource',
     'ClientName',
-    'Amount',
-    'Remarks'
+    'Narration',
+    'Received',
+    'Payment',
+    'Balance',
+
+
   ];
 
   dataSource = new _MatTableDataSource<any>();
 
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'AdvancedDate', header: 'Date' },
+    { columnDef: 'TransactionDate', header: 'Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'PaySource', header: 'Category' },
-    { columnDef: 'Remarks', header: 'Remarks' }
+    // { columnDef: 'Narration', header: 'Narration' }
 
   ];
 
@@ -172,13 +176,17 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
     const categoryListService = this.advanceService
       .GetSeasonAdvance(bodyData)
       .subscribe((res: any) => {
-     
+
         this.dataSource.data = res.SeasonDetails;
       });
     this.subscriptions.push(categoryListService);
   }
 
   filterClientNames(value: string): any[] {
+    console.log(value, 'value')
+    if (value == '') {
+      this.SeasonAdvanceForm.controls['ClientId'].reset();
+    }
 
     const filterValue = value.toLowerCase();
     return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
@@ -219,7 +227,7 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.SeasonAdvanceForm.controls['toDate'].setValue(null);
+    // this.SeasonAdvanceForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -238,11 +246,11 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
 
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove
@@ -264,6 +272,27 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
     } else {
       this.toastr.warning("NO DATA TO EXPORT", "WARNING");
     }
+  }
+
+  getRecivedTotal(columnName: string): number {
+    return this.dataSource.filteredData.reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
+  }
+
+  getPaymentTotal(columnName: string): number {
+    return this.dataSource.filteredData.reduce(
+      (acc, curr) => acc + curr[columnName],
+      0
+    );
+  }
+  getBalance(): number {
+    return this.dataSource.filteredData.reduce((acc, curr) => {
+      const received = curr['Received'] || 0;
+      const payment = curr['Payment'] || 0;
+      return acc + (received - payment);
+    }, 0);
   }
 
 }

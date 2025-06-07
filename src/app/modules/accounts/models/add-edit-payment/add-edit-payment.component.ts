@@ -284,7 +284,14 @@ export class AddEditPaymentComponent implements OnInit {
 
     if (numericAmount > 0) {
       this.isSubmitting = true;
-      this.SaveData(data);
+      if (this.addEditPayment.value.ClientName.ClientId != 0) {
+        this.SaveData(data);
+      }
+      else {
+        this.toastr.warning("Please Select Client properly!", "Client");
+
+      }
+
     } else {
       this.toastr.warning("Please enter a valid Amount", "Amount");
     }
