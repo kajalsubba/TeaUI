@@ -99,7 +99,7 @@
 
             <!-- Recived -->
             <ng-container matColumnDef="Received">
-              <th mat-header-cell *matHeaderCellDef> Received </th>
+              <th mat-header-cell *matHeaderCellDef> Payment </th>
               <td class="weight-column" mat-cell *matCellDef="let row">
                 {{ row.Received| currency:'INR':'':undefined:'en-IN' }}
               </td>
@@ -115,7 +115,7 @@
 
             <!-- Payment -->
             <ng-container matColumnDef="Payment">
-              <th mat-header-cell *matHeaderCellDef> Payment </th>
+              <th mat-header-cell *matHeaderCellDef> Received </th>
               <td class="weight-column" mat-cell *matCellDef="let row">
                 <div class="amount-color">
                   {{ row.Payment| currency:'INR':'':undefined:'en-IN' }}
