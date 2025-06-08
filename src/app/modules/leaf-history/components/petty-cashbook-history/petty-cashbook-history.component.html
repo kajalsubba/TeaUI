@@ -25,7 +25,7 @@
 
                             <div class="col-lg-3 position-relative my-2">
                                 <mat-select placeholder="--Users--" class="fromSelect" formControlName="UserId">
-                                    <!-- <mat-option value="0">All User</mat-option> -->
+                                    <mat-option value="0">All User</mat-option>
                                     <mat-option *ngFor="let user of UserList" [value]="user.UserId">
                                         {{user.FullName}}
                                     </mat-option>
