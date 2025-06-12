@@ -335,6 +335,7 @@ export class AddEditPaymentComponent implements OnInit {
     this.addEditPayment.controls['Amount'].reset()
     this.addEditPayment.controls['PaymentTypeId'].reset()
     this.addEditPayment.controls['Narration'].reset()
+    this.amountInWords='';
 
   }
 

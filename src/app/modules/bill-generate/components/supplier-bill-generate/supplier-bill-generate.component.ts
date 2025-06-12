@@ -53,13 +53,13 @@ export class SupplierBillGenerateComponent implements OnInit {
 
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'VehicleNo', header: 'Vehicle No ' },
-   
+
   ];
   paymentColumns: { columnDef: string; header: string }[] = [
     { columnDef: 'EntryDate', header: 'Entry Date' },
     { columnDef: 'PaymentType', header: 'Payment Type' },
     { columnDef: 'Narration', header: 'Narration' },
-   
+
   ];
 
   @ViewChild('ClientName') ClientNoInput!: ElementRef;
@@ -76,7 +76,7 @@ export class SupplierBillGenerateComponent implements OnInit {
   supplierAmountForm!: FormGroup;
   minToDate!: any;
   currentDate: Date | null = new Date();
-  ClientNames:  IClient[] =[];
+  ClientNames: IClient[] = [];
   OutStandingData: any[] = [];
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
@@ -99,7 +99,7 @@ export class SupplierBillGenerateComponent implements OnInit {
       toDate: [new Date(), Validators.required],
       ClientId: [0],
       ClientName: ['', Validators.required],
-      ClienFilterCrtl:['']
+      ClienFilterCrtl: ['']
     });
     this.supplierAmountForm = this.fb.group({
       SeasonAmount: [0],
@@ -123,7 +123,7 @@ export class SupplierBillGenerateComponent implements OnInit {
       });
   }
   private filteredClientsData() {
-   // debugger
+    // debugger
     if (!this.ClientNames) {
       return;
     }
@@ -285,8 +285,8 @@ export class SupplierBillGenerateComponent implements OnInit {
         FromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
         ToDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         TenantId: this.loginDetails.TenantId,
-       // ClientId: this.supplierBillForm.value.ClientId ?? 0
-       ClientId: this.supplierBillForm.value.ClientName?.ClientId ?? 0
+        // ClientId: this.supplierBillForm.value.ClientId ?? 0
+        ClientId: this.supplierBillForm.value.ClientName?.ClientId ?? 0
       };
 
       const res: any = await this.billService.GetSupplierBill(bodyData).toPromise();
@@ -311,6 +311,11 @@ export class SupplierBillGenerateComponent implements OnInit {
         this.supplierAmountForm.controls['PreviousAmount'].setValue(0);
         this.supplierAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
 
+
+      }
+
+      if (Number(this.supplierAmountForm.controls['SeasonAmount'].value) <= 0) {
+        this.supplierAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
 
       }
 
@@ -408,7 +413,7 @@ export class SupplierBillGenerateComponent implements OnInit {
       BillDate: formatDate(this.supplierAmountForm.value.BillDate, 'yyyy-MM-dd', 'en-US'),
       FromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
-      ClientId:this.supplierBillForm.value.ClientName?.ClientId ,// this.supplierBillForm.value.ClientId,
+      ClientId: this.supplierBillForm.value.ClientName?.ClientId,// this.supplierBillForm.value.ClientId,
       FinalWeight: this.getTotal('ChallanWeight') ?? 0,
       TotalStgAmount: this.getTotal('GrossAmount') ?? 0,
       TotalStgPayment: this.getTotalPayment('Amount') ?? 0,
@@ -483,7 +488,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     this.paymentDataSource.data = [];
     this.cleanAmountController();
 
-   // this.ClientNoInput.nativeElement.focus();
+    // this.ClientNoInput.nativeElement.focus();
     this.isSubmitting = false;
   }
 

@@ -336,8 +336,11 @@
                   id="LessSeasonAdv" placeholder="Less Season Adv." formControlName="LessSeasonAdv"
                   (focusout)="onFocusOutSeasonEvent($event)">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                <span *ngIf="SeasonAdvValidate" class="text-danger d-block validation-message">
-                  Enter Less Season Advance !
+                <!-- <span *ngIf="SeasonAdvValidate" class="text-danger d-block validation-message"> -->
+
+                <span *ngIf="StgAmountForm.controls['LessSeasonAdv'].errors?.['SeasonAdvValidate']"
+                  class="text-danger d-block validation-message">
+                  {{SeasonAdvValidateMsg}}
                 </span>
 
               </div>
@@ -366,7 +369,9 @@
                   formControlName="PaidAmount" (input)="calculateOutstandingAmount()"
                   (focusout)="onFocusOutEvent($event)">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                <span *ngIf="PaidAmountValidate" class="text-danger d-block validation-message">
+                <!-- <span *ngIf="PaidAmountValidate" class="text-danger d-block validation-message"> -->
+                <span *ngIf="StgAmountForm.controls['PaidAmount'].errors?.['PaidAmountValidate']"
+                  class="text-danger d-block validation-message">
                   {{PaidAmountErrorMsg}}
                 </span>
               </div>

@@ -74,6 +74,7 @@ export class StgBillGenerateComponent implements OnInit {
   PaidAmountErrorMsg: string = '';
   PaidAmountValidate: boolean = false;
   SeasonAdvValidate: boolean = false;
+  SeasonAdvValidateMsg: string = '';
   minToDate!: any;
   currentDate: Date | null = new Date();
   ClientNames: IClient[] = [];
@@ -191,7 +192,7 @@ export class StgBillGenerateComponent implements OnInit {
     this.StgAmountForm.controls['FinalBillAmount'].setValue(finalAmount.toFixed(2));
     this.StgAmountForm.controls['AmountToPay'].setValue(amountToPay.toFixed(2));
     this.StgAmountForm.controls['OutstandingAmount'].setValue(outStnadingAmount.toFixed(2));
-
+    debugger
     if (this.StgAmountForm.controls['SeasonAmount'].value > 0) {
       finalAmount < 0 ? this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true }) : this.StgAmountForm.controls['LessSeasonAdv'].enable({ onlySelf: true });
 
@@ -199,7 +200,21 @@ export class StgBillGenerateComponent implements OnInit {
 
     amountToPay <= 0 ? this.StgAmountForm.controls['PaidAmount'].disable({ onlySelf: true }) : this.StgAmountForm.controls['PaidAmount'].enable({ onlySelf: true });
 
+    // if (Number(this.StgAmountForm.controls['LessSeasonAdv'].value) > Number(this.StgAmountForm.controls['SeasonAmount'].value)) {
+    //   this.setValidation("LessSeasonAdv");
+    //   this.StgAmountForm.controls['LessSeasonAdv'].setErrors({ amountTooHigh: true });
 
+    //   this.SeasonAdvValidate = true;
+    //   this.SeasonAdvValidateMsg = "Amount should less than Sea. Advance.";
+    // }
+    // else {
+    //   this.clearEmailValidation('LessSeasonAdv')
+    //   this.StgAmountForm.controls['LessSeasonAdv'].setErrors(null);
+
+    //   this.StgAmountForm.controls['LessSeasonAdv'].value.valid = true
+    //   this.SeasonAdvValidate = false;
+    //   this.SeasonAdvValidateMsg = "";
+    // }
 
   }
 
@@ -346,6 +361,12 @@ export class StgBillGenerateComponent implements OnInit {
 
       }
 
+      if (Number(this.StgAmountForm.controls['SeasonAmount'].value) <= 0) {
+        this.StgAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
+
+      }
+
+
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -410,6 +431,8 @@ export class StgBillGenerateComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
   BillSave() {
+
+    debugger
     if (this.StgAmountForm.invalid || this.StgAmountForm.value.ClientId == 0 || this.StgBillForm.invalid) {
       this.StgAmountForm.markAllAsTouched();
       this.StgBillForm.markAllAsTouched();
@@ -523,35 +546,65 @@ export class StgBillGenerateComponent implements OnInit {
   }
 
   onFocusOutSeasonEvent(event: any) {
+    debugger
     if ((this.StgAmountForm.value.SeasonAmount > 0) && (this.StgAmountForm.value.AmountToPay > 0)) {
-      if (this.StgAmountForm.value.LessSeasonAdv == null) {
-        this.setValidation('LessSeasonAdv');
-        //this.StgAmountForm.controls["PaidAmount"].reset();
-        //this.PaidAmountErrorMsg='Amount should not more than Paybale!'
-        this.SeasonAdvValidate = true;
+      if (this.StgAmountForm.value.LessSeasonAdv == null || Number(this.StgAmountForm.value.LessSeasonAdv) == 0) {
+        this.setValidation('LessSeasonAdv',"SeasonAdvValidate" );
+       // this.StgAmountForm.controls['LessSeasonAdv'].setErrors({ SeasonAdvValidate: true });
+        // this.StgAmountForm.setErrors({ invalid: true });
+        // this.SeasonAdvValidate = true;
+        this.SeasonAdvValidateMsg = "Enter Less Season Advance !";
       }
       else {
         this.clearEmailValidation('LessSeasonAdv')
         this.SeasonAdvValidate = false;
+        this.SeasonAdvValidateMsg = '';
+        // this.StgAmountForm.controls['LessSeasonAdv'].setErrors(null);
+        // if (this.StgAmountForm.errors?.['invalid']) {
+        //   this.StgAmountForm.setErrors(null);
+        // }
       }
     }
     else {
       this.clearEmailValidation('LessSeasonAdv')
       this.SeasonAdvValidate = false;
+      this.SeasonAdvValidateMsg = '';
+      // this.StgAmountForm.controls['LessSeasonAdv'].setErrors(null);
+      // if (this.StgAmountForm.errors?.['invalid']) {
+      //   this.StgAmountForm.setErrors(null);
+      // }
+    }
+
+    if (Number(this.StgAmountForm.value.LessSeasonAdv) > 0) {
+      if (Number(this.StgAmountForm.controls['LessSeasonAdv'].value) > Number(this.StgAmountForm.controls['SeasonAmount'].value)) {
+        this.setValidation("LessSeasonAdv",'SeasonAdvValidate');
+        // this.StgAmountForm.controls['LessSeasonAdv'].setErrors({ SeasonAdvValidate: true });
+        // this.StgAmountForm.setErrors({ invalid: true });
+        this.SeasonAdvValidate = true;
+        this.SeasonAdvValidateMsg = "Amount should less than Sea. Advance.";
+      }
+      else {
+        this.clearEmailValidation('LessSeasonAdv')
+        // this.StgAmountForm.controls['LessSeasonAdv'].setErrors(null);
+        // if (this.StgAmountForm.errors?.['invalid']) {
+        //   this.StgAmountForm.setErrors(null);
+        // }
+        this.StgAmountForm.controls['LessSeasonAdv'].value.valid = true
+        this.SeasonAdvValidate = false;
+        this.SeasonAdvValidateMsg = "";
+      }
     }
   }
   onFocusOutEvent(event: any) {
 
     if (this.StgAmountForm.value.PaidAmount == null) {
-      this.setValidation('PaidAmount');
-      this.StgAmountForm.controls["PaidAmount"].reset();
+      this.setValidation('PaidAmount','PaidAmountValidate');
       this.PaidAmountErrorMsg = 'Amount should not Blank!'
       this.PaidAmountValidate = true;
     }
 
     else if (this.StgAmountForm.value.PaidAmount > this.StgAmountForm.value.AmountToPay) {
-      this.setValidation('PaidAmount');
-      this.StgAmountForm.controls["PaidAmount"].reset();
+      this.setValidation('PaidAmount','PaidAmountValidate');
       this.PaidAmountErrorMsg = 'Amount should not more than Paybale!'
       this.PaidAmountValidate = true;
     }
@@ -560,14 +613,23 @@ export class StgBillGenerateComponent implements OnInit {
       this.PaidAmountValidate = false;
     }
   }
+
   clearEmailValidation(controlName: string) {
     this.StgAmountForm.get(controlName)?.clearValidators();
     this.StgAmountForm.get(controlName)?.updateValueAndValidity();
+    this.StgAmountForm.controls[controlName].setErrors(null);
+    if (this.StgAmountForm.errors?.['invalid']) {
+      this.StgAmountForm.setErrors(null);
+    }
+
   }
 
-  setValidation(controlName: string) {
+  setValidation(controlName: string, errorVal: string) {
     this.StgAmountForm.get(controlName)?.setValidators([Validators.required]);
     this.StgAmountForm.get(controlName)?.updateValueAndValidity();
+    const errorKey = errorVal;
+    this.StgAmountForm.controls[controlName].setErrors({ [errorKey]: true });
+    this.StgAmountForm.setErrors({ invalid: true });
   }
 
 }

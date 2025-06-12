@@ -169,7 +169,7 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
    
 
     const categoryListService = this.advanceService
-      .GetSeasonAdvance(bodyData)
+      .GetEntrySeasonAdvance(bodyData)
       .subscribe((res: any) => {
     
         this.dataSource.data = res.SeasonDetails;

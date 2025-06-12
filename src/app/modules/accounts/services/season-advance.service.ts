@@ -10,11 +10,16 @@ export class SeasonAdvanceService {
 
   constructor(private apiService: ApiService) { }
 
-  GetSeasonAdvance(clientBody:IGetseasonAdvance): Observable<string[]> {
+  GetSeasonAdvance(clientBody: IGetseasonAdvance): Observable<string[]> {
     return this.apiService.post('Accounts/GetSeasonAdvance', clientBody);
   }
 
-  SaveSeasonAdvance(clientBody:ISaveSeasonAdvance): Observable<string[]> {
+
+  GetEntrySeasonAdvance(clientBody: IGetseasonAdvance): Observable<string[]> {
+    return this.apiService.post('Accounts/GetEntrySeasonAdvance', clientBody);
+  }
+
+  SaveSeasonAdvance(clientBody: ISaveSeasonAdvance): Observable<string[]> {
     return this.apiService.post('Accounts/SaveSeasonAdvance', clientBody);
   }
 }
