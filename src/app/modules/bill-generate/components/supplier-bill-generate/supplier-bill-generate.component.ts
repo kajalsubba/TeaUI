@@ -382,7 +382,15 @@ export class SupplierBillGenerateComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
+  
   BillSave() {
+
+    if (this.dataSource.data.length == 0) {
+
+      this.toastr.error('Collection has no data!', 'Error')
+      return
+    }
     if (this.supplierAmountForm.invalid || this.supplierAmountForm.value.ClientId == 0 || this.supplierBillForm.invalid) {
       this.supplierAmountForm.markAllAsTouched();
       this.supplierBillForm.markAllAsTouched();
@@ -391,20 +399,16 @@ export class SupplierBillGenerateComponent implements OnInit {
     const StgObject: StgCollectionData[] = [];
     const PaymentObject: StgPaymentData[] = [];
     this.dataSource.data.forEach((selectedItem) => {
-      // Create the selected object based on the selected item
       const selectedObject: StgCollectionData = {
         CollectionId: selectedItem.CollectionId ?? 0, // Assuming CollectionId is present in your data
       };
-      // Push the selected object to the array
       StgObject.push(selectedObject);
     });
 
     this.paymentDataSource.data.forEach((selectedItem) => {
-      // Create the selected object based on the selected item
       const selectedObject: StgPaymentData = {
         PaymentId: selectedItem.PaymentId ?? 0, // Assuming CollectionId is present in your data
       };
-      // Push the selected object to the array
       PaymentObject.push(selectedObject);
     });
 

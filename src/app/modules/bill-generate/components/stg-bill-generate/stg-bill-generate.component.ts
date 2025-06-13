@@ -200,21 +200,6 @@ export class StgBillGenerateComponent implements OnInit {
 
     amountToPay <= 0 ? this.StgAmountForm.controls['PaidAmount'].disable({ onlySelf: true }) : this.StgAmountForm.controls['PaidAmount'].enable({ onlySelf: true });
 
-    // if (Number(this.StgAmountForm.controls['LessSeasonAdv'].value) > Number(this.StgAmountForm.controls['SeasonAmount'].value)) {
-    //   this.setValidation("LessSeasonAdv");
-    //   this.StgAmountForm.controls['LessSeasonAdv'].setErrors({ amountTooHigh: true });
-
-    //   this.SeasonAdvValidate = true;
-    //   this.SeasonAdvValidateMsg = "Amount should less than Sea. Advance.";
-    // }
-    // else {
-    //   this.clearEmailValidation('LessSeasonAdv')
-    //   this.StgAmountForm.controls['LessSeasonAdv'].setErrors(null);
-
-    //   this.StgAmountForm.controls['LessSeasonAdv'].value.valid = true
-    //   this.SeasonAdvValidate = false;
-    //   this.SeasonAdvValidateMsg = "";
-    // }
 
   }
 
@@ -430,14 +415,23 @@ export class StgBillGenerateComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
+  
   BillSave() {
 
     debugger
+    if (this.dataSource.data.length == 0) {
+
+      this.toastr.error('Collection has no data!', 'Error')
+      return
+    }
+
     if (this.StgAmountForm.invalid || this.StgAmountForm.value.ClientId == 0 || this.StgBillForm.invalid) {
       this.StgAmountForm.markAllAsTouched();
       this.StgBillForm.markAllAsTouched();
       return;
     }
+
     const StgObject: StgCollectionData[] = [];
     const PaymentObject: StgPaymentData[] = [];
     this.dataSource.data.forEach((selectedItem) => {
@@ -501,8 +495,8 @@ export class StgBillGenerateComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        this.SaveBill(data);
 
+        this.SaveBill(data);
 
       }
     });
@@ -549,46 +543,33 @@ export class StgBillGenerateComponent implements OnInit {
     debugger
     if ((this.StgAmountForm.value.SeasonAmount > 0) && (this.StgAmountForm.value.AmountToPay > 0)) {
       if (this.StgAmountForm.value.LessSeasonAdv == null || Number(this.StgAmountForm.value.LessSeasonAdv) == 0) {
-        this.setValidation('LessSeasonAdv',"SeasonAdvValidate" );
-       // this.StgAmountForm.controls['LessSeasonAdv'].setErrors({ SeasonAdvValidate: true });
-        // this.StgAmountForm.setErrors({ invalid: true });
-        // this.SeasonAdvValidate = true;
+        this.setValidation('LessSeasonAdv', "SeasonAdvValidate");
         this.SeasonAdvValidateMsg = "Enter Less Season Advance !";
       }
       else {
         this.clearEmailValidation('LessSeasonAdv')
         this.SeasonAdvValidate = false;
         this.SeasonAdvValidateMsg = '';
-        // this.StgAmountForm.controls['LessSeasonAdv'].setErrors(null);
-        // if (this.StgAmountForm.errors?.['invalid']) {
-        //   this.StgAmountForm.setErrors(null);
-        // }
+
       }
     }
     else {
       this.clearEmailValidation('LessSeasonAdv')
       this.SeasonAdvValidate = false;
       this.SeasonAdvValidateMsg = '';
-      // this.StgAmountForm.controls['LessSeasonAdv'].setErrors(null);
-      // if (this.StgAmountForm.errors?.['invalid']) {
-      //   this.StgAmountForm.setErrors(null);
-      // }
+
     }
 
     if (Number(this.StgAmountForm.value.LessSeasonAdv) > 0) {
       if (Number(this.StgAmountForm.controls['LessSeasonAdv'].value) > Number(this.StgAmountForm.controls['SeasonAmount'].value)) {
-        this.setValidation("LessSeasonAdv",'SeasonAdvValidate');
-        // this.StgAmountForm.controls['LessSeasonAdv'].setErrors({ SeasonAdvValidate: true });
-        // this.StgAmountForm.setErrors({ invalid: true });
+        this.setValidation("LessSeasonAdv", 'SeasonAdvValidate');
+
         this.SeasonAdvValidate = true;
         this.SeasonAdvValidateMsg = "Amount should less than Sea. Advance.";
       }
       else {
         this.clearEmailValidation('LessSeasonAdv')
-        // this.StgAmountForm.controls['LessSeasonAdv'].setErrors(null);
-        // if (this.StgAmountForm.errors?.['invalid']) {
-        //   this.StgAmountForm.setErrors(null);
-        // }
+
         this.StgAmountForm.controls['LessSeasonAdv'].value.valid = true
         this.SeasonAdvValidate = false;
         this.SeasonAdvValidateMsg = "";
@@ -598,13 +579,13 @@ export class StgBillGenerateComponent implements OnInit {
   onFocusOutEvent(event: any) {
 
     if (this.StgAmountForm.value.PaidAmount == null) {
-      this.setValidation('PaidAmount','PaidAmountValidate');
+      this.setValidation('PaidAmount', 'PaidAmountValidate');
       this.PaidAmountErrorMsg = 'Amount should not Blank!'
       this.PaidAmountValidate = true;
     }
 
     else if (this.StgAmountForm.value.PaidAmount > this.StgAmountForm.value.AmountToPay) {
-      this.setValidation('PaidAmount','PaidAmountValidate');
+      this.setValidation('PaidAmount', 'PaidAmountValidate');
       this.PaidAmountErrorMsg = 'Amount should not more than Paybale!'
       this.PaidAmountValidate = true;
     }

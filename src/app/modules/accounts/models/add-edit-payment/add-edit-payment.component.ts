@@ -284,7 +284,7 @@ export class AddEditPaymentComponent implements OnInit {
 
     if (numericAmount > 0) {
       this.isSubmitting = true;
-      if (this.addEditPayment.value.ClientName.ClientId != 0) {
+      if (this.addEditPayment.value.ClientName.ClientId != 0 || this.addEditPayment.value.ClientName.ClientId != '0') {
         this.SaveData(data);
       }
       else {
@@ -335,7 +335,7 @@ export class AddEditPaymentComponent implements OnInit {
     this.addEditPayment.controls['Amount'].reset()
     this.addEditPayment.controls['PaymentTypeId'].reset()
     this.addEditPayment.controls['Narration'].reset()
-    this.amountInWords='';
+    this.amountInWords = '';
 
   }
 
