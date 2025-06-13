@@ -311,6 +311,8 @@ export class AddEditPaymentComponent implements OnInit {
       .subscribe((res: any) => {
         if (res.Id == 0) {
           this.toastr.warning(res.Message, 'Warning');
+          this.isSubmitting = false;
+          return
         }
         else {
           this.toastr.success(res.Message, 'SUCCESS');
