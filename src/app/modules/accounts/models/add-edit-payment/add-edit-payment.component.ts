@@ -105,14 +105,20 @@ export class AddEditPaymentComponent implements OnInit {
   selectEvent(item: any) {
     // do something with selected item
     console.log(item, 'item');
+    this.addEditPayment.controls['ClientId'].setValue(item.ClientId);
   }
 
   onChangeSearch(search: string) {
+    if (search == null || search == '') {
+      this.addEditPayment.controls['ClientId'].setValue(null);
+    }
+    console.log(search, 'search');
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
   }
 
   onFocused(e: any) {
+
     // do something
   }
 
