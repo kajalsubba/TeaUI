@@ -65,7 +65,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     { columnDef: 'Remarks', header: 'Remarks' },
     { columnDef: 'TripName', header: 'Trip' },
   ];
-
+  today: Date = new Date();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
@@ -85,7 +85,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     private autocompleteService: AutoCompleteService,
     private fb: FormBuilder,
     private stgService: StgService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -121,10 +121,10 @@ export class StgComponent implements OnInit, AfterViewInit {
       TenantId: this.loginDetails.TenantId,
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
-      ClientId:0,
-      GradeId:0,
+      ClientId: 0,
+      GradeId: 0,
       TripId: this.dateRangeForm.value.TripId,
-      CreatedBy: this.loginDetails.RoleName != 'Admin'? this.loginDetails.UserId : 0,
+      CreatedBy: this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
     };
     const categoryListService = this.stgService
       .GetStg(bodyData)
@@ -169,7 +169,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     });
   }
 
-  deleteItem(element: any) {}
+  deleteItem(element: any) { }
 
   convertDate(date: any): string {
     const parsedDate = new Date(date);
@@ -186,7 +186,7 @@ export class StgComponent implements OnInit, AfterViewInit {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.dateRangeForm.controls['toDate'].setValue(null);
+    // this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 
@@ -247,7 +247,7 @@ export class StgComponent implements OnInit, AfterViewInit {
     //   0
     // );
     return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
- 
+
   }
 
   async loadVehicleNumbers() {

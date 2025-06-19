@@ -20,6 +20,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./add-edit-stg.component.scss']
 })
 export class AddEditStgComponent implements OnInit {
+  today: Date = new Date();
   isSubmitting = false;
   stgForm!: FormGroup;
   private destroy$ = new Subject<void>();
@@ -286,7 +287,7 @@ export class AddEditStgComponent implements OnInit {
 
   // Autocomplete function
   filterClientNames(value: string): any[] {
-    
+
     const filterValue = value.toLowerCase();
     return this.filteredClient = this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
 

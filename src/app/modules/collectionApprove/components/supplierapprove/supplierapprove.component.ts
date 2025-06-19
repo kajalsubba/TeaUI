@@ -30,7 +30,6 @@ import { AddEditSupplierComponent } from 'src/app/modules/collection/models/add-
 })
 export class SupplierapproveComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
-    // 'select',
     'actions',
     'CollectionDate',
     'VehicleNo',
@@ -42,12 +41,10 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     'Rate',
     'GrossAmount',
     'Remarks',
-    // 'TripName',
     'CreatedBy',
     'CreatedDate',
     'Status'
   ];
-  //  dataList:any=[];
   dataSource = new _MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
   filteredData: any[] = [];
@@ -56,27 +53,23 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
-
     { columnDef: 'AccountName', header: 'Account Name' },
-
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-    //  { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     { columnDef: 'Rate', header: 'Rate' },
     { columnDef: 'GrossAmount', header: 'Gross Amount' },
-    // { columnDef: 'Status', header: 'Status' },
     { columnDef: 'Remarks', header: 'Remarks' },
-    //    { columnDef: 'TripName', header: 'Trip' },
     { columnDef: 'CreatedBy', header: 'Created By' },
     { columnDef: 'CreatedDate', header: 'Created DateTime' },
   ];
 
-  // @ViewChild('child') navComponent!: TopNavComponent;
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
   loginDetails: any;
+  today: Date = new Date();
   dateRangeForm!: FormGroup;
   minToDate!: any;
   IsApprove: boolean = false;

@@ -24,7 +24,7 @@ import { SaleService } from '../../services/sale.service';
 })
 export class SaleApproveComponent implements OnInit {
   saleApproveForm!: FormGroup;
-
+  today: Date = new Date();
   AccountList: any = [];
   FactoryList: any = [];
   filteredFactory: any = [];

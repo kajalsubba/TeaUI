@@ -65,13 +65,14 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   private subscriptions: Subscription[] = [];
   private destroy$ = new Subject<void>();
   loginDetails: any;
+  today: Date = new Date();
   dateRangeForm!: FormGroup;
   minToDate!: any;
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
   selectedRowIndex: number = -1;
   CollectionDates: any[] = [];
-  GradeSummary: any="Grade Summary";
+  GradeSummary: any = "Grade Summary";
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -138,7 +139,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
       VehicleNo: this.dateRangeForm.value.VehicleNo,
       Status: '',
       ClientId: 0,
-      GradeId:0,
+      GradeId: 0,
       TripId: this.dateRangeForm.value.TripId,
       CreatedBy: 0,
     };
@@ -353,7 +354,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
   }
 
   getTotalCost(columnName: string): number {
-    
+
     return this.selection.selected.reduce(
       (acc, curr) => acc + curr[columnName],
       0
@@ -378,9 +379,9 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         FactoryId: approveData[0].FactoryId,
         AccountId: approveData[0].AccountId,
         ChallanWeight: approveData[0].ChallanWeight,
-        FineLeaf:approveData[0].FineLeaf,
+        FineLeaf: approveData[0].FineLeaf,
         saleTypeId: 1,
-        Comments:approveData[0].Comment
+        Comments: approveData[0].Comment
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {

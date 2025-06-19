@@ -16,7 +16,7 @@
 
                                     <mat-form-field>
                                         <input #CollectDate matInput [matDatepicker]="picker"
-                                            placeholder="CollectionDate" formControlName="CollectionDate">
+                                            placeholder="CollectionDate" formControlName="CollectionDate" [max]="today">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>

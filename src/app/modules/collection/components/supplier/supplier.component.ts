@@ -72,6 +72,7 @@ export class SupplierComponent implements OnInit {
   loginDetails: any;
   dateRangeForm!: FormGroup;
   minToDate!: any;
+  today: Date = new Date();
   vehicleNumbers: any[] = [];
   TripList: any[] = [];
   private destroy$ = new Subject<void>();
@@ -119,13 +120,13 @@ export class SupplierComponent implements OnInit {
       ClientId: 0,
       Status: '',
       TripId: 0,
-      FactoryId:0,
+      FactoryId: 0,
       CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
     };
     const categoryListService = this.supplierService
       .GetSupplierData(bodyData)
       .subscribe((res: any) => {
-   
+
         this.dataSource.data = res.SupplierDetails;
       });
     this.subscriptions.push(categoryListService);

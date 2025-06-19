@@ -8,7 +8,7 @@
               <div class="col-lg-4 mb-2 col-xl-2">
                 <mat-form-field>
                   <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
-                    placeholder="From Date" formControlName="fromDate">
+                    placeholder="From Date" formControlName="fromDate" [max]="today">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -16,7 +16,7 @@
               <div class="col-lg-4 mb-2 col-xl-2">
                 <mat-form-field class="mx-2">
                   <input readonly matInput [min]="minToDate" [matDatepicker]="picker1"
-                    min="dateRangeForm.value.fromDate" placeholder="To Date" formControlName="toDate">
+                    min="dateRangeForm.value.fromDate" placeholder="To Date" formControlName="toDate" [max]="today">
                   <mat-datepicker-toggle [disabled]="dateRangeForm.value.fromDate == null" matSuffix
                     [for]="picker1"></mat-datepicker-toggle>
                   <mat-datepicker #picker1></mat-datepicker>
@@ -56,7 +56,7 @@
             </div>
           </form>
         </div>
-        
+
       </div>
     </div>
     <div class="col-lg-3 my-2 d-grid border-left">
@@ -87,14 +87,16 @@
             <!-- Collection Date -->
             <ng-container matColumnDef="CollectionDate">
               <th mat-header-cell *matHeaderCellDef> Collection Date </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.CollectionDate }} </td>
               <td class="footer-total total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
             </ng-container>
 
             <!-- First Weight -->
             <ng-container matColumnDef="FirstWeight">
               <th mat-header-cell *matHeaderCellDef> First Weight( KG ) </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.FirstWeight}} KG </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.FirstWeight}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('FirstWeight') }} KG</b>
               </td>
@@ -102,7 +104,8 @@
             <!-- WetLeaf -->
             <ng-container matColumnDef="WetLeafKg">
               <th mat-header-cell *matHeaderCellDef> Wet Leaf ( KG ) </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.WetLeafKg}} KG </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.WetLeafKg}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('WetLeafKg') }} KG</b>
               </td>
@@ -111,7 +114,8 @@
             <!-- Long Leaf -->
             <ng-container matColumnDef="LongLeafKg">
               <th mat-header-cell *matHeaderCellDef> Long Leaf ( KG ) </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.LongLeafKg}} KG </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.LongLeafKg}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b>{{ getTotalCost('LongLeafKg') }} KG</b>
               </td>
@@ -120,7 +124,8 @@
             <!-- Deduction -->
             <ng-container matColumnDef="Deduction">
               <th mat-header-cell *matHeaderCellDef> Deduction ( KG ) </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.Deduction}} KG </td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.Deduction}} KG </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('Deduction') }} KG</b>
               </td>
             </ng-container>
@@ -128,7 +133,8 @@
             <!-- Final Weight -->
             <ng-container matColumnDef="FinalWeight">
               <th mat-header-cell *matHeaderCellDef> Final Weight ( KG ) </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} KG</td>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.FinalWeight}} KG</td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotalCost('FinalWeight') }} KG</b>
               </td>
             </ng-container>
@@ -162,11 +168,12 @@
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
-                        [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
-                </tr>
+              [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+            </tr>
             <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
             <tr class="mat-row" *matNoDataRow>
-              <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is not found !</td>
+              <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is not
+                found !</td>
             </tr>
           </table>
         </div>

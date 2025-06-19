@@ -8,7 +8,7 @@
               <div class="col-lg-3">
                 <mat-form-field>
                   <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
-                    placeholder="Collection Date" formControlName="fromDate">
+                    placeholder="Collection Date" formControlName="fromDate" [max]="today">
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>

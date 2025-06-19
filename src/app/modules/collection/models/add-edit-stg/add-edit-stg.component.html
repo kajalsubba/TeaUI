@@ -16,7 +16,7 @@
 
                                     <mat-form-field>
                                         <input matInput [matDatepicker]="picker" placeholder="CollectionDate"
-                                            formControlName="CollectionDate">
+                                            formControlName="CollectionDate" [max]="today">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>
@@ -86,7 +86,7 @@
                                         </mat-option>
                                     </mat-autocomplete> -->
                                     <mat-select placeholder="--Select name--" class="fromSelect"
-                                        formControlName="ClientId" >
+                                        formControlName="ClientId">
                                         <input #clientName (input)="filterClientNames(clientName.value)" type="text"
                                             class="form-control inset-shadow" placeholder="Search client">
                                         <mat-option *ngFor="let client of filteredClient"

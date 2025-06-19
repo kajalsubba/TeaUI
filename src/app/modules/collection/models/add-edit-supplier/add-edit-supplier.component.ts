@@ -24,6 +24,7 @@ import { IClient } from 'src/app/modules/bill-generate/interfaces/iget-stg-bill'
   styleUrls: ['./add-edit-supplier.component.scss'],
 })
 export class AddEditSupplierComponent implements OnInit {
+  today: Date = new Date();
   isSubmitting = false;
   supplierForm!: FormGroup;
   imageUrl: any | ArrayBuffer | null = null;
@@ -101,7 +102,7 @@ export class AddEditSupplierComponent implements OnInit {
 
     if (this.dialogData.value) {
       // debugger
-    //  console.log(this.dialogData.value, 'this.dialogData.value');
+      //  console.log(this.dialogData.value, 'this.dialogData.value');
       this.SelectFactory(this.dialogData.value.FactoryId);
       // ClientId: this.supplierForm.value.ClientName?.ClientId ?? 0,
       this.supplierForm.controls['CollectionDate'].setValue(new Date(this.dialogData.value.CollDate));
@@ -131,7 +132,7 @@ export class AddEditSupplierComponent implements OnInit {
         this.imageUrl = this.dialogData.value.imageUrl;
       }
 
-    
+
     }
 
     // load the initial bank list

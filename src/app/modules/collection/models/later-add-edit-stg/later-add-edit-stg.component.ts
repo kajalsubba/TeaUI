@@ -19,6 +19,7 @@ import { GradeService } from 'src/app/modules/masters/services/grade.service';
   styleUrls: ['./later-add-edit-stg.component.scss']
 })
 export class LaterAddEditStgComponent implements OnInit {
+  today: Date = new Date();
   isSubmitting = false;
   stgForm!: FormGroup;
   private destroy$ = new Subject<void>();

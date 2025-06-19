@@ -15,7 +15,7 @@
     
                                     <mat-form-field>
                                         <input formControlName="SaleDate" matInput [matDatepicker]="picker"
-                                            placeholder="Select Date">
+                                            placeholder="Select Date" [max]="today">
                                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                         <mat-datepicker #picker></mat-datepicker>
                                     </mat-form-field>
