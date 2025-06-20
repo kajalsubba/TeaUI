@@ -1,0 +1,94 @@
+<div class="row m-2 align-items-center">
+    <div class="col-lg-3">
+        <form [formGroup]="rolePermissionForm">
+            <div class="form-group row py-1">
+                <div class="col-lg-12 position-relative" > <span class="text-danger">*</span>
+                    <mat-select placeholder="--Select Role--" class="fromSelect" (selectionChange)="onSelectionChange($event)"
+                        formControlName="RoleId">
+                        <mat-option *ngFor="let item of RoleList"
+                            [value]="item.UserRoleId">{{item.RoleName}}</mat-option>
+                    </mat-select>
+                    <span *ngIf="rolePermissionForm.get('RoleId')?.hasError('required') && rolePermissionForm.get('RoleId')?.touched" class="text-danger validation-message">
+                        Role Name is required.
+                     </span>  
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- <div class="col-lg-2">
+        <button (click)="GetRolePermission()" class="btn btn-color ms-2">Search</button> 
+    </div> -->
+</div>
+
+<div class="row m-2">
+    <div class="col-lg-12 text-center">
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <!-- Module Name Column -->
+                <ng-container matColumnDef="MasterModuleName">
+                    <th mat-header-cell *matHeaderCellDef> Module Name </th>
+                    <td mat-cell *matCellDef="let item"> {{ item.MasterModuleName }} </td>
+                </ng-container>
+            
+                <!-- Sub Menu Name Column -->
+                <ng-container matColumnDef="SubModuleName">
+                    <th mat-header-cell *matHeaderCellDef> Sub Menu Name </th>
+                    <td mat-cell *matCellDef="let item"> {{ item.SubModuleName }} </td>
+                </ng-container>
+            
+                <!-- Hide Column -->
+                <ng-container matColumnDef="HideModule">
+                    <th mat-header-cell *matHeaderCellDef> Hide </th>
+                    <td mat-cell *matCellDef="let item">
+                        <mat-checkbox [(ngModel)]="item.HideModule"></mat-checkbox>
+                    </td>
+                </ng-container>
+            
+                <!-- Save Column -->
+                <ng-container matColumnDef="SaveData">
+                    <th mat-header-cell *matHeaderCellDef> Save </th>
+                    <td mat-cell *matCellDef="let item">
+                        <mat-checkbox [(ngModel)]="item.SaveData"></mat-checkbox>
+                    </td>
+                </ng-container>
+            
+                <!-- Edit Column -->
+                <ng-container matColumnDef="EditData">
+                    <th mat-header-cell *matHeaderCellDef> Edit </th>
+                    <td mat-cell *matCellDef="let item">
+                        <mat-checkbox [(ngModel)]="item.EditData"></mat-checkbox>
+                    </td>
+                </ng-container>
+            
+                <!-- View Column -->
+                <ng-container matColumnDef="ViewData">
+                    <th mat-header-cell *matHeaderCellDef> View </th>
+                    <td mat-cell *matCellDef="let item">
+                        <mat-checkbox [(ngModel)]="item.ViewData"></mat-checkbox>
+                    </td>
+                </ng-container>
+            
+                <!-- Delete Column -->
+                <ng-container matColumnDef="DeleteData">
+                    <th mat-header-cell *matHeaderCellDef> Delete </th>
+                    <td mat-cell *matCellDef="let item">
+                        <mat-checkbox [(ngModel)]="item.DeleteData"></mat-checkbox>
+                    </td>
+                </ng-container>
+            
+                <!-- Upload Column -->
+                <ng-container matColumnDef="Upload">
+                    <th mat-header-cell *matHeaderCellDef> Upload </th>
+                    <td mat-cell *matCellDef="let item">
+                        <mat-checkbox [(ngModel)]="item.Upload"></mat-checkbox>
+                    </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            
+        </div>
+        <button (click)="updateMenuAccess()" class="btn btn-color mt-2">Add Permission</button> 
+    </div>
+</div>

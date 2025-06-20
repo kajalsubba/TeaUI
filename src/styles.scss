@@ -1,0 +1,347 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import 'src/styles/toastr.css';
+
+:root {
+  --bg-color: white; /* Cream color for background */
+  --primary-color: #018353;
+  --focus-color: #F28C28;
+  --secondary-color: #effaf6; /* Lighter shade for neumorphic effect */
+
+  --box-shadow: 5px 5px 10px var(--secondary-color), -5px -5px 10px var(--bg-color);
+  --box-shadow-inset: inset 3px 3px 8px var(--secondary-color), inset -5px -5px 10px var(--bg-color);
+  --soft-box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+
+html,
+body {
+  height: 100%;
+  background-color: #e5eef4 !important;
+  font-size: 14px;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  @media (max-width:68em) {
+    font-size: 12px;
+  }
+}
+
+@media (max-width:68em) {
+  label,th,td{
+    font-size: 0.8rem;
+  }
+}
+.cursor-pointer{
+  cursor: pointer;
+}
+
+// table style 
+
+table{
+  thead{
+    tr{
+      background-color: var(--primary-color) !important;
+      color: #fff !important;
+      height: 40px !important;
+      th{
+        text-align: center !important;
+        text-wrap: nowrap;
+      }
+    }
+  }
+  tbody{
+    tr{
+      height: 40px !important;
+      &:nth-child(odd){
+        background-color: var(--secondary-color);
+      }
+      td{
+        text-align: center !important;
+        text-wrap: nowrap;
+      }
+    }
+  }
+  tfoot{
+    tr{
+      background-color: #3f5f53 !important;
+      color: #fff !important;
+    }
+  }
+}
+
+.mat-mdc-table th:last-child{
+  min-width: 130px;
+}
+
+.mat-sort-header-container{
+  justify-content: center !important;
+}
+
+.mat-sort-header-arrow {
+  color: #fff !important;
+}
+
+.mat-mdc-paginator-page-size-select {
+  margin: 0 4px;
+  width: 70px !important;
+}
+
+.mat-mdc-paginator-container{
+  min-height: 45px !important;
+  box-shadow: var(--soft-box-shadow);
+}
+
+// Table Style END 
+
+// button style 
+.btn-color:focus {
+  background-color: #F28C28 !important;
+}
+.btn-color{
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  border-radius: 5px !important;
+  box-shadow: var(--soft-box-shadow);
+}
+
+// Form and Validation style
+
+input[type="text"],input[type="email"],input[type="number"],input[type="password"].form-control{
+  border-radius: 0;
+  box-shadow: var(--box-shadow-inset);
+  &:focus{
+    border: 1px solid var(--focus-color) !important;
+    box-shadow: var(--soft-box-shadow) !important;
+  }
+
+  &::placeholder{
+    font-size: 0.9rem !important;
+    opacity: 0.6;
+  }
+}
+
+.mat-mdc-select-placeholder{
+  font-size: 1rem;
+}
+
+.form-group input:read-only:not(.date-select) {
+  background-color: #e7e7e7;
+  box-shadow: none;
+  border: 1px solid gray;
+}
+
+.form-control{
+  height: 40px;
+}
+
+.mat-date-range-input-inner{
+  box-shadow: none !important;
+}
+
+.mat-calendar-table-header{
+  background-color: transparent !important;
+  tr{
+    background-color: transparent !important;
+    height: 0px !important;
+  }
+}
+.mat-calendar-body-label{
+  text-align: left !important;
+}
+
+.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix{
+  width: 100%;
+}
+
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-right: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--secondary-color);
+  border-radius: 0px;
+}
+
+.mat-mdc-form-field-subscript-wrapper{
+  display: none;
+}
+
+.mat-calendar-header{
+  background-color: var(--primary-color);
+}
+
+mat-datepicker-toggle{
+  button{
+    color: var(--primary-color) !important;
+  }
+}
+
+.mat-calendar-controls{
+  button{
+    color: #fff !important;
+  }
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before{
+  border-bottom-color:transparent !important;
+}
+
+textarea{
+  border-radius: 0px !important;
+}
+
+
+.fromSelect {
+  border-radius: 0 !important;
+  border: 1px solid lightgray !important;
+  box-shadow: var(--box-shadow-inset) !important; 
+  padding: 7px 7px 7px 0px;
+
+  &:focus {
+    border: 1px solid var(--focus-color) !important;
+    box-shadow: var(--soft-box-shadow) !important;
+  }
+
+  &::placeholder {
+    font-size: 0.9rem !important;
+    opacity: 0.6;
+  }
+}
+
+.fromSelect .mat-select-value {
+  font-size: 0.9rem !important; /* Adjust font size */
+  color: var(--primary-color) !important; /* Adjust text color */
+}
+
+
+.validation-message{
+    position: absolute;
+    bottom: -46%;
+    font-size: 0.7rem;
+    text-shadow: var(--soft-box-shadow);
+}
+
+
+// /Model Styles
+
+.model-title{
+  background-color: var(--primary-color);
+  text-transform: uppercase;
+  span{
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+  i{
+    color: #fff;
+    font-size: 1.5rem;
+  }
+}
+.model-title .text-center {
+  text-align: center;
+}
+.model-title .flex-grow-1 {
+  flex-grow: 1;
+}
+
+.mat-mdc-dialog-actions{
+  box-shadow: var(--soft-box-shadow);
+}
+
+.mat-mdc-select-value{
+  padding: 0px 10px !important;
+}
+
+
+.edit-delete-button{
+  padding: 0px 10px;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+// Toggle Switch Color
+
+.mdc-switch:enabled .mdc-switch__track::after {
+  background: var(--secondary-color) !important;
+  border: 1px solid lightgray !important;
+  box-shadow: var(--box-shadow) !important;
+}
+
+.mat-mdc-option:focus.mdc-list-item, .mat-mdc-option.mat-mdc-option-active.mdc-list-item{
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+.mat-mdc-option{
+  min-height: 38px !important;
+}
+
+.mat-mdc-dialog-content {
+  max-height: 90% !important;
+}
+
+.mat-mdc-paginator-container .mat-mdc-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-mdc-text-field-wrapper{
+  padding: 0px 10px;
+}
+
+app-login .mat-mdc-tab-labels{
+  justify-content: center !important;
+
+  .mdc-tab--active{
+    background-color: var(--primary-color) !important;
+    border-radius: 10px 10px 0px 0px !important;
+    box-shadow: var(--soft-box-shadow);
+    .mdc-tab__text-label{
+      color: #fff !important;
+    }
+  }
+
+}
+
+.mat-mdc-option .mdc-list-item__primary-text {
+  white-space: normal;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+  overflow: hidden !important;
+  margin-right: auto;
+  text-wrap: nowrap !important;
+  /* width: 38%; */
+  text-overflow: ellipsis !important;
+}
+
+.selected-row {
+  background-color: #ffd642 !important; /* Change this to the desired background color */
+}
+
+td.reject-row{
+  background-color: #e24454 !important;
+  color: #fff !important;
+}
+
+.highlight-date {
+  background-color: yellow !important; /* Change the color as needed */
+  border-radius: 50%;
+}
+
+.border-left{
+  border-left: 2px solid gray;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input, .mat-mdc-select-value-text{
+  font-size: 1rem !important;
+}
+
+.btn-outline-dark{
+  border: 2px solid var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  &:hover{
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+  }
+}

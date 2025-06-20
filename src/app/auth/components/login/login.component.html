@@ -1,0 +1,128 @@
+<div class="container">
+  <div class="row align-items-center vh-100">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="image-container">
+        <img class="background-image" src="assets/images/download2.jpg" alt="">
+      </div>
+      
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <mat-tab-group mat-stretch-tabs="false">
+        <mat-tab label="Agent Login">
+          <div class="col-lg-12 col-md-12 mt-2 col-sm-12 d-flex justify-content-center">
+            <div class="form-container">
+              <div class="welcome-message">
+                <p>Welcome to </p>
+              </div>
+              <div class="logo-container text-center">
+                <i class="fa-brands fa-pagelines"></i> Tea Agent Portal
+              </div>
+              <div class="line m-1"></div>
+              <div *ngIf="adminLoginFail" class="alert alert-danger fail-alert mb-0 p-0 py-1 text-center">
+                User Id or Password is incorrect ! <i (click)="closeAlert('Admin')" class="fa-solid fa-xmark"></i>
+              </div>
+              <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                <div class="form-group position-relative my-2">
+                  <label for="username">Username</label>
+                  <input formControlName="userName" placeholder="Enter your username" name="username" id="username"
+                    type="text">
+                  <div *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
+                    class="text-danger">
+                    Username is required.
+                  </div>
+                </div>
+
+                <div class="form-group position-relative my-2">
+                  <label for="password">Password</label>
+                  <input formControlName="password" name="password" placeholder="Enter your password" id="password"
+                    type="password">
+                  <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                    class="text-danger">
+                    Password is required.
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i
+                    class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
+              </form>
+              <a href="assets/mobileApp/com.companyname.teaclientmaiu.apk" download="com.companyname.teaclientmaiu.apk" class="playstore-button">
+                <span class="icon">
+                  <!-- <i class="fa-brands fa-android"></i> -->
+                  <i class='bx bxl-android'></i>
+                </span>
+                <span class="texts">
+                  <span class="text-1">Download Android</span>
+                  <span class="text-2">Application</span>
+                </span>
+             
+              </a>
+              
+            </div>
+          </div>
+
+        </mat-tab>
+        <mat-tab label="Client Login">
+          <div class="col-lg-12 col-md-12 mt-2 col-sm-12 d-flex justify-content-center">
+            <div class="form-container">
+              <div class="welcome-message">
+                <p>Welcome to </p>
+              </div>
+              <div class="logo-container text-center">
+                <i class="fa-brands fa-pagelines"></i> Tea Agent Portal
+              </div>
+              <div class="line m-1"></div>
+              <div *ngIf="clientLoginFail" class="alert alert-danger fail-alert mb-0 p-0 py-1 text-center">
+                User Id or Password is incorrect ! <i (click)="closeAlert('client')" class="fa-solid fa-xmark"></i>
+              </div>
+              <form class="form" [formGroup]="ClientloginForm" (ngSubmit)="onClientLogin()">
+                <div class="form-group position-relative my-2">
+                  <label for="TenantId">Select Agent</label>
+                  <mat-select aria-placeholder="--Select Agent--" class="fromSelect" formControlName="TenantId">
+                    <mat-option *ngFor="let item of TenantList" [value]="item.TenantId">
+                      {{item.TenantName}}
+                    </mat-option>
+                  </mat-select>
+                  <div *ngIf="ClientloginForm.get('TenantId')?.invalid && ClientloginForm.get('TenantId')?.touched"
+                    class="text-danger">
+                    Agent is required.
+                  </div>
+                </div>
+                <div class="form-group position-relative my-2">
+                  <label for="username">User ID</label>
+                  <input formControlName="userName" placeholder="Enter your username" name="username" id="username"
+                    type="text">
+                  <div *ngIf="ClientloginForm.get('userName')?.invalid && ClientloginForm.get('userName')?.touched"
+                    class="text-danger">
+                    Username is required.
+                  </div>
+                </div>
+
+                <div class="form-group position-relative my-2">
+                  <label for="password">Password</label>
+                  <input formControlName="password" name="password" placeholder="Enter your password" id="password"
+                    type="password">
+                  <div *ngIf="ClientloginForm.get('password')?.invalid && ClientloginForm.get('password')?.touched"
+                    class="text-danger">
+                    Password is required.
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary form-submit-btn">Sign In <i
+                    class="fa-solid mx-2 fa-circle-arrow-right"></i></button>
+              </form>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    
+    <p class="copy-right">&copy; 2024 ALL RIGHTS RESERVED. </p>
+    <div id="siteseal" class="justify-content-center"></div>
+
+    <!-- <span id="siteseal"><script async type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=mhsTEc2SPWOTwt8oYega8bwznBbqe8yKxyXDljpDOYp2vWnzUbwggUNxWv37"></script></span>
+   -->
+  </div>
+
+        
+
+</div>

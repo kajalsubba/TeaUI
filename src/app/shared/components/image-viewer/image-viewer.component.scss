@@ -1,0 +1,32 @@
+// .image-container{
+//     object-fit: cover;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// }
+
+// .image-container {
+//     width: 100%; /* Adjust the width as needed */
+//     height: 300px; /* Adjust the height as needed */
+//     overflow: hidden; /* Hide overflowing content */
+// }
+
+// .img-fluid {
+//     width: 100%; /* Make the image responsive */
+//     height: auto; /* Maintain aspect ratio */
+//     display: block; /* Remove any inline margins */
+// }
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    max-width: 100%;
+    max-height: 100vh; /* Ensure the container does not exceed viewport height */
+  }
+  
+  .zoomable-image {
+    max-width: 100%;
+    max-height: 100%;
+    transition: transform 0.2s;
+  }

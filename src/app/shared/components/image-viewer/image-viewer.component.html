@@ -1,0 +1,17 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{data.rowData.CollectionDate}} - {{data.rowData.FactoryName}} - {{data.rowData.FineLeaf}}% - {{data.rowData.ChallanWeight}} KG -{{data.rowData.AccountName}}</span>
+
+
+    <div class="side-buttons">
+        <i matTooltip="Rotate" class="fa-solid fa-undo cursor-pointer mx-2" (click)="rotateImage()"></i>
+        <i matTooltip="Download Image" class="fa-solid fa-download cursor-pointer mx-2" (click)="downloadImage()"></i>
+        <i matTooltip="Zoom In" class="fa-solid fa-search-plus cursor-pointer mx-2" (click)="zoomIn()"></i>
+        <i matTooltip="Zoom Out" class="fa-solid fa-search-minus cursor-pointer mx-2" (click)="zoomOut()"></i>
+        <i matTooltip="Close" mat-dialog-close class="fa-solid mx-2 fa-circle-xmark cursor-pointer"></i>
+    </div>
+</h2>
+<mat-dialog-content>
+    <div class="image-container" [style.transform]="transformStyle">
+        <img [src]="data.rowData.imageUrl" alt="Selected Image" class="img-fluid">
+    </div>
+</mat-dialog-content>

@@ -1,0 +1,114 @@
+.table-container{
+    height: calc(100vh - 200px);
+    overflow: auto;
+    box-shadow: var(--soft-box-shadow);
+}
+
+.title{
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    span{
+        border-bottom: 2px solid var(--primary-color);
+        text-shadow: 1px 2px 3px;
+    }
+}
+
+.top-container{
+    display: flex;
+    align-items: center;
+    .search-field{
+        flex: 1;
+        position: relative;
+        i{
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            text-shadow: var(--soft-box-shadow);
+        }
+    }
+}
+
+th.mat-sort-header-sorted {
+    color: white;
+}
+
+  
+  
+.statusBtn{
+  span{
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 15px;
+    margin: 3px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  .btn-reject{
+      background-color: #dc3545 !important;
+      color: white;
+      box-shadow: var(--soft-box-shadow);
+  }
+  .btn-pending{
+      background-color: #ffc107;
+      color: white;
+      box-shadow: var(--soft-box-shadow);
+  }
+  .btn-approved{
+      background-color: var(--primary-color);
+      color: white;
+      box-shadow: var(--soft-box-shadow);
+  }
+}
+
+
+.footer-total{
+  text-wrap: nowrap;
+  text-align: center;
+  // background-color: #84d3b6;
+  // border: 1px solid gray;
+
+}
+
+
+.table-footer{
+  // box-shadow: 0px 0px 2px;
+  // border: 1px solid gray;
+  height: 35px;
+}
+
+th:first-child{
+  position: sticky;
+  left: 0;
+  z-index: 991 !important;
+}
+td:first-child{
+  position: sticky;
+  left: 0;
+  z-index: 990 !important;
+}
+td:first-child.total{
+  position: sticky;
+  left: 0;
+  z-index: 991 !important;
+}
+th:last-child{
+  position: sticky;
+  right: 0;
+  z-index: 991 !important;
+}
+td:last-child{
+  position: sticky;
+  right: 0;
+  z-index: 990 !important;
+}
+
+::ng-deep tfoot{
+  z-index: 991 !important;
+}
+
+.selected-row {
+  background-color: #cacaca; /* Change this to the desired background color */
+}

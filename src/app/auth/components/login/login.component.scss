@@ -1,0 +1,225 @@
+.form-container {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  padding: 32px;
+  font-size: 16px;
+  width: 420px;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  position: relative;
+  height: 80vh;
+  z-index: 999;
+}
+
+.form-container button:active {
+  transform: scale(0.95);
+}
+
+.form-container .logo-container {
+  text-align: center;
+    font-size: 1.6rem;
+    color: #3aa602;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 3px;
+    align-items: center;
+    // text-shadow: var(--soft-box-shadow);
+    // -webkit-text-stroke: 1px #282828;
+    // text-shadow: 0px 4px 4px #282828;
+}
+
+.form-container .form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-container .form-group label {
+  color: var(--primary-color);
+}
+
+.form-container .form-group input[type="text"],
+.form-container .form-group input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  border: 1px solid #3aa602;
+  background-color: var(--bg-color);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container .form-group input::placeholder {
+  opacity: 0.7;
+}
+
+.form-container .form-group input[type="text"]:focus,
+.form-container .form-group input[type="password"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 10px rgba(48, 38, 150, 0.3); /* Adjusted focus box shadow */
+}
+
+.form-container .form-submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+  background-color: #3aa602;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container .form-submit-btn:hover {
+  // background-color: var(--secondary-color);
+  i{
+    transform: translateX(10px);
+    transition: .3s ease-in-out;
+  }
+}
+
+.form-container .line {
+  width: 100%;
+  height: 1px;
+  background-color: var(--secondary-color);
+  opacity: 0.7;
+  margin: 16px 0;
+}
+
+.text-danger{
+  position: absolute;
+  bottom: -37%;
+  font-size: 0.8rem;
+  transform: translateY(-50%);
+}
+
+.image-container {
+  height: 80vh; /* Optional: Set a maximum height for the image container */
+}
+
+.image-container img {
+  object-fit: cover; /* Maintain the aspect ratio while covering the container */
+  width: 100%; /* Take up 100% of the container's width */
+  height: 100%; /* Take up 100% of the container's height */
+  border-radius: 15px;
+}
+
+@media (max-width:48em){
+  .image-container{
+    height: 30vh;
+    display: none;
+  }
+}
+
+.forgot-password-link{
+  text-decoration: none !important;
+}
+
+.signup-link{
+  color: #33333360;
+  font-size: 0.9rem;
+}
+
+.copy-right{
+  position: absolute;
+  bottom: 0;
+  font-size: 0.8rem;
+  text-wrap: nowrap;
+  display: flex;
+  justify-content: center;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #33333360;
+}
+
+.welcome-message{
+  text-align: center;
+  font-size: 1.5rem;
+  color: #333;
+  letter-spacing: 3px;
+  font-weight: 500;
+}
+
+.fail-alert{
+  font-size: 0.9rem;
+  position: relative;
+  i{
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+
+.playstore-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--primary-color);
+  border-radius: 9999px;
+  background-color: #f2f2f2;
+  padding: 0.25rem 1.5rem;
+  text-align: center;
+  color: var(--primary-color);
+  outline: 0;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.playstore-button:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.icon {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.texts {
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+}
+
+.text-1 {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.text-2 {
+  font-weight: 600;
+}
+
+.bxl-android{
+  font-size: 1.8rem;
+}
+#siteseal {
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin-left: -185px;
+}

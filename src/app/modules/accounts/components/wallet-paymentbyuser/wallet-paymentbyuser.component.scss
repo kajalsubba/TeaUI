@@ -1,0 +1,170 @@
+.kg-text {
+    position: absolute;
+    right: 20%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+input[type="text"] {
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+::ng-deep .autocomplete-item:hover {
+    background-color: #c0bebe !important;
+    /* Or any highlight color */
+    cursor: pointer;
+}
+
+::ng-deep .autocomplete-item:active {
+    background-color: #2196f3 !important;
+    color: #c0bebe;
+}
+
+::ng-deep .autocomplete-item:selected {
+    background-color: #1976d2 !important;
+    /* or any color */
+    color: #c0bebe;
+}
+
+
+.inset-shadow {
+    box-shadow: var(--box-shadow-inset);
+}
+
+.border-box {
+    border: 1px solid var(--primary-color);
+    font-size: 15px;
+}
+
+.border-top-none {
+    border-top: none;
+}
+
+.table-container {
+    height: calc(65vh - 200px);
+    overflow: auto;
+    box-shadow: var(--soft-box-shadow);
+}
+
+.kg-text {
+    position: absolute;
+    right: 20%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.statusBtn {
+    span {
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 15px;
+        margin: 3px;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+    .btn-reject {
+        background-color: #dc3545;
+        color: white;
+        box-shadow: var(--soft-box-shadow);
+    }
+
+    .btn-pending {
+        background-color: #ffc107;
+        color: white;
+        box-shadow: var(--soft-box-shadow);
+    }
+
+    .btn-approved {
+        background-color: var(--primary-color);
+        color: white;
+        box-shadow: var(--soft-box-shadow);
+    }
+}
+
+
+.footer-total {
+    text-wrap: nowrap;
+    text-align: center;
+    // background-color: #84d3b6;
+    // border: 1px solid gray;
+
+}
+
+
+.table-footer {
+    // box-shadow: 0px 0px 2px;
+    // border: 1px solid gray;
+    height: 35px;
+}
+
+label,
+input,
+mat-select {
+    font-size: 14px;
+}
+
+body {
+    font-size: 0.8rem;
+}
+
+.bold-input {
+    font-weight: 500;
+}
+
+.sale-approve-container {
+    // width: 600px!important;
+    padding: 0px 10px;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+
+    @media (max-width:68em) {
+        display: block;
+        margin-top: 20px;
+    }
+
+    >.row {
+        background-color: #fff;
+        padding-bottom: 20px;
+        box-shadow: var(--soft-box-shadow);
+    }
+
+    .sale-spprove-title {
+        text-align: center;
+        font-size: 1.2rem;
+        color: white;
+        font-weight: 500;
+      //  text-transform: uppercase;
+    }
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* 3 columns: left | center | right */
+  align-items: center;
+}
+
+.payment-text {
+  grid-column: 2; /* Centers "Payment" */
+  text-align: center;
+}
+
+.balance-text {
+  grid-column: 3; /* Pushes balance to the right */
+  text-align: right;
+}
+
+.back-primary {
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-width {
+    width: 600px;
+}
+.currency-word{
+  font-size: 11px;
+  font-weight: bold;
+}

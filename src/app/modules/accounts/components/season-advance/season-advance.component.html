@@ -1,0 +1,123 @@
+<div class="container-fluid mt-2">
+  <div class="row">
+    <div class="col-lg-9 my-2 align-items-center">
+      <div class="row">
+        <div class="col-lg-10">
+          <form [formGroup]="SeasonAdvanceForm">
+            <div class="row">
+              <div class="col-lg-3 my-2">
+                <mat-form-field>
+                  <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
+                    placeholder="From Date" formControlName="fromDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 my-2">
+                <mat-form-field>
+                  <input readonly matInput [min]="minToDate" [matDatepicker]="picker1"
+                    min="SeasonAdvanceForm.value.fromDate" placeholder="To Date" formControlName="toDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-lg-3 position-relative my-2">
+                <mat-select placeholder="--Client Category--" class="fromSelect" formControlName="CategoryId">
+                  <mat-option *ngFor="let category of categoryList" [value]="category.CategoryId"
+                    (onSelectionChange)="selectCategory($event, category)">
+                    {{category.CategoryName}}
+                  </mat-option>
+                </mat-select>
+                <span
+                  *ngIf="SeasonAdvanceForm.get('CategoryId')?.hasError('required') && SeasonAdvanceForm.get('CategoryId')?.touched"
+                  class="text-danger d-block validation-message">
+                  Client Category is required.
+                </span>
+              </div>
+              <div class="col-lg-3 my-2">
+                <div class="position-relative">
+                  <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
+                    formControlName="ClientName" [matAutocomplete]="clientAuto">
+
+                  <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                    <mat-option *ngFor="let client of filterClientNames(clientName.value)" [value]="client?.ClientName"
+                      (onSelectionChange)="selectClient(client)">
+                      {{ client?.ClientName }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-2 my-2 d-grid">
+          <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
+          <button (click)="search()" class="btn btn-color ms-2">Search</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 my-2 border-left">
+      <div class="top-container my-2">
+        <div class="search-field px-2">
+          <input (input)="applyFilter($event)" type="text" placeholder="Find" class="form-control">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="add-button d-grid">
+          <button (click)="AddSeasonAdvance()" class="btn btn-color">Add New Entry</button>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="col-lg-12">
+      <div class="table-container">
+        <div>
+          <table matSort mat-table [dataSource]="dataSource" (keydown)="handleKeyboardNavigation($event)">
+            <!-- Displayed columns -->
+            <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" mat-cell *matCellDef="let row; let i = index;">
+                {{ row[column.columnDef] }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Actions column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <div>
+                  <i (click)="editItem(row)" matTooltip="Edit" matTooltipPosition="left"
+                    class="fa-solid edit-delete-button fa-pen-to-square"></i>
+                  <!-- <i (click)="deleteItem(row)" matTooltip="Delete" matTooltipPosition="right"
+                      class="fa-solid text-danger edit-delete-button fa-trash-can"></i> -->
+                </div>
+              </td>
+              <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <!-- Amount -->
+            <ng-container matColumnDef="Amount">
+              <th mat-header-cell *matHeaderCellDef> Amount </th>
+              <td [ngClass]="{'text-danger': +row.Amount < 0}" class="weight-column" mat-cell
+                *matCellDef="let row"> {{row.Amount  | currency:'INR':'symbol':undefined:'en-IN'}}  </td>
+              <td [ngClass]="{'text-danger':getTotal('Amount') < 0}" class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b>{{ getTotal('Amount') | currency:'INR':'symbol':undefined:'en-IN' }} </b>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+              [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+            </tr>
+            <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is not
+                found !</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

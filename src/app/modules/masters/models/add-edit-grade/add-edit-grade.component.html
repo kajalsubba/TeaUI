@@ -1,0 +1,33 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.title}}</span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="GradeForm">
+                    <div class="form-group row my-2">
+                      <label for="category" class="col-lg-5 col-form-label">Grade Name <span class="text-danger">*</span></label>
+                      <div class="col-lg-7 position-relative">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="GradeName"
+                          placeholder="Enter Grade Name"
+                          formControlName="GradeName"
+                        >
+                        <span *ngIf="GradeForm.get('GradeName')?.hasError('required') && GradeForm.get('GradeName')?.touched" class="text-danger validation-message">
+                            Grade Name is required.
+                          </span>                          
+                      </div>
+                    </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
+  <button (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>Add</button>
+</mat-dialog-actions>

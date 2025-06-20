@@ -1,0 +1,209 @@
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-lg-10 my-2">
+            <div class="row">
+                <div class="col-lg-10">
+                    <form [formGroup]="MonthWiseForm" class="d-flex">
+                        <div class="col-lg-3 d-grid me-2">
+
+                            <mat-select placeholder="--Select Year--" class="fromSelect" formControlName="Year">
+                                <mat-option *ngFor="let year of YearList" [value]="year">
+                                    {{year}}
+                                </mat-option>
+                            </mat-select>
+                            <span
+                                *ngIf="MonthWiseForm.get('Year')?.hasError('required') && MonthWiseForm.get('Year')?.touched"
+                                class="text-danger d-block validation-message">
+                                Year is required.
+                            </span>
+                        </div>
+
+
+                        <div class="position-relative col-lg-3 d-grid">
+                            <mat-select placeholder="--Select Categoty--" class="fromSelect" formControlName="Category">
+                                <mat-option *ngFor="let status of CategotyList" [value]="status">
+                                    {{status}}
+                                </mat-option>
+                            </mat-select>
+                            <span
+                                *ngIf="MonthWiseForm.get('Category')?.hasError('required') && MonthWiseForm.get('Category')?.touched"
+                                class="text-danger d-block validation-message">
+                                Category is required.
+                            </span>
+
+                        </div>
+
+
+                        <div class="col-lg-2 d-grid">
+                            <button (click)="search()" class="btn btn-color ms-2">Search</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- <div class="col-lg-2 d-grid">
+                 
+                </div> -->
+            </div>
+        </div>
+        <div class="col-lg-2 my-2 border-left">
+            <div class="top-container">
+                <div class="search-field px-2">
+                    <input (input)="applyFilter($event)" type="text" placeholder="Find" class="form-control">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <button matTooltip="Excel Export" (click)="exportToExcel()" class="btn btn-outline-dark">
+                    <i class="fa-solid py-2 px-1 fa-file-excel"></i>
+                </button>
+            </div>
+        </div>
+        <hr>
+        <div class="col-lg-12">
+            <div class="table-container">
+                <div>
+                    <table id="material-table" matSort mat-table [dataSource]="dataSource"
+                        (keydown)="handleKeyboardNavigation($event)">
+                        <!-- Displayed columns -->
+                        <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                            <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
+                            <td mat-cell *matCellDef="let row; let i = index;">
+                                {{ row[column.columnDef] }}
+                            </td>
+                            <td mat-footer-cell *matFooterCellDef></td>
+                        </ng-container>
+
+                        <!-- Jan -->
+                        <ng-container matColumnDef="January">
+                            <th mat-header-cell *matHeaderCellDef> January </th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.January}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b>{{ getTotal('January') }} KG</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- Feb -->
+                        <ng-container matColumnDef="February">
+                            <th mat-header-cell *matHeaderCellDef> February </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.February}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b>{{ getTotal('February') }} KG</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- Mar -->
+                        <ng-container matColumnDef="March">
+                            <th mat-header-cell *matHeaderCellDef> March </th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.March}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b>{{ getTotal('March') }} KG</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- April -->
+                        <ng-container matColumnDef="April">
+                            <th mat-header-cell *matHeaderCellDef> April</th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.April}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                                <b>{{ getTotal('April') }} KG</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- May -->
+                        <ng-container matColumnDef="May">
+                            <th mat-header-cell *matHeaderCellDef> May </th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.May}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('May') }} KG</b>
+                            </td>
+                        </ng-container>
+
+                        <!-- Jun -->
+                        <ng-container matColumnDef="June">
+                            <th mat-header-cell *matHeaderCellDef> June</th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.June}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('June') }}
+                                    KG</b> </td>
+                        </ng-container>
+
+                        <!-- july -->
+                        <ng-container matColumnDef="July">
+                            <th mat-header-cell *matHeaderCellDef>July </th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.July}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('July') }}
+                                    KG</b> </td>
+                        </ng-container>
+
+                        <!-- Aug -->
+                        <ng-container matColumnDef="August">
+                            <th mat-header-cell *matHeaderCellDef> August</th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.August}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('August') }}
+                                    KG</b> </td>
+                        </ng-container>
+
+                        <!-- Sept -->
+                        <ng-container matColumnDef="September">
+                            <th mat-header-cell *matHeaderCellDef> September </th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.September}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('September') }}
+                                    KG</b> </td>
+                        </ng-container>
+
+                        <!-- Oct -->
+                        <ng-container matColumnDef="October">
+                            <th mat-header-cell *matHeaderCellDef>October </th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.October}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('October') }}
+                                    KG</b> </td>
+                        </ng-container>
+
+                        <!-- Nov -->
+                        <ng-container matColumnDef="November">
+                            <th mat-header-cell *matHeaderCellDef> November </th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.November}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('November') }}
+                                    KG</b> </td>
+                        </ng-container>
+
+                        <!-- Dec -->
+                        <ng-container matColumnDef="December">
+                            <th mat-header-cell *matHeaderCellDef> December </th>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.December}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('December') }}
+                                    KG</b> </td>
+                        </ng-container>
+
+                        <!-- Total -->
+                        <ng-container matColumnDef="Total">
+                            <th mat-header-cell *matHeaderCellDef> Total </th>
+                            <td class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.Total}} </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>{{ getTotal('Total') }}
+                                    KG</b> </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
+                            [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
+                        </tr>
+                        <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">
+                                Record is not
+                                found !</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <mat-paginator [pageSizeOptions]="[75, 100, 125]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>

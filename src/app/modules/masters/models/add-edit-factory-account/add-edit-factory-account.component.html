@@ -1,0 +1,64 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.title}}</span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="FactoryAccountForm">
+                    <div class="row">
+
+                        <div class="form-group row mb-3">
+                            <label for="AccountName" class="col-lg-5 col-form-label">Account Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <input type="text" class="form-control" id="AccountName" placeholder="Account Name"
+                                    formControlName="AccountName">
+                                <span
+                                    *ngIf="FactoryAccountForm.get('AccountName')?.hasError('required') && FactoryAccountForm.get('AccountName')?.touched"
+                                    class="text-danger validation-message">
+                                    Account is required.
+                                </span>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group row mb-3">
+                            <label for="FactoryId" class="col-lg-5 col-form-label">Factory Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-select aria-placeholder="--Select Category--" class="fromSelect"
+                                    formControlName="FactoryId">
+                                    <mat-option *ngFor="let item of factoryList" [value]="item.FactoryId">
+                                        {{item.FactoryName}}
+                                    </mat-option>
+                                </mat-select>
+                                <span
+                                    *ngIf="FactoryAccountForm.get('FactoryId')?.hasError('required') && FactoryAccountForm.get('FactoryId')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Factory is required.
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label for="BioMatrixNo" class="col-lg-5 col-form-label">Bio-Matric No </label>
+                            <div class="col-lg-7 position-relative">
+                                <input type="text" class="form-control" id="BioMatrixNo" placeholder="Enter Bio Matric No"
+                                    formControlName="BioMatrixNo">
+                        
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
+    <button (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
+</mat-dialog-actions>

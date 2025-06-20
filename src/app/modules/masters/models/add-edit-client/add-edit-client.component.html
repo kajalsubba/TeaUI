@@ -1,0 +1,157 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.title}}</span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="clientForm">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group row mb-3">
+                                <label for="ClientFirstName" class="col-lg-5 col-form-label">First Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="text" class="form-control" id="ClientFirstName"
+                                        placeholder="Enter First Name" formControlName="ClientFirstName">
+                                    <span
+                                        *ngIf="clientForm.get('ClientFirstName')?.hasError('required') && clientForm.get('ClientFirstName')?.touched"
+                                        class="text-danger validation-message">
+                                        First Name is required.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                <label for="ClientMiddleName" class="col-lg-5 col-form-label">Middle Name</label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="text" class="form-control" id="ClientMiddleName"
+                                        placeholder="Enter Middle Name" formControlName="ClientMiddleName">
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                <label for="ClientLastName" class="col-lg-5 col-form-label">Last Name <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="text" class="form-control" id="ClientLastName"
+                                        placeholder="Enter Last Name" formControlName="ClientLastName">
+                                    <span
+                                        *ngIf="clientForm.get('ClientLastName')?.hasError('required') && clientForm.get('ClientLastName')?.touched"
+                                        class="text-danger validation-message">
+                                        Last Name is required.
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                <label for="CategoryId" class="col-lg-5 col-form-label">Category <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-select aria-placeholder="--Select Category--" class="fromSelect"
+                                        formControlName="CategoryId">
+                                        <mat-option *ngFor="let item of categoryList" [value]="item.CategoryId">
+                                            {{item.CategoryName}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <span
+                                        *ngIf="clientForm.get('CategoryId')?.hasError('required') && clientForm.get('CategoryId')?.touched"
+                                        class="text-danger d-block validation-message">
+                                        Category is required.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3">
+                                <label for="whatsAppNo" class="col-lg-5 col-form-label">WhatsApp No </label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="text" class="form-control" id="whatsAppNo"
+                                        placeholder="Enter WhatsApp No" formControlName="WhatsAppNo">
+
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3">
+                                <label for="BioMatrixNo" class="col-lg-5 col-form-label">Bio-Matric No </label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="text" class="form-control" id="BioMatrixNo"
+                                        placeholder="Enter Bio-Matric No" formControlName="BioMatrixNo">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group row mb-3">
+                                <label for="ClientAddress" class="col-lg-5 col-form-label">Address</label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="text" class="form-control" id="ClientAddress"
+                                        placeholder="Enter Address" formControlName="ClientAddress">
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                <label for="ContactNo" class="col-lg-5 col-form-label">Contact No <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="text" class="form-control" id="ContactNo"
+                                        placeholder="Enter Contact No" formControlName="ContactNo"
+                                        (keypress)="onKeyPress($event)" maxlength="10">
+                                    <div *ngIf="clientForm.get('ContactNo')?.hasError('required') && clientForm.get('ContactNo')?.touched"
+                                        class="text-danger validation-message">
+                                        Contact No is required.
+                                    </div>
+                                    <div *ngIf="clientForm.get('ContactNo')?.hasError('pattern') && clientForm.get('ContactNo')?.touched"
+                                        class="text-danger validation-message">
+                                        Invalid mobile number format.
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row mb-3">
+                                <label for="clientEmail" class="col-lg-5 col-form-label">Email </label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="email" class="form-control" id="clientEmail" placeholder="Enter Email"
+                                        formControlName="EmailId">
+                                    <!-- <div *ngIf="clientForm.get('EmailId')?.hasError('required') && clientForm.get('EmailId')?.touched" class="text-danger validation-message">
+                                        Enter a valid email address.
+                                    </div> -->
+                                    <div *ngIf="clientForm.get('EmailId')?.hasError('pattern') && clientForm.get('EmailId')?.touched"
+                                        class="text-danger validation-message">
+                                        Invalid email format.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-3">
+                                <label for="password" class="col-lg-5 col-form-label">Password </label>
+                                <div class="col-lg-7 position-relative">
+                                    <input type="password" class="form-control" id="password"
+                                        placeholder="Enter Password" formControlName="Password">
+                                    <!-- <div *ngIf="clientForm.get('Password')?.hasError('required') && clientForm.get('Password')?.touched" class="text-danger validation-message">
+                                        Password is required.
+                                    </div> -->
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row mb-3">
+                                <label for="isActive" class="col-lg-5 col-form-label">IsActive <span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-7 position-relative">
+                                    <mat-slide-toggle formControlName="IsActive">{{clientForm.value.IsActive ? "Active"
+                                        : "InActive"}}</mat-slide-toggle>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
+    <button (click)="onSubmit()" class="btn-color" mat-raised-button cdkFocusInitial>{{dialogData.buttonName}}</button>
+</mat-dialog-actions>
