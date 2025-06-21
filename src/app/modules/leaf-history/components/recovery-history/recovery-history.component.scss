@@ -1,5 +1,5 @@
 .table-container {
-  height: calc(100vh - 200px);
+  height: calc(100vh - 260px);
   overflow: auto;
   box-shadow: var(--soft-box-shadow);
 }
@@ -157,7 +157,7 @@ th.mat-sort-header-sorted {
   }
 
   .btn-reject {
-    background-color: #dc3545 !important;
+    background-color: #dc3545;
     color: white;
     box-shadow: var(--soft-box-shadow);
   }
@@ -187,6 +187,7 @@ th.mat-sort-header-sorted {
 
 .table-footer {
   // box-shadow: 0px 0px 2px;
+  z-index: 991 !important;
   // border: 1px solid gray;
   height: 35px;
 }
@@ -230,14 +231,11 @@ td:last-child {
   /* Change this to the desired background color */
 }
 
-.gap-div {
-  margin-right: 9px;
+.border-left {
+  border-left: 2px solid gray;
 }
 
-.mouse-pointer {
-  cursor: pointer;
-}
-
-.icon-gap {
-  margin-left: 10px; /* adjust as needed */
+.amount-color {
+  color: rgb(11, 59, 218);
+ 
 }

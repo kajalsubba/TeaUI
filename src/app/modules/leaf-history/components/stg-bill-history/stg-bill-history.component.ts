@@ -79,9 +79,7 @@ export class StgBillHistoryComponent implements OnInit {
     private excelService: ExcelExportService,
     private autocompleteService: AutoCompleteService,
     private billService: StgBillService,
-    //  private paymentService: PaymentService,
-    //   private stgapproveService: StgApproveService,
-    // private supplierApproveService: SupplierapproveService
+  
   ) { }
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');

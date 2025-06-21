@@ -22,7 +22,7 @@ registerLocaleData(enIN);
   templateUrl: './supplier-bill-history.component.html',
   styleUrls: ['./supplier-bill-history.component.scss']
 })
-export class SupplierBillHistoryComponent implements OnInit{
+export class SupplierBillHistoryComponent implements OnInit {
   displayedColumns: string[] = [
     'BillId',
     'BillDate',
@@ -44,13 +44,13 @@ export class SupplierBillHistoryComponent implements OnInit{
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'BillId', header: 'Bill No' },
-   // { columnDef: 'BillDate', header: 'Bill Date' },
+    // { columnDef: 'BillDate', header: 'Bill Date' },
     { columnDef: 'BillPeriod', header: 'Bill Period' },
     { columnDef: 'ClientName', header: 'Client Name' },
     //{ columnDef: 'FinalWeight', header: 'Final Weighht' },
     //{ columnDef: 'AvgRate', header: 'Avg. Rate' },
-   // { columnDef: 'TotalStgAmount', header: 'Total Amount' },
-   // { columnDef: 'TotalStgPayment', header: 'Total Payment' }
+    // { columnDef: 'TotalStgAmount', header: 'Total Amount' },
+    // { columnDef: 'TotalStgPayment', header: 'Total Payment' }
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -75,9 +75,7 @@ export class SupplierBillHistoryComponent implements OnInit{
     private excelService: ExcelExportService,
     private autocompleteService: AutoCompleteService,
     private billService: SuppilerHistoryService,
-    //  private paymentService: PaymentService,
-    //   private stgapproveService: StgApproveService,
-    // private supplierApproveService: SupplierapproveService
+  
   ) { }
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -137,7 +135,7 @@ export class SupplierBillHistoryComponent implements OnInit{
 
   onInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
-    
+
     // Reset ClientId and ClientName if input value is empty
     if (input.value === '') {
       this.SupplierBillForm.get('ClientId')?.reset();
@@ -155,10 +153,10 @@ export class SupplierBillHistoryComponent implements OnInit{
   //   const filterValue = value.toLowerCase();
   //   return this.ClientNames.filter((x: any) => x?.ClientName?.toLowerCase()?.includes(filterValue));
   // }
-  
+
   filterClientNames(value: string): any[] {
     const filterValue = value.toLowerCase().trim(); // Trim whitespace for more accurate filtering
-  
+
     return this.ClientNames.filter(x =>
       x?.ClientName?.toLowerCase().includes(filterValue)
     );
@@ -194,8 +192,6 @@ export class SupplierBillHistoryComponent implements OnInit{
       BillNo: e.BillId
 
     };
-   // console.log(e, 'bodyData bodyData');
-
     const categoryListService = this.billService
       .PrintBill(bodyData)
       .subscribe((response: Blob) => {
@@ -206,8 +202,9 @@ export class SupplierBillHistoryComponent implements OnInit{
       });
     this.subscriptions.push(categoryListService);
   }
+
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-  //  this.SupplierBillForm.controls['toDate'].setValue(null);
+    //  this.SupplierBillForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   applyFilter(event: Event) {
@@ -235,11 +232,11 @@ export class SupplierBillHistoryComponent implements OnInit{
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove

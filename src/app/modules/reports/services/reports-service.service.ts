@@ -32,7 +32,7 @@ export class ReportsServiceService {
   GetSeasonAdvanceReport(Body: ISeasonAdvance): Observable<any> {
     return this.apiService.post('Reports/GetSeasonAdvanceReport', Body);
   }
-    GetFieldBalanceReport(Body: ISeasonAdvance): Observable<any> {
+  GetFieldBalanceReport(Body: ISeasonAdvance): Observable<any> {
     return this.apiService.post('Reports/GetFieldBalanceReport', Body);
   }
 }

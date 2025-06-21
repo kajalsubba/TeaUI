@@ -207,7 +207,8 @@
           <li *ngIf="
               loginDetails.LoginType == 'Agent' &&
               PermissionDetails[35].ModuleId == 46 &&
-              PermissionDetails[35].HideModule == false" routerLink="Accounts/petty-cashbook" routerLinkActive="active">
+              PermissionDetails[35].HideModule == false" routerLink="Accounts/petty-cashbook"
+            routerLinkActive="active">
             <a class="sub-menu-title">Petty Cash Book</a>
           </li>
         </ul>
@@ -278,7 +279,9 @@
           <li routerLink="LeafHistory/pettycashbook-history" routerLinkActive="active">
             <a class="sub-menu-title">Petty CashBook History</a>
           </li>
-
+          <li routerLink="LeafHistory/recovery-history" routerLinkActive="active">
+            <a class="sub-menu-title">Recovery History</a>
+          </li>
 
         </ul>
       </li>
