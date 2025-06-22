@@ -100,6 +100,48 @@
                             </td>
                             <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container>
+
+                        <!-- Field Balance -->
+                        <ng-container matColumnDef="FieldBalance">
+                            <th mat-header-cell *matHeaderCellDef> Field Balance </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{ row.FieldBalance| currency:'INR':'':undefined:'en-IN' }}
+                            </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+
+                                <span>
+                                    <!-- <b>Total : {{ getTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN' }} </b> -->
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!--REcovery Amount -->
+                        <ng-container matColumnDef="RecoveryAmount">
+                            <th mat-header-cell *matHeaderCellDef> Recovery Amount </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{ row.RecoveryAmount| currency:'INR':'':undefined:'en-IN' }}
+                            </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+
+                                <span>
+                                    <!-- <b>Total : {{ getTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN' }} </b> -->
+                                </span>
+                            </td>
+                        </ng-container>
+                        <!--CurrentFieldBalance Amount -->
+                        <ng-container matColumnDef="CurrentFieldBalance">
+                            <th mat-header-cell *matHeaderCellDef> Curr. Field. Balance </th>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                {{ row.CurrentFieldBalance| currency:'INR':'':undefined:'en-IN' }}
+                            </td>
+                            <td class="footer-total" mat-footer-cell *matFooterCellDef>
+
+                                <span>
+                                    <!-- <b>Total : {{ getTotal('Amount')| currency:'INR':'symbol':undefined:'en-IN' }} </b> -->
+                                </span>
+                            </td>
+                        </ng-container>
+
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
                             [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">

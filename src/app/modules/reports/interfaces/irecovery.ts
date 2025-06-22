@@ -4,6 +4,7 @@ export interface SaveRecoveryModel {
     ClientCategory: string;
     CategoryId: number;
     RecoveryType: string;
+    FieldBalance: number;
     Amount: number;
     Narration: string;
     TenantId: number;

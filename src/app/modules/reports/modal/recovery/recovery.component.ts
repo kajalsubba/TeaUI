@@ -137,6 +137,7 @@ export class RecoveryComponent implements OnInit {
       ClientCategory: this.dialogData.value.Category,
       CategoryId: this.dialogData.categoryId,
       RecoveryType: this.dialogData.value.RecoveryType,
+      FieldBalance: Number(this.dialogData.value.Amount),
       Amount: this.RecoveryForm.value.Amount.toString().replace(/,/g, ''),
       Narration: this.RecoveryForm.value.Narration,
       TenantId: this.loginDetails.TenantId,

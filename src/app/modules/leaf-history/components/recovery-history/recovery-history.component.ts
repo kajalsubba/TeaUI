@@ -1,4 +1,4 @@
-import { DatePipe, formatDate } from '@angular/common';
+import { formatDate } from '@angular/common';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -10,19 +10,12 @@ import { _MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
-import { IGetPayment } from 'src/app/modules/accounts/interfaces/ipayment';
-import { PaymentService } from 'src/app/modules/accounts/services/payment.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
-import { IGetPaymentType } from 'src/app/modules/masters/interfaces/ipayment-type';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
-import { PaymenttypeService } from 'src/app/modules/masters/services/paymenttype.service';
 import { RecoveryFilterRequest } from 'src/app/modules/reports/interfaces/irecovery';
 import { RecoveryService } from 'src/app/modules/reports/services/recovery.service';
-import { ReportsServiceService } from 'src/app/modules/reports/services/reports-service.service';
-import { IGetUser } from 'src/app/modules/user-management/interfaces/iuser';
-import { UserService } from 'src/app/modules/user-management/services/user.service';
 import { ExcelExportService } from 'src/app/shared/services/excel-export.service';
 
 @Component({
@@ -38,7 +31,9 @@ export class RecoveryHistoryComponent implements OnInit {
     'ClientName',
     'CategoryName',
     'RecoveryType',
+    'FieldBalance',
     'RecoveryAmount',
+    'CurrentFieldBalance',
     'Narration'
 
   ];
@@ -51,7 +46,8 @@ export class RecoveryHistoryComponent implements OnInit {
     { columnDef: 'ClientName', header: 'Client' },
     { columnDef: 'CategoryName', header: 'Category' },
     { columnDef: 'RecoveryType', header: 'RecoveryType' },
-    { columnDef: 'RecoveryAmount', header: 'Amount' },
+    // { columnDef: 'FieldBalance', header: 'Field Balance' },
+    // { columnDef: 'RecoveryAmount', header: 'Amount' },
     { columnDef: 'Narration', header: 'Narration' },
   ];
 
