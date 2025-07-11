@@ -383,7 +383,7 @@ export class SupplierBillGenerateComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  
+
   BillSave() {
 
     if (this.dataSource.data.length == 0) {
@@ -391,6 +391,15 @@ export class SupplierBillGenerateComponent implements OnInit {
       this.toastr.error('Collection has no data!', 'Error')
       return
     }
+
+    if (this.supplierAmountForm.value.LessComission == null || this.supplierAmountForm.value.GreenLeafCess == null
+
+    ) {
+
+      this.toastr.error('Bill Calculate Amount should not be blank.!', 'Error')
+      return
+    }
+
     if (this.supplierAmountForm.invalid || this.supplierAmountForm.value.ClientId == 0 || this.supplierBillForm.invalid) {
       this.supplierAmountForm.markAllAsTouched();
       this.supplierBillForm.markAllAsTouched();
@@ -453,7 +462,10 @@ export class SupplierBillGenerateComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.SaveBill(data);
-
+      }
+      else {
+        this.isSubmitting = false
+          ;
 
       }
     });

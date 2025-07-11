@@ -416,7 +416,7 @@ export class StgBillGenerateComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  
+
   BillSave() {
 
     debugger
@@ -425,6 +425,16 @@ export class StgBillGenerateComponent implements OnInit {
       this.toastr.error('Collection has no data!', 'Error')
       return
     }
+
+    if (this.StgAmountForm.value.Incentive == null || this.StgAmountForm.value.Transporting == null ||
+      this.StgAmountForm.value.GreenLeafCess == null || this.StgAmountForm.value.LessSeasonAdv == null ||
+      this.StgAmountForm.value.PaidAmount == null
+    ) {
+
+      this.toastr.error('Bill Calculate Amount should not be blank.!', 'Error')
+      return
+    }
+
 
     if (this.StgAmountForm.invalid || this.StgAmountForm.value.ClientId == 0 || this.StgBillForm.invalid) {
       this.StgAmountForm.markAllAsTouched();
@@ -497,6 +507,10 @@ export class StgBillGenerateComponent implements OnInit {
       if (result) {
 
         this.SaveBill(data);
+
+      }
+      else {
+        this.isSubmitting = false;
 
       }
     });
