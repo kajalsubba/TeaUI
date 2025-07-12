@@ -427,7 +427,7 @@ export class StgBillGenerateComponent implements OnInit {
     }
 
     if (this.StgAmountForm.value.Incentive == null || this.StgAmountForm.value.Transporting == null ||
-      this.StgAmountForm.value.GreenLeafCess == null || this.StgAmountForm.value.LessSeasonAdv == null ||
+      this.StgAmountForm.value.GreenLeafCess == null ||
       this.StgAmountForm.value.PaidAmount == null
     ) {
 
