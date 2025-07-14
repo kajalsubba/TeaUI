@@ -426,9 +426,7 @@ export class StgBillGenerateComponent implements OnInit {
       return
     }
 
-    if (this.StgAmountForm.value.Incentive == null || this.StgAmountForm.value.Transporting == null ||
-      this.StgAmountForm.value.GreenLeafCess == null ||
-      this.StgAmountForm.value.PaidAmount == null
+    if (this.StgAmountForm.value.Incentive == null || this.StgAmountForm.value.Transporting == null
     ) {
 
       this.toastr.error('Bill Calculate Amount should not be blank.!', 'Error')

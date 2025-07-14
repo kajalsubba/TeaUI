@@ -400,8 +400,8 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
   openImage(data: any) {
     debugger
     const dialogRef = this.dialog.open(ImageViewerComponent, {
-      // width: "80vw",
-      // height: "95%",
+      width: "80vw",
+      height: "90%",
       disableClose: true,
       data: {
         title: "Image Viewer",
