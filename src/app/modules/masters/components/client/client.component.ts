@@ -182,7 +182,6 @@ export class ClientComponent implements OnInit, AfterViewInit {
 
   deleteItem(element: any): void {
     // Implement the logic to handle delete action
-    console.log('Delete clicked for:', element);
   }
 
   applyFilter(event: Event) {

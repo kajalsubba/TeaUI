@@ -122,7 +122,6 @@ export class SupplierBillHistoryComponent implements OnInit {
       ClientId: this.SupplierBillForm.value.ClientId ?? 0
 
     };
-    console.log(bodyData, 'bodyData bodyData');
 
     const categoryListService = this.billService
       .GetSupplierBillHistory(bodyData)

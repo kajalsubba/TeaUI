@@ -112,7 +112,6 @@ export class AddEditPaymentComponent implements OnInit {
     if (search == null || search == '') {
       this.addEditPayment.controls['ClientId'].setValue(null);
     }
-    console.log(search, 'search');
     // fetch remote data from here
     // And reassign the 'data' which is binded to 'data' property.
   }

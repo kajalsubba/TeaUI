@@ -85,7 +85,6 @@ export class WalletCreationComponent implements OnInit {
       UserId: this.WalletForm.value.UserId ?? 0,
       CreatedBy: 0
     };
-    console.log(bodyData, 'bodyData bodyData');
 
     const categoryListService = this.walletService
       .GetWalletHistory(bodyData)
@@ -114,7 +113,6 @@ export class WalletCreationComponent implements OnInit {
         .toPromise();
 
       this.userList = res.UserDetails.filter((x: any) => x.RoleName.toLowerCase() != 'admin');
-      console.log(this.userList, 'this.userList');
 
     } catch (error) {
       console.error('Error:', error);

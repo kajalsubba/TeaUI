@@ -17,6 +17,7 @@ import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-en
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
 import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
+import { ViewCollectionBagComponent } from 'src/app/shared/components/view-collection-bag/view-collection-bag.component';
 
 @Component({
   selector: 'app-stgapprove',
@@ -26,6 +27,7 @@ import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifi
 export class StgapproveComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'select',
+    'actions',
     'CollectionDate',
     'VehicleNo',
     'ClientName',
@@ -42,6 +44,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     'Remarks',
     'TripName',
     'Status',
+
   ];
   //  dataList:any=[];
   dataSource = new MatTableDataSource<any>();
@@ -425,5 +428,24 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     const isPendingDate = this.CollectionDates.some(item => item.CollectionDate == cellDateISOString);
     return isPendingDate ? 'highlight-date' : '';
   };
+
+  ViewBag(element?: any) {
+    const dialogRef = this.dialog.open(ViewCollectionBagComponent, {
+      width: '40%',
+      data: {
+        title: 'View Bags',
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        //  this.GetStgList();
+
+      }
+    });
+  }
 
 }

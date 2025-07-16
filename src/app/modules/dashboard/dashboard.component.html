@@ -1,19 +1,27 @@
 <div class="container-fluid">
     <div class="row mt-2">
-        <div class="col-lg-6 my-2">
+        <div class="col-lg-4 my-2">
             <highcharts-chart [Highcharts]="Highcharts" [options]="stgAndSale"
                 style="width: 100%; height: 300px; display: block;"></highcharts-chart>
         </div>
-        <div class="col-lg-6 my-2">
+        <div class="col-lg-4 my-2">
             <highcharts-chart [Highcharts]="Highcharts" [options]="supplierWiseSaleDetails"
                 style="width: 100%; height: 300px; display: block;"></highcharts-chart>
         </div>
-        <div class="col-lg-8 mt-2">
+        <div class="col-lg-4 my-2">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="stgGapClient"
+                style="width: 100%; height: 300px; display: block;"></highcharts-chart>
+        </div>
+        <div class="col-lg-4 mt-2">
             <highcharts-chart [Highcharts]="Highcharts" [options]="companyWiseSaleDetails"
                 style="width: 100%; height: 300px; display: block;"></highcharts-chart>
         </div>
         <div class="col-lg-4 mt-2">
             <highcharts-chart [Highcharts]="Highcharts" [options]="totalCompanyWiseSaleDetails"
+                style="width: 100%; height: 300px; display: block;"></highcharts-chart>
+        </div>
+        <div class="col-lg-4 mt-2">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="supplierGapClient"
                 style="width: 100%; height: 300px; display: block;"></highcharts-chart>
         </div>
     </div>

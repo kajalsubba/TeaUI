@@ -121,8 +121,6 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     const supplierService = this.supplierService
       .GetSupplierDefaultData(bodyData)
       .subscribe((res: any) => {
-        //  console.log(res,'approve');
-        //  const result=res.STGDetails.filter((x:any)=>x.Status=='Pending');
         this.dataSource.data = res.SupplierDefaultData;
         this.dataSource.data.forEach((row) => this.selection.select(row));
         this.IsApprove = false;
@@ -148,8 +146,6 @@ export class SupplierapproveComponent implements OnInit, AfterViewInit {
     const categoryListService = this.supplierService
       .GetSupplierData(bodyData)
       .subscribe((res: any) => {
-        //  console.log(res,'approve');
-        //  const result=res.STGDetails.filter((x:any)=>x.Status=='Pending');
         this.dataSource.data = res.SupplierDetails.filter(
           (x: any) => x.Status == 'Pending'
         );

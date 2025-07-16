@@ -419,7 +419,6 @@ export class SaleHistoryComponent {
     //   const input = event.target as HTMLInputElement;
     this.filteredFactories = this.filterFactoryNames(event);
 
-    console.log(event, 'presss');
     if (event == '') {
       this.accountNames = [];
       this.SaleForm.controls['FactoryId'].reset();
