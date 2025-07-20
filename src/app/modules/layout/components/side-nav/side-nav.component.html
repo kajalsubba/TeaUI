@@ -2,10 +2,8 @@
   (click)="!isDesktop && toggleWidth()" [style.width.px]="isExpanded ? 210 : 62">
   <div [ngClass]="{ close: !isExpanded }" class="sidebar">
     <div class="logo-details">
-      <!-- <i class='bx bxl-c-plus-plus'></i> -->
-      <i *ngIf="!isExpanded" class="fa-solid m-0 openCloseIcon fa-bars"></i>
-      <i *ngIf="isExpanded" class="fa-solid m-0 openCloseIcon fa-xmark"></i>
-      <!-- <span *ngIf="isExpanded" class="logo_name">Company</span> -->
+      <i *ngIf="!isExpanded" class="fa-solid m-0 openCloseIcon fa-bars" (click)="toggleSidebarExpand()"></i>
+      <i *ngIf="isExpanded" class="fa-solid m-0 openCloseIcon fa-xmark" (click)="toggleSidebar()"></i>
     </div>
     <ul class="nav-links">
       <li class="main-menu" routerLinkActive="main-menu-active">

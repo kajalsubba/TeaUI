@@ -163,6 +163,7 @@ export class DashboardComponent implements OnInit {
         accessibility: {
           description: 'sale'
         }
+
       },
       yAxis: {
         title: {
@@ -183,6 +184,7 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+
   GetTotalCompanyWiseSaleChart(categories: any = [], datas: any = []) {
     const currentYear = new Date().getFullYear();
 
@@ -201,7 +203,14 @@ export class DashboardComponent implements OnInit {
         crosshair: true,
         accessibility: {
           description: 'Total sale'
-        }
+        },
+        labels: {
+          style: {
+            fontSize: '20px',
+            fontWeight: 'bold'
+          }
+        },
+        
       },
       yAxis: {
         title: {
@@ -220,7 +229,27 @@ export class DashboardComponent implements OnInit {
         },
       ]
     };
+
+    // Helper function to format numbers in Indian format
+    function formatIndianNumber(x: number): string {
+      const parts = x.toString().split('.');
+      let integerPart = parts[0];
+      const decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+
+      let lastThree = integerPart.slice(-3);
+      const otherNumbers = integerPart.slice(0, -3);
+
+      if (otherNumbers !== '') {
+        lastThree = ',' + lastThree;
+      }
+
+      const formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThree;
+
+      return formatted + decimalPart;
+    }
   }
+
+
 
   GetStgWiseChart(categories: any = [], stgData: any = [], saleData: any = []) {
 
