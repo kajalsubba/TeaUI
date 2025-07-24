@@ -3,7 +3,7 @@ import { ApiService } from 'src/app/core/services/api.service';
 import { IStgVehicle, IstgApprove } from '../interfaces/istg-approve';
 import { Observable } from 'rxjs';
 import { IGetSale, ILaterStgEntry, IStgPendingDate, IStgSaleSave, IsaleSave } from '../interfaces/isale-save';
-import { IGetSaleFactory } from '../../masters/interfaces/IFactory';
+import { IGetSaleFactory, IGetSaleRateFixFactory } from '../../masters/interfaces/IFactory';
 
 @Injectable({
   providedIn: 'root'
@@ -12,39 +12,43 @@ export class StgApproveService {
 
   constructor(private apiService: ApiService) { }
 
-  SaveStgApprove(clientBody:IstgApprove): Observable<string[]> {
+  SaveStgApprove(clientBody: IstgApprove): Observable<string[]> {
     return this.apiService.post('Collection/SaveApproveStg', clientBody);
   }
 
 
-  SaveSale(clientBody:IsaleSave): Observable<string[]> {
+  SaveSale(clientBody: IsaleSave): Observable<string[]> {
     return this.apiService.post('Sale/SaveSale', clientBody);
   }
 
-  GetSaleDetails(clientBody:IGetSale): Observable<string[]> {
+  GetSaleDetails(clientBody: IGetSale): Observable<string[]> {
     return this.apiService.post('Sale/GetSaleDetails', clientBody);
   }
 
-  GetSaleFactoryDetails(clientBody:IGetSaleFactory): Observable<string[]> {
+  GetSaleFactoryDetails(clientBody: IGetSaleFactory): Observable<string[]> {
     return this.apiService.post('Sale/GetSaleFactory', clientBody);
+  }
+
+  GetSaleRateFixFactoryDetails(clientBody: IGetSaleRateFixFactory): Observable<string[]> {
+    return this.apiService.post('Sale/GetSaleRateFixFactory', clientBody);
   }
 
   GetSaleType(): Observable<string[]> {
     return this.apiService.get('Master/GetSaleType');
   }
 
-  GetStgPendingDate(bodyData:IStgPendingDate): Observable<string[]> {
+  GetStgPendingDate(bodyData: IStgPendingDate): Observable<string[]> {
     return this.apiService.post('Collection/GetStgPendingDate', bodyData);
   }
 
-  SaveStgSaleData(clientBody:IStgSaleSave): Observable<string[]> {
+  SaveStgSaleData(clientBody: IStgSaleSave): Observable<string[]> {
     return this.apiService.post('Collection/SaveStgSale', clientBody);
   }
-  GetStgVehicle(clientBody:IStgVehicle): Observable<string[]> {
+  GetStgVehicle(clientBody: IStgVehicle): Observable<string[]> {
     return this.apiService.post('Collection/GetStgVehicleData', clientBody);
   }
 
-  SaveLateralSTGData(clientBody:ILaterStgEntry): Observable<string[]> {
+  SaveLateralSTGData(clientBody: ILaterStgEntry): Observable<string[]> {
     return this.apiService.post('Collection/LateralStgSave', clientBody);
   }
 
