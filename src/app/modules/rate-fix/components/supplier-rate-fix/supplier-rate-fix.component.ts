@@ -23,6 +23,8 @@ import { environment } from 'src/environments/environment';
 import enIN from '@angular/common/locales/en-IN';
 import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 import { EditSupplierRateComponent } from '../../models/edit-supplier-rate/edit-supplier-rate.component';
+import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
+import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-rate-fix',
@@ -51,17 +53,13 @@ export class SupplierRateFixComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionId', header: 'Id ' },
-    // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'FineLeaf', header: 'Fine Leaf' },
-    // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     { columnDef: 'Rate', header: 'Rate' },
-    //{ columnDef: 'Remarks', header: 'Remark' },
-    //   { columnDef: 'TripName', header: 'TripName ' },
-    // { columnDef: 'Status', header: 'Status ' }
+
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -89,7 +87,8 @@ export class SupplierRateFixComponent implements OnInit {
     private gradeService: GradeService,
     private autoCompleteService: AutoCompleteService,
     private fb: FormBuilder,
-    private rateFixService: IsupplierRateFixService
+    private rateFixService: IsupplierRateFixService,
+    private notificationDataService: NotificationDataService
   ) { }
 
   async ngOnInit() {
@@ -136,12 +135,12 @@ export class SupplierRateFixComponent implements OnInit {
   EditRate(element: any) {
 
     if (!environment.production) {
-      
+
     }
     const dialogRef = this.dialog.open(EditSupplierRateComponent, {
       width: window.innerWidth <= 1024 ? '40%' : '30%',
       data: {
-        title: element.CollectionDate+'-' + element.FactoryName +' ('+element.FineLeaf+'%)',
+        title: element.CollectionDate + '-' + element.FactoryName + ' (' + element.FineLeaf + '%)',
         buttonName: 'Update',
         value: element,
       },
@@ -366,7 +365,7 @@ export class SupplierRateFixComponent implements OnInit {
       FineLeaf: this.dateRangeForm.value.FineLeaf
     }
     const categoryListService = this.rateFixService.GetSupplierRateFixData(bodyData).subscribe((res: any) => {
-     
+
       this.dataSource.data = res.SupplierRateData;
     });
     this.subscriptions.push(categoryListService);
@@ -442,10 +441,16 @@ export class SupplierRateFixComponent implements OnInit {
         this.toastr.success(res.Message, "SUCCESS");
         this.clearform();
         this.GetSupplierData(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
-
+        this.RefreshNotifications();
       });
   }
 
+  RefreshNotifications(): void {
+    const data: IGetNotifications = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    this.notificationDataService.getNotificationData(data);
+  }
   clearform() {
 
     this.dateRangeForm.controls["ClientId"].reset();

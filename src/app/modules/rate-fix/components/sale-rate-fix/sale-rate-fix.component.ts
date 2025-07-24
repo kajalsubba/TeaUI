@@ -23,6 +23,8 @@ import enIN from '@angular/common/locales/en-IN';
 import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 import { EditSaleRateComponent } from '../../models/edit-sale-rate/edit-sale-rate.component';
 import { environment } from 'src/environments/environment';
+import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
+import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-sale-rate-fix',
@@ -52,18 +54,11 @@ export class SaleRateFixComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'SaleId', header: 'Sale Id' },
-    //   { columnDef: 'SaleDate', header: 'Sale Date' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'AccountName', header: 'Account Name' },
-
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-    // { columnDef: 'Rate', header: 'Rate' },
-    // { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Incentive', header: 'Incentive' },
-    // { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
-    //  { columnDef: 'FinalAmount', header: 'Final Amount' },
-    //{ columnDef: 'Remarks', header: 'Remarks' },
-    // { columnDef: 'TypeName', header: 'Sale Type' },
+
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -90,7 +85,8 @@ export class SaleRateFixComponent implements OnInit {
     private gradeService: GradeService,
     private autoCompleteService: AutoCompleteService,
     private fb: FormBuilder,
-    private rateFixService: SaleRateFixService
+    private rateFixService: SaleRateFixService,
+    private notificationDataService: NotificationDataService
   ) { }
 
   async ngOnInit() {
@@ -126,7 +122,7 @@ export class SaleRateFixComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-  
+
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -164,7 +160,7 @@ export class SaleRateFixComponent implements OnInit {
 
     }
     const categoryListService = this.rateFixService.GetSaleRateFixData(bodyData).subscribe((res: any) => {
-   
+
       this.dataSource.data = res.SaleRateData;
     });
     this.subscriptions.push(categoryListService);
@@ -352,7 +348,7 @@ export class SaleRateFixComponent implements OnInit {
       keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
         keys.GrossAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Rate).toFixed(2),
         keys.Incentive = this.dateRangeForm.value.Incentive ?? 0,
-        keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive ?? 0).toFixed(2),
+        keys.IncentiveAmount = Number(keys.ChallanWeight * (this.dateRangeForm.value.Incentive ?? 0)).toFixed(2),
         keys.FinalAmount = Number(Number(keys.ChallanWeight * this.dateRangeForm.value.Rate) + Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive)).toFixed(2)
 
     });
@@ -422,11 +418,17 @@ export class SaleRateFixComponent implements OnInit {
         this.toastr.success(res.Message, "SUCCESS");
         this.clearform();
         this.GetSaleData(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
-
+        this.RefreshNotifications();
       });
   }
 
 
+  RefreshNotifications(): void {
+    const data: IGetNotifications = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    this.notificationDataService.getNotificationData(data);
+  }
 
   EditRate(element: any) {
     const dialogRef = this.dialog.open(EditSaleRateComponent, {
@@ -442,7 +444,7 @@ export class SaleRateFixComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         if (!environment.production) {
-          
+
         }
         //  this.GetPaymentData();
         this.dataSource.data.forEach(item => {

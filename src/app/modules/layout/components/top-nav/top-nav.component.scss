@@ -235,6 +235,7 @@
 .notification-module {
   font-weight: 500;
   color: #1877f2;
+  font-size: 10px;
   /* Facebook blue color */
 }
 
@@ -244,6 +245,7 @@
   box-shadow: var(--soft-box-shadow);
   padding: 5px 10px;
   border-radius: 30px;
+  font-size: 10px;
 }
 
 .no-notifications-message {
@@ -262,6 +264,7 @@
   border-radius: 10px;
   letter-spacing: 1px;
 }
+
 .expire-Notification span {
-    display: block;
+  display: block;
 }
