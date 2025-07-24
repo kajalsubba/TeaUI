@@ -11,7 +11,7 @@ import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
-import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { IGetFactory, IGetSaleRateFixFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { ClientService } from 'src/app/modules/masters/services/client.service';
@@ -25,6 +25,7 @@ import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 import { EditSupplierRateComponent } from '../../models/edit-supplier-rate/edit-supplier-rate.component';
 import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
 import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
+import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-rate-fix',
@@ -88,7 +89,8 @@ export class SupplierRateFixComponent implements OnInit {
     private autoCompleteService: AutoCompleteService,
     private fb: FormBuilder,
     private rateFixService: IsupplierRateFixService,
-    private notificationDataService: NotificationDataService
+    private notificationDataService: NotificationDataService,
+    private saleService: StgApproveService,
   ) { }
 
   async ngOnInit() {
@@ -107,7 +109,7 @@ export class SupplierRateFixComponent implements OnInit {
     });
     await this.loadClientNames();
 
-    await this.loadFactoryNames();
+    await this.loadSaleFactoryNames();
     await this.loadAccountNames();
     //   this.GetGrade();
   }
@@ -222,19 +224,41 @@ export class SupplierRateFixComponent implements OnInit {
     );
   }
 
-  async loadFactoryNames() {
+  // async loadFactoryNames() {
+  //   try {
+  //     const bodyData: IGetFactory = {
+  //       TenantId: this.loginDetails.TenantId,
+  //       IsClientView: false
+  //     };
+
+  //     const res: any = await this.autoCompleteService
+  //       .GetFactoryNames(bodyData)
+  //       .pipe(takeUntil(this.destroy$))
+  //       .toPromise();
+
+  //     this.factoryNames = res.FactoryDetails;
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     this.toastr.error('Something went wrong.', 'ERROR');
+  //   }
+  // }
+
+  async loadSaleFactoryNames() {
+    debugger
     try {
-      const bodyData: IGetFactory = {
+      const bodyData: IGetSaleRateFixFactory = {
         TenantId: this.loginDetails.TenantId,
+        FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         IsClientView: false
       };
 
-      const res: any = await this.autoCompleteService
-        .GetFactoryNames(bodyData)
+      const res: any = await this.saleService
+        .GetSaleRateFixFactoryDetails(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.factoryNames = res.FactoryDetails;
+      this.factoryNames = res.FactoryList;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -259,6 +283,11 @@ export class SupplierRateFixComponent implements OnInit {
     }
   }
 
+  async GetFactory(event: MatDatepickerInputEvent<Date>) {
+    await this.loadSaleFactoryNames();
+    this.dateRangeForm.get('FactoryName')?.setValue('');
+
+  }
   selectFactory(factory: any) {
 
     this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
