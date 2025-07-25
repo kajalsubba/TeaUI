@@ -11,21 +11,19 @@ import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
-import { IGetFactory, IGetSaleRateFixFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
-import { ClientService } from 'src/app/modules/masters/services/client.service';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
 import { ISaveSupplierRate, IsupplierRateFix } from '../../interfaces/isupplier-rate-fix';
 import { IsupplierRateFixService } from '../../services/isupplier-rate-fix.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { environment } from 'src/environments/environment';
 import enIN from '@angular/common/locales/en-IN';
-import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 import { EditSupplierRateComponent } from '../../models/edit-supplier-rate/edit-supplier-rate.component';
 import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
 import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
-import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
+import { SupplierService } from 'src/app/modules/collection/services/supplier.service';
+import { IGetSaleRateFixFactory } from 'src/app/modules/masters/interfaces/IFactory';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-rate-fix',
@@ -34,10 +32,8 @@ registerLocaleData(enIN);
 })
 export class SupplierRateFixComponent implements OnInit {
   displayedColumns: string[] = [
-    // 'CollectionId',
     'CollectionDate',
     'ClientName',
-    // 'VehicleNo',
     'FactoryName',
     'AccountName',
     'FineLeaf',
@@ -45,9 +41,6 @@ export class SupplierRateFixComponent implements OnInit {
     'Rate',
     'GrossAmount',
     'actions',
-    // 'TripName',
-    // 'Status',
-    //'actions'
   ];
 
   dataSource = new MatTableDataSource<any>();
@@ -90,7 +83,7 @@ export class SupplierRateFixComponent implements OnInit {
     private fb: FormBuilder,
     private rateFixService: IsupplierRateFixService,
     private notificationDataService: NotificationDataService,
-    private saleService: StgApproveService,
+    private supplierService: SupplierService
   ) { }
 
   async ngOnInit() {
@@ -109,9 +102,9 @@ export class SupplierRateFixComponent implements OnInit {
     });
     await this.loadClientNames();
 
-    await this.loadSaleFactoryNames();
+    await this.loadSupplierFactoryNames();
     await this.loadAccountNames();
-    //   this.GetGrade();
+
   }
 
   ngAfterViewInit() {
@@ -243,7 +236,7 @@ export class SupplierRateFixComponent implements OnInit {
   //   }
   // }
 
-  async loadSaleFactoryNames() {
+  async loadSupplierFactoryNames() {
     debugger
     try {
       const bodyData: IGetSaleRateFixFactory = {
@@ -253,8 +246,8 @@ export class SupplierRateFixComponent implements OnInit {
         IsClientView: false
       };
 
-      const res: any = await this.saleService
-        .GetSaleRateFixFactoryDetails(bodyData)
+      const res: any = await this.supplierService
+        .GetSupplierFactory(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
@@ -284,7 +277,7 @@ export class SupplierRateFixComponent implements OnInit {
   }
 
   async GetFactory(event: MatDatepickerInputEvent<Date>) {
-    await this.loadSaleFactoryNames();
+    await this.loadSupplierFactoryNames();
     this.dateRangeForm.get('FactoryName')?.setValue('');
 
   }
