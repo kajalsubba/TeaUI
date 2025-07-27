@@ -20,7 +20,6 @@ import { ISaveSaleRate, IsaleRateFix } from '../../interfaces/isale-rate-fix';
 import { SaleRateFixService } from '../../services/sale-rate-fix.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import enIN from '@angular/common/locales/en-IN';
-import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 import { EditSaleRateComponent } from '../../models/edit-sale-rate/edit-sale-rate.component';
 import { environment } from 'src/environments/environment';
 import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
@@ -35,12 +34,9 @@ registerLocaleData(enIN);
 })
 export class SaleRateFixComponent implements OnInit {
   displayedColumns: string[] = [
-    //  'SaleId',
     'SaleDate',
     'FactoryName',
     'AccountName',
-    //  'VehicleNo',
-    // 'FieldWeight',
     'FineLeaf',
     'ChallanWeight',
     'Rate',
@@ -49,7 +45,6 @@ export class SaleRateFixComponent implements OnInit {
     'IncentiveAmount',
     'FinalAmount',
     'actions',
-    //'TypeName',
   ];
 
   dataSource = new MatTableDataSource<any>();
@@ -81,6 +76,8 @@ export class SaleRateFixComponent implements OnInit {
   moduleId!: any;
   minDate!: any;
   displayName!: any;
+  private notificationSub!: Subscription;
+
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -96,12 +93,13 @@ export class SaleRateFixComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    debugger
+    // debugger
     this.route.queryParams.subscribe(params => {
       this.moduleId = params['moduleId']; // '+' converts string to number
       this.minDate = params['minDate'];
       this.displayName = params['displayName'];
     });
+
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
@@ -125,6 +123,15 @@ export class SaleRateFixComponent implements OnInit {
       this.dateRangeForm.controls['FactoryId'].setValue(this.moduleId);
       this.dateRangeForm.controls['FactoryName'].setValue(this.displayName);
     }
+    this.notificationSub = this.notificationDataService.activeNotification$.subscribe(notification => {
+      if (notification) {
+        const { moduleId, minDate, displayName } = notification;
+        this.dateRangeForm.controls['fromDate'].setValue(new Date(minDate));
+        this.dateRangeForm.controls['FactoryId'].setValue(moduleId);
+        this.dateRangeForm.controls['FactoryName'].setValue(displayName);
+      }
+  
+    });
   }
 
   RateChange(event: any) {
@@ -517,5 +524,11 @@ export class SaleRateFixComponent implements OnInit {
     });
 
 
+  }
+  ngOnDestroy(): void {
+    this.notificationDataService.setActiveNotification(null);
+    if (this.notificationSub) {
+      this.notificationSub.unsubscribe();
+    }
   }
 }

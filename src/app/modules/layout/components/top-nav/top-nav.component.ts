@@ -34,7 +34,8 @@ export class TopNavComponent implements OnInit {
     private datePipe: DatePipe,
     private signalRService: SignalRService,
     private notificationDataService: NotificationDataService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+
   ) { }
 
   ngOnInit(): void {
@@ -90,29 +91,22 @@ export class TopNavComponent implements OnInit {
   }
 
   formatCurrentRoute(): string {
-    // const currentRoute = this.helper.getCurrentRoute();
-    // const parts = currentRoute.split('/');
-    // const formattedRoute = parts.slice(1).join(' > ');
-    // return formattedRoute.toUpperCase();
     let currentRoute = this.helper.getCurrentRoute();
-
-    // Remove query params and fragment if any
     currentRoute = currentRoute.split('?')[0].split('#')[0];
     const parts = currentRoute.split('/');
-    // Remove leading empty part (due to initial '/'), then join
     const formattedRoute = parts.slice(1).join(' > ');
     return formattedRoute.toUpperCase();
   }
 
   redirectToNotification(link: any, moduleId: any, minDate: any, displayName: any) {
-    //this.router.navigate([`home/${link}`]);
-    this.router.navigate([`home/${link}`], {
-      queryParams: {
-        moduleId,
-        minDate,
-        displayName
-      }
-    });
+    debugger
+    if (this.router.url.includes(link)) {
+      this.notificationDataService.setActiveNotification({ moduleId, minDate, displayName });
+    } else {
+      this.router.navigate([`home/${link}`], {
+        queryParams: { moduleId, minDate, displayName }
+      });
+    }
   }
   ngOnDestroy(): void {
     // Unsubscribe to avoid memory leaks

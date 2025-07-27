@@ -75,6 +75,7 @@ export class SupplierRateFixComponent implements OnInit {
   moduleId!: any;
   minDate!: any;
   displayName!: any;
+  private notificationSub!: Subscription;
 
   constructor(
     private dialog: MatDialog,
@@ -122,19 +123,23 @@ export class SupplierRateFixComponent implements OnInit {
 
     await this.loadAccountNames();
 
+    this.notificationSub = this.notificationDataService.activeNotification$.subscribe(notification => {
+      if (notification) {
+        const { moduleId, minDate, displayName } = notification;
+        this.dateRangeForm.controls['fromDate'].setValue(new Date(minDate));
+        this.dateRangeForm.controls['ClientId'].setValue(moduleId);
+        this.dateRangeForm.controls['ClientName'].setValue(displayName);
+      }
+    });
   }
-
   ngAfterViewInit() {
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
   convertDate(date: any): string {
     const parsedDate = new Date(date);
     return this.datePipe.transform(parsedDate, 'dd-MM-yyyy') || '';
   }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -500,5 +505,12 @@ export class SupplierRateFixComponent implements OnInit {
     this.dateRangeForm.controls["FineLeaf"].reset();
     this.dateRangeForm.controls["AccountName"].reset();
     this.dateRangeForm.controls["Rate"].reset();
+  }
+
+  ngOnDestroy(): void {
+    this.notificationDataService.setActiveNotification(null);
+    if (this.notificationSub) {
+      this.notificationSub.unsubscribe();
+    }
   }
 }
