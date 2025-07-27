@@ -120,20 +120,30 @@ export class SaleRateFixComponent implements OnInit {
     }
     await this.loadSaleFactoryNames();
     if (this.moduleId != null) {
+      this.CleanNotificationForm();
       this.dateRangeForm.controls['FactoryId'].setValue(this.moduleId);
       this.dateRangeForm.controls['FactoryName'].setValue(this.displayName);
+      this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == this.moduleId)
+
     }
     this.notificationSub = this.notificationDataService.activeNotification$.subscribe(notification => {
       if (notification) {
         const { moduleId, minDate, displayName } = notification;
+        this.CleanNotificationForm();
         this.dateRangeForm.controls['fromDate'].setValue(new Date(minDate));
         this.dateRangeForm.controls['FactoryId'].setValue(moduleId);
         this.dateRangeForm.controls['FactoryName'].setValue(displayName);
+        this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == moduleId)
+
       }
-  
+
     });
   }
 
+  CleanNotificationForm() {
+    this.dateRangeForm.controls['AccountName'].reset();
+    this.dateRangeForm.controls['AccountId'].reset();
+  }
   RateChange(event: any) {
     const value = event.target.value;
     if (value == 0 || value == '') {
