@@ -24,6 +24,7 @@ import { NotificationDataService } from 'src/app/modules/layout/services/notific
 import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
 import { SupplierService } from 'src/app/modules/collection/services/supplier.service';
 import { IGetSaleRateFixFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { ActivatedRoute } from '@angular/router';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-rate-fix',
@@ -71,7 +72,9 @@ export class SupplierRateFixComponent implements OnInit {
   factoryNames: any[] = [];
   AccountList: any[] = [];
   accountNames: any[] = [];
-
+  moduleId!: any;
+  minDate!: any;
+  displayName!: any;
 
   constructor(
     private dialog: MatDialog,
@@ -83,10 +86,16 @@ export class SupplierRateFixComponent implements OnInit {
     private fb: FormBuilder,
     private rateFixService: IsupplierRateFixService,
     private notificationDataService: NotificationDataService,
-    private supplierService: SupplierService
+    private supplierService: SupplierService,
+    private route: ActivatedRoute
   ) { }
 
   async ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.moduleId = params['moduleId']; // '+' converts string to number
+      this.minDate = params['minDate'];
+      this.displayName = params['displayName'];
+    });
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
@@ -102,7 +111,15 @@ export class SupplierRateFixComponent implements OnInit {
     });
     await this.loadClientNames();
 
+    if (this.minDate) {
+      this.dateRangeForm.controls['fromDate'].setValue(new Date(this.minDate));
+    }
     await this.loadSupplierFactoryNames();
+    if (this.moduleId != null) {
+      this.dateRangeForm.controls['ClientId'].setValue(this.moduleId);
+      this.dateRangeForm.controls['ClientName'].setValue(this.displayName);
+    }
+
     await this.loadAccountNames();
 
   }

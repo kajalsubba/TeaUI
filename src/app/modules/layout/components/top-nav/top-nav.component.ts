@@ -90,17 +90,29 @@ export class TopNavComponent implements OnInit {
   }
 
   formatCurrentRoute(): string {
-    const currentRoute = this.helper.getCurrentRoute();
+    // const currentRoute = this.helper.getCurrentRoute();
+    // const parts = currentRoute.split('/');
+    // const formattedRoute = parts.slice(1).join(' > ');
+    // return formattedRoute.toUpperCase();
+    let currentRoute = this.helper.getCurrentRoute();
+
+    // Remove query params and fragment if any
+    currentRoute = currentRoute.split('?')[0].split('#')[0];
     const parts = currentRoute.split('/');
-
-    // Remove the first empty string and join the rest with ' > '
+    // Remove leading empty part (due to initial '/'), then join
     const formattedRoute = parts.slice(1).join(' > ');
-
     return formattedRoute.toUpperCase();
   }
 
-  redirectToNotification(link: any) {
-    this.router.navigate([`home/${link}`]);
+  redirectToNotification(link: any, moduleId: any, minDate: any, displayName: any) {
+    //this.router.navigate([`home/${link}`]);
+    this.router.navigate([`home/${link}`], {
+      queryParams: {
+        moduleId,
+        minDate,
+        displayName
+      }
+    });
   }
   ngOnDestroy(): void {
     // Unsubscribe to avoid memory leaks

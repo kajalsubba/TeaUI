@@ -25,8 +25,8 @@
                 Notifications
             </div>
             <ng-container *ngIf="NotificationData.length > 0; else noNotifications">
-                <button (click)="redirectToNotification(notification.Link)" class="notification-button" mat-menu-item
-                    *ngFor="let notification of NotificationData">
+                <button (click)="redirectToNotification(notification.Link, notification.ModuleId, notification.MinDate,notification.DisplayName)"
+                    class="notification-button" mat-menu-item *ngFor="let notification of NotificationData">
                     <div class="notification-item">
                         <div class="notification-content">
                             <div class="notification-module">{{ notification.Module }}</div>

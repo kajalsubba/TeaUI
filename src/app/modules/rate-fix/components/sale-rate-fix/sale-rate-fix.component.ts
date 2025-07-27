@@ -26,6 +26,7 @@ import { environment } from 'src/environments/environment';
 import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
 import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
+import { ActivatedRoute } from '@angular/router';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-sale-rate-fix',
@@ -77,7 +78,9 @@ export class SaleRateFixComponent implements OnInit {
   accountNames: any[] = [];
   AccountList: any[] = [];
   factoryNames: any[] = [];
-
+  moduleId!: any;
+  minDate!: any;
+  displayName!: any;
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -89,15 +92,20 @@ export class SaleRateFixComponent implements OnInit {
     private rateFixService: SaleRateFixService,
     private notificationDataService: NotificationDataService,
     private saleService: StgApproveService,
+    private route: ActivatedRoute
   ) { }
 
   async ngOnInit() {
+    debugger
+    this.route.queryParams.subscribe(params => {
+      this.moduleId = params['moduleId']; // '+' converts string to number
+      this.minDate = params['minDate'];
+      this.displayName = params['displayName'];
+    });
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      // ClientId: [0],
-      // ClientName: [''],
       Rate: [''],
       FineLeaf: [''],
       Incentive: [''],
@@ -106,12 +114,19 @@ export class SaleRateFixComponent implements OnInit {
       AccountName: [''],
       AccountId: [0],
     });
-    //   await this.loadClientNames();
     await this.loadAccountNames();
-    //   await this.loadFactoryNames();
-    this.loadSaleFactoryNames();
     this.dateRangeForm.controls['Incentive'].disable({ onlySelf: true });
+
+    if (this.minDate) {
+      this.dateRangeForm.controls['fromDate'].setValue(new Date(this.minDate));
+    }
+    await this.loadSaleFactoryNames();
+    if (this.moduleId != null) {
+      this.dateRangeForm.controls['FactoryId'].setValue(this.moduleId);
+      this.dateRangeForm.controls['FactoryName'].setValue(this.displayName);
+    }
   }
+
   RateChange(event: any) {
     const value = event.target.value;
     if (value == 0 || value == '') {
@@ -151,7 +166,7 @@ export class SaleRateFixComponent implements OnInit {
   async GetFactory(event: MatDatepickerInputEvent<Date>) {
     await this.loadSaleFactoryNames();
     this.dateRangeForm.get('FactoryName')?.setValue('');
-   
+
   }
 
   GetSaleData(FromDate: any, ToDate: any) {
