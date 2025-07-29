@@ -1,6 +1,6 @@
 <div class="container-fluid mt-2">
   <div class="row">
-    <div class="col-lg-10 my-2">
+    <!-- <div class="col-lg-10 my-2">
       <div class="row">
         <div class="col-lg-12">
           <form [formGroup]="dateRangeForm" class="d-flex justify-content-center align-items-center">
@@ -35,15 +35,9 @@
               </mat-autocomplete>
             </div>
             <div class="col-lg-2 position-relative my-2">
-              <!-- <mat-select placeholder="--Users--" class="fromSelect" formControlName="UserId">
-                <mat-option value="0">All User</mat-option>
-                <mat-option *ngFor="let user of UserList" [value]="user.UserId">
-                  {{user.FullName}}
-                </mat-option>
-              </mat-select> -->
+
               <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
                 formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onFactoryInputChange($event)">
-              <!-- Autocomplete options -->
               <mat-autocomplete #factoryAuto="matAutocomplete" [displayWith]="displayWithFn">
                 <mat-option *ngFor="let factory of filterFactoryNames(factoryName.value)" [value]="factory?.FactoryName"
                   (onSelectionChange)="selectFactory(factory)">
@@ -51,6 +45,7 @@
                 </mat-option>
               </mat-autocomplete>
             </div>
+
             <div class="col-lg-2 mx-2">
               <mat-select placeholder="--Select Status--" class="fromSelect" formControlName="Status">
                 <mat-option *ngFor="let status of statusList" [value]="status">
@@ -58,25 +53,128 @@
                 </mat-option>
               </mat-select>
             </div>
-            <!-- <div class="col-lg-2 position-relative my-2">
-              <mat-select placeholder="--Users--" class="fromSelect" formControlName="UserId">
-                <mat-option value="0">All User</mat-option>
-                <mat-option *ngFor="let user of UserList" [value]="user.UserId">
-                  {{user.FullName}}
-                </mat-option>
-              </mat-select>
-         
-            </div> -->
+
+          
             <div class="col-lg-2 d-grid">
-              <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
               <button (click)="search()" class="btn btn-color py-2 ms-2">Search</button>
             </div>
-            
+
           </form>
         </div>
       </div>
     </div>
     <div class="col-lg-2 my-2 pt-2 border-left">
+      <div class="top-container">
+        <div class="search-field px-2">
+          <input (input)="applyFilter($event)" type="text" placeholder="Find" class="form-control">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <button matTooltip="Excel Export" (click)="exportToExcel()" class="btn btn-outline-dark">
+          <i class="fa-solid py-2 px-1 fa-file-excel"></i>
+        </button>
+      </div>
+    </div> -->
+
+    <div class="col-lg-10 my-2">
+      <div class="row">
+        <div class="col-lg-12">
+          <form [formGroup]="dateRangeForm" class="d-flex">
+            <div class="row">
+              <div class="col-lg-3 my-2">
+                <mat-form-field class="w-100">
+                  <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
+                    placeholder="From Date" (dateChange)="GetFactory($event)" formControlName="fromDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-3 my-2">
+                <mat-form-field class="w-100">
+                  <input readonly matInput [min]="minToDate" [matDatepicker]="picker1"
+                    min="dateRangeForm.value.fromDate" (dateChange)="GetFactory($event)" placeholder="To Date"
+                    formControlName="toDate">
+                  <mat-datepicker-toggle [disabled]="dateRangeForm.value.fromDate == null" matSuffix
+                    [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="position-relative col-lg-3 my-2">
+                <mat-select (selectionChange)="selectFactory($event)" class="fromSelect" formControlName="FactoryName"
+                  placeholder="Select Factory" #singleSelect>
+
+                  <mat-option>
+                    <ngx-mat-select-search formControlName="FactoryFilterCrtl"
+                      noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]="0">
+                    All Factories
+                  </mat-option>
+                  <mat-option *ngFor="let factory of filteredFactory|async" [value]="factory">
+                    {{ factory?.FactoryName }}
+                  </mat-option>
+                </mat-select>
+
+                <span *ngIf="SaleStatementValidate" class="text-danger d-block validation-message">
+                  {{ SaleStatementErrorMsg }}
+                </span>
+              </div>
+
+              <div class="position-relative col-lg-3 my-2">
+                <mat-select class="fromSelect" formControlName="AccountName" placeholder="Select Account" #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search formControlName="AccountFilterCrtl"
+                      noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]="0">
+                    All Accounts
+                  </mat-option>
+                  <mat-option *ngFor="let account of filteredAccounts|async" [value]="account">
+                    {{ account?.AccountName }}
+                  </mat-option>
+                </mat-select>
+
+                <span *ngIf="SaleStatementValidate" class="text-danger d-block validation-message">
+                  {{SaleStatementErrorMsg}}
+                </span>
+              </div>
+              <div class="col-lg-3 position-relative my-2">
+
+                <input #clientName type="text" class="form-control" id="ClientName" placeholder="Client Name"
+                  formControlName="ClientName" [matAutocomplete]="clientAuto" (input)="onInputChange($event)">
+
+                <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                  <mat-option *ngFor="let client of filterClientNames(clientName.value)" [value]="client?.ClientName"
+                    (onSelectionChange)="selectClient(client)">
+                    {{ client?.ClientName }}
+                  </mat-option>
+                </mat-autocomplete>
+              </div>
+              <div class="col-lg-3 position-relative my-2">
+                <mat-select placeholder="--Select Status--" class="fromSelect" formControlName="Status">
+                  <mat-option *ngFor="let status of statusList" [value]="status">
+                    {{status}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div class="col-lg-3 position-relative my-2">
+                <input type="text" class="form-control" id="FineLeaf" placeholder="Fine Leaf (10-30)"
+                  formControlName="FineLeaf">
+
+              </div>
+              <div class="col-lg-3 d-grid my-2">
+                <button (click)="search()" class="btn btn-color">Search</button>
+              </div>
+              <!-- <div class="col-lg-3 d-grid my-2">
+                <button (click)="print()" class="btn btn-color">Sale Stat. Print</button>
+              </div> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 border-left my-3">
       <div class="top-container">
         <div class="search-field px-2">
           <input (input)="applyFilter($event)" type="text" placeholder="Find" class="form-control">

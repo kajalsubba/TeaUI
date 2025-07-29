@@ -269,7 +269,7 @@ export class SupplierRateFixComponent implements OnInit {
       };
 
       const res: any = await this.supplierService
-        .GetSupplierFactory(bodyData)
+        .GetSupplierRateFixFactory(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 

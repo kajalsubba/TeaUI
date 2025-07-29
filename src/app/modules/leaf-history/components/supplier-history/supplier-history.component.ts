@@ -7,10 +7,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, Subscription, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
-import { ISupplierSelect } from 'src/app/modules/collection/interfaces/isupplier';
+import { ISupplierHistory, ISupplierSelect } from 'src/app/modules/collection/interfaces/isupplier';
 import { AddEditSupplierComponent } from 'src/app/modules/collection/models/add-edit-supplier/add-edit-supplier.component';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
 import { StgService } from 'src/app/modules/collection/services/stg.service';
@@ -20,8 +20,10 @@ import enIN from '@angular/common/locales/en-IN';
 import { IGetUser } from 'src/app/modules/user-management/interfaces/iuser';
 import { UserService } from 'src/app/modules/user-management/services/user.service';
 import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
-import { IGetSaleFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { IFactoryFilter, IGetSaleFactory, IGetSaleRateFixFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { ExcelExportService } from '../../../../shared/services/excel-export.service';
+import { IAccountFilter, IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
+import { MatSelect } from '@angular/material/select';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-history',
@@ -29,6 +31,9 @@ registerLocaleData(enIN);
   styleUrls: ['./supplier-history.component.scss']
 })
 export class SupplierHistoryComponent {
+  @ViewChild('singleSelect', { static: true }) singleSelect!: MatSelect;
+  public filteredFactory: ReplaySubject<IFactoryFilter[]> = new ReplaySubject<IFactoryFilter[]>(1);
+  public filteredAccounts: ReplaySubject<IAccountFilter[]> = new ReplaySubject<IAccountFilter[]>(1);
 
   displayedColumns: string[] = [
     'CollectionId',
@@ -41,7 +46,7 @@ export class SupplierHistoryComponent {
     'ChallanWeight',
     'Rate',
     'RateStatus'
- 
+
   ];
 
   dataSource = new MatTableDataSource<any>();
@@ -76,20 +81,20 @@ export class SupplierHistoryComponent {
   private destroy$ = new Subject<void>();
   UserList: any[] = [];
   TotalVehicleCount: number = 0;
-
+  SaleStatementValidate: boolean = false;
+  SaleStatementErrorMsg: string = '';
+  filteredFactories: any[] = [];
+  AccountList: any = [];
+  accountNames: any[] = [];
   constructor(
     private dialog: MatDialog,
     private helper: HelperService,
-    private datePipe: DatePipe,
     private toastr: ToastrService,
     private autocompleteService: AutoCompleteService,
     private fb: FormBuilder,
     private excelService: ExcelExportService,
-    private stgService: StgService,
     private userService: UserService,
     private supplierService: SupplierService,
-    private saleService: StgApproveService
-
   ) { }
 
   async ngOnInit() {
@@ -97,20 +102,30 @@ export class SupplierHistoryComponent {
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      //  VehicleNo: [''],
       ClientName: [],
       ClientId: [0],
       Status: [''],
       UserId: [0],
       FactoryName: [''],
-      FactoryId: [0],
+      FactoryId: [null],
+      AccountName: [''],
+      FineLeaf: [''],
+      AccountId: [null],
+      FactoryFilterCrtl: [''],
+      AccountFilterCrtl: [''],
     });
 
-    await this.loadClientNames();
-    await this.GetUserList();
+    await this.loadFactoryNames();
+    await this.loadAccountNames();
+
+    console.log(this.loginDetails, 'this.loginDetails.LoginType')
     if (this.loginDetails.LoginType == 'Client') {
+      this.dateRangeForm.controls['ClientId'].setValue(this.loginDetails.ClientId);
+      this.dateRangeForm.controls['ClientName'].setValue(this.loginDetails.ClientName);
       this.dateRangeForm.controls['ClientName'].disable({ onlySelf: true });
       this.dateRangeForm.controls['FactoryName'].disable({ onlySelf: true });
+      this.dateRangeForm.controls['AccountName'].disable({ onlySelf: true });
+      this.dateRangeForm.controls['FineLeaf'].disable({ onlySelf: true });
     }
     if (this.loginDetails.LoginType == 'Client') {
       this.hideSaleRateColumn = true;
@@ -121,25 +136,29 @@ export class SupplierHistoryComponent {
 
     } else {
       this.hideSaleRateColumn = false;
-      // Add 'SaleRate' to displayedColumns if it's not hidden
       if (!this.displayedColumns.includes('SaleRate')) {
         this.displayedColumns.push('SaleRate', 'GrossAmount', 'Remarks', 'TripName', 'CreatedBy', 'CreatedDate',
           'ModifyBy', 'ModifyDate', 'Status', 'actions');
-        //  this.displayedColumns.push('SaleRate');
       }
     }
 
+    this.filteredFactory.next(this.factoryNames.slice());
+
+    this.dateRangeForm.controls["FactoryFilterCrtl"].valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.filteredFactoryData();
+      });
   }
+
   filterFactoryNames(value: string): any {
-    // if (value!="")
-    //   {
     const filterValue = value.toLowerCase();
     return this.factoryNames.filter((x: any) =>
       x?.FactoryName?.toLowerCase()?.includes(filterValue)
     );
-    //  }
 
   }
+
   async loadClientNames() {
     try {
       const bodyData: IGetTeaClient = {
@@ -188,34 +207,111 @@ export class SupplierHistoryComponent {
     }
 
   }
-  GetFactory(event: MatDatepickerInputEvent<Date>): void {
-    this.loadSaleFactoryNames();
-  }
 
-  async loadSaleFactoryNames() {
+
+  async loadAccountNames() {
     try {
-      const bodyData: IGetSaleFactory = {
+      const bodyData: IGetFactoryAccount = {
         TenantId: this.loginDetails.TenantId,
-        FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
-        ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       };
 
-      const res: any = await this.saleService
-        .GetSaleFactoryDetails(bodyData)
+      const res: any = await this.autocompleteService
+        .GetAccountNames(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.factoryNames = res.SaleFactory;
+      this.AccountList = res.AccountDetails;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
 
-  selectFactory(factory: any) {
-    this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
-    //this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.FactoryId)
+  async GetFactory(event: MatDatepickerInputEvent<Date>) {
+    await this.loadFactoryNames();
+    this.filteredFactory.next(this.factoryNames.slice());
+
+    this.dateRangeForm.controls["FactoryFilterCrtl"].valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.filteredFactoryData();
+      });
   }
+
+  private filteredFactoryData() {
+    // debugger
+    if (!this.factoryNames) {
+      return;
+    }
+    // get the search keyword
+    let search = this.dateRangeForm.controls["FactoryFilterCrtl"].value;
+    if (!search) {
+      this.filteredFactory.next(this.factoryNames.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredFactory.next(
+      this.factoryNames.filter(x => x.FactoryName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+  async loadFactoryNames() {
+    debugger
+    try {
+      const bodyData: IGetSaleRateFixFactory = {
+        TenantId: this.loginDetails.TenantId,
+        FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        IsClientView: false
+      };
+
+      const res: any = await this.supplierService
+        .GetSupplierHistoryFactory(bodyData)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.factoryNames = res.FactoryList;
+      this.ClientNames = res.ClientList;
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+  // selectFactory(factory: any) {
+  //   this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
+  // }
+  selectFactory(factory: any) {
+    this.ResetForm()
+    this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.value.FactoryId);
+    this.filteredAccounts.next(this.accountNames.slice());
+    this.dateRangeForm.controls["AccountFilterCrtl"].valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.filteredAccountsData();
+      });
+  }
+
+
+  private filteredAccountsData() {
+    if (!this.accountNames) {
+      return;
+    }
+    let search = this.dateRangeForm.controls["FactoryFilterCrtl"].value;
+    if (!search) {
+      this.filteredAccounts.next(this.accountNames.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredAccounts.next(
+      this.accountNames.filter((x: any) => x.AccountName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -239,25 +335,29 @@ export class SupplierHistoryComponent {
 
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-    // this.dateRangeForm.controls['toDate'].setValue(null);
     this.minToDate = event.value
   }
 
+  ResetForm() {
+    this.dateRangeForm.controls['ClientId'].reset();
+    this.dateRangeForm.controls['ClientName'].reset();
+    this.dateRangeForm.controls['FineLeaf'].reset();
+  }
   GetSupplierList() {
 
-    let bodyData: ISupplierSelect = {
+    let bodyData: ISupplierHistory = {
       FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       TenantId: this.loginDetails.TenantId,
-      VehicleNo: '',
       ClientId: this.dateRangeForm.value.ClientId,
       Status: this.dateRangeForm.value.Status == 'All' ? '' : this.dateRangeForm.value.Status,
-      TripId: 0,
-      FactoryId: this.dateRangeForm.value.FactoryId,
+      FactoryId: this.dateRangeForm.value.FactoryName?.FactoryId ?? 0,
+      AccountId: this.dateRangeForm.value.FactoryName?.FactoryId == undefined ? 0 : this.dateRangeForm.value.AccountName?.AccountId,
+      FineLeaf: this.dateRangeForm.value.FineLeaf ?? '',
       CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : this.dateRangeForm.value.UserId,
     }
-    const categoryListService = this.supplierService.GetSupplierData(bodyData).subscribe((res: any) => {
-      
+    const categoryListService = this.supplierService.GetSupplierHistoryData(bodyData).subscribe((res: any) => {
+
       this.dataSource.data = res.SupplierDetails;
 
       const grossAmount: number = this.getTotalCost('GrossAmount');
@@ -278,7 +378,7 @@ export class SupplierHistoryComponent {
     const categoryListService = this.userService
       .GetUser(bodyData)
       .subscribe((res: any) => {
-  
+
         this.UserList = res.UserDetails;
       });
     this.subscriptions.push(categoryListService);

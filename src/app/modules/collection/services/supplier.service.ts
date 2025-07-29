@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IDefaultData, ISupplier, ISupplierSelect, IUploadChallan } from '../interfaces/isupplier';
+import { IDefaultData, ISupplier, ISupplierHistory, ISupplierSelect, IUploadChallan } from '../interfaces/isupplier';
 import { Observable } from 'rxjs';
 import { IGetSaleRateFixFactory } from '../../masters/interfaces/IFactory';
 
@@ -30,13 +30,20 @@ export class SupplierService {
     return this.apiService.post('Collection/GetSupplierDetails', clientBody);
   }
 
+  GetSupplierHistoryData(clientBody: ISupplierHistory): Observable<string[]> {
+    return this.apiService.post('Collection/GetSupplierHistory', clientBody);
+  }
+
   GetSupplierDefaultData(clientBody: IDefaultData): Observable<string[]> {
     return this.apiService.post('Collection/GetSupplierDefaultData', clientBody);
   }
 
 
-  GetSupplierFactory(clientBody: IGetSaleRateFixFactory): Observable<string[]> {
+  GetSupplierRateFixFactory(clientBody: IGetSaleRateFixFactory): Observable<string[]> {
     return this.apiService.post('Collection/GetSupplierRateFixFactory', clientBody);
+  }
+  GetSupplierHistoryFactory(clientBody: IGetSaleRateFixFactory): Observable<string[]> {
+    return this.apiService.post('Collection/GetSupplierHistoryFactory', clientBody);
   }
 
 }
