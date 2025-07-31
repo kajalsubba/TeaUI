@@ -279,24 +279,6 @@ export class SaleRateFixComponent implements OnInit {
     }
   }
 
-  // async loadFactoryNames() {
-  //   try {
-  //     const bodyData: IGetFactory = {
-  //       TenantId: this.loginDetails.TenantId,
-  //       IsClientView: false
-  //     };
-
-  //     const res: any = await this.autoCompleteService
-  //       .GetFactoryNames(bodyData)
-  //       .pipe(takeUntil(this.destroy$))
-  //       .toPromise();
-
-  //     this.factoryNames = res.FactoryDetails;
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     this.toastr.error('Something went wrong.', 'ERROR');
-  //   }
-  // }
 
   async loadSaleFactoryNames() {
     debugger

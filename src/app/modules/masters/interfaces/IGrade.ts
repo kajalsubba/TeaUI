@@ -10,10 +10,14 @@ export interface IGetGrade {
 
 }
 
-export interface IDeleteGrade
-{
+export interface IDeleteGrade {
   GradeId: number;
 }
 
+export interface ICollectionRateFixFilter {
+  FromDate: string;
+  ToDate: string;
+  TenantId: number;
+}
 
 

@@ -281,9 +281,7 @@ export class SupplierHistoryComponent {
     }
   }
 
-  // selectFactory(factory: any) {
-  //   this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
-  // }
+ 
   selectFactory(factory: any) {
     this.ResetForm()
     this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.value.FactoryId);

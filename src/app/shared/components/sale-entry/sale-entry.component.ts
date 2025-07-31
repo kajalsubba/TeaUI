@@ -53,7 +53,6 @@ export class SaleEntryComponent implements OnInit {
   displayedColumns: string[] = [
     'serialNumber',
     'CollectionDate',
-    //  'VehicleNo',
     'ClientName',
     'FirstWeight',
     'WetLeaf',
@@ -67,10 +66,8 @@ export class SaleEntryComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    //  { columnDef: 'VehicleNo', header: 'Vehicle NO.' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
-
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
   ];
 

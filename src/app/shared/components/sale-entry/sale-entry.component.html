@@ -26,7 +26,7 @@
                     <label for="Factory" class="col-lg-5 col-form-label">Factory Name <span
                             class="text-danger">*</span></label>
                     <div class="col-lg-7 position-relative">
-                        <mat-select placeholder="--Select Factory--" class="fromSelect" formControlName="FactoryName"
+                        <mat-select placeholder="--Select Factory--" class="fromSelect bold-input" formControlName="FactoryName"
                             (selectionChange)="SelectFactory($event.value)">
                             <input #buyer (input)="filterBuyers(buyer.value)" type="text"
                                 class="form-control inset-shadow" placeholder="Search Buyer">
@@ -46,7 +46,7 @@
                     <label for="account" class="col-lg-5 col-form-label">Account Name <span
                             class="text-danger">*</span></label>
                     <div class="col-lg-7 position-relative">
-                        <mat-select placeholder="--Select Account--" class="fromSelect" formControlName="AccountId">
+                        <mat-select placeholder="--Select Account--" class="fromSelect bold-input" formControlName="AccountId">
                             <input #account (input)="filterAccounts(account.value)" type="text"
                                 class="form-control inset-shadow" placeholder="Search Account">
                             <mat-option *ngFor="let account of filteredAccounts"
@@ -65,7 +65,7 @@
                     <label for="VehicleNo" class="col-lg-5 col-form-label">Vehicle No. <span
                             class="text-danger">*</span></label>
                     <div class="col-lg-7 d-grid position-relative">
-                        <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control"
+                        <input (input)="VehicleInput(vehicleNo.value)" #vehicleNo type="text" class="form-control bold-input"
                             id="VehicleNo" placeholder="Vehicle No." formControlName="VehicleNo"
                             [matAutocomplete]="vehicleAuto">
                         <!-- Autocomplete options -->
@@ -206,7 +206,7 @@
                             class="text-danger">*</span></label>
                     <div class="col-lg-7 position-relative">
                         <input (input)="ChallanWeightChange(ChallanWeight.value)" #ChallanWeight type="number"
-                            formControlName="ChallanWeight" class="form-control" placeholder="Channal Weight"
+                            formControlName="ChallanWeight" class="form-control bold-input" placeholder="Channal Weight"
                             (focusout)="onFocusOutEvent($event)">
                         <span class="kg-text">KG</span>
                         <span

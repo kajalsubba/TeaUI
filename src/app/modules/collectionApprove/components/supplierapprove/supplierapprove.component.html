@@ -46,6 +46,8 @@
                 <!-- <button (click)="clearFilter()" matTooltip="Clear Filter" class="btn btn-color"><i class="fa-solid fa-filter-circle-xmark"></i></button> -->
                 <button (click)="search()" class="btn btn-color ms-2">Search</button>
               </div>
+
+              
             </div>
           </form>
         </div>
@@ -53,10 +55,10 @@
     </div>
     <div class="col-lg-2 my-2">
       <div class="top-container d-flex justify-content-end">
-        <!-- <div class="search-field px-2">
-              <input readonly (input)="applyFilter($event)" type="text" placeholder="Search" class="form-control">
+        <div class="search-field px-2">
+              <input (input)="applyFilter($event)" type="text" placeholder="Find" class="form-control">
               <i class="fa-solid fa-magnifying-glass"></i>
-            </div> -->
+            </div>
         <div class="add-button">
           <!-- <button (click)="approveEntry()" class="btn btn-color">Approve</button> -->
           <!-- <button (click)="saleEntry('','')" class="btn btn-color">Sale Entry</button> -->
@@ -111,17 +113,17 @@
                       <span *ngIf="row.Status == 'Approved'" class="btn-approved">Approved</span>
                     </div> -->
                 <div class="approve-reject-btn">
-                  <span (click)="RejectClick(row)"  [ngClass]="{'disabled-span': IsApprove}"
+                  <span (click)="RejectClick(row)" [ngClass]="{'disabled-span': IsApprove}"
                     class="btn btn-sm btn-outline-danger m-1">Reject</span>
-                  <span (click)="ApproveClick(row)"  [ngClass]="{'disabled-span': IsApprove}"
+                  <span (click)="ApproveClick(row)" [ngClass]="{'disabled-span': IsApprove}"
                     class="btn btn-sm btn-outline-success m-1">Approved</span>
-                    <span (click)="RectifyClick(row)"  [ngClass]="{'disabled-span': IsApprove}"
+                  <span (click)="RectifyClick(row)" [ngClass]="{'disabled-span': IsApprove}"
                     class="btn btn-sm btn-outline-primary m-1">Rectify</span>
                 </div>
               </td>
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
-          
+
 
 
 
