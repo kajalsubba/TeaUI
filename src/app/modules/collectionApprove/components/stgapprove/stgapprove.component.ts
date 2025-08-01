@@ -111,12 +111,8 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     let data = {
       TenantId: this.loginDetails.TenantId,
     }
-
     const getPendingCollectionDate = this.stgapproveService.GetStgPendingDate(data).subscribe((res: any) => {
       this.CollectionDates = res.PendingDate;
-
-      //     console.log(this.CollectionDates, 'this.CollectionDates');
-
     });
     this.subscriptions.push(getPendingCollectionDate)
   }
@@ -167,16 +163,14 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
           }
           return acc;
         }, {} as GroupedData);
-
+        
         let groupedDataString = JSON.stringify(groupedData);
-
-        // Remove the curly braces
         groupedDataString = groupedDataString.slice(1, -1);
-
-        // Remove the double quotes
         groupedDataString = groupedDataString.replace(/\"/g, '');
+        groupedDataString = groupedDataString.replace(/,/g, ', ');
+        groupedDataString = groupedDataString.replace(/:/g, ': ');
+
         this.GradeSummary = groupedDataString;
-        console.log(groupedDataString, 'groupedDataString');
       });
     this.subscriptions.push(categoryListService);
   }
@@ -392,6 +386,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         this.GetStgList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
         this.selection = new SelectionModel<any>(true, []);
         this.RefreshNotifications();
+        this.getPendingCollectionDates();
       }
     });
   }

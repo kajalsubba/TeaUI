@@ -54,7 +54,7 @@ export class StgHistoryComponent {
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionTime', header: 'Collection Time' },
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'GradeName', header: 'Grade' },
+    // { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
     { columnDef: 'Remarks', header: 'Remarks' },
@@ -77,6 +77,7 @@ export class StgHistoryComponent {
   selectedRowIndex: number = -1;
   AverageRate: number = 0;
   TotalVehicleCount: number = 0;
+  GradeSummary: any = "Grade Summary";
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -205,8 +206,6 @@ export class StgHistoryComponent {
   }
 
   GetStgList() {
-
-
     const bodyData: IStgSelect = {
       FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
       ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
@@ -229,6 +228,27 @@ export class StgHistoryComponent {
       const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
 
       this.TotalVehicleCount = uniqueCategories;
+
+      interface GroupedData {
+        [key: string]: number;
+      }
+
+      const groupedData: GroupedData = this.dataSource.data.reduce((acc, item) => {
+        if (acc[item.GradeName]) {
+          acc[item.GradeName] += item.FinalWeight;
+        } else {
+          acc[item.GradeName] = item.FinalWeight;
+        }
+        return acc;
+      }, {} as GroupedData);
+
+      let groupedDataString = JSON.stringify(groupedData);
+      groupedDataString = groupedDataString.slice(1, -1);
+      groupedDataString = groupedDataString.replace(/\"/g, '');
+      groupedDataString = groupedDataString.replace(/,/g, ', ');
+      groupedDataString = groupedDataString.replace(/:/g, ': ');
+
+      this.GradeSummary = groupedDataString;
     });
     this.subscriptions.push(categoryListService);
   }

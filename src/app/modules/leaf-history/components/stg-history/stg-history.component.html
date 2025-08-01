@@ -46,20 +46,20 @@
               <mat-select placeholder="--Select Grade--" class="fromSelect" formControlName="GradeId">
                 <mat-option [value]="0">
                   All Grade
-              </mat-option>
-                <mat-option *ngFor="let Grade of GradeList"[value]="Grade.GradeId">
+                </mat-option>
+                <mat-option *ngFor="let Grade of GradeList" [value]="Grade.GradeId">
                   {{Grade.GradeName}}
-              </mat-option>
+                </mat-option>
               </mat-select>
             </div>
 
-          
+
           </form>
         </div>
         <!-- <div class="col-lg-3 d-grid my-2">
           <button (click)="search()" class="btn btn-color ms-2">Search</button>
         </div> -->
-      
+
       </div>
       <div class="row">
         <div class="col-lg-10">
@@ -69,7 +69,7 @@
           <button (click)="search()" class="btn btn-color ms-2">Search</button>
         </div>
       </div>
-   
+
     </div>
     <div class="col-lg-2 my-2 border-left">
       <div class="top-container">
@@ -110,6 +110,15 @@
               <th mat-header-cell *matHeaderCellDef> Vehicle No </th>
               <td class="weight-column" mat-cell *matCellDef="let row"> {{row.VehicleNo }} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Count : {{TotalVehicleCount}}</b> </td>
+            </ng-container>
+
+            <!-- Grade -->
+            <ng-container matColumnDef="GradeName">
+              <th mat-header-cell *matHeaderCellDef> Grade </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.GradeName}} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef>
+                <b> {{ GradeSummary}} </b>
+              </td>
             </ng-container>
 
             <!-- First Weight -->
@@ -190,7 +199,7 @@
                   <i (click)="editItem(row)" matTooltip="Edit" matTooltipPosition="left"
                     class="fa-solid edit-delete-button fa-pen-to-square"></i>
                   <i (click)="ViewBag(row)" matTooltip="View Bag" matTooltipPosition="right"
-              class="fa-solid fa-bag-shopping"></i>
+                    class="fa-solid fa-bag-shopping"></i>
                   <!-- <i (click)="openImage(row.imageUrl)" matTooltip="View Challan" matTooltipPosition="right"
             class="fa-solid fa-eye edit-delete-button "></i> -->
                 </div>
