@@ -62,11 +62,14 @@ export class DashboardComponent implements OnInit {
         const categoriesData: string[] = res.CompanyWiseChart.map((item: any) => item.FactoryName);
         const salesData: number[] = res.CompanyWiseChart.map((item: any) => item.ChallanWeight);
 
-        const categoryYear: string[] = res.YearWiseChart.map((item: any) => item.ChallanWeight);
-        const totalSalesData: number[] = res.YearWiseChart.map((item: any) => item.ChallanYear);
+        const categoryYear: string[] = res.YearWiseChart.map((item: any) => item.ChallanYear);
+        const totalSalesData: number[] = res.YearWiseChart.map((item: any) => item.ChallanWeight);
+
+        const totalSaleDays: number[] = res.YearWiseChart.map((item: any) => item.TotalDays);
+        const avgsalePerDay: number[] = res.YearWiseChart.map((item: any) => item.AvgPerDay);
 
         this.GetCompanyWiseSaleChart(categoriesData, salesData);
-        this.GetTotalCompanyWiseSaleChart(categoryYear, totalSalesData);
+        this.GetTotalCompanyWiseSaleChart(categoryYear, totalSalesData, totalSaleDays, avgsalePerDay);
       });
     this.subscriptions.push(categoryListService);
   }
@@ -185,68 +188,74 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  GetTotalCompanyWiseSaleChart(categories: any = [], datas: any = []) {
-    const currentYear = new Date().getFullYear();
-
+  GetTotalCompanyWiseSaleChart(categories: any = [], totalSaledata: any = [], totalSaledays: any = [], avgPerDaySale: any = []) {
     this.totalCompanyWiseSaleDetails = {
+      chart: {
+        type: 'bar'
+      },
       credits: {
         enabled: false
       },
       title: {
-        text: 'Total Sale for the year - ' + currentYear
-      },
-      subtitle: {
-        text: ''
+        text: 'Sales Data Comparison'
       },
       xAxis: {
         categories: categories,
-        crosshair: true,
-        accessibility: {
-          description: 'Total sale'
-        },
-        labels: {
-          style: {
-            fontSize: '20px',
-            fontWeight: 'bold'
-          }
-        },
-        
+        crosshair: true
       },
-      yAxis: {
-        title: {
-          text: 'KG'
+      yAxis: [
+        {
+          // Primary yAxis for ChallanWeight
+          min: 0,
+          title: {
+            text: 'ChallanWeight'
+          },
+          opposite: false
+        },
+        {
+          // Secondary yAxis for TotalDays and AvgPerDay
+          min: 0,
+          title: {
+            text: 'TotalDays / AvgPerDay'
+          },
+          opposite: true
         }
-      },
+      ],
       tooltip: {
-        valueSuffix: ''
+        shared: true
+      },
+      plotOptions: {
+        column: {
+          grouping: true,
+          shadow: false,
+          borderWidth: 0
+        }
       },
       series: [
         {
-          name: 'Total SALE',
-          color: '#018353',
-          type: 'column', // Set the type property to 'column' for column chart
-          data: datas
+          name: 'TotalDays',
+          type: 'column',
+          data: totalSaledays,
+          color: '#434348',
+          yAxis: 1
         },
+        {
+          name: 'AvgPerDay',
+          type: 'column',
+          data: avgPerDaySale,
+          color: '#90ed7d',
+          yAxis: 1
+        },
+        {
+          name: 'ChallanWeight',
+          type: 'column',
+          data: totalSaledata,
+          color: '#018353',
+          yAxis: 0
+        }
       ]
     };
 
-    // Helper function to format numbers in Indian format
-    function formatIndianNumber(x: number): string {
-      const parts = x.toString().split('.');
-      let integerPart = parts[0];
-      const decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-
-      let lastThree = integerPart.slice(-3);
-      const otherNumbers = integerPart.slice(0, -3);
-
-      if (otherNumbers !== '') {
-        lastThree = ',' + lastThree;
-      }
-
-      const formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + lastThree;
-
-      return formatted + decimalPart;
-    }
   }
 
 
