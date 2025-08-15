@@ -52,8 +52,6 @@ export class SupplierHistoryComponent {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'CollectionId', header: 'Id ' },
-    { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'Remarks', header: 'Remark' },
@@ -62,7 +60,6 @@ export class SupplierHistoryComponent {
     { columnDef: 'CreatedDate', header: 'Created DateTime' },
     { columnDef: 'ModifyBy', header: 'Modify By' },
     { columnDef: 'ModifyDate', header: 'Modify DateTime' },
-    // { columnDef: 'Status', header: 'Status ' }
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -86,6 +83,8 @@ export class SupplierHistoryComponent {
   filteredFactories: any[] = [];
   AccountList: any = [];
   accountNames: any[] = [];
+  TotalDays: number = 0;
+  AvgWgtPerDay: number = 0;
   constructor(
     private dialog: MatDialog,
     private helper: HelperService,
@@ -281,7 +280,7 @@ export class SupplierHistoryComponent {
     }
   }
 
- 
+
   selectFactory(factory: any) {
     this.ResetForm()
     this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.value.FactoryId);
@@ -363,8 +362,16 @@ export class SupplierHistoryComponent {
       this.AverageRate = grossAmount / finalWeight;
 
       const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
-
       this.TotalVehicleCount = uniqueCategories;
+
+      const todayDays = new Set(
+        this.dataSource.data.map(leaf => leaf.CollectionDate)
+      ).size;
+      this.TotalDays = todayDays;
+
+      this.AvgWgtPerDay = Number((finalWeight / this.TotalDays).toFixed(2));
+
+
     });
     this.subscriptions.push(categoryListService);
   }

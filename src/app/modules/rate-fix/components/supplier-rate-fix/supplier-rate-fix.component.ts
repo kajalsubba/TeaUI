@@ -74,6 +74,7 @@ export class SupplierRateFixComponent implements OnInit {
   accountNames: any[] = [];
   moduleId!: any;
   minDate!: any;
+  maxDate!: any;
   displayName!: any;
   private notificationSub!: Subscription;
 
@@ -92,9 +93,11 @@ export class SupplierRateFixComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    
     this.route.queryParams.subscribe(params => {
       this.moduleId = params['moduleId']; // '+' converts string to number
       this.minDate = params['minDate'];
+      this.maxDate = params['maxDate'] ?? new Date();
       this.displayName = params['displayName'];
     });
     this.loginDetails = this.helper.getItem('loginDetails');
@@ -112,13 +115,20 @@ export class SupplierRateFixComponent implements OnInit {
     });
     await this.loadClientNames();
 
+    console.log(this.maxDate, ' this.maxDate')
     if (this.minDate) {
       this.dateRangeForm.controls['fromDate'].setValue(new Date(this.minDate));
     }
+    if (this.maxDate) {
+      this.dateRangeForm.controls['toDate'].setValue(new Date(this.maxDate));
+    }
     await this.loadSupplierFactoryNames();
     if (this.moduleId != null) {
+
       this.dateRangeForm.controls['ClientId'].setValue(this.moduleId);
       this.dateRangeForm.controls['ClientName'].setValue(this.displayName);
+      this.dateRangeForm.controls['toDate'].setValue(new Date(this.maxDate));
+
     }
 
     await this.loadAccountNames();

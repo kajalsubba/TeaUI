@@ -52,9 +52,6 @@ export class StgHistoryComponent {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
-    { columnDef: 'CollectionTime', header: 'Collection Time' },
-    { columnDef: 'ClientName', header: 'Client Name' },
-    // { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'WetLeaf', header: 'Wet Leaf (%)' },
     { columnDef: 'LongLeaf', header: 'Long Leaf (%)' },
     { columnDef: 'Remarks', header: 'Remarks' },
@@ -77,6 +74,8 @@ export class StgHistoryComponent {
   selectedRowIndex: number = -1;
   AverageRate: number = 0;
   TotalVehicleCount: number = 0;
+  TotalDays: number = 0;
+  AvgWgtPerDay: number = 0;
   GradeSummary: any = "Grade Summary";
   private destroy$ = new Subject<void>();
 
@@ -226,8 +225,14 @@ export class StgHistoryComponent {
       this.AverageRate = grossAmount / finalWeight;
 
       const uniqueCategories = this.dataSource.data.map(leaf => leaf.VehicleNo).length;
-
       this.TotalVehicleCount = uniqueCategories;
+
+      const todayDays = new Set(
+        this.dataSource.data.map(leaf => leaf.CollectionDate)
+      ).size;
+      this.TotalDays = todayDays;
+
+      this.AvgWgtPerDay = Number((finalWeight / this.TotalDays).toFixed(2));
 
       interface GroupedData {
         [key: string]: number;
@@ -267,8 +272,9 @@ export class StgHistoryComponent {
 
   getTotal(columnName: string): number {
     return this.dataSource.filteredData.filter((x: any) => x.Status != 'Rejected').reduce((acc, curr) => acc + curr[columnName], 0);
-
   }
+
+
 
   async loadVehicleNumbers() {
     try {

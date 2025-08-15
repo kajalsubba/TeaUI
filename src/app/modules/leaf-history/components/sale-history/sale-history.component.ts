@@ -469,8 +469,6 @@ export class SaleHistoryComponent {
   }
 
   editItem(row: any) {
-
-
     const dialogRef = this.dialog.open(EditSaleEntryComponent, {
       width: '90vw',
       height: '95%',

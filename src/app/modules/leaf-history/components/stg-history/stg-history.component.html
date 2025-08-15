@@ -105,6 +105,20 @@
               <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
             </ng-container>
 
+            <!-- Collection Time -->
+            <ng-container matColumnDef="CollectionTime">
+              <th mat-header-cell *matHeaderCellDef> Collection Time </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionTime }} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Days : {{TotalDays}}</b> </td>
+            </ng-container>
+
+            <!-- Client  -->
+            <ng-container matColumnDef="ClientName">
+              <th mat-header-cell *matHeaderCellDef> Client </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.ClientName }} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>AvgWgt/Day : {{AvgWgtPerDay}}</b> </td>
+            </ng-container>
+
             <!-- Vehicle Count -->
             <ng-container matColumnDef="VehicleNo">
               <th mat-header-cell *matHeaderCellDef> Vehicle No </th>

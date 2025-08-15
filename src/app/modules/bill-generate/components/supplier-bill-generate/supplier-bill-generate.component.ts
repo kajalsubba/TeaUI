@@ -18,6 +18,7 @@ import { SupplierBillService } from '../../services/supplier-bill.service';
 import { SaveSupplierBill } from '../../interfaces/iget-supplier-bill';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { MatSelect } from '@angular/material/select';
+import { RateUnFixComponent } from '../../model/rate-un-fix/rate-un-fix.component';
 
 @Component({
   selector: 'app-supplier-bill-generate',
@@ -199,9 +200,7 @@ export class SupplierBillGenerateComponent implements OnInit {
       const res: any = await this.autocompleteService.GetClientNames(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
-
       this.ClientNames = res.ClientDetails;
-
 
     } catch (error) {
       console.error('Error:', error);
@@ -248,6 +247,8 @@ export class SupplierBillGenerateComponent implements OnInit {
   }
 
 
+
+
   filterClientNames(value: string): any[] {
 
     const filterValue = value.toLowerCase();
@@ -259,6 +260,27 @@ export class SupplierBillGenerateComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  openUnFixSupplierData(row: any) {
+    const dialogRef = this.dialog.open(RateUnFixComponent, {
+      width: '60vw',
+      minWidth: '70vw',
+      disableClose: true,
+      data: {
+        title: 'Un-Fix Rate Data (Supplier)',
+        unfixData: row,
+        isEdit: true,
+        fromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        toDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
+        clientId: this.supplierBillForm.value.ClientName?.ClientId ?? 0,
+        Category:'Supplier',
+        clientName:this.supplierBillForm.value.ClientName.ClientName
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+      }
+    });
+  }
 
   selectClient(client: any) {
     if (client == '') {
@@ -285,12 +307,11 @@ export class SupplierBillGenerateComponent implements OnInit {
         FromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
         ToDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         TenantId: this.loginDetails.TenantId,
-        // ClientId: this.supplierBillForm.value.ClientId ?? 0
         ClientId: this.supplierBillForm.value.ClientName?.ClientId ?? 0
       };
 
       const res: any = await this.billService.GetSupplierBill(bodyData).toPromise();
-      const { SupplierData, PaymentData, OutStandingData } = res;
+      const { SupplierData, PaymentData, OutStandingData, SupplierDataWithoutRate } = res;
 
       this.dataSource.data = SupplierData;
       this.paymentDataSource.data = PaymentData;
@@ -317,6 +338,14 @@ export class SupplierBillGenerateComponent implements OnInit {
       if (Number(this.supplierAmountForm.controls['SeasonAmount'].value) <= 0) {
         this.supplierAmountForm.controls['LessSeasonAdv'].disable({ onlySelf: true });
 
+      }
+
+      if (SupplierDataWithoutRate.length > 0) {
+        this.isSubmitting = true;
+        this.openUnFixSupplierData(SupplierDataWithoutRate);
+      }
+      else {
+        this.isSubmitting = false;
       }
 
     } catch (error) {

@@ -199,13 +199,25 @@
               </td>
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
+            <!-- Collection Id -->
+            <ng-container matColumnDef="CollectionId">
+              <th mat-header-cell *matHeaderCellDef> Id </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionId }} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+            </ng-container>
 
             <!-- Collection Date -->
             <ng-container matColumnDef="CollectionDate">
               <th mat-header-cell *matHeaderCellDef> Collection Date </th>
-              <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.CollectionDate }} </td>
-              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Days : {{TotalDays}}</b> </td>
+            </ng-container>
+
+            <!-- Client -->
+            <ng-container matColumnDef="ClientName">
+              <th mat-header-cell *matHeaderCellDef> Client </th>
+              <td class="weight-column" mat-cell *matCellDef="let row"> {{row.ClientName }} </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>AvgWgt/Day : {{AvgWgtPerDay}}</b> </td>
             </ng-container>
 
             <!-- Vehicle Count -->
