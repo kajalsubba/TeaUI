@@ -14,7 +14,8 @@
                     <div class="col-lg-2">
                         <mat-form-field>
                             <input readonly matInput [min]="minToDate" [matDatepicker]="picker1"
-                                min="dateRangeForm.value.fromDate"  (dateChange)="GetGrade($event)" placeholder="To Date" formControlName="toDate">
+                                min="dateRangeForm.value.fromDate" (dateChange)="GetGrade($event)" placeholder="To Date"
+                                formControlName="toDate">
                             <mat-datepicker-toggle [disabled]="dateRangeForm.value.fromDate == null" matSuffix
                                 [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
@@ -74,39 +75,46 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-2 offset-lg-6">
-                        <div class="form-group row mb-3">
-                            <div class="col-lg-12 position-relative">
-                                <input #clientName type="text" class="form-control" id="ClientName"
-                                    placeholder="Client Name" formControlName="ClientName"
-                                    [matAutocomplete]="clientAuto">
-                                <!-- Autocomplete options -->
-                                <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
-                                    <mat-option *ngFor="let client of filterClientNames(clientName.value)"
-                                        [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
-                                        {{ client?.ClientName }}
-                                    </mat-option>
-                                </mat-autocomplete>
-
-                                <!-- Validation message -->
-                                <span
-                                    *ngIf="dateRangeForm.get('ClientName')?.hasError('required') && dateRangeForm.get('ClientName')?.touched"
-                                    class="text-danger d-block validation-message">
-                                    Client Name is required.
-                                </span>
-                            </div>
-
+                    <!-- Checkbox column -->
+                    <div class="col-lg-2 offset-lg-4 d-flex justify-content-end align-items-center">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="enableModify"
+                                [(ngModel)]="isModifyEnabled" (change)="onModifyToggle($event)">
+                            <label class="form-check-label ms-2" for="enableModify">Modify</label>
                         </div>
                     </div>
+
+                    <!-- Client Name input column -->
+                    <div class="col-lg-2">
+                        <div class="form-group mb-3 position-relative">
+                            <input #clientName type="text" class="form-control" id="ClientName"
+                                placeholder="Client Name" formControlName="ClientName" [matAutocomplete]="clientAuto"
+                                [disabled]="!isModifyEnabled">
+
+                            <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
+                                <mat-option *ngFor="let client of filterClientNames(clientName.value)"
+                                    [value]="client?.ClientName" (onSelectionChange)="selectClient(client)">
+                                    {{ client?.ClientName }}
+                                </mat-option>
+                            </mat-autocomplete>
+
+                            <!-- Validation message -->
+                            <span *ngIf="dateRangeForm.get('ClientName')?.hasError('required') &&
+                         dateRangeForm.get('ClientName')?.touched" class="text-danger d-block validation-message">
+                                Client Name is required.
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Fix Button column -->
                     <div class="col-lg-2 d-grid">
-                        <div class="form-group row mb-3">
-                            <div class="col-lg-12 position-relative d-grid">
-                                <button (click)="FixRate()" class="btn btn-color">Fix</button>
-                            </div>
-                        </div>
+                        <button (click)="FixRate()" class="btn btn-color">Fix</button>
                     </div>
-                    <div class="col-lg-2 d-grid border-left"></div>
+
+                    <!-- Optional right-side spacing or content -->
+                    <div class="col-lg-2 border-left"></div>
                 </div>
+
             </form>
         </div>
 
@@ -137,7 +145,7 @@
                         <!-- First Weight -->
                         <ng-container matColumnDef="FinalWeight">
                             <th mat-header-cell *matHeaderCellDef> Final Weight( KG ) </th>
-                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}}  </td>
+                            <td class="weight-column" mat-cell *matCellDef="let row"> {{row.FinalWeight}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
                                 <b>{{ getTotalCost('FinalWeight') }} KG</b>
                             </td>

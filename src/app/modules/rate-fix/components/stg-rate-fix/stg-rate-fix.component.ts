@@ -58,7 +58,7 @@ export class StgRateFixComponent implements OnInit {
   selectedRowIndex: number = -1;
   ClientList: any[] = [];
   ClientNames: any[] = [];
-
+  isModifyEnabled: boolean = true;
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -122,6 +122,19 @@ export class StgRateFixComponent implements OnInit {
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+  }
+
+  onModifyToggle(event: Event): void {
+    this.dataSource.data = [];
+    const checked = (event.target as HTMLInputElement).checked;
+    console.log('Checkbox is now:', checked ? 'Checked' : 'Unchecked');
+
+    // Do something based on the state
+    if (checked) {
+      // Checkbox is checked
+    } else {
+      // Checkbox is unchecked
     }
   }
 
