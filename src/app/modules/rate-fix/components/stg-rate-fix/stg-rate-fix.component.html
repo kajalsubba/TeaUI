@@ -77,7 +77,7 @@
                 <div class="row">
                     <!-- Checkbox column -->
                     <div class="col-lg-2 offset-lg-4 d-flex justify-content-end align-items-center">
-                        <div class="form-check">
+                        <div class="form-check border-box">
                             <input type="checkbox" class="form-check-input" id="enableModify"
                                 [(ngModel)]="isModifyEnabled" (change)="onModifyToggle($event)">
                             <label class="form-check-label ms-2" for="enableModify">Modify</label>
@@ -106,9 +106,13 @@
                         </div>
                     </div>
 
-                    <!-- Fix Button column -->
                     <div class="col-lg-2 d-grid">
-                        <button (click)="FixRate()" class="btn btn-color">Fix</button>
+                        <div class="form-group row mb-3">
+
+                            <div class="col-lg-12 position-relative d-grid">
+                                <button (click)="FixRate()" class="btn btn-color">Fix</button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Optional right-side spacing or content -->

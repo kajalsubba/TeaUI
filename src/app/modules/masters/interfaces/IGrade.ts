@@ -18,6 +18,7 @@ export interface ICollectionRateFixFilter {
   FromDate: string;
   ToDate: string;
   TenantId: number;
+  IsModify: boolean;
 }
 
 

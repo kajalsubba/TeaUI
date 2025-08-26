@@ -58,7 +58,7 @@ export class StgRateFixComponent implements OnInit {
   selectedRowIndex: number = -1;
   ClientList: any[] = [];
   ClientNames: any[] = [];
-  isModifyEnabled: boolean = true;
+  isModifyEnabled: boolean = false;
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -125,17 +125,20 @@ export class StgRateFixComponent implements OnInit {
     }
   }
 
-  onModifyToggle(event: Event): void {
+  async onModifyToggle(event: Event) {
     this.dataSource.data = [];
     const checked = (event.target as HTMLInputElement).checked;
     console.log('Checkbox is now:', checked ? 'Checked' : 'Unchecked');
 
     // Do something based on the state
     if (checked) {
+      this.isModifyEnabled = true;
       // Checkbox is checked
     } else {
-      // Checkbox is unchecked
+      this.isModifyEnabled = false;
     }
+
+    await this.GetGradeWithRange();
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
@@ -204,6 +207,7 @@ export class StgRateFixComponent implements OnInit {
         FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
         ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         TenantId: this.loginDetails.TenantId,
+        IsModify: this.isModifyEnabled
       };
       const res: any = await this.gradeService
         .GetCollectionRateFixGrade(bodyData)
@@ -253,12 +257,24 @@ export class StgRateFixComponent implements OnInit {
       GradeId: this.dateRangeForm.value.GradeId
 
     }
-    const categoryListService = this.rateFixService.GetStgRateFixData(bodyData).subscribe((res: any) => {
 
-      this.dataSource.data = res.StgRateData;
-    });
+    let categoryListService;
+    if (this.isModifyEnabled == false) {
+      categoryListService = this.rateFixService.GetStgRateFixData(bodyData).subscribe((res: any) => {
+
+        this.dataSource.data = res.StgRateData;
+      });
+    }
+    else {
+      categoryListService = this.rateFixService.GetStgRateFixModifyData(bodyData).subscribe((res: any) => {
+
+        this.dataSource.data = res.StgRateModifyData;
+      });
+    }
+
     this.subscriptions.push(categoryListService);
   }
+
 
   async loadClientNames() {
     try {
@@ -366,8 +382,9 @@ export class StgRateFixComponent implements OnInit {
 
         this.toastr.success(res.Message, "SUCCESS");
         this.clearform();
-        this.GetStgData();
+        // this.GetStgData();
         this.GradeClientRangeMethod();
+        this.dataSource.data = [];
       });
   }
 }
