@@ -29,6 +29,7 @@ import { SeasonAdvanceReportComponent } from './components/season-advance-report
 import { FieldBalanceReportComponent } from './components/field-balance-report/field-balance-report.component';
 import { StgRecoveryComponent } from './modal/stg-recovery/stg-recovery.component';
 import { RecoveryComponent } from './modal/recovery/recovery.component';
+import { AnalysisReportComponent } from './components/analysis-report/analysis-report.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -53,7 +54,8 @@ export const MY_FORMATS = {
     SeasonAdvanceReportComponent,
     FieldBalanceReportComponent,
     StgRecoveryComponent,
-    RecoveryComponent
+    RecoveryComponent,
+    AnalysisReportComponent
   ],
   imports: [
     CommonModule,

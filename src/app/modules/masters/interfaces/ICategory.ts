@@ -1,14 +1,23 @@
 export interface IGetCategory {
-    TenantId:number;
+    TenantId: number;
 }
 
 export interface IDeleteCategory {
-    CategoryId:number;
+    CategoryId: number;
 }
 
 export interface ISaveCategory {
-    TenantId:number;
-    CreatedBy:number;
-    CategoryId :number;
-    CategoryName : string;
+    TenantId: number;
+    CreatedBy: number;
+    CategoryId: number;
+    CategoryName: string;
+}
+
+export interface ITargetModel {
+    TargetId: number;
+    ClientId: number;
+    FinancialYearId: number;
+    TargetWeight: number;
+    TenantId: number;
+    CreatedBy: number;
 }
