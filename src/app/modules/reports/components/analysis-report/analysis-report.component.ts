@@ -11,6 +11,8 @@ import { ReportsServiceService } from '../../services/reports-service.service';
 import { IAnalysisReport, IMonthWiseCollection } from '../../interfaces/ireports';
 import { CategoryService } from 'src/app/modules/masters/services/category.service';
 import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
+import * as ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-analysis-report',
@@ -201,33 +203,131 @@ export class AnalysisReportComponent {
     }
   }
 
+  // exportToExcel() {
+  //   if (this.dataSource.data.length > 0) {
+  //     // Get the table element
+  //     const table = document.getElementById('material-table');
+
+  //     if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
+  //       // Remove unwanted columns
+  //       const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove
+  //       columnsToRemove.forEach(col => {
+  //         const columnIndex = Array.from(table.rows[0].cells).findIndex(cell => cell.textContent && cell.textContent.trim() === col);
+  //         if (columnIndex !== -1) {
+  //           Array.from(table.rows).forEach(row => {
+  //             if (row.cells[columnIndex]) {
+  //               row.deleteCell(columnIndex);
+  //             }
+  //           });
+  //         }
+  //       });
+
+  //       this.excelService.exportToExcel('material-table', 'Analysis');
+  //     } else {
+  //       console.error("Table element not found or not an HTML table.");
+  //     }
+  //   } else {
+  //     this.toastr.warning("NO DATA TO EXPORT", "WARNING");
+  //   }
+  // }
+
+
+
+
   exportToExcel() {
-    if (this.dataSource.data.length > 0) {
-      // Get the table element
-      const table = document.getElementById('material-table');
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('STG History');
 
-      if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
-        // Remove unwanted columns
-        const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove
-        columnsToRemove.forEach(col => {
-          const columnIndex = Array.from(table.rows[0].cells).findIndex(cell => cell.textContent && cell.textContent.trim() === col);
-          if (columnIndex !== -1) {
-            Array.from(table.rows).forEach(row => {
-              if (row.cells[columnIndex]) {
-                row.deleteCell(columnIndex);
-              }
-            });
-          }
-        });
+    // Build dynamic headers
+    const prevYear = this.financialyearList[0].FinancialYear - 1;
+    const currYear = this.financialyearList[0].FinancialYear;
 
-        this.excelService.exportToExcel('material-table', 'STG History');
-      } else {
-        console.error("Table element not found or not an HTML table.");
+    const headers = [
+      'Client Name',
+      'Vehicle Count',
+      'Collection Days',
+      `Challan Weight (${prevYear})`,
+      `Challan Weight (${currYear})`,
+      `Commitment Weight (${currYear})`,
+      'Target Achievement (%)',
+      'Regularity Score',
+      'Final Score',
+      'Performance Status'
+    ];
+
+    // Add header row with bold font
+    const headerRow = worksheet.addRow(headers);
+    headerRow.eachCell(cell => {
+      cell.font = { bold: true };
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    });
+
+    // Add data rows
+    this.dataSource.filteredData.forEach(row => {
+      const dataRow = [
+        row.ClientName,
+        row.VehicleCount,
+        row.CollectionDays,
+        row.ChallanWeightPrevYear,
+        row.ChallanWeightCurrYear,
+        row.TargetWeight,
+        `${row.TargetAchievementPercent}%`,
+        row.RegularityScore,
+        `${row.FinalScore}%`,
+        row.PerformanceStatus
+      ];
+
+      const addedRow = worksheet.addRow(dataRow);
+
+      // Set Target Achievement (%) as text
+      const targetAchievementCell = addedRow.getCell(7);
+      targetAchievementCell.numFmt = '@';
+
+      // Set Final Score as text
+      const finalScoreCell = addedRow.getCell(9);
+      finalScoreCell.numFmt = '@';
+
+      // Apply font color to Performance Status cell
+      const status = row.PerformanceStatus?.toLowerCase();
+      let fontColor = '000000'; // Default: Black
+
+      switch (status) {
+        case 'excellent':
+          fontColor = '008000'; // Green
+          break;
+        case 'fair':
+          fontColor = '0000FF'; // Blue
+          break;
+        case 'average':
+          fontColor = 'FFA500'; // Orange
+          break;
+        case 'poor':
+          fontColor = 'FF0000'; // Red
+          break;
       }
-    } else {
-      this.toastr.warning("NO DATA TO EXPORT", "WARNING");
-    }
-  }
 
+      const statusCell = addedRow.getCell(10); // "Performance Status" is 10th column
+      statusCell.font = {
+        color: { argb: fontColor },
+        bold: true
+      };
+    });
+
+    // Adjust column widths automatically
+    worksheet.columns.forEach(column => {
+      const headerText = column.header ? column.header.toString() : '';
+      column.width = Math.max(15, headerText.length + 2);
+    });
+
+    // Export the file
+    workbook.xlsx.writeBuffer().then((buffer: ArrayBuffer) => {
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+      saveAs(blob, `Analysis_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    });
+
+  }
 }
+
 

@@ -65,9 +65,7 @@
                         <!-- Displayed columns -->
                         <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
                             <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column.header }}</th>
-                            <!-- <td mat-cell *matCellDef="let row; let i = index;">
-                                {{ row[column.columnDef] }}
-                            </td> -->
+
                             <td mat-cell *matCellDef="let row" [ngStyle]="column.columnDef === 'PerformanceStatus' ? 
                           {
                             color: row.PerformanceStatus?.toLowerCase() === 'excellent' ? 'green' :
@@ -75,7 +73,10 @@
                                 row.PerformanceStatus?.toLowerCase() === 'average' ? 'orange' :
                                 row.PerformanceStatus?.toLowerCase() === 'poor' ? 'red' : 'gray'
                         } : null">
-                                {{ row[column.columnDef] }}
+
+                                {{ column.columnDef === 'TargetAchievementPercent' || column.columnDef === 'FinalScore'
+                                ? (row[column.columnDef] || 0) + ' %'
+                                : row[column.columnDef] }}
                             </td>
                             <td mat-footer-cell *matFooterCellDef></td>
                         </ng-container>
