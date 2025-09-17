@@ -19,33 +19,10 @@ import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
 })
 export class AnalysisReportComponent {
   displayedColumns: string[] = [
-    'ClientName',
-    'VehicleCount',
-    'CollectionDays',
-    'ChallanWeight',
-    'TargetWeight',
-    'TargetAchievementPercent',
-    'RegularityScore',
-    'FinalScore',
-    'PerformanceStatus'
-
   ];
-
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
-  columns: { columnDef: string; header: string }[] = [
-
-    { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'VehicleCount', header: 'Vehicle Count' },
-    { columnDef: 'CollectionDays', header: 'Collection Days' },
-    { columnDef: 'ChallanWeight', header: 'Challan Weight' },
-    { columnDef: 'TargetWeight', header: 'Target Weight' },
-    { columnDef: 'TargetAchievementPercent', header: 'Target Achievement (%)' },
-    { columnDef: 'RegularityScore', header: 'Regularity Score' },
-    { columnDef: 'FinalScore', header: 'Final Score' },
-    { columnDef: 'PerformanceStatus', header: 'Performance Status' }
-
-  ];
+  columns: { columnDef: string; header: string }[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -59,7 +36,7 @@ export class AnalysisReportComponent {
   selectedRowIndex: number = -1;
   AverageRate: number = 0;
   TotalVehicleCount: number = 0;
-  CategotyList: string[] = [ 'Supplier']
+  CategotyList: string[] = ['Supplier']
   private destroy$ = new Subject<void>();
   constructor(
     private helper: HelperService,
@@ -80,8 +57,30 @@ export class AnalysisReportComponent {
     });
 
     await this.getFinancialYear();
+    this.columns = this.generateSupplierColumns(this.financialyearList[0].FinancialYear);
+
   }
 
+  generateSupplierColumns(financialYear: number) {
+    const prevYear = financialYear - 1;
+    const currYear = financialYear;
+    const columns = [
+      { columnDef: 'ClientName', header: 'Client Name' },
+      { columnDef: 'VehicleCount', header: 'Vehicle Count' },
+      { columnDef: 'CollectionDays', header: 'Collection Days' },
+      { columnDef: 'ChallanWeightPrevYear', header: `Challan Weight (${prevYear})` },
+      { columnDef: 'ChallanWeightCurrYear', header: `Challan Weight (${currYear})` },
+      { columnDef: 'TargetWeight', header: `Commitment Weight (${currYear})` },
+      { columnDef: 'TargetAchievementPercent', header: 'Target Achievement (%)' },
+      { columnDef: 'RegularityScore', header: 'Regularity Score' },
+      { columnDef: 'FinalScore', header: 'Final Score' },
+      { columnDef: 'PerformanceStatus', header: 'Performance Status' }
+    ];
+
+    this.displayedColumns = columns.map(col => col.columnDef);
+
+    return columns;
+  }
 
   async getFinancialYear() {
     try {
@@ -92,7 +91,9 @@ export class AnalysisReportComponent {
       const res: any = await this.categoryService.getFinancialYear(categoryBody)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
+
       this.financialyearList = res.FinancialYear;
+      console.log(this.financialyearList[0].FinancialYear, 'FinancialYear');
 
 
     } catch (error) {

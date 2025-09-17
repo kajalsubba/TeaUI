@@ -218,3 +218,22 @@ td:last-child{
 .selected-row {
   background-color: #cacaca; /* Change this to the desired background color */
 }
+
+.status-good {
+  color: green;
+  font-weight: bold;
+}
+
+.status-average {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-poor {
+  color: red;
+  font-weight: bold;
+}
+
+.status-default {
+  color: gray;
+}
