@@ -82,6 +82,8 @@ export class SupplierBillGenerateComponent implements OnInit {
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
   AverageRate: number = 1;
+  isLockEnabled: boolean = true;
+
   categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
@@ -142,6 +144,20 @@ export class SupplierBillGenerateComponent implements OnInit {
     );
   }
 
+
+  async onLockToggle(event: Event) {
+    this.dataSource.data = [];
+    const checked = (event.target as HTMLInputElement).checked;
+
+    // Do something based on the state
+    if (checked) {
+      this.isLockEnabled = true;
+      // Checkbox is checked
+    } else {
+      this.isLockEnabled = false;
+    }
+
+  }
   cleanAmountController(): void {
     const controlsToReset: string[] = [
       'FinalBillAmount',
@@ -272,8 +288,8 @@ export class SupplierBillGenerateComponent implements OnInit {
         fromDate: formatDate(this.supplierBillForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
         toDate: formatDate(this.supplierBillForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         clientId: this.supplierBillForm.value.ClientName?.ClientId ?? 0,
-        Category:'Supplier',
-        clientName:this.supplierBillForm.value.ClientName.ClientName
+        Category: 'Supplier',
+        clientName: this.supplierBillForm.value.ClientName.ClientName
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {

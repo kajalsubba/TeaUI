@@ -21,3 +21,10 @@ export interface ITargetModel {
     TenantId: number;
     CreatedBy: number;
 }
+
+export interface IFinancialYear {
+  FinancialYearId?: number | null;
+  FinancialYear?: number | null;
+  TenantId?: number | null;
+  CreatedBy?: number | null;
+}

@@ -8,19 +8,24 @@ import { FactoryComponent } from './components/factory/factory.component';
 import { FactoryAccountComponent } from './components/factory-account/factory-account.component';
 import { CompanyComponent } from './components/company/company.component';
 import { PaymentTypeComponent } from './components/payment-type/payment-type.component';
+import { FinancialYearComponent } from './components/financial-year/financial-year.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
-  {path:'', component: MastersComponent, children:[
-    {path:'', redirectTo: 'category', pathMatch: 'full'},
-    {path:'category', component: CategoryComponent},
-    {path:'client', component: ClientComponent},
-    {path:'grade', component: GradeComponent},
-    {path:'paymentType', component: PaymentTypeComponent},
-    {path:'factory', component: FactoryComponent},
-    {path:'factory-account', component: FactoryAccountComponent},
-    {path:'company', component: CompanyComponent},
-  ]}
+  {
+    path: '', component: MastersComponent, children: [
+      { path: '', redirectTo: 'category', pathMatch: 'full' },
+      { path: 'category', component: CategoryComponent },
+      { path: 'client', component: ClientComponent },
+      { path: 'grade', component: GradeComponent },
+      { path: 'paymentType', component: PaymentTypeComponent },
+      { path: 'factory', component: FactoryComponent },
+      { path: 'factory-account', component: FactoryAccountComponent },
+      { path: 'company', component: CompanyComponent },
+      { path: 'financial-year', component: FinancialYearComponent },
+
+    ]
+  }
 ];
 
 @NgModule({

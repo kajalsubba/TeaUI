@@ -29,6 +29,8 @@ import { PaymentTypeComponent } from './components/payment-type/payment-type.com
 import { AddEditPaymentTypeComponent } from './models/add-edit-payment-type/add-edit-payment-type.component';
 import { ClientPasswordChangeComponent } from './models/client-password-change/client-password-change.component';
 import { AddEditTargetcollectionComponent } from './models/add-edit-targetcollection/add-edit-targetcollection.component';
+import { FinancialYearComponent } from './components/financial-year/financial-year.component';
+import { AddEditFinancialYearComponent } from './models/add-edit-financial-year/add-edit-financial-year.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { AddEditTargetcollectionComponent } from './models/add-edit-targetcollec
     PaymentTypeComponent,
     AddEditPaymentTypeComponent,
     ClientPasswordChangeComponent,
-    AddEditTargetcollectionComponent
+    AddEditTargetcollectionComponent,
+    FinancialYearComponent,
+    AddEditFinancialYearComponent
   ],
   imports: [
     CommonModule,

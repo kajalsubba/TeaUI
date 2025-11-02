@@ -9,6 +9,14 @@
             </mat-option>
           </mat-select>
         </div>
+
+        <!-- <div class="col-lg-2 position-relative my-2 fanancial-year-gap ">
+          <mat-select placeholder="--Financial Year--" class="fromSelect" formControlName="FinancialYearId">
+            <mat-option *ngFor="let item of financialyearList" [value]="item.FinancialYearId">
+              {{item.FinancialYear}}
+            </mat-option>
+          </mat-select>
+        </div> -->
         <div class="col-lg-2 text-center">
           <div class="add-button">
             <button (click)="ClientSearch()" class="btn btn-color">Search</button>
@@ -47,8 +55,8 @@
                     class="fa-solid fa-key action-icon"></i>
                   <i (click)="generateQR(row)" matTooltip="QR Generate" matTooltipPosition="right"
                     class="fa-solid fa-qrcode action-icon"></i>
-                  <i (click)="addTarget(row)" matTooltip="Target Entry" matTooltipPosition="right"
-                    class="fa-solid fa-bullseye action-icon"></i>
+                  <i *ngIf="row.CategoryName!='STG'" (click)="addTarget(row)" matTooltip="Target Entry"
+                    matTooltipPosition="right" class="fa-solid fa-bullseye action-icon"></i>
                 </div>
               </td>
             </ng-container>

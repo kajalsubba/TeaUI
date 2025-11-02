@@ -35,16 +35,17 @@ export class AddEditTargetcollectionComponent implements OnInit {
   async ngOnInit() {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.SupplierTargetForm = this.fb.group({
+      TargetId: [0],
       FinancialYearId: ['', Validators.required],
       TargetWeight: ['', [Validators.required]]
     })
 
     await this.getFinancialYear();
-    // if (this.dialogData.value) {
+    if (this.dialogData.value) {
+      this.SupplierTargetForm.controls['FinancialYearId'].setValue(this.dialogData.value.FinancialYearId);
+      this.SupplierTargetForm.controls['TargetWeight'].setValue(this.dialogData.value.TargetWeight);
 
-    //   this.SupplierTargetForm.controls['ClientId'].setValue(this.dialogData.value.ClientId);
-
-    // }
+    }
   }
 
   async getFinancialYear() {
@@ -55,8 +56,8 @@ export class AddEditTargetcollectionComponent implements OnInit {
 
       const res: any = await this.categoryService.getFinancialYear(categoryBody)
         .pipe(takeUntil(this.destroy$))
-        .toPromise();
-      this.financialyearList = res.FinancialYear;
+        .toPromise()
+      this.financialyearList = res.FinancialYear.filter((x: any) => x.IsActive == true);
 
 
     } catch (error) {
@@ -72,7 +73,7 @@ export class AddEditTargetcollectionComponent implements OnInit {
     }
 
     let data: ITargetModel = {
-      TargetId: 0,
+      TargetId: this.dialogData.value.TargetId,
       ClientId: this.dialogData.value.ClientId,
       FinancialYearId: this.SupplierTargetForm.value.FinancialYearId,
       TargetWeight: this.SupplierTargetForm.value.TargetWeight,

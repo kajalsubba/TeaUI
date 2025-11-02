@@ -82,7 +82,7 @@ export class StgBillGenerateComponent implements OnInit {
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
   AverageRate: number = 0;
-  // saleTypeList: any[]=[];
+  isLockEnabled: boolean = true;
   categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
@@ -151,6 +151,19 @@ export class StgBillGenerateComponent implements OnInit {
   }
 
 
+  async onLockToggle(event: Event) {
+    this.dataSource.data = [];
+    const checked = (event.target as HTMLInputElement).checked;
+
+    // Do something based on the state
+    if (checked) {
+      this.isLockEnabled = true;
+      // Checkbox is checked
+    } else {
+      this.isLockEnabled = false;
+    }
+
+  }
   cleanAmountController(): void {
     const controlsToReset: string[] = [
       'FinalBillAmount',

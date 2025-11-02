@@ -33,6 +33,9 @@
             ">
             <a class="sub-menu-title">Company Setup</a>
           </li>
+          <li routerLink="master/financial-year" routerLinkActive="active" >
+            <a class="sub-menu-title">Financial Year</a>
+          </li>
           <li routerLink="master/category" routerLinkActive="active" *ngIf="
               PermissionDetails[1].ModuleId == 3 &&
               PermissionDetails[1].HideModule == false
@@ -333,7 +336,7 @@
           <li routerLink="leaf-report/field-balance-report" routerLinkActive="active">
             <a class="sub-menu-title">Field Bal. Report </a>
           </li>
-            <li routerLink="leaf-report/analysis-report" routerLinkActive="active">
+          <li routerLink="leaf-report/analysis-report" routerLinkActive="active">
             <a class="sub-menu-title">Analysis Report </a>
           </li>
         </ul>
