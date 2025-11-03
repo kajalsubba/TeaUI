@@ -146,7 +146,6 @@ export class SupplierBillGenerateComponent implements OnInit {
 
 
   async onLockToggle(event: Event) {
-    this.dataSource.data = [];
     const checked = (event.target as HTMLInputElement).checked;
 
     // Do something based on the state
