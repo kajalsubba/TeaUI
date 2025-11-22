@@ -79,7 +79,7 @@
                     <div class="col-lg-2 offset-lg-4 d-flex justify-content-end align-items-center">
                         <div class="form-check border-box">
                             <input type="checkbox" class="form-check-input" id="enableModify"
-                                [(ngModel)]="isModifyEnabled" (change)="onModifyToggle($event)">
+                                formControlName="isModifyEnabled" (change)="onModifyToggle($event)">
                             <label class="form-check-label ms-2" for="enableModify">Modify</label>
                         </div>
                     </div>
@@ -88,8 +88,7 @@
                     <div class="col-lg-2">
                         <div class="form-group mb-3 position-relative">
                             <input #clientName type="text" class="form-control" id="ClientName"
-                                placeholder="Client Name" formControlName="ClientName" [matAutocomplete]="clientAuto"
-                                [disabled]="!isModifyEnabled">
+                                placeholder="Client Name" formControlName="ClientName" [matAutocomplete]="clientAuto">
 
                             <mat-autocomplete #clientAuto="matAutocomplete" [displayWith]="displayWithFn">
                                 <mat-option *ngFor="let client of filterClientNames(clientName.value)"

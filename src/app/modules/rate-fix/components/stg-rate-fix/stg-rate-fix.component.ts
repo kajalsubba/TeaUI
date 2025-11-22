@@ -28,6 +28,7 @@ registerLocaleData(enIN);
 export class StgRateFixComponent implements OnInit {
   displayedColumns: string[] = [
     'CollectionDate',
+    'VehicleNo',
     'GradeName',
     'ClientName',
     'FinalWeight',
@@ -40,6 +41,7 @@ export class StgRateFixComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
+    { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'GradeName', header: 'Grade' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'Rate', header: 'Rate' },
@@ -58,7 +60,7 @@ export class StgRateFixComponent implements OnInit {
   selectedRowIndex: number = -1;
   ClientList: any[] = [];
   ClientNames: any[] = [];
-  isModifyEnabled: boolean = false;
+  // isModifyEnabled: boolean = false;
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
@@ -79,6 +81,7 @@ export class StgRateFixComponent implements OnInit {
       ClientId: [0],
       ClientName: [''],
       Rate: [''],
+      isModifyEnabled: [false],
     });
     //   await this.loadClientNames();
     await this.GetGradeWithRange();
@@ -132,10 +135,10 @@ export class StgRateFixComponent implements OnInit {
 
     // Do something based on the state
     if (checked) {
-      this.isModifyEnabled = true;
+      this.dateRangeForm.controls['isModifyEnabled'].setValue(true);
       // Checkbox is checked
     } else {
-      this.isModifyEnabled = false;
+      this.dateRangeForm.controls['isModifyEnabled'].setValue(false);
     }
 
     await this.GetGradeWithRange();
@@ -207,7 +210,7 @@ export class StgRateFixComponent implements OnInit {
         FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
         ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         TenantId: this.loginDetails.TenantId,
-        IsModify: this.isModifyEnabled
+        IsModify: this.dateRangeForm.value.isModifyEnabled
       };
       const res: any = await this.gradeService
         .GetCollectionRateFixGrade(bodyData)
@@ -259,7 +262,7 @@ export class StgRateFixComponent implements OnInit {
     }
 
     let categoryListService;
-    if (this.isModifyEnabled == false) {
+    if (this.dateRangeForm.value.isModifyEnabled == false) {
       categoryListService = this.rateFixService.GetStgRateFixData(bodyData).subscribe((res: any) => {
 
         this.dataSource.data = res.StgRateData;
