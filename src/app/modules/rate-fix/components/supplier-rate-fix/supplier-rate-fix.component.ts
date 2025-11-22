@@ -11,18 +11,20 @@ import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
-import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
-import { ClientService } from 'src/app/modules/masters/services/client.service';
 import { GradeService } from 'src/app/modules/masters/services/grade.service';
 import { ISaveSupplierRate, IsupplierRateFix } from '../../interfaces/isupplier-rate-fix';
 import { IsupplierRateFixService } from '../../services/isupplier-rate-fix.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { environment } from 'src/environments/environment';
 import enIN from '@angular/common/locales/en-IN';
-import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 import { EditSupplierRateComponent } from '../../models/edit-supplier-rate/edit-supplier-rate.component';
+import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
+import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
+import { SupplierService } from 'src/app/modules/collection/services/supplier.service';
+import { IGetSaleRateFixFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { ActivatedRoute } from '@angular/router';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-supplier-rate-fix',
@@ -31,10 +33,8 @@ registerLocaleData(enIN);
 })
 export class SupplierRateFixComponent implements OnInit {
   displayedColumns: string[] = [
-    // 'CollectionId',
     'CollectionDate',
     'ClientName',
-    // 'VehicleNo',
     'FactoryName',
     'AccountName',
     'FineLeaf',
@@ -42,26 +42,19 @@ export class SupplierRateFixComponent implements OnInit {
     'Rate',
     'GrossAmount',
     'actions',
-    // 'TripName',
-    // 'Status',
-    //'actions'
   ];
 
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'CollectionId', header: 'Id ' },
-    // { columnDef: 'CollectionDate', header: 'CollectionDate Date' },
     { columnDef: 'ClientName', header: 'Client Name' },
     { columnDef: 'VehicleNo', header: 'Vehicle No' },
     { columnDef: 'FactoryName', header: 'Factory' },
     { columnDef: 'AccountName', header: 'Account Name' },
     { columnDef: 'FineLeaf', header: 'Fine Leaf' },
-    // { columnDef: 'ChallanWeight', header: 'Challan Weight' },
     { columnDef: 'Rate', header: 'Rate' },
-    //{ columnDef: 'Remarks', header: 'Remark' },
-    //   { columnDef: 'TripName', header: 'TripName ' },
-    // { columnDef: 'Status', header: 'Status ' }
+
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -79,7 +72,11 @@ export class SupplierRateFixComponent implements OnInit {
   factoryNames: any[] = [];
   AccountList: any[] = [];
   accountNames: any[] = [];
-
+  moduleId!: any;
+  minDate!: any;
+  maxDate!: any;
+  displayName!: any;
+  private notificationSub!: Subscription;
 
   constructor(
     private dialog: MatDialog,
@@ -89,10 +86,20 @@ export class SupplierRateFixComponent implements OnInit {
     private gradeService: GradeService,
     private autoCompleteService: AutoCompleteService,
     private fb: FormBuilder,
-    private rateFixService: IsupplierRateFixService
+    private rateFixService: IsupplierRateFixService,
+    private notificationDataService: NotificationDataService,
+    private supplierService: SupplierService,
+    private route: ActivatedRoute
   ) { }
 
   async ngOnInit() {
+    
+    this.route.queryParams.subscribe(params => {
+      this.moduleId = params['moduleId']; // '+' converts string to number
+      this.minDate = params['minDate'];
+      this.maxDate = params['maxDate'] ?? new Date();
+      this.displayName = params['displayName'];
+    });
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
@@ -108,22 +115,41 @@ export class SupplierRateFixComponent implements OnInit {
     });
     await this.loadClientNames();
 
-    await this.loadFactoryNames();
+    console.log(this.maxDate, ' this.maxDate')
+    if (this.minDate) {
+      this.dateRangeForm.controls['fromDate'].setValue(new Date(this.minDate));
+    }
+    if (this.maxDate) {
+      this.dateRangeForm.controls['toDate'].setValue(new Date(this.maxDate));
+    }
+    await this.loadSupplierFactoryNames();
+    if (this.moduleId != null) {
+
+      this.dateRangeForm.controls['ClientId'].setValue(this.moduleId);
+      this.dateRangeForm.controls['ClientName'].setValue(this.displayName);
+      this.dateRangeForm.controls['toDate'].setValue(new Date(this.maxDate));
+
+    }
+
     await this.loadAccountNames();
-    //   this.GetGrade();
+
+    this.notificationSub = this.notificationDataService.activeNotification$.subscribe(notification => {
+      if (notification) {
+        const { moduleId, minDate, displayName } = notification;
+        this.dateRangeForm.controls['fromDate'].setValue(new Date(minDate));
+        this.dateRangeForm.controls['ClientId'].setValue(moduleId);
+        this.dateRangeForm.controls['ClientName'].setValue(displayName);
+      }
+    });
   }
-
   ngAfterViewInit() {
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
   convertDate(date: any): string {
     const parsedDate = new Date(date);
     return this.datePipe.transform(parsedDate, 'dd-MM-yyyy') || '';
   }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -136,12 +162,12 @@ export class SupplierRateFixComponent implements OnInit {
   EditRate(element: any) {
 
     if (!environment.production) {
-      
+
     }
     const dialogRef = this.dialog.open(EditSupplierRateComponent, {
       width: window.innerWidth <= 1024 ? '40%' : '30%',
       data: {
-        title: element.CollectionDate+'-' + element.FactoryName +' ('+element.FineLeaf+'%)',
+        title: element.CollectionDate + '-' + element.FactoryName + ' (' + element.FineLeaf + '%)',
         buttonName: 'Update',
         value: element,
       },
@@ -223,19 +249,41 @@ export class SupplierRateFixComponent implements OnInit {
     );
   }
 
-  async loadFactoryNames() {
+  // async loadFactoryNames() {
+  //   try {
+  //     const bodyData: IGetFactory = {
+  //       TenantId: this.loginDetails.TenantId,
+  //       IsClientView: false
+  //     };
+
+  //     const res: any = await this.autoCompleteService
+  //       .GetFactoryNames(bodyData)
+  //       .pipe(takeUntil(this.destroy$))
+  //       .toPromise();
+
+  //     this.factoryNames = res.FactoryDetails;
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     this.toastr.error('Something went wrong.', 'ERROR');
+  //   }
+  // }
+
+  async loadSupplierFactoryNames() {
+    debugger
     try {
-      const bodyData: IGetFactory = {
+      const bodyData: IGetSaleRateFixFactory = {
         TenantId: this.loginDetails.TenantId,
+        FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         IsClientView: false
       };
 
-      const res: any = await this.autoCompleteService
-        .GetFactoryNames(bodyData)
+      const res: any = await this.supplierService
+        .GetSupplierRateFixFactory(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.factoryNames = res.FactoryDetails;
+      this.factoryNames = res.FactoryList;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -260,6 +308,11 @@ export class SupplierRateFixComponent implements OnInit {
     }
   }
 
+  async GetFactory(event: MatDatepickerInputEvent<Date>) {
+    await this.loadSupplierFactoryNames();
+    this.dateRangeForm.get('FactoryName')?.setValue('');
+
+  }
   selectFactory(factory: any) {
 
     this.dateRangeForm.controls['FactoryId'].setValue(factory?.FactoryId);
@@ -366,7 +419,7 @@ export class SupplierRateFixComponent implements OnInit {
       FineLeaf: this.dateRangeForm.value.FineLeaf
     }
     const categoryListService = this.rateFixService.GetSupplierRateFixData(bodyData).subscribe((res: any) => {
-     
+
       this.dataSource.data = res.SupplierRateData;
     });
     this.subscriptions.push(categoryListService);
@@ -442,10 +495,16 @@ export class SupplierRateFixComponent implements OnInit {
         this.toastr.success(res.Message, "SUCCESS");
         this.clearform();
         this.GetSupplierData(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
-
+        this.RefreshNotifications();
       });
   }
 
+  RefreshNotifications(): void {
+    const data: IGetNotifications = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    this.notificationDataService.getNotificationData(data);
+  }
   clearform() {
 
     this.dateRangeForm.controls["ClientId"].reset();
@@ -456,5 +515,12 @@ export class SupplierRateFixComponent implements OnInit {
     this.dateRangeForm.controls["FineLeaf"].reset();
     this.dateRangeForm.controls["AccountName"].reset();
     this.dateRangeForm.controls["Rate"].reset();
+  }
+
+  ngOnDestroy(): void {
+    this.notificationDataService.setActiveNotification(null);
+    if (this.notificationSub) {
+      this.notificationSub.unsubscribe();
+    }
   }
 }

@@ -11,7 +11,7 @@ import { Subject, Subscription, catchError, takeUntil } from 'rxjs';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { IGetTeaClient } from 'src/app/modules/collection/interfaces/istg';
 import { AutoCompleteService } from 'src/app/modules/collection/services/auto-complete.service';
-import { IGetFactory } from 'src/app/modules/masters/interfaces/IFactory';
+import { IGetFactory, IGetSaleFactory, IGetSaleRateFixFactory } from 'src/app/modules/masters/interfaces/IFactory';
 import { IGetFactoryAccount } from 'src/app/modules/masters/interfaces/IFactoryAccount';
 import { IGetGrade } from 'src/app/modules/masters/interfaces/IGrade';
 import { ClientService } from 'src/app/modules/masters/services/client.service';
@@ -20,9 +20,12 @@ import { ISaveSaleRate, IsaleRateFix } from '../../interfaces/isale-rate-fix';
 import { SaleRateFixService } from '../../services/sale-rate-fix.service';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import enIN from '@angular/common/locales/en-IN';
-import { EditRateComponent } from '../../models/edit-rate/edit-rate.component';
 import { EditSaleRateComponent } from '../../models/edit-sale-rate/edit-sale-rate.component';
 import { environment } from 'src/environments/environment';
+import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
+import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
+import { StgApproveService } from 'src/app/modules/collectionApprove/services/stg-approve.service';
+import { ActivatedRoute } from '@angular/router';
 registerLocaleData(enIN);
 @Component({
   selector: 'app-sale-rate-fix',
@@ -31,12 +34,9 @@ registerLocaleData(enIN);
 })
 export class SaleRateFixComponent implements OnInit {
   displayedColumns: string[] = [
-    //  'SaleId',
     'SaleDate',
     'FactoryName',
     'AccountName',
-    //  'VehicleNo',
-    // 'FieldWeight',
     'FineLeaf',
     'ChallanWeight',
     'Rate',
@@ -45,25 +45,17 @@ export class SaleRateFixComponent implements OnInit {
     'IncentiveAmount',
     'FinalAmount',
     'actions',
-    //'TypeName',
   ];
 
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'SaleId', header: 'Sale Id' },
-    //   { columnDef: 'SaleDate', header: 'Sale Date' },
     { columnDef: 'FactoryName', header: 'Factory Name' },
     { columnDef: 'AccountName', header: 'Account Name' },
-
     { columnDef: 'FineLeaf', header: 'Fine Leaf (%)' },
-    // { columnDef: 'Rate', header: 'Rate' },
-    // { columnDef: 'GrossAmount', header: 'Gross Amount' },
     { columnDef: 'Incentive', header: 'Incentive' },
-    // { columnDef: 'IncentiveAmount', header: 'Incentive Amount' },
-    //  { columnDef: 'FinalAmount', header: 'Final Amount' },
-    //{ columnDef: 'Remarks', header: 'Remarks' },
-    // { columnDef: 'TypeName', header: 'Sale Type' },
+
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -81,6 +73,10 @@ export class SaleRateFixComponent implements OnInit {
   accountNames: any[] = [];
   AccountList: any[] = [];
   factoryNames: any[] = [];
+  moduleId!: any;
+  minDate!: any;
+  displayName!: any;
+  private notificationSub!: Subscription;
 
   constructor(
     private dialog: MatDialog,
@@ -90,16 +86,24 @@ export class SaleRateFixComponent implements OnInit {
     private gradeService: GradeService,
     private autoCompleteService: AutoCompleteService,
     private fb: FormBuilder,
-    private rateFixService: SaleRateFixService
+    private rateFixService: SaleRateFixService,
+    private notificationDataService: NotificationDataService,
+    private saleService: StgApproveService,
+    private route: ActivatedRoute
   ) { }
 
   async ngOnInit() {
+    // debugger
+    this.route.queryParams.subscribe(params => {
+      this.moduleId = params['moduleId']; // '+' converts string to number
+      this.minDate = params['minDate'];
+      this.displayName = params['displayName'];
+    });
+
     this.loginDetails = this.helper.getItem('loginDetails');
     this.dateRangeForm = this.fb.group({
       fromDate: [new Date(), Validators.required],
       toDate: [new Date(), [Validators.required]],
-      // ClientId: [0],
-      // ClientName: [''],
       Rate: [''],
       FineLeaf: [''],
       Incentive: [''],
@@ -108,12 +112,37 @@ export class SaleRateFixComponent implements OnInit {
       AccountName: [''],
       AccountId: [0],
     });
-    //   await this.loadClientNames();
     await this.loadAccountNames();
-    await this.loadFactoryNames();
-    // this.GetGrade();
-
     this.dateRangeForm.controls['Incentive'].disable({ onlySelf: true });
+
+    if (this.minDate) {
+      this.dateRangeForm.controls['fromDate'].setValue(new Date(this.minDate));
+    }
+    await this.loadSaleFactoryNames();
+    if (this.moduleId != null) {
+      this.CleanNotificationForm();
+      this.dateRangeForm.controls['FactoryId'].setValue(this.moduleId);
+      this.dateRangeForm.controls['FactoryName'].setValue(this.displayName);
+      this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == this.moduleId)
+
+    }
+    this.notificationSub = this.notificationDataService.activeNotification$.subscribe(notification => {
+      if (notification) {
+        const { moduleId, minDate, displayName } = notification;
+        this.CleanNotificationForm();
+        this.dateRangeForm.controls['fromDate'].setValue(new Date(minDate));
+        this.dateRangeForm.controls['FactoryId'].setValue(moduleId);
+        this.dateRangeForm.controls['FactoryName'].setValue(displayName);
+        this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == moduleId)
+
+      }
+
+    });
+  }
+
+  CleanNotificationForm() {
+    this.dateRangeForm.controls['AccountName'].reset();
+    this.dateRangeForm.controls['AccountId'].reset();
   }
   RateChange(event: any) {
     const value = event.target.value;
@@ -126,7 +155,7 @@ export class SaleRateFixComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-  
+
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -151,6 +180,11 @@ export class SaleRateFixComponent implements OnInit {
     this.minToDate = event.value;
   }
 
+  async GetFactory(event: MatDatepickerInputEvent<Date>) {
+    await this.loadSaleFactoryNames();
+    this.dateRangeForm.get('FactoryName')?.setValue('');
+
+  }
 
   GetSaleData(FromDate: any, ToDate: any) {
     const currentDate = new Date();
@@ -164,7 +198,7 @@ export class SaleRateFixComponent implements OnInit {
 
     }
     const categoryListService = this.rateFixService.GetSaleRateFixData(bodyData).subscribe((res: any) => {
-   
+
       this.dataSource.data = res.SaleRateData;
     });
     this.subscriptions.push(categoryListService);
@@ -245,19 +279,23 @@ export class SaleRateFixComponent implements OnInit {
     }
   }
 
-  async loadFactoryNames() {
+
+  async loadSaleFactoryNames() {
+    debugger
     try {
-      const bodyData: IGetFactory = {
+      const bodyData: IGetSaleRateFixFactory = {
         TenantId: this.loginDetails.TenantId,
+        FromDate: formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'),
+        ToDate: formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
         IsClientView: false
       };
 
-      const res: any = await this.autoCompleteService
-        .GetFactoryNames(bodyData)
+      const res: any = await this.saleService
+        .GetSaleRateFixFactoryDetails(bodyData)
         .pipe(takeUntil(this.destroy$))
         .toPromise();
 
-      this.factoryNames = res.FactoryDetails;
+      this.factoryNames = res.FactoryList;
     } catch (error) {
       console.error('Error:', error);
       this.toastr.error('Something went wrong.', 'ERROR');
@@ -352,7 +390,7 @@ export class SaleRateFixComponent implements OnInit {
       keys.Rate = this.dateRangeForm.value.Rate == '' ? 0 : this.dateRangeForm.value.Rate,
         keys.GrossAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Rate).toFixed(2),
         keys.Incentive = this.dateRangeForm.value.Incentive ?? 0,
-        keys.IncentiveAmount = Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive ?? 0).toFixed(2),
+        keys.IncentiveAmount = Number(keys.ChallanWeight * (this.dateRangeForm.value.Incentive ?? 0)).toFixed(2),
         keys.FinalAmount = Number(Number(keys.ChallanWeight * this.dateRangeForm.value.Rate) + Number(keys.ChallanWeight * this.dateRangeForm.value.Incentive)).toFixed(2)
 
     });
@@ -422,11 +460,17 @@ export class SaleRateFixComponent implements OnInit {
         this.toastr.success(res.Message, "SUCCESS");
         this.clearform();
         this.GetSaleData(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.toDate, 'yyyy-MM-dd', 'en-US'));
-
+        this.RefreshNotifications();
       });
   }
 
 
+  RefreshNotifications(): void {
+    const data: IGetNotifications = {
+      TenantId: this.loginDetails.TenantId,
+    };
+    this.notificationDataService.getNotificationData(data);
+  }
 
   EditRate(element: any) {
     const dialogRef = this.dialog.open(EditSaleRateComponent, {
@@ -442,7 +486,7 @@ export class SaleRateFixComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         if (!environment.production) {
-          
+
         }
         //  this.GetPaymentData();
         this.dataSource.data.forEach(item => {
@@ -472,5 +516,11 @@ export class SaleRateFixComponent implements OnInit {
     });
 
 
+  }
+  ngOnDestroy(): void {
+    this.notificationDataService.setActiveNotification(null);
+    if (this.notificationSub) {
+      this.notificationSub.unsubscribe();
+    }
   }
 }

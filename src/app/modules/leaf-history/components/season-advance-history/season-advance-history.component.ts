@@ -183,7 +183,6 @@ export class SeasonAdvanceHistoryComponent implements OnInit {
   }
 
   filterClientNames(value: string): any[] {
-    console.log(value, 'value')
     if (value == '') {
       this.SeasonAdvanceForm.controls['ClientId'].reset();
     }

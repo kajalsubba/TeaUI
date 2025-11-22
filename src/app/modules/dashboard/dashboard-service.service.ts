@@ -19,4 +19,7 @@ export class DashboardServiceService {
   GetSupplierWiseChart(Body:Idashboard): Observable<any> {
     return this.apiService.post('Admin/GetSupplierWiseSaleChart', Body);
   }
+   GetGapClientData(Body:Idashboard): Observable<any> {
+    return this.apiService.post('Admin/GetClientCollActivityChart', Body);
+  }
 }

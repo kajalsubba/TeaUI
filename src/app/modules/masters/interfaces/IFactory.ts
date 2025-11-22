@@ -20,8 +20,14 @@ export interface IGetSaleFactory {
   TenantId: number;
 }
 
-export interface IFactoryFilter
-{
+export interface IGetSaleRateFixFactory {
+  FromDate: String;
+  ToDate: String;
+  TenantId: number;
+  IsClientView: boolean;
+
+}
+export interface IFactoryFilter {
   FactoryId: number;
   FactoryName: string;
 }

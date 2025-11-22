@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/core/services/api.service';
-import { IMonthWiseCollection, IReports, ISeasonAdvance } from '../interfaces/ireports';
+import { IAnalysisReport, IMonthWiseCollection, IReports, ISeasonAdvance } from '../interfaces/ireports';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,13 +26,18 @@ export class ReportsServiceService {
     return this.apiService.post('Reports/MonthWiseWeightReport', Body);
   }
 
+  GetAnalysisReport(Body: IAnalysisReport): Observable<any> {
+    return this.apiService.post('Reports/AnalysisReport', Body);
+  }
+
+
   GetSalePurchaseWiseReport(Body: IReports): Observable<any> {
     return this.apiService.post('Reports/SalePurchaseWiseReport', Body);
   }
   GetSeasonAdvanceReport(Body: ISeasonAdvance): Observable<any> {
     return this.apiService.post('Reports/GetSeasonAdvanceReport', Body);
   }
-    GetFieldBalanceReport(Body: ISeasonAdvance): Observable<any> {
+  GetFieldBalanceReport(Body: ISeasonAdvance): Observable<any> {
     return this.apiService.post('Reports/GetFieldBalanceReport', Body);
   }
 }

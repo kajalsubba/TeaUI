@@ -24,6 +24,9 @@ export class SupplierSummaryComponent implements OnInit {
 
   displayedColumns: string[] = [
     'ClientName',
+    'VehicleCount',
+    'CollectionDays',
+    'AvgKgPerDay',
     'ChallanWeight',
     'Rate',
     'GrossAmount',
@@ -38,7 +41,10 @@ export class SupplierSummaryComponent implements OnInit {
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
     { columnDef: 'ClientName', header: 'Client Name' },
-    { columnDef: 'CommisonAvg', header: 'Coom. Avg' },
+    { columnDef: 'VehicleCount', header: 'Vehicle Count' },
+    { columnDef: 'CollectionDays', header: 'Days Count' },
+    { columnDef: 'AvgKgPerDay', header: 'Day Avg(kg)' },
+    { columnDef: 'CommisonAvg', header: 'Comm. Avg' },
     // { columnDef: 'Reject', header: 'Reject' },
     // { columnDef: 'Final', header: 'Final' },
     // { columnDef: 'Average', header: 'Average' },
@@ -58,7 +64,7 @@ export class SupplierSummaryComponent implements OnInit {
   supplierSummary!: FormGroup;
   minToDate!: any;
   ClientNames: any[] = [];
- // clientList: any[] = [];
+  // clientList: any[] = [];
   selectedRowIndex: number = -1;
   AverageRate: number = 0;
   constructor(
@@ -144,7 +150,7 @@ export class SupplierSummaryComponent implements OnInit {
     await this.GetSummary();
     const grossAmount: number = this.getTotal('GrossAmount');
     const challanWeight: number = this.getTotal('ChallanWeight');
-    this.AverageRate=grossAmount/challanWeight;
+    this.AverageRate = grossAmount / challanWeight;
   }
   onInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -189,7 +195,7 @@ export class SupplierSummaryComponent implements OnInit {
     this.selectedRowIndex = index; // Set the selected row index
   }
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.supplierSummary.controls['toDate'].setValue(null);
+    // this.supplierSummary.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
   @HostListener('document:keydown', ['$event'])
@@ -208,11 +214,11 @@ export class SupplierSummaryComponent implements OnInit {
 
   }
 
-  exportToExcel(){
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['Id', 'Actions', 'Created By']; // Specify columns to remove

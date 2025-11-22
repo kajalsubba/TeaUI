@@ -2,10 +2,8 @@
   (click)="!isDesktop && toggleWidth()" [style.width.px]="isExpanded ? 210 : 62">
   <div [ngClass]="{ close: !isExpanded }" class="sidebar">
     <div class="logo-details">
-      <!-- <i class='bx bxl-c-plus-plus'></i> -->
-      <i *ngIf="!isExpanded" class="fa-solid m-0 openCloseIcon fa-bars"></i>
-      <i *ngIf="isExpanded" class="fa-solid m-0 openCloseIcon fa-xmark"></i>
-      <!-- <span *ngIf="isExpanded" class="logo_name">Company</span> -->
+      <i *ngIf="!isExpanded" class="fa-solid m-0 openCloseIcon fa-bars" (click)="toggleSidebarExpand()"></i>
+      <i *ngIf="isExpanded" class="fa-solid m-0 openCloseIcon fa-xmark" (click)="toggleSidebar()"></i>
     </div>
     <ul class="nav-links">
       <li class="main-menu" routerLinkActive="main-menu-active">
@@ -34,6 +32,9 @@
               PermissionDetails[0].HideModule == false
             ">
             <a class="sub-menu-title">Company Setup</a>
+          </li>
+          <li routerLink="master/financial-year" routerLinkActive="active" >
+            <a class="sub-menu-title">Financial Year</a>
           </li>
           <li routerLink="master/category" routerLinkActive="active" *ngIf="
               PermissionDetails[1].ModuleId == 3 &&
@@ -207,7 +208,8 @@
           <li *ngIf="
               loginDetails.LoginType == 'Agent' &&
               PermissionDetails[35].ModuleId == 46 &&
-              PermissionDetails[35].HideModule == false" routerLink="Accounts/petty-cashbook" routerLinkActive="active">
+              PermissionDetails[35].HideModule == false" routerLink="Accounts/petty-cashbook"
+            routerLinkActive="active">
             <a class="sub-menu-title">Petty Cash Book</a>
           </li>
         </ul>
@@ -278,7 +280,9 @@
           <li routerLink="LeafHistory/pettycashbook-history" routerLinkActive="active">
             <a class="sub-menu-title">Petty CashBook History</a>
           </li>
-
+          <li routerLink="LeafHistory/recovery-history" routerLinkActive="active">
+            <a class="sub-menu-title">Recovery History</a>
+          </li>
 
         </ul>
       </li>
@@ -331,6 +335,9 @@
 
           <li routerLink="leaf-report/field-balance-report" routerLinkActive="active">
             <a class="sub-menu-title">Field Bal. Report </a>
+          </li>
+          <li routerLink="leaf-report/analysis-report" routerLinkActive="active">
+            <a class="sub-menu-title">Analysis Report </a>
           </li>
         </ul>
       </li>

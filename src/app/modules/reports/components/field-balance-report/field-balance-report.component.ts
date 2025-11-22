@@ -3,13 +3,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ISeasonAdvance } from '../../interfaces/ireports';
 import { HelperService } from 'src/app/core/services/helper.service';
-import { Subject } from '@microsoft/signalr';
+
 import { ToastrService } from 'ngx-toastr';
 import { ExcelExportService } from 'src/app/shared/services/excel-export.service';
 import { ReportsServiceService } from '../../services/reports-service.service';
+import { RecoveryComponent } from '../../modal/recovery/recovery.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CategoryService } from 'src/app/modules/masters/services/category.service';
+import { IGetCategory } from 'src/app/modules/masters/interfaces/ICategory';
+import { IPrint } from 'src/app/modules/leaf-history/interfaces/istgbill-history';
+import { SuppilerHistoryService } from 'src/app/modules/leaf-history/services/suppiler-history.service';
+import { StgBillService } from 'src/app/modules/leaf-history/services/stg-bill.service';
 
 @Component({
   selector: 'app-field-balance-report',
@@ -19,17 +26,17 @@ import { ReportsServiceService } from '../../services/reports-service.service';
 export class FieldBalanceReportComponent {
 
   displayedColumns: string[] = [
-    'clientid',
+    'ClientId',
     'ClientName',
-    'Amount'
+    'Amount',
+    'actions'
 
   ];
-
   dataSource = new MatTableDataSource<any>();
   filteredData: any[] = [];
   columns: { columnDef: string; header: string }[] = [
 
-    { columnDef: 'clientid', header: 'Client Id' },
+    { columnDef: 'ClientId', header: 'Client Id' },
     { columnDef: 'ClientName', header: 'Client Name' },
   ];
 
@@ -45,15 +52,19 @@ export class FieldBalanceReportComponent {
   AverageRate: number = 0;
   TotalVehicleCount: number = 0;
   private destroy$ = new Subject<void>();
-  CategotyList: string[] = ['STG', 'Supplier']
+  CategotyList: any[] = [];
   ReportTypeList: string[] = ['Season Advance', 'Field Balance']
 
   constructor(
+    private dialog: MatDialog,
     private helper: HelperService,
     private toastr: ToastrService,
     private fb: FormBuilder,
     private excelService: ExcelExportService,
-    private reportService: ReportsServiceService
+    private reportService: ReportsServiceService,
+    private categoryService: CategoryService,
+    private supplierbillService: SuppilerHistoryService,
+    private stgbillService: StgBillService,
 
   ) { }
 
@@ -61,12 +72,25 @@ export class FieldBalanceReportComponent {
     this.loginDetails = this.helper.getItem('loginDetails');
     this.FieldBalanceForm = this.fb.group({
       ReportType: ['', Validators.required],
-      Category: ['', Validators.required],
-
+      CategoryId: ['', Validators.required],
+      CategoryName: [''],
     });
-
+    this.getCategoryList();
   }
 
+
+  onCategoryChange(categoryId: number): void {
+    const selected = this.CategotyList.find(cat => cat.CategoryId === categoryId);
+    if (selected) {
+      this.FieldBalanceForm.patchValue({
+        CategoryName: selected.CategoryName
+      });
+    } else {
+      this.FieldBalanceForm.patchValue({
+        CategoryName: ''
+      });
+    }
+  }
   ngAfterViewInit() {
 
 
@@ -92,6 +116,7 @@ export class FieldBalanceReportComponent {
 
 
   search() {
+    debugger
     if (this.FieldBalanceForm.invalid) {
       this.FieldBalanceForm.markAllAsTouched();
       return;
@@ -109,7 +134,7 @@ export class FieldBalanceReportComponent {
   GetSeasonAdvance() {
     const bodyData: ISeasonAdvance = {
       TenantId: this.loginDetails.TenantId,
-      Category: this.FieldBalanceForm.value.Category
+      Category: this.FieldBalanceForm.value.CategoryName
 
     }
     const categoryListService = this.reportService.GetSeasonAdvanceReport(bodyData).subscribe((res: any) => {
@@ -124,7 +149,7 @@ export class FieldBalanceReportComponent {
   GetFieldBalance() {
     const bodyData: ISeasonAdvance = {
       TenantId: this.loginDetails.TenantId,
-      Category: this.FieldBalanceForm.value.Category
+      Category: this.FieldBalanceForm.value.CategoryName
 
     }
     const categoryListService = this.reportService.GetFieldBalanceReport(bodyData).subscribe((res: any) => {
@@ -207,6 +232,110 @@ export class FieldBalanceReportComponent {
       this.toastr.warning("NO DATA TO EXPORT", "WARNING");
     }
   }
+  async getCategoryList() {
+    try {
+      const categoryBody: IGetCategory = {
+        TenantId: this.loginDetails.TenantId
+      };
 
+      const res: any = await this.categoryService.getCategory(categoryBody)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise();
+
+      this.CategotyList = res.CategoryDetails.filter((x: any) => x.CategoryName != 'Both');
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
+  }
+
+
+  lastBill(row: any): void {
+    if (row.BillId == 0) {
+      this.toastr.error("Bill is not found!", "Error");
+      return;
+    }
+    const bodyData: IPrint = {
+      TenantId: this.loginDetails.TenantId,
+      BillNo: row.BillId
+    };
+
+    let printObservable;
+
+    switch (row.Category) {
+      case 'STG':
+        printObservable = this.stgbillService.PrintBill(bodyData);
+        break;
+      case 'Supplier':
+        printObservable = this.supplierbillService.PrintBill(bodyData);
+        break;
+      default:
+        console.warn('Unknown category:', row.Category);
+        return;
+    }
+
+    const subscription = printObservable.subscribe((response: Blob) => {
+      const blobUrl = URL.createObjectURL(response);
+      window.open(blobUrl, '_blank');
+    });
+
+    this.subscriptions.push(subscription);
+  }
+
+
+  // lastBill(row: any) {
+  //   let bodyData: IPrint = {
+
+  //     TenantId: this.loginDetails.TenantId,
+  //     BillNo: row.BillId
+
+  //   };
+  //   if (row.Category == 'STG') {
+  //     const categoryListService1 = this.stgbillService.PrintBill
+  //       (bodyData)
+  //       .subscribe((response: Blob) => {
+  //         const blobUrl = URL.createObjectURL(response);
+
+  //         // Open PDF in a new browser tab
+  //         window.open(blobUrl, '_blank');
+  //       });
+  //     this.subscriptions.push(categoryListService1);
+
+  //   }
+  //   else if (row.Category == 'Supplier') {
+  //     const categoryListService = this.supplierbillService
+  //       .PrintBill(bodyData)
+  //       .subscribe((response: Blob) => {
+  //         const blobUrl = URL.createObjectURL(response);
+
+  //         window.open(blobUrl, '_blank');
+  //       });
+  //     this.subscriptions.push(categoryListService);
+
+  //   }
+  // }
+
+  recoveryItem(row: any) {
+    console.log(row, 'row')
+    const dialogRef = this.dialog.open(RecoveryComponent, {
+      width: window.innerWidth <= 1024 ? '40%' : '30%',
+      data: {
+        title: 'Recovery Form',
+        buttonName: 'Recover',
+        value: row,
+        categoryId: this.FieldBalanceForm.get('CategoryId')?.value
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.search();
+
+      }
+    });
+  }
 }
 

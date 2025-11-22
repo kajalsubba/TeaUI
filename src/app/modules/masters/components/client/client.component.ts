@@ -20,6 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ClientPasswordChangeComponent } from '../../models/client-password-change/client-password-change.component';
 import { QRViewerComponent } from 'src/app/shared/components/qr-viewer/qr-viewer.component';
+import { AddEditTargetcollectionComponent } from '../../models/add-edit-targetcollection/add-edit-targetcollection.component';
 
 @Component({
   selector: 'app-client',
@@ -29,18 +30,22 @@ import { QRViewerComponent } from 'src/app/shared/components/qr-viewer/qr-viewer
 export class ClientComponent implements OnInit, AfterViewInit {
   private subscriptions: Subscription[] = [];
   categoryList: any;
+  financialyearList: any = [];
+
   private destroy$ = new Subject<void>();
   displayedColumns: string[] = [
     'ClientId',
     'ClientFirstName',
     'ClientLastName',
-    'ClientAddress',
+    // 'ClientAddress',
     'CategoryName',
     'ContactNo',
     'WhatsAppNo',
-    'BioMatrixNo',
+    // 'BioMatrixNo',
     'EmailId',
     'LoginStatus',
+    'TargetWeight',
+    'FinancialYear',
     'actions',
   ];
   dataSource = new MatTableDataSource<any>();
@@ -49,13 +54,17 @@ export class ClientComponent implements OnInit, AfterViewInit {
     { columnDef: 'ClientFirstName', header: 'First Name' },
     // { columnDef: 'ClientMiddleName', header: 'Middle Name' },
     { columnDef: 'ClientLastName', header: 'Last Name' },
-    { columnDef: 'ClientAddress', header: 'Client Address' },
+    // { columnDef: 'ClientAddress', header: 'Client Address' },
     { columnDef: 'CategoryName', header: 'Category' },
     { columnDef: 'ContactNo', header: 'Contact No.' },
     { columnDef: 'WhatsAppNo', header: 'WhatsApp No' },
-    { columnDef: 'BioMatrixNo', header: 'Bio-Matric No' },
+    // { columnDef: 'BioMatrixNo', header: 'Bio-Matric No' },
     { columnDef: 'EmailId', header: 'Email ID' },
     { columnDef: 'LoginStatus', header: 'Client Login' },
+    { columnDef: 'TargetWeight', header: 'Target Weight' },
+    { columnDef: 'FinancialYear', header: 'Financial Year' },
+
+
   ];
 
   ClientForm!: FormGroup;
@@ -87,12 +96,31 @@ export class ClientComponent implements OnInit, AfterViewInit {
     })
     this.getClientList('');
     await this.getCategoryList();
+    // await this.getFinancialYear();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
+  }
+
+  async getFinancialYear() {
+    try {
+      const categoryBody: IGetCategory = {
+        TenantId: this.loginDetails.TenantId
+      };
+
+      const res: any = await this.categoryService.getFinancialYear(categoryBody)
+        .pipe(takeUntil(this.destroy$))
+        .toPromise()
+      this.financialyearList = res.FinancialYear;
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      this.toastr.error('Something went wrong.', 'ERROR');
+    }
   }
 
   getClientList(category?: any) {
@@ -103,7 +131,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
     const clientListService = this.clientService
       .getClient(bodyData)
       .subscribe((res: any) => {
-     
+
         this.dataSource.data = res.ClientDetails;
       });
     this.subscriptions.push(clientListService);
@@ -144,8 +172,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
       this.toastr.error('Something went wrong.', 'ERROR');
     }
   }
-  updatePassword(element:any):void
-  {
+  updatePassword(element: any): void {
     const dialogRef = this.dialog.open(ClientPasswordChangeComponent, {
       width: '40%',
       data: {
@@ -180,9 +207,27 @@ export class ClientComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  addTarget(element: any): void {
+    console.log('target element', element);
+    const dialogRef = this.dialog.open(AddEditTargetcollectionComponent, {
+      width: '40%',
+      data: {
+        title: 'Add Target',
+        buttonName: 'Save',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.getClientList();
+      }
+    });
+  }
   deleteItem(element: any): void {
     // Implement the logic to handle delete action
-    console.log('Delete clicked for:', element);
   }
 
   applyFilter(event: Event) {
@@ -210,7 +255,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
       }
     }
   }
-  generateQR(element:any): void {
+  generateQR(element: any): void {
     const dialogRef = this.dialog.open(QRViewerComponent, {
       width: '30%',
       data: {
@@ -223,7 +268,7 @@ export class ClientComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-       // this.getClientList();
+        // this.getClientList();
       }
     });
   }

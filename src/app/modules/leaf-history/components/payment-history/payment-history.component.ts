@@ -124,7 +124,6 @@ export class PaymentHistoryComponent implements OnInit {
       .subscribe((res: any) => {
 
         this.dataSource.data = res.PaymentDetails;
-        console.log(res.PaymentDetails,'res.PaymentDetails;')
       });
     this.subscriptions.push(categoryListService);
   }

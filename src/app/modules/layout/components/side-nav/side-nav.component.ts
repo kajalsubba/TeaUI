@@ -14,7 +14,7 @@ export class SideNavComponent {
   panelOpenState = false;
   currentOpenMenu: string | null = null;
   loginDetails: any;
-  PermissionDetails:any;
+  PermissionDetails: any;
   /**
    *
    */
@@ -27,8 +27,8 @@ export class SideNavComponent {
     if (this.helper.getItem('loginDetails') != null) {
       this.loginDetails = this.helper.getItem('loginDetails');
       this.PermissionDetails = this.helper.getItem('PermissionDetails');
-       
-      
+
+
     }
     else {
       this.router.navigateByUrl('login');
@@ -37,13 +37,29 @@ export class SideNavComponent {
 
   }
 
+
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isDesktop = event.target.innerWidth > 768; // Update isDesktop flag on window resize
   }
 
-  onMouseEnter() {
+  isManuallyCollapsed = false;
+
+  toggleSidebar() {
+
+    this.isExpanded = false;
+    this.isManuallyCollapsed = true;
+
+  }
+  toggleSidebarExpand() {
     this.isExpanded = true;
+    this.isManuallyCollapsed = false;
+  }
+  onMouseEnter() {
+    if (!this.isManuallyCollapsed) {
+      this.isExpanded = true;
+    }
   }
 
   onMouseLeave() {

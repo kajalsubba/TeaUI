@@ -11,6 +11,7 @@ import { SupplierBillHistoryComponent } from './components/supplier-bill-history
 import { SmartHistoryComponent } from './components/smart-history/smart-history.component';
 import { WalletHistoryComponent } from './components/wallet-history/wallet-history.component';
 import { PettyCashbookHistoryComponent } from './components/petty-cashbook-history/petty-cashbook-history.component';
+import { RecoveryHistoryComponent } from './components/recovery-history/recovery-history.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -26,7 +27,8 @@ const routes: Routes = [
       { path: 'supplier-bill-history', component: SupplierBillHistoryComponent },
       { path: 'smart-history', component: SmartHistoryComponent },
       { path: 'wallet-history', component: WalletHistoryComponent },
-      { path: 'pettycashbook-history', component: PettyCashbookHistoryComponent }
+      { path: 'pettycashbook-history', component: PettyCashbookHistoryComponent },
+      { path: 'recovery-history', component: RecoveryHistoryComponent }
 
     ]
   }

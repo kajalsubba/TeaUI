@@ -17,6 +17,7 @@ import { SaleEntryComponent } from 'src/app/shared/components/sale-entry/sale-en
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { NotificationDataService } from 'src/app/modules/layout/services/notification-data.service';
 import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifications';
+import { ViewCollectionBagComponent } from 'src/app/shared/components/view-collection-bag/view-collection-bag.component';
 
 @Component({
   selector: 'app-stgapprove',
@@ -26,6 +27,7 @@ import { IGetNotifications } from 'src/app/modules/layout/interfaces/iget-notifi
 export class StgapproveComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = [
     'select',
+    'actions',
     'CollectionDate',
     'VehicleNo',
     'ClientName',
@@ -42,6 +44,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     'Remarks',
     'TripName',
     'Status',
+
   ];
   //  dataList:any=[];
   dataSource = new MatTableDataSource<any>();
@@ -108,12 +111,8 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     let data = {
       TenantId: this.loginDetails.TenantId,
     }
-
     const getPendingCollectionDate = this.stgapproveService.GetStgPendingDate(data).subscribe((res: any) => {
       this.CollectionDates = res.PendingDate;
-
-      //     console.log(this.CollectionDates, 'this.CollectionDates');
-
     });
     this.subscriptions.push(getPendingCollectionDate)
   }
@@ -164,16 +163,14 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
           }
           return acc;
         }, {} as GroupedData);
-
+        
         let groupedDataString = JSON.stringify(groupedData);
-
-        // Remove the curly braces
         groupedDataString = groupedDataString.slice(1, -1);
-
-        // Remove the double quotes
         groupedDataString = groupedDataString.replace(/\"/g, '');
+        groupedDataString = groupedDataString.replace(/,/g, ', ');
+        groupedDataString = groupedDataString.replace(/:/g, ': ');
+
         this.GradeSummary = groupedDataString;
-        console.log(groupedDataString, 'groupedDataString');
       });
     this.subscriptions.push(categoryListService);
   }
@@ -389,6 +386,7 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
         this.GetStgList(formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'), formatDate(this.dateRangeForm.value.fromDate, 'yyyy-MM-dd', 'en-US'));
         this.selection = new SelectionModel<any>(true, []);
         this.RefreshNotifications();
+        this.getPendingCollectionDates();
       }
     });
   }
@@ -425,5 +423,24 @@ export class StgapproveComponent implements OnInit, AfterViewInit {
     const isPendingDate = this.CollectionDates.some(item => item.CollectionDate == cellDateISOString);
     return isPendingDate ? 'highlight-date' : '';
   };
+
+  ViewBag(element?: any) {
+    const dialogRef = this.dialog.open(ViewCollectionBagComponent, {
+      width: '40%',
+      data: {
+        title: 'View Bags',
+        buttonName: 'Update',
+        value: element,
+      },
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        //  this.GetStgList();
+
+      }
+    });
+  }
 
 }

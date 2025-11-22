@@ -1,28 +1,31 @@
-.table-container{
+.table-container {
     height: calc(100vh - 220px);
     overflow: auto;
     box-shadow: var(--soft-box-shadow);
 }
 
-.title{
+.title {
     color: var(--primary-color);
     font-size: 1.2rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 4px;
-    span{
+
+    span {
         border-bottom: 2px solid var(--primary-color);
         text-shadow: 1px 2px 3px;
     }
 }
 
-.top-container{
+.top-container {
     display: flex;
     align-items: center;
-    .search-field{
+
+    .search-field {
         flex: 1;
         position: relative;
-        i{
+
+        i {
             position: absolute;
             right: 20px;
             top: 50%;
@@ -37,5 +40,25 @@ th.mat-sort-header-sorted {
 }
 
 .selected-row {
-    background-color: #cacaca; /* Change this to the desired background color */
-  }
+    background-color: #cacaca;
+    /* Change this to the desired background color */
+}
+
+.action-icons {
+    display: flex;
+    gap: 12px;
+    /* Adjust the spacing as needed */
+    align-items: center;
+}
+
+.action-icon {
+    cursor: pointer;
+    font-size: 16px;
+    /* Optional: adjust icon size */
+    color: #333;
+    /* Optional: icon color */
+}
+
+.fanancial-year-gap {
+    margin-left: .5rem !important;
+}

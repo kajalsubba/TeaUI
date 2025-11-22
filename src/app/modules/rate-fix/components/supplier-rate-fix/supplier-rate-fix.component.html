@@ -6,7 +6,7 @@
                     <div class="col-lg-2">
                         <mat-form-field>
                             <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
-                                placeholder="From Date" formControlName="fromDate">
+                                placeholder="From Date" (dateChange)="GetFactory($event)" formControlName="fromDate">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
@@ -14,7 +14,8 @@
                     <div class="col-lg-2">
                         <mat-form-field>
                             <input readonly matInput [min]="minToDate" [matDatepicker]="picker1"
-                                min="dateRangeForm.value.fromDate" placeholder="To Date" formControlName="toDate">
+                                (dateChange)="GetFactory($event)" min="dateRangeForm.value.fromDate"
+                                placeholder="To Date" formControlName="toDate">
                             <mat-datepicker-toggle [disabled]="dateRangeForm.value.fromDate == null" matSuffix
                                 [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
@@ -22,9 +23,10 @@
                     </div>
                     <div class="position-relative col-lg-2">
                         <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
-                            formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onInputChange($event)">
+                            formControlName="FactoryName" [matAutocomplete]="factoryAuto"
+                            (input)="onInputChange($event)">
                         <!-- Autocomplete options -->
-                        <mat-autocomplete #factoryAuto="matAutocomplete" [displayWith]="displayWithFn" >
+                        <mat-autocomplete #factoryAuto="matAutocomplete" [displayWith]="displayWithFn">
                             <mat-option *ngFor="let factory of filterFactoryNames(factoryName.value)"
                                 [value]="factory?.FactoryName" (onSelectionChange)="selectFactory(factory)">
                                 {{ factory?.FactoryName }}
@@ -50,7 +52,7 @@
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative d-grid">
                                 <button (click)="RateAssign()" class="btn btn-color">Insert</button>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -67,7 +69,7 @@
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative">
                                 <input type="text" class="form-control" id="FineLeaf" placeholder="Fine Leaf (10-30)"
-                                formControlName="FineLeaf">
+                                    formControlName="FineLeaf">
                             </div>
                         </div>
                     </div>
@@ -108,7 +110,7 @@
                             </mat-option>
                         </mat-autocomplete>
                     </div>
-                    
+
                     <div class="col-lg-2 d-grid">
                         <div class="form-group row mb-3">
                             <div class="col-lg-12 position-relative d-grid">
@@ -138,14 +140,16 @@
                         <!-- Collection Date -->
                         <ng-container matColumnDef="CollectionDate">
                             <th mat-header-cell *matHeaderCellDef> Collection Date </th>
-                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.CollectionDate }} </td>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.CollectionDate }} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
                         </ng-container>
 
                         <!-- First Weight -->
                         <ng-container matColumnDef="ChallanWeight">
                             <th mat-header-cell *matHeaderCellDef> Challan Weight(KG) </th>
-                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell *matCellDef="let row"> {{row.ChallanWeight}}  </td>
+                            <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
+                                *matCellDef="let row"> {{row.ChallanWeight}} </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
                                 <b>{{ getTotalCost('ChallanWeight') }} KG</b>
                             </td>
@@ -154,10 +158,13 @@
                         <ng-container matColumnDef="GrossAmount">
                             <th mat-header-cell *matHeaderCellDef> Gross Amount <i
                                     class="fa-solid fa-indian-rupee-sign"></i> </th>
-                            <td  class="weight-column" mat-cell *matCellDef="let row"> 
-                                <i class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount | currency:'INR':'symbol':undefined:'en-IN'}} </td>
+                            <td class="weight-column" mat-cell *matCellDef="let row">
+                                <i class="fa-solid fa-indian-rupee-sign"></i> {{row.GrossAmount |
+                                currency:'INR':'symbol':undefined:'en-IN'}}
+                            </td>
                             <td class="footer-total" mat-footer-cell *matFooterCellDef>
-                                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount')| currency:'INR':'symbol':undefined:'en-IN' }}</b>
+                                <b><i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalCost('GrossAmount')|
+                                    currency:'INR':'symbol':undefined:'en-IN' }}</b>
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="actions">
@@ -171,15 +178,16 @@
                             </td>
                             <td mat-footer-cell *matFooterCellDef> </td>
                         </ng-container>
-                   
+
                         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true;"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"
                             [class.selected-row]="i == selectedRowIndex" (click)="selectRow(row, i)">
                         </tr>
                         <tr class="table-footer" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
                         <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">Record is not found !</td>
-                          </tr>
+                            <td class="mat-cell text-center text-danger" attr.colspan="{{displayedColumns.length + 1}}">
+                                Record is not found !</td>
+                        </tr>
                     </table>
                 </div>
             </div>

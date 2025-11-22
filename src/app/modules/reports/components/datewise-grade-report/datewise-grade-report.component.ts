@@ -67,7 +67,7 @@ export class DatewiseGradeReportComponent implements OnInit {
   }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
-   // this.gradeReportForm.controls['toDate'].setValue(null);
+    // this.gradeReportForm.controls['toDate'].setValue(null);
     this.minToDate = event.value;
   }
 
@@ -103,6 +103,22 @@ export class DatewiseGradeReportComponent implements OnInit {
     }
   }
 
+  excludedColumns: string[] = ['collDate', 'SalePrice', 'Company'];
+
+  shouldDisplayTotal(column: string): boolean {
+    return !this.excludedColumns.includes(column) && this.isNumericColumn(column);
+  }
+
+  isNumericColumn(column: string): boolean {
+    return this.dataSource.data.every(row => typeof row[column] === 'number');
+  }
+
+  getTotal(column: string): number {
+    return this.dataSource.data.reduce((sum, row) => {
+      const value = row[column];
+      return sum + (typeof value === 'number' ? value : 0);
+    }, 0);
+  }
 
   selectRow(row: any, index: number) {
     this.selectedRowIndex = index; // Set the selected row index
@@ -120,12 +136,11 @@ export class DatewiseGradeReportComponent implements OnInit {
       }
     }
   }
-  exportToExcel()
-  {
-    if(this.dataSource.data.length > 0){
+  exportToExcel() {
+    if (this.dataSource.data.length > 0) {
       // Get the table element
       const table = document.getElementById('material-table');
-      
+
       if (table instanceof HTMLTableElement) { // Check if table is a HTMLTableElement
         // Remove unwanted columns
         const columnsToRemove = ['']; // Specify columns to remove

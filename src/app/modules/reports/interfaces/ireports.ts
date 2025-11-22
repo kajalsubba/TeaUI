@@ -15,4 +15,8 @@ export interface ISeasonAdvance {
     Category: string;
 }
 
+export interface IAnalysisReport {
+    TenantId: number;
+    FinancialYearId: number;
+}
 

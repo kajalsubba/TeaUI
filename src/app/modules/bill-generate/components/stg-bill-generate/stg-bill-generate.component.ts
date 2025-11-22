@@ -82,7 +82,7 @@ export class StgBillGenerateComponent implements OnInit {
   selectedRowIndex: number = -1;
   selectedPaymentRowIndex: number = -1;
   AverageRate: number = 0;
-  // saleTypeList: any[]=[];
+  isLockEnabled: boolean = true;
   categoryList: any[] = [];
   constructor(
     private dialog: MatDialog,
@@ -151,6 +151,18 @@ export class StgBillGenerateComponent implements OnInit {
   }
 
 
+  async onLockToggle(event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+
+    // Do something based on the state
+    if (checked) {
+      this.isLockEnabled = true;
+      // Checkbox is checked
+    } else {
+      this.isLockEnabled = false;
+    }
+
+  }
   cleanAmountController(): void {
     const controlsToReset: string[] = [
       'FinalBillAmount',
@@ -416,7 +428,7 @@ export class StgBillGenerateComponent implements OnInit {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  
+
   BillSave() {
 
     debugger
@@ -425,6 +437,14 @@ export class StgBillGenerateComponent implements OnInit {
       this.toastr.error('Collection has no data!', 'Error')
       return
     }
+
+    if (this.StgAmountForm.value.Incentive == null || this.StgAmountForm.value.Transporting == null
+    ) {
+
+      this.toastr.error('Bill Calculate Amount should not be blank.!', 'Error')
+      return
+    }
+
 
     if (this.StgAmountForm.invalid || this.StgAmountForm.value.ClientId == 0 || this.StgBillForm.invalid) {
       this.StgAmountForm.markAllAsTouched();
@@ -497,6 +517,10 @@ export class StgBillGenerateComponent implements OnInit {
       if (result) {
 
         this.SaveBill(data);
+
+      }
+      else {
+        this.isSubmitting = false;
 
       }
     });

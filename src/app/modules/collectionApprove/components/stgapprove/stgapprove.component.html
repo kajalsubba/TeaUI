@@ -71,6 +71,17 @@
               </td>
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
+            <!-- Actions column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>View Bag</th>
+              <td mat-cell *matCellDef="let row">
+                <div>
+                  <i (click)="ViewBag(row)" matTooltip="View Bag" matTooltipPosition="right"
+                    class="fa-solid fa-bag-shopping"></i>
+                </div>
+              </td>
+              <td class="footer-total" mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+            </ng-container>
             <!-- Collection Date -->
             <ng-container matColumnDef="CollectionDate">
               <th mat-header-cell *matHeaderCellDef> Collection Date </th>
@@ -83,7 +94,7 @@
             <ng-container matColumnDef="GradeName">
               <th mat-header-cell *matHeaderCellDef> Grade </th>
               <td [ngClass]="{'reject-row': row.Status=='Rejected'}" class="weight-column" mat-cell
-                *matCellDef="let row"> {{row.GradeName}}  </td>
+                *matCellDef="let row"> {{row.GradeName}} </td>
               <td class="footer-total" mat-footer-cell *matFooterCellDef>
                 <b> {{ GradeSummary}} </b>
               </td>

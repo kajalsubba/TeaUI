@@ -125,24 +125,9 @@ export class SaleHistoryComponent {
   }
 
   selectFactory(factory: any) {
-
-    // debugger
-    // if (factory) {
-    //   this.SaleForm.controls['FactoryName'].setValue(factory);
-    //    this.SaleForm.controls['FactoryFilterCrtl'].setValue(''); // Clear the filter value
-    //     //this.filteredFactory.setValue('');
-    // }this.SaleForm.value.AccountName.AccountId ?? 0,
-
-    // this.SaleForm.controls['FactoryId'].setValue(factory?.FactoryId);
-    console.log(factory, 'factory');
-    // if (factory == undefined) {
-    //   this.SaleForm.controls["AccountId"].setValue(0);
-    // }
-
+ 
     this.accountNames = this.AccountList.filter((x: any) => x.FactoryId == factory.value.FactoryId);
-    //console.log(this.accountNames,'accountNames');
     this.filteredAccounts.next(this.accountNames.slice());
-
     this.SaleForm.controls["AccountFilterCrtl"].valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
@@ -256,7 +241,6 @@ export class SaleHistoryComponent {
       ToDate: formatDate(this.SaleForm.value.toDate, 'yyyy-MM-dd', 'en-US'),
       VehicleNo: '',
       FactoryId: this.SaleForm.value.FactoryName?.FactoryId ?? 0,
-      //  AccountId: this.SaleForm.value.AccountId ?? 0,
       AccountId: this.SaleForm.value.AccountName.AccountId ?? 0,
       FineLeaf: '',
       SaleTypeId: 0,
@@ -394,7 +378,7 @@ export class SaleHistoryComponent {
 
     };
 
-   // console.log(bodyData, 'salefilter');
+    // console.log(bodyData, 'salefilter');
 
     const categoryListService = this.saleService
       .GetSaleDetails(bodyData)
@@ -415,22 +399,20 @@ export class SaleHistoryComponent {
     this.subscriptions.push(categoryListService);
   }
 
-  onInputChange(event: string) {
-    //   const input = event.target as HTMLInputElement;
-    this.filteredFactories = this.filterFactoryNames(event);
+  // onInputChange(event: string) {
+  //   this.filteredFactories = this.filterFactoryNames(event);
 
-    console.log(event, 'presss');
-    if (event == '') {
-      this.accountNames = [];
-      this.SaleForm.controls['FactoryId'].reset();
-      this.SaleForm.controls['FactoryName'].reset();
-      this.SaleForm.controls['AccountName'].reset();
-      this.SaleForm.controls['AccountId'].reset();
-      this.SaleForm.controls["SaleTypeId"].reset();
-      this.SaleForm.controls["FineLeaf"].reset();
-    }
+  //   if (event == '') {
+  //     this.accountNames = [];
+  //     this.SaleForm.controls['FactoryId'].reset();
+  //     this.SaleForm.controls['FactoryName'].reset();
+  //     this.SaleForm.controls['AccountName'].reset();
+  //     this.SaleForm.controls['AccountId'].reset();
+  //     this.SaleForm.controls["SaleTypeId"].reset();
+  //     this.SaleForm.controls["FineLeaf"].reset();
+  //   }
 
-  }
+  // }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -463,11 +445,11 @@ export class SaleHistoryComponent {
 
 
 
-  selectAccount(account: any) {
-    debugger
-    console.log(account?.AccountId, 'factory?.AccountId');
-    this.SaleForm.controls['AccountId'].setValue(account?.AccountId);
-  }
+  // selectAccount(account: any) {
+  //   debugger
+  //   console.log(account?.AccountId, 'factory?.AccountId');
+  //   this.SaleForm.controls['AccountId'].setValue(account?.AccountId);
+  // }
 
   fromDateChange(event: MatDatepickerInputEvent<Date>): void {
     //  this.SaleForm.controls['toDate'].setValue(null);
@@ -487,8 +469,6 @@ export class SaleHistoryComponent {
   }
 
   editItem(row: any) {
-
-
     const dialogRef = this.dialog.open(EditSaleEntryComponent, {
       width: '90vw',
       height: '95%',

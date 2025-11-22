@@ -4,63 +4,61 @@
       <div class="row">
         <div class="col-xl-8 col-lg-10 col-md-12 ps-0">
           <form [formGroup]="StgBillForm">
-            <div class="row border-color mx-2">
-              <div class="col-lg-3 my-1">
-                <mat-form-field>
-                  <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
-                    placeholder="From Date" [max]="currentDate" formControlName="fromDate">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-lg-3 my-1">
-                <mat-form-field>
-                  <input readonly matInput [min]="minToDate" [max]="currentDate" [matDatepicker]="picker1"
-                    placeholder="To Date" formControlName="toDate">
-                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                  <mat-datepicker #picker1></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="col-lg-3 my-1">
-                <div class="position-relative">
-
-                  <mat-select class="fromSelect" formControlName="ClientName" placeholder="Select Client" #singleSelect>
-                    <mat-option>
-                      <ngx-mat-select-search formControlName="ClienFilterCrtl"
-                        noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
-                    </mat-option>
-
-                    <mat-option *ngFor="let client of filteredClients|async" [value]="client">
-                      {{client.ClientName}}
-                    </mat-option>
-                  </mat-select>
-                  <!-- </mat-form-field> -->
-
-                  <!-- Validation message -->
-                  <span
-                    *ngIf="StgBillForm.get('ClientName')?.hasError('required') && StgBillForm.get('ClientName')?.touched"
-                    class="text-danger d-block validation-message">
-                    Client is required.
-                  </span>
+            <div class="d-flex justify-content-between align-items-center mx-2">
+              <div class="row border-color flex-grow-1 me-3">
+                <div class="col-lg-3 my-1">
+                  <mat-form-field>
+                    <input readonly matInput [matDatepicker]="picker" (dateChange)="fromDateChange($event)"
+                      placeholder="From Date" [max]="currentDate" formControlName="fromDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
                 </div>
+                <div class="col-lg-3 my-1">
+                  <mat-form-field>
+                    <input readonly matInput [min]="minToDate" [max]="currentDate" [matDatepicker]="picker1"
+                      placeholder="To Date" formControlName="toDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-3 my-1">
+                  <div class="position-relative">
+
+                    <mat-select class="fromSelect" formControlName="ClientName" placeholder="Select Client"
+                      #singleSelect>
+                      <mat-option>
+                        <ngx-mat-select-search formControlName="ClienFilterCrtl"
+                          noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>
+                      </mat-option>
+
+                      <mat-option *ngFor="let client of filteredClients|async" [value]="client">
+                        {{client.ClientName}}
+                      </mat-option>
+                    </mat-select>
+
+                    <span
+                      *ngIf="StgBillForm.get('ClientName')?.hasError('required') && StgBillForm.get('ClientName')?.touched"
+                      class="text-danger d-block validation-message">
+                      Client is required.
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-3 d-grid my-1">
+                  <button (click)="search()" class="btn btn-color ms-2">Search</button>
+                </div>
+
+
               </div>
-              <div class="col-lg-3 d-grid my-1">
-                <button (click)="search()" class="btn btn-color ms-2">Search</button>
+              <div class="form-check border-box">
+                <input type="checkbox" class="form-check-input" [checked]="true" id="enableModify"
+                  formControlName="isLockEnabled" (change)="onLockToggle($event)">
+                <label class="form-check-label ms-2" for="enableLock">Bill Lock</label>
               </div>
             </div>
           </form>
         </div>
-        <!-- <div class="col-lg-4 shadow-sm date-period d-flex justify-content-center align-items-center ">
-          <div class="row mx-2">
-            <div class="col-lg-12">
-              <div>
-                <span>For the period of : &nbsp;</span>
-                <b>{{convertDate(StgBillForm.value.fromDate) + '&nbsp;to&nbsp;' +
-                  convertDate(StgBillForm.value.toDate)}}</b>
-              </div>
-            </div>
-          </div>
-        </div> -->
+
       </div>
     </div>
     <hr>
@@ -216,14 +214,7 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="form-group row my-2">
-          <!-- <label for="PreOutstandingAmount" class="col-lg-6 col-form-label text-end"><b class="text-danger">
-              Previous Outstanding </b></label>
-          <div class="col-lg-6 position-relative">
-            <input formControlName="PreOutstandingAmount" readonly #SeasonAmount type="number"
-              class="form-control text-danger final-amount bill-amount" id="PreOutstandingAmount"
-              placeholder="PreOutstanding Amount">
-            <span class="kg-text bill-rupee-symbol"><i class="fa-solid text-danger fa-indian-rupee-sign"></i></span>
-          </div> -->
+
         </div>
       </div>
 
@@ -279,12 +270,6 @@
                   placeholder="Incentive" formControlName="Incentive">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
-                <!-- Validation message -->
-                <!-- <span
-                  *ngIf="StgAmountForm.get('Incentive')?.hasError('required') && StgAmountForm.get('Incentive')?.touched"
-                  class="text-danger d-block validation-message">
-                  Incentive Amount is required.
-                </span> -->
               </div>
             </div>
           </div>
@@ -296,12 +281,6 @@
                   id="Transporting" placeholder="Transporting" formControlName="Transporting">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
 
-                <!-- Validation message -->
-                <!-- <span
-                  *ngIf="StgAmountForm.get('Transporting')?.hasError('required') && StgAmountForm.get('Transporting')?.touched"
-                  class="text-danger d-block validation-message">
-                  Transporting Amount is required.
-                </span> -->
               </div>
             </div>
           </div>
@@ -336,7 +315,6 @@
                   id="LessSeasonAdv" placeholder="Less Season Adv." formControlName="LessSeasonAdv"
                   (focusout)="onFocusOutSeasonEvent($event)">
                 <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
-                <!-- <span *ngIf="SeasonAdvValidate" class="text-danger d-block validation-message"> -->
 
                 <span *ngIf="StgAmountForm.controls['LessSeasonAdv'].errors?.['SeasonAdvValidate']"
                   class="text-danger d-block validation-message">
@@ -391,7 +369,8 @@
 
           <div class="col-lg-2 offset-lg-10">
             <div class="d-grid position-relative">
-              <button [disabled]="isSubmitting" (click)="BillSave()" class="btn btn-color">Submit</button>
+              <button [disabled]="isSubmitting || isLockEnabled" (click)="BillSave()"
+                class="btn btn-color">Submit</button>
             </div>
           </div>
         </div>

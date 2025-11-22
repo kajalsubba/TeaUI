@@ -5,6 +5,8 @@ import { DashboardServiceService } from './dashboard-service.service';
 import { Idashboard } from './idashboard';
 import { HelperService } from 'src/app/core/services/helper.service';
 import { Subject, Subscription } from 'rxjs';
+import { ConfigService } from 'src/app/core/services/config.service';
+import { environment } from 'src/environments/environment';
 
 // Initiate the module
 HC_exporting(Highcharts);
@@ -22,6 +24,8 @@ export class DashboardComponent implements OnInit {
 
   stgAndSale!: Highcharts.Options;
   supplierWiseSaleDetails!: Highcharts.Options;
+  stgGapClient!: Highcharts.Options;
+  supplierGapClient!: Highcharts.Options;
   loginDetails: any;
   companyWiseData: any;
   private destroy$ = new Subject<void>();
@@ -40,7 +44,7 @@ export class DashboardComponent implements OnInit {
     this.GetCompanyWiseData();
     this.GetSupplierWiseData();
     this.GetSTGWiseData();
-
+    this.GetGapClientData();
   }
 
   GetCompanyWiseData() {
@@ -58,11 +62,47 @@ export class DashboardComponent implements OnInit {
         const categoriesData: string[] = res.CompanyWiseChart.map((item: any) => item.FactoryName);
         const salesData: number[] = res.CompanyWiseChart.map((item: any) => item.ChallanWeight);
 
-        const categoryYear: string[] = res.YearWiseChart.map((item: any) => item.ChallanWeight);
-        const totalSalesData: number[] = res.YearWiseChart.map((item: any) => item.ChallanYear);
+        const categoryYear: string[] = res.YearWiseChart.map((item: any) => item.ChallanYear);
+        const totalSalesData: number[] = res.YearWiseChart.map((item: any) => item.ChallanWeight);
+
+        const totalSaleDays: number[] = res.YearWiseChart.map((item: any) => item.TotalDays);
+        const avgsalePerDay: number[] = res.YearWiseChart.map((item: any) => item.AvgPerDay);
 
         this.GetCompanyWiseSaleChart(categoriesData, salesData);
-        this.GetTotalCompanyWiseSaleChart(categoryYear, totalSalesData);
+        this.GetTotalCompanyWiseSaleChart(categoryYear, totalSalesData, totalSaleDays, avgsalePerDay);
+      });
+    this.subscriptions.push(categoryListService);
+  }
+
+  GetGapClientData() {
+
+    let bodyData: Idashboard = {
+
+      TenantId: this.loginDetails.TenantId,
+      CreatedBy: this.loginDetails.LoginType == 'Client' || this.loginDetails.RoleName != 'Admin' ? this.loginDetails.UserId : 0,
+
+    };
+    const categoryListService = this.dashBoardService
+      .GetGapClientData(bodyData)
+      .subscribe((res: any) => {
+
+        if (!environment.production) {
+
+          console.log(res, 'resopsse');
+        }
+
+        const categoriesData: string[] = res.STGClient.map((item: any) => item.ClientName);
+        const gapData: number[] = res.STGClient.map((item: any) => item.DaysOverdue);
+        const gapDate: string[] = res.STGClient.map((item: any) => item.LastCollectionDate);
+        const gapContactNo: string[] = res.STGClient.map((item: any) => item.ContactNo);
+
+        const suppliercategoriesData: string[] = res.SupplierClient.map((item: any) => item.ClientName);
+        const suppliergapData: number[] = res.SupplierClient.map((item: any) => item.DaysOverdue);
+        const suppliergapDate: string[] = res.SupplierClient.map((item: any) => item.LastCollectionDate);
+        const suppliergapContactNo: string[] = res.SupplierClient.map((item: any) => item.ContactNo);
+
+        this.GetStgGapChart(categoriesData, gapData, gapDate, gapContactNo);
+        this.GetSupplierGapChart(suppliercategoriesData, suppliergapData, suppliergapDate, suppliergapContactNo);
       });
     this.subscriptions.push(categoryListService);
   }
@@ -111,6 +151,9 @@ export class DashboardComponent implements OnInit {
     const currentMonthName = currentDate.toLocaleString('default', { month: 'long' });
 
     this.companyWiseSaleDetails = {
+      credits: {
+        enabled: false
+      },
       title: {
         text: 'Factory Wise Sale for the month - ' + currentMonthName
       },
@@ -123,6 +166,7 @@ export class DashboardComponent implements OnInit {
         accessibility: {
           description: 'sale'
         }
+
       },
       yAxis: {
         title: {
@@ -143,41 +187,78 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  GetTotalCompanyWiseSaleChart(categories: any = [], datas: any = []) {
-    const currentYear = new Date().getFullYear();
 
+  GetTotalCompanyWiseSaleChart(categories: any = [], totalSaledata: any = [], totalSaledays: any = [], avgPerDaySale: any = []) {
     this.totalCompanyWiseSaleDetails = {
-      title: {
-        text: 'Total Sale for the year - ' + currentYear
+      chart: {
+        type: 'bar'
       },
-      subtitle: {
-        text: ''
+      credits: {
+        enabled: false
+      },
+      title: {
+        text: 'Sales Data Comparison'
       },
       xAxis: {
         categories: categories,
-        crosshair: true,
-        accessibility: {
-          description: 'Total sale'
-        }
+        crosshair: true
       },
-      yAxis: {
-        title: {
-          text: 'KG'
+      yAxis: [
+        {
+          // Primary yAxis for ChallanWeight
+          min: 0,
+          title: {
+            text: 'ChallanWeight'
+          },
+          opposite: false
+        },
+        {
+          // Secondary yAxis for TotalDays and AvgPerDay
+          min: 0,
+          title: {
+            text: 'TotalDays / AvgPerDay'
+          },
+          opposite: true
         }
-      },
+      ],
       tooltip: {
-        valueSuffix: ''
+        shared: true
+      },
+      plotOptions: {
+        column: {
+          grouping: true,
+          shadow: false,
+          borderWidth: 0
+        }
       },
       series: [
         {
-          name: 'Total SALE',
-          color: '#018353',
-          type: 'column', // Set the type property to 'column' for column chart
-          data: datas
+          name: 'TotalDays',
+          type: 'column',
+          data: totalSaledays,
+          color: '#434348',
+          yAxis: 1
         },
+        {
+          name: 'AvgPerDay',
+          type: 'column',
+          data: avgPerDaySale,
+          color: '#90ed7d',
+          yAxis: 1
+        },
+        {
+          name: 'ChallanWeight',
+          type: 'column',
+          data: totalSaledata,
+          color: '#018353',
+          yAxis: 0
+        }
       ]
     };
+
   }
+
+
 
   GetStgWiseChart(categories: any = [], stgData: any = [], saleData: any = []) {
 
@@ -192,6 +273,9 @@ export class DashboardComponent implements OnInit {
       color: getSaleColor(stgData[index], saleValue)
     }));
     this.stgAndSale = {
+      credits: {
+        enabled: false
+      },
       title: {
         text: 'STG and SALE Comapre for last 10 days'
       },
@@ -232,6 +316,9 @@ export class DashboardComponent implements OnInit {
 
   GetSupplierWiseChart(categories: any = [], supplierData: any = []) {
     this.supplierWiseSaleDetails = {
+      credits: {
+        enabled: false
+      },
       title: {
         text: 'Supplier Wise sale for last 10 days'
       },
@@ -263,6 +350,106 @@ export class DashboardComponent implements OnInit {
       ]
     };
   }
+  GetStgGapChart(categories: any = [], datas: any = [], lastDate: any = [], contactNo: any = []) {
+    this.stgGapClient = {
+      credits: {
+        enabled: false
+      },
+      title: {
+        text: 'STG Collection Delays Last 10 Days'
+      },
+      subtitle: {
+        text: ''
+      },
+      xAxis: {
+        categories: categories,
+        crosshair: true,
+        accessibility: {
+          description: 'Clients'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'Days'
+        }
+      },
+      tooltip: {
+        useHTML: true, // Allow HTML formatting in tooltip
+        formatter: function () {
+          const index = this.point.index;
+          const delayDays = this.y;
+          const clientName = categories[index];
+          const date = lastDate[index] || 'N/A';
+          const contact = contactNo[index] || 'N/A';
+
+          return `
+          <b>Delay (days):</b> ${delayDays}<br/>
+          <b>Last Date:</b> ${date}<br/>
+          <b>Contact No:</b> ${contact}
+        `;
+        }
+      },
+      series: [
+        {
+          name: 'Clients',
+          color: '#018353',
+          type: 'column',
+          data: datas
+        },
+      ]
+    };
+  }
+
+  GetSupplierGapChart(categories: any = [], datas: any = [], lastDate: any = [], contactNo: any = []) {
+    this.supplierGapClient = {
+      credits: {
+        enabled: false
+      },
+      title: {
+        text: 'Supplier Collection Delays Last 10 Days'
+      },
+      subtitle: {
+        text: ''
+      },
+      xAxis: {
+        categories: categories,
+        crosshair: true,
+        accessibility: {
+          description: 'Clients'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'Days'
+        }
+      },
+      tooltip: {
+        useHTML: true, // Allow HTML formatting in tooltip
+        formatter: function () {
+          const index = this.point.index;
+          const delayDays = this.y;
+          const clientName = categories[index];
+          const date = lastDate[index] || 'N/A';
+          const contact = contactNo[index] || 'N/A';
+
+          return `
+          <b>Delay (days):</b> ${delayDays}<br/>
+          <b>Last Date:</b> ${date}<br/>
+          <b>Contact No:</b> ${contact}
+        `;
+        }
+      },
+      series: [
+        {
+          name: 'Clients',
+          color: '#018353',
+          type: 'column',
+          data: datas
+        },
+      ]
+    };
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => {
       sub.unsubscribe();

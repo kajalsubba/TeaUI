@@ -185,6 +185,7 @@ export class AddEditStgComponent implements OnInit {
 
 
   SaveStgtData(clientBody: IStg) {
+    debugger
     this.stgService.SaveStg(clientBody)
       .pipe(
         takeUntil(this.destroy$),

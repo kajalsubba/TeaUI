@@ -24,20 +24,6 @@
                 </mat-form-field>
               </div>
 
-              <!-- <div class="position-relative col-lg-3 my-2">
-                <input #factoryName type="text" class="form-control" id="factoryName" placeholder="Factory Name"
-                  formControlName="FactoryName" [matAutocomplete]="factoryAuto" (input)="onInputChange($event)">
-                <mat-autocomplete #factoryAuto="matAutocomplete" [displayWith]="displayWithFn">
-                  <mat-option *ngFor="let factory of filterFactoryNames(factoryName.value)"
-                    [value]="factory?.FactoryName" (onSelectionChange)="selectFactory(factory)">
-                    {{ factory?.FactoryName }}
-                  </mat-option>
-                </mat-autocomplete>
-                <span *ngIf="SaleStatementValidate" class="text-danger d-block validation-message">
-                  {{SaleStatementErrorMsg}}
-                </span>
-              </div> -->
-
               <div class="position-relative col-lg-3 my-2">
                 <mat-select (selectionChange)="selectFactory($event)" class="fromSelect" formControlName="FactoryName"
                   placeholder="Select Factory" #singleSelect>
@@ -60,16 +46,7 @@
               </div>
 
               <div class="position-relative col-lg-3 my-2">
-                <!-- <input #accountName type="text" class="form-control" id="accountName" placeholder="Account Name"
-                  formControlName="AccountName" [matAutocomplete]="accountAuto">
-                <mat-autocomplete #accountAuto="matAutocomplete" [displayWith]="displayWithFn">
-                  <mat-option *ngFor="let account of filterAccountNames(accountName.value)"
-                    [value]="account?.AccountName" (onSelectionChange)="selectAccount(account)">
-                    {{ account?.AccountName }}
-                  </mat-option>
-                </mat-autocomplete> -->
                 <mat-select class="fromSelect" formControlName="AccountName" placeholder="Select Account" #singleSelect>
-
                   <mat-option>
                     <ngx-mat-select-search formControlName="AccountFilterCrtl"
                       noEntriesFoundLabel="no matching found!"></ngx-mat-select-search>

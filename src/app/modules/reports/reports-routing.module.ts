@@ -10,6 +10,7 @@ import { SalePurchasewiseReportComponent } from './components/sale-purchasewise-
 import { SeasonAdvanceComponent } from '../accounts/components/season-advance/season-advance.component';
 import { SeasonAdvanceReportComponent } from './components/season-advance-report/season-advance-report.component';
 import { FieldBalanceReportComponent } from './components/field-balance-report/field-balance-report.component';
+import { AnalysisReportComponent } from './components/analysis-report/analysis-report.component';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
       { path: 'month-wise-collection-report', component: MonthWiseCollectionReportComponent },
       { path: 'sale-breakup-report', component: SalePurchasewiseReportComponent },
       { path: 'season-advance-report', component: SeasonAdvanceReportComponent },
-  { path: 'field-balance-report', component: FieldBalanceReportComponent }
+      { path: 'field-balance-report', component: FieldBalanceReportComponent },
+      { path: 'analysis-report', component: AnalysisReportComponent }
 
 
     ],

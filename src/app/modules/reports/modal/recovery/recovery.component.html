@@ -1,0 +1,91 @@
+<h2 mat-dialog-title class="m-0 p-0 px-2 model-title justify-content-between d-flex align-items-center">
+    <span>{{dialogData.value.Category}}
+        {{dialogData.title}} (
+        <span class="small-font">
+            {{dialogData.value.RecoveryType}}: {{dialogData.value.Amount}}
+        </span> /-)
+    </span>
+    <i matTooltip="Close" mat-dialog-close class="fa-solid fa-circle-xmark cursor-pointer"></i>
+</h2>
+<mat-dialog-content class="mat-typography p-0">
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form [formGroup]="RecoveryForm">
+                    <div class="row">
+
+                        <div class="form-group row mb-3">
+                            <label for="RecoveryDate" class="col-lg-5 col-form-label">Recovery Date <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <mat-form-field>
+                                    <input #PaymentDate class="date-select" readonly matInput [matDatepicker]="picker"
+                                        placeholder="RecoveryDate" formControlName="RecoveryDate" [max]="today">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label for="ClientId" class="col-lg-5 col-form-label">Client Id <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <input type="text" class="form-control" id="ClientId" placeholder="ClientId"
+                                    formControlName="ClientId" readonly>
+
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <label for="ClientName" class="col-lg-5 col-form-label">Client Name <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <input type="text" class="form-control" id="ClientName" placeholder="ClientName"
+                                    formControlName="ClientName" readonly>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group row mb-3">
+                            <label for="Amount" class="col-lg-5 col-form-label">Amount <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-lg-7 position-relative">
+                                <input #Amount type="text" class="form-control" id="Amount" placeholder="Amount"
+                                    formControlName="Amount" (input)="updateAmountInWords($event)"
+                                    (blur)="formatCurrency($event)" appCharacterRestriction>
+                                <span class="kg-text"><i class="fa-solid fa-indian-rupee-sign"></i></span>
+
+                                <!-- Validation message -->
+                                <span
+                                    *ngIf="RecoveryForm.get('Amount')?.hasError('required') && RecoveryForm.get('Amount')?.touched"
+                                    class="text-danger d-block validation-message">
+                                    Amount is required.
+                                </span>
+                                <div *ngIf="amountInWords" class="text-muted mt-1 currency-word">
+                                    {{ amountInWords }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <label for="Narration" class="col-lg-5 col-form-label">Narration </label>
+                            <div class="col-lg-7 position-relative">
+                                <input type="text" class="form-control" id="Narration" placeholder="Narration"
+                                    formControlName="Narration">
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <!-- <button class="btn-color bg-danger" color="warn" mat-raised-button mat-dialog-close>Cancel</button> -->
+    <button [disabled]="isSubmitting" (click)="onSubmit()" class="btn-color" mat-raised-button
+        cdkFocusInitial>{{dialogData.buttonName}}</button>
+</mat-dialog-actions>

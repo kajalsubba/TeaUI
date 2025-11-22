@@ -34,7 +34,8 @@ export class TopNavComponent implements OnInit {
     private datePipe: DatePipe,
     private signalRService: SignalRService,
     private notificationDataService: NotificationDataService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+
   ) { }
 
   ngOnInit(): void {
@@ -90,17 +91,22 @@ export class TopNavComponent implements OnInit {
   }
 
   formatCurrentRoute(): string {
-    const currentRoute = this.helper.getCurrentRoute();
+    let currentRoute = this.helper.getCurrentRoute();
+    currentRoute = currentRoute.split('?')[0].split('#')[0];
     const parts = currentRoute.split('/');
-
-    // Remove the first empty string and join the rest with ' > '
     const formattedRoute = parts.slice(1).join(' > ');
-
     return formattedRoute.toUpperCase();
   }
 
-  redirectToNotification(link: any) {
-    this.router.navigate([`home/${link}`]);
+  redirectToNotification(link: any, moduleId: any, minDate: any, displayName: any) {
+    debugger
+    if (this.router.url.includes(link)) {
+      this.notificationDataService.setActiveNotification({ moduleId, minDate, displayName });
+    } else {
+      this.router.navigate([`home/${link}`], {
+        queryParams: { moduleId, minDate, displayName }
+      });
+    }
   }
   ngOnDestroy(): void {
     // Unsubscribe to avoid memory leaks

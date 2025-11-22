@@ -15,25 +15,34 @@ export interface ISupplier {
     CreatedBy: 0
 }
 
-export interface IUploadChallan
-{
+export interface IUploadChallan {
     CollectionId: any;
     TenantId: any;
 }
-export interface ISupplierSelect
-{
+export interface ISupplierSelect {
     FromDate: any;
     ToDate: any;
     TenantId: any;
     VehicleNo: any;
     Status: string;
-    ClientId:Number;
-    TripId:any;
-    FactoryId:Number;
-    CreatedBy:any;
+    ClientId: Number;
+    TripId: any;
+    FactoryId: Number;
+    CreatedBy: any;
 }
-export interface IDefaultData
-{
+
+export interface ISupplierHistory {
+    FromDate: any;
+    ToDate: any;
+    TenantId: any;
+    Status: string;
+    ClientId: Number;
+    FactoryId: Number;
+    AccountId: any;
+    FineLeaf: string;
+    CreatedBy: any;
+}
+export interface IDefaultData {
     CreatedBy: any;
     TenantId: any;
 }

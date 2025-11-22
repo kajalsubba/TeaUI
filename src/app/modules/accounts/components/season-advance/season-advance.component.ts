@@ -110,7 +110,6 @@ export class SeasonAdvanceComponent implements OnInit, AfterViewInit {
       this.SeasonAdvanceForm.controls['ClientId'].reset();
       this.SeasonAdvanceForm.controls['ClientName'].reset();
       this.SeasonAdvanceForm.controls['CategoryName'].setValue(category?.CategoryName);
-      //   console.log(category.CategoryName, 'CategoryName');
       await this.loadClientNames();
     }
 

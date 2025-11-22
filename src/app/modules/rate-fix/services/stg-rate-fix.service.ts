@@ -10,12 +10,15 @@ export class StgRateFixService {
 
   constructor(private apiService: ApiService) { }
 
-  GetStgRateFixData(Body:IStgRateFix): Observable<any> {
+  GetStgRateFixData(Body: IStgRateFix): Observable<any> {
     return this.apiService.post('Collection/GetStgRateFixData', Body);
   }
 
-  SavetgRateFixData(Body:ISaveStgRate): Observable<any> {
+  SavetgRateFixData(Body: ISaveStgRate): Observable<any> {
     return this.apiService.post('Collection/SaveStgRate', Body);
   }
 
+  GetStgRateFixModifyData(Body: IStgRateFix): Observable<any> {
+    return this.apiService.post('Collection/GetStgRateFixModifyData', Body);
+  }
 }

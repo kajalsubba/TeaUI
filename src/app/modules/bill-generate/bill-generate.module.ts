@@ -21,6 +21,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { RateUnFixComponent } from './model/rate-un-fix/rate-un-fix.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -38,7 +39,8 @@ export const MY_FORMATS = {
   declarations: [
     BillGenerateComponent,
     StgBillGenerateComponent,
-    SupplierBillGenerateComponent
+    SupplierBillGenerateComponent,
+    RateUnFixComponent
   ],
   imports: [
     CommonModule,

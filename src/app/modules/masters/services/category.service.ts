@@ -10,16 +10,19 @@ export class CategoryService {
 
   constructor(private apiService: ApiService) { }
 
-  getCategory(Body:IGetCategory): Observable<any> {
+  getCategory(Body: IGetCategory): Observable<any> {
     return this.apiService.post('Master/GetCategory', Body);
   }
 
-  deleteCategory(Body:IDeleteCategory): Observable<any> {
+  deleteCategory(Body: IDeleteCategory): Observable<any> {
     return this.apiService.post('Master/DeleteCategory', Body);
   }
 
-  saveCategory(Body:ISaveCategory): Observable<any> {
+  saveCategory(Body: ISaveCategory): Observable<any> {
     return this.apiService.post('Master/SaveCategory', Body);
   }
 
+  getFinancialYear(Body: IGetCategory): Observable<any> {
+    return this.apiService.post('Master/GetFinancialYear', Body);
+  }
 }
